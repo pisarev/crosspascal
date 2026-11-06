@@ -53,7 +53,10 @@ Open the `.dproj` in Delphi and select Windows 64-bit. Open the corresponding `.
 | `crosspascal/examples/marker-lite/MarkerLite` | Grayscale, Sauvola, or Canny processing with PNG output |
 | `crosspascal/examples/vision-models/VisionModels` | A CPU classifier's top five classes or a detector's boxes |
 | `crosspascal/examples/qwen-chat/QwenChat` | A short answer generated on the selected CUDA GPU |
+| `crosspascal/examples/gemma-chat/GemmaChat` | A streamed text answer from a converted Gemma 3n CUDA bundle |
 
 For the two model applications, open `CrossPascalConvert.exe` at the SDK root. Choose the profile and its pinned source in the converter, convert it, and select the generated bundle in the application. The CPU profiles cover SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd. Both Qwen2.5-Instruct profiles (0.5B and 1.5B) use the CUDA architecture detected by the converter or explicitly entered for the destination machine.
 
 Read the per-profile and component limitations in the release notes. Keep the original upstream notices with the corresponding dependencies and source assets.
+
+For GemmaChat, extract the Gemma runtime companion asset into the same SDK root. It supplies `runtime/gemma-python/python.exe` and its pinned execution dependencies. No separate Python installation or conversion tools are needed to run an already converted bundle. Follow the [GemmaChat manual steps](../examples/gemma-chat/README.md); converting an original GGUF requires the additional exporter environment described in the converter's Gemma guide.

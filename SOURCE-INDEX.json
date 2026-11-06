@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-011",
+  "release_id": "early-access-012",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -16,29 +16,24 @@
       "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
     },
     {
-      "path": "LICENSE",
-      "bytes": 1070,
-      "sha256": "04b643fe3d2d95be3b9a0ad9d3882d00a9b2d9dfb74694f35fe8edfc77e67815"
-    },
-    {
-      "path": "README.md",
-      "bytes": 2890,
-      "sha256": "f08d7e700883a89e1ad275ab24153c12e7e9b89eed7bc8218279084972647eb4"
-    },
-    {
       "path": "docs/CAPABILITIES.md",
-      "bytes": 2615,
-      "sha256": "e06037ba9afee753d452ef641a216a6815477db2832a2e8d1960c9892d5719a0"
+      "bytes": 3334,
+      "sha256": "cc875e6d1b8584a6599ad165372a9efda187adf3315def7ab2e770de698cf219"
     },
     {
       "path": "docs/KNOWN-LIMITATIONS.md",
-      "bytes": 2016,
-      "sha256": "1d7ba66cd0e01494a731f99cfa3897678b792aae423ed2ab13e26e67edb78a00"
+      "bytes": 2902,
+      "sha256": "3b1e9618537288286896986294fc19fab383f106c5311ae17d4037da4f648100"
     },
     {
       "path": "docs/LICENSE-SCOPE.md",
       "bytes": 2193,
       "sha256": "ff8dd56fba77ba54a0c324df330cfea33bc1b12adf9ec9b19432df79fcb51d3f"
+    },
+    {
+      "path": "docs/MODEL-MODALITIES.md",
+      "bytes": 2936,
+      "sha256": "13fb7b4d985055f00eb76089c38c960966a6fa2a88f1be8ab553ad3546c8c3ba"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
@@ -47,13 +42,38 @@
     },
     {
       "path": "docs/ROADMAP.md",
-      "bytes": 1421,
-      "sha256": "026c2a2501cf3b1ca688643f191ed32692d471f1f124626f4879a6ded2aad9ce"
+      "bytes": 1828,
+      "sha256": "df6fa899187a83e0a4c1bc1a0f0e5e44ae7e2d21aef2c5a8107609766150614f"
     },
     {
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
-      "bytes": 4826,
-      "sha256": "697f52d897f788f15fa8a780429a50bdb558467ba82e3794b1c4f57c82f9940d"
+      "bytes": 5389,
+      "sha256": "b9deef0dac1ffc05d502278bf5cb7fe0df117dc6609028b97da527c7e8d7c184"
+    },
+    {
+      "path": "examples/gemma-chat/GemmaChat.dpr",
+      "bytes": 360,
+      "sha256": "c7997986c294342dd5043ebc40f13e677d5335ba7a437a53c3f9dcd9d263735a"
+    },
+    {
+      "path": "examples/gemma-chat/GemmaChat.dproj",
+      "bytes": 3805,
+      "sha256": "2030a015bf877c8c818e80f586cc17b5e12c6aa8fd14ccf0d8bb14f6eda6b05c"
+    },
+    {
+      "path": "examples/gemma-chat/GemmaChat.lpi",
+      "bytes": 1555,
+      "sha256": "5170bf80396fdb6beac07f4d761fc0411550416791f6c48b1b89cfac31e10561"
+    },
+    {
+      "path": "examples/gemma-chat/GemmaChat.Main.pas",
+      "bytes": 11414,
+      "sha256": "3a7031890841d2fec5ba1c5366724e2673cad82a262e94f62b44d0eaf102bebd"
+    },
+    {
+      "path": "examples/gemma-chat/README.md",
+      "bytes": 3569,
+      "sha256": "a1a1961af59bf5b5f3fa81494b1963ae62b22ecbff37d2915a2bb76d860d9d20"
     },
     {
       "path": "examples/marker-lite/MarkerLite.dpr",
@@ -81,11 +101,6 @@
       "sha256": "84b141db62851395f4c88d35fbb592d2798fe06989bac3ffdc589fb2c892348b"
     },
     {
-      "path": "examples/qwen-chat/QwenChat.Main.pas",
-      "bytes": 15836,
-      "sha256": "d27bf73fcacc1a079f7d2dc7fa87fb2165ae5231d3b1b74b50d9c2b3e8d62842"
-    },
-    {
       "path": "examples/qwen-chat/QwenChat.dpr",
       "bytes": 2905,
       "sha256": "63b5abeb277a9f5dea807c0035dc08b116a739f97e9f901aed87aa6a2a265957"
@@ -101,19 +116,24 @@
       "sha256": "bf467fdc645437b90b3628bf0d0d98ab126a7b2bb61493418bf87b5f78620c4b"
     },
     {
+      "path": "examples/qwen-chat/QwenChat.Main.pas",
+      "bytes": 16658,
+      "sha256": "ba896c922aacff522bce57376bcce19f5c2a7f9bd018fde45fea44201227a5a0"
+    },
+    {
       "path": "examples/qwen-chat/README.md",
-      "bytes": 7588,
-      "sha256": "72653fc3358028401d1716c068c059f100f9f1de2fc1db018171bda71c031aec"
+      "bytes": 7630,
+      "sha256": "5317a41993357e0d8e973539d2818d280da8211fb77f487b480ce88a2dcd1879"
+    },
+    {
+      "path": "examples/vision-models/models.json",
+      "bytes": 5440,
+      "sha256": "f6e2ae73d6e8de839653c112136d1412e19787393634299a51211b3d9c8e30fc"
     },
     {
       "path": "examples/vision-models/README.md",
       "bytes": 14144,
       "sha256": "f98f41d8272c155ebbfd640b323253c4c9ad2079b498e48f101a799c94bbe455"
-    },
-    {
-      "path": "examples/vision-models/VisionModels.Main.pas",
-      "bytes": 17244,
-      "sha256": "3b391b70c91baa1ffe05db108da05cd2a4f1110749d6046ed217bf03f7c17a9b"
     },
     {
       "path": "examples/vision-models/VisionModels.dpr",
@@ -131,14 +151,14 @@
       "sha256": "9f932171497be07a4bb1c948e1f98712ef9fc2193d75124edf04bbcff9ec892a"
     },
     {
-      "path": "examples/vision-models/models.json",
-      "bytes": 5440,
-      "sha256": "f6e2ae73d6e8de839653c112136d1412e19787393634299a51211b3d9c8e30fc"
+      "path": "examples/vision-models/VisionModels.Main.pas",
+      "bytes": 17244,
+      "sha256": "3b391b70c91baa1ffe05db108da05cd2a4f1110749d6046ed217bf03f7c17a9b"
     },
     {
       "path": "launcher/CrossPascalConvert.dpr",
-      "bytes": 3643,
-      "sha256": "b1ec84a46326a693c8de236352bea6764a22d259b4fbe53442deb39a7fbb3a92"
+      "bytes": 3619,
+      "sha256": "c7989048eb45cb7285facf51231601d783c566fa86672a65d7b47f48f4db6730"
     },
     {
       "path": "launcher/CrossPascalConvert.dproj",
@@ -151,19 +171,24 @@
       "sha256": "4f7234ee634b5cd79c9793e8e7199f32977739269ab41d12bdab25917a24141c"
     },
     {
+      "path": "LICENSE",
+      "bytes": 1070,
+      "sha256": "04b643fe3d2d95be3b9a0ad9d3882d00a9b2d9dfb74694f35fe8edfc77e67815"
+    },
+    {
       "path": "packages/lazarus/crosspascal_cvcore.lpk",
       "bytes": 2938,
       "sha256": "4bc8f3e9fa673d25f451e069722fb86ba64b8d17c0c232e233605e5079cd19c7"
     },
     {
+      "path": "README.md",
+      "bytes": 3282,
+      "sha256": "352a2590000c5e3df16f8c40ec0bd028496bf7ce2958f60b6a4ffac883bc7891"
+    },
+    {
       "path": "rtl-algorithms/LICENSE",
       "bytes": 1070,
       "sha256": "04b643fe3d2d95be3b9a0ad9d3882d00a9b2d9dfb74694f35fe8edfc77e67815"
-    },
-    {
-      "path": "rtl-algorithms/README.md",
-      "bytes": 6966,
-      "sha256": "b78788e50a87e1f57dd39d36119ad038a97b7dce808e89167d8654488878571c"
     },
     {
       "path": "rtl-algorithms/licenses/CROSSFPCCOMMON-NOTICE.md",
@@ -176,14 +201,19 @@
       "sha256": "6214f8b1300bb9f37b16ebc146f8f61af0187e0025042ff95c8b3030744a8795"
     },
     {
+      "path": "rtl-algorithms/README.md",
+      "bytes": 6966,
+      "sha256": "b78788e50a87e1f57dd39d36119ad038a97b7dce808e89167d8654488878571c"
+    },
+    {
       "path": "rtl-algorithms/src/CrossVision.Binarize.pas",
       "bytes": 11878,
       "sha256": "c03618b3cd18a11d9c1caa5011130bb7a1109a80f2bd01db4da946d97f8852e6"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Contour.pas",
-      "bytes": 6338,
-      "sha256": "737d0baebc404126927e2faab9d3a405f6780921bac30c7c2a1a7760c7b5bc66"
+      "bytes": 6314,
+      "sha256": "481516c79cfd29ad91e719ffa0e2290627584d05a064e50bdb4377b155d16706"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Curve.pas",
@@ -192,28 +222,28 @@
     },
     {
       "path": "rtl-algorithms/src/CrossVision.DisjointSet.pas",
-      "bytes": 2273,
-      "sha256": "51220dcb266cc1631605afe15cfb0f1d655fdbdfc200dca03f183238f6e8dd1f"
-    },
-    {
-      "path": "rtl-algorithms/src/CrossVision.Geometry.Types.pas",
-      "bytes": 3228,
-      "sha256": "71f8bbd48b0a71f1ef561aed1c9b398ab55f3aa2b80f3e10443954b2ce6b4f4a"
+      "bytes": 2249,
+      "sha256": "92f76591d4b216e0027486493ca375f96ca3ec903a122d7fe41a9face1d16f48"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Geometry.pas",
-      "bytes": 62801,
-      "sha256": "a11e4ab8aec2614548b39e61c868e08281393c2a10cd69c5ed63fb42027a8405"
+      "bytes": 62777,
+      "sha256": "381642d43059ef3471d4e7afd6bfc0e0af3888395f976148515fe3282f0c7f11"
+    },
+    {
+      "path": "rtl-algorithms/src/CrossVision.Geometry.Types.pas",
+      "bytes": 3204,
+      "sha256": "533140ffbfd90c70dd85c38097e6d02a38e6649bd871172b5fe6c96a4097fb11"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Image.pas",
-      "bytes": 2735,
-      "sha256": "7bdd62691d734f4a38151b5f592e373badd70ff8de13eff84c7b0fcbc7ef08a6"
+      "bytes": 2711,
+      "sha256": "afcb428997beddf856a4eb4f2378eb0e031fc0ea39bc3bf935066ae73994c2cd"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Morphology.pas",
-      "bytes": 7376,
-      "sha256": "7a544ee6678a7e5d09715434cc112fa1d233590c72d714d521c6a7873f5b0d76"
+      "bytes": 7352,
+      "sha256": "d2b32788026189f301e08b7450803a8555d9545896ff74a6543e6c52ab249ce0"
     },
     {
       "path": "rtl-algorithms/tests/TestDisjointSet.dpr",
@@ -257,18 +287,18 @@
     },
     {
       "path": "vision/CrossVision.Image.Leptonica.pas",
-      "bytes": 2311,
-      "sha256": "b8bf3216d4665783fac22c8e96cb899b3a1fdde6bf3bdf04c59b830b51479df6"
+      "bytes": 2287,
+      "sha256": "72948868bebdd9f00648643a4f5ad829af3445c2d20add1a4979cbe8d7febaaf"
     },
     {
       "path": "vision/CrossVision.Image.OpenCV.pas",
-      "bytes": 2476,
-      "sha256": "db1b514ff0e2f813fc125169bcbc38fa777f5082ac524256ba03252a23e9bb1e"
+      "bytes": 2452,
+      "sha256": "eab4a7732378cd38609b9a22af1ebbd2a1357bdf0eede098714da8bfd9c52e5e"
     },
     {
       "path": "vision/CrossVision.MatPix.pas",
-      "bytes": 5626,
-      "sha256": "227b0a4d28fb0dfacdd770569f3154ed98773d0bed54fa73e7230d062dc9e158"
+      "bytes": 5602,
+      "sha256": "a191b38912cc1825940ba90f94be681ebbfeff74c8c39d8168a39d53039b8364"
     },
     {
       "path": "vision/README.md",

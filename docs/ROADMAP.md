@@ -17,3 +17,5 @@ Continue MarkerLite from basic image processing toward a single application for 
 ## Language models and other backends
 
 Evaluate additional Qwen and Gemma profiles, larger context settings, and other precision options. Keep GPU architecture configurable for each build. Explore TensorFlow Lite, cuDNN, and medical imaging applications as separate work.
+
+Qwen2 dense-text and Gemma 3n GGUF text conversion now derive supported layouts from architecture metadata. The next multimodal work needs separate Gemma 3n and Qwen2.5-VL vision adapters, image preprocessing, projected embeddings and image-dependent reference checks. See the [text-plus-image implementation plan](MODEL-MODALITIES.md). A text demo or a model family name does not establish image support.

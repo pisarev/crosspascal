@@ -40,7 +40,7 @@ The form is created in Pascal code; there is no missing `.dfm` file. You do not 
 2. Beside **Converted model bundle**, click **Browse** and select the directory containing `model.json`.
 3. Beside **Pinned CUDA runtime directory**, select `crosspascal-tvm/runtime/windows-x64-cuda`. The application fills this in automatically when it can locate the sibling repository.
 4. Enter a short prompt, for example `Say hello in English.`. Leave **Max new tokens** at `0` for Auto, or enter a positive whole number to request a shorter answer.
-5. Click **Run on GPU**. The status line shows validation, weight loading and generation progress. The result identifies the actual GPU and compute capability, then shows the generated text.
+5. Click **Run on GPU**. The status line shows validation and loading progress. The answer appears as it is generated. The final result identifies the GPU and compute capability.
 6. Use **Save result** to save a new JSON report if needed. Existing reports are not overwritten. Close the application normally after the current operation finishes.
 
 The prompt, chat template and answer share the bundle's context window. The result shows how many tokens were available for the answer. The remaining window bounds any larger manual request. Click **Stop** to keep the partial answer once the current operation finishes.
@@ -61,9 +61,9 @@ Greedy selects the highest-scoring token at each step. Temperature, Top-P, Top-K
 
 ## What the example checks
 
-Before loading model parameters onto the GPU, the application checks the model profile, source identity, full parameter layout and hash, model-library hash, tokenizer hashes and runtime hashes. It rejects incompatible files and checks that GPU 0 matches the architecture recorded in the model and artifact manifests. Inputs are held open against writes throughout the run.
+Before loading model parameters onto the GPU, the application checks the model profile, source identity, full parameter layout and hash, model-library hash, tokenizer hashes and runtime hashes. It rejects incompatible files and checks that GPU 0 matches the architecture recorded in the model and artifact manifests.
 
-Embedding, prefill and decode must return the expected float32 CUDA tensor shapes. The application checks for nonfinite logits, honours EOS and checks for Stop between generated tokens. Each run releases its tensor, model and cache references. The runtime DLLs remain loaded until ordinary process shutdown, as required by the runtime's thread lifetime; the program does not use `Halt` to bypass normal exit.
+Embedding, prefill and decode must return the expected float32 CUDA tensor shapes. The application checks for nonfinite logits, honours EOS and checks for Stop between generated tokens. Subsequent requests using the same paths reuse the loaded weights and tokenizer. Each request starts with an empty attention sequence. The model stays in GPU memory and the verified inputs remain open against writes until you load a different model or close the example. The runtime DLLs stay loaded until ordinary process shutdown.
 
 A successful result applies to that bundle, prompt and device. Consult the matching [release notes](https://github.com/pisarev/crosspascal/releases) for the measured validation scope.
 

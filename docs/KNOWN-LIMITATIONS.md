@@ -8,11 +8,13 @@ CUDA conversion and inference require compatible NVIDIA hardware, drivers, and e
 
 ## Models
 
-The Qwen example uses one FP32 profile with a 64-token context. That context includes the prompt, chat template, and generated tokens. The default first reply is limited to six new tokens. There is no CPU fallback for this profile. Additional devices, models, context lengths, precisions, and broad language-quality claims are outside this check.
+QwenChat accepts the legacy named 64-token bundles and compatible local Qwen2 dense-text bundles with a 2,048-token context. Prompt, chat template and answer share that capacity. The default output setting is 0 (automatic), with optional answer budgets, a positive manual limit and Stop. There is no fixed six- or sixteen-token output cap. Loaded weights are reused between requests and text appears during generation. These checks do not establish quality for every compatible checkpoint or prompt. There is no CPU inference fallback.
+
+GemmaChat implements the Gemma 3n CUDA W8A32 text profile through an included Python TVM worker. It is not a native Pascal tokenizer/graph implementation. The runtime asset supplies Python, TVM and SentencePiece; PyTorch and Ollama are not used for inference. GPU projection weights are quantized to int8 with FP32 arithmetic, so this is a different numerical profile from CPU FP32. The current converter offers contexts up to 1,024 tokens. The original checkpoint's vision and audio paths are not implemented. See [model input capabilities](MODEL-MODALITIES.md).
 
 The five CPU vision checks cover the pinned model, preprocessing, and application result. They do not measure dataset accuracy or performance. Select the corresponding model source pack before conversion.
 
-The OmDet result covers two recorded Windows CPU fixtures and includes a known difference in the raw numerical comparison. It is outside the supported profiles in the Windows SDK. PaddleOCR, BiRefNet, and Gemma are also outside the supported SDK profiles.
+The OmDet result covers two recorded Windows CPU fixtures and includes a known difference in the raw numerical comparison. It is outside the supported profiles in the Windows SDK. PaddleOCR and BiRefNet are also outside those SDK profiles. Experimental Gemma 2 CPU conversion retains its separately documented attention-score soft-capping limitation; it is not the Gemma 3n CUDA backend.
 
 ## Native components
 

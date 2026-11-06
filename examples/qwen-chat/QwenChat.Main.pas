@@ -24,10 +24,13 @@ type
     FResult: TQwenCudaResult;
     FErrorText: string;
     FProgressText: string;
+    FAnswerText: string;
     FStoppedBeforeGeneration: Boolean;
     function StopRequested: Boolean;
     procedure ShowProgress;
     procedure ReportProgress(const MessageText: string);
+    procedure ShowAnswer;
+    procedure ReportAnswer(const AnswerText: string);
   protected
     procedure Execute; override;
   public
@@ -58,6 +61,7 @@ type
     FStatus: TLabel;
     FTimer: TTimer;
     FWorker: TQwenWorker;
+    FSession: TQwenCudaSession;
     FLastJSON: string;
     procedure BrowseBundle(Sender: TObject);
     procedure BrowseRuntime(Sender: TObject);
@@ -71,6 +75,7 @@ type
     function ReadGenerationOptions: TQwenGenerationOptions;
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure SetStatus(const MessageText: string);
   end;
 
@@ -179,10 +184,25 @@ begin
     FForm.SetStatus(FProgressText);
 end;
 
+procedure TQwenWorker.ShowAnswer;
+begin
+  FForm.FOutput.Text := FAnswerText;
+  FForm.FOutput.SelStart := Length(FAnswerText);
+end;
+
+procedure TQwenWorker.ReportAnswer(const AnswerText: string);
+begin
+  if AnswerText = FAnswerText then
+    Exit;
+  FAnswerText := AnswerText;
+  Synchronize(ShowAnswer);
+end;
+
 procedure TQwenWorker.Execute;
 begin
   try
-    FResult := RunQwenCuda(FBundle, FRuntime, FPrompt, FOptions, ReportProgress, StopRequested);
+    FResult := FForm.FSession.Run(FBundle, FRuntime, FPrompt, FOptions, ReportProgress,
+      StopRequested, ReportAnswer);
   except
     on EQwenCudaCancelled do
       FStoppedBeforeGeneration := True;
@@ -227,6 +247,7 @@ var
 
 begin
   inherited CreateNew(AOwner);
+  FSession := TQwenCudaSession.Create;
   Caption := 'CrossPascal Qwen CUDA';
   Position := poScreenCenter;
   ClientWidth := 900;
@@ -333,6 +354,20 @@ begin
   FOutput.Anchors := [akLeft, akTop, akRight, akBottom];
   FOutput.ReadOnly := True;
   FOutput.ScrollBars := ssVertical;
+end;
+
+destructor TQwenChatForm.Destroy;
+begin
+  if Assigned(FTimer) then
+    FTimer.Enabled := False;
+  if Assigned(FWorker) then
+  begin
+    FWorker.Terminate;
+    FWorker.WaitFor;
+    FreeAndNil(FWorker);
+  end;
+  FSession.Free;
+  inherited Destroy;
 end;
 
 procedure TQwenChatForm.SetStatus(const MessageText: string);
@@ -462,6 +497,7 @@ begin
     end
     else begin
       FLastJSON := QwenResultJSON(Worker.FResult);
+      FOutput.Clear;
       FOutput.Lines.Add('GPU: ' + Worker.FResult.DeviceName +
         ' (compute ' + Worker.FResult.ComputeVersion + ')');
       FOutput.Lines.Add(Format('Context: %d tokens; available for the answer: %d',
@@ -474,7 +510,7 @@ begin
       if Worker.FResult.StopReason = 'cancelled' then
         SetStatus('Stopped. The partial answer is shown below.')
       else
-        SetStatus('CUDA generation finished. Model and cache objects have been released.');
+        SetStatus('CUDA generation finished. The verified model is ready for another request.');
     end;
   SetRunning(False);
 end;

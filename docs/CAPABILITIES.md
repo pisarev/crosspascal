@@ -12,6 +12,7 @@ The early access SDK supports Delphi 13.2 and Lazarus 4.8 with FPC 3.2.2. Keep t
 | Video I/O | Native OpenCV bridge | The FFmpeg backend wrote and read a test video |
 | CUDA language generation | Converter and QwenChat | Convert a pinned Qwen2.5-Instruct model or a compatible local dense Qwen checkpoint for the detected or selected CUDA architecture. QwenChat supports configurable sampling, Auto answer budgets, a manual token limit, and Stop |
 | CPU vision | Converter and VisionModels | Five pinned application profiles produced finite classifications or detections in both compilers |
+| Experimental Gemma 3n text generation | Converter and GemmaChat | Architecture-derived GGUF conversion to TVM CUDA W8A32; streamed text, persistent weights, automatic output and Stop in Delphi and Lazarus |
 
 ## Model profiles
 
@@ -20,5 +21,7 @@ The two Qwen2.5-Instruct profiles use FP32, batch size one, and a 64-token conte
 CPU profiles include SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd. The companion source archive provides the matching inputs, exact source identities, and notices. Classifiers return ranked scores. Detectors return boxes, class IDs, and scores. Application results are scoped to the pinned profiles and tested inputs.
 
 ## Native setup
+
+The compatible local Qwen2 profile derives its topology from the checkpoint and uses a 2,048-token context. QwenChat retains loaded weights across requests and streams decoded text. Gemma 3n uses a separate architecture adapter and runtime, with contexts up to 1,024 tokens. Its CUDA profile uses int8 projection weights and FP32 arithmetic. Both examples accept text only in this release; the [modality matrix](MODEL-MODALITIES.md) distinguishes these routes from the original families' vision capabilities.
 
 The SDK installer builds OpenCV and Leptonica from their companion source assets. The ordinary online setup fetched the pinned native build inputs in a clean Windows SDK installation. The TVM installer uses the official Apache TVM 0.26.0 and Apache TVM FFI 0.1.14 Windows wheels. See [known limitations](KNOWN-LIMITATIONS.md) for the scope of these checks.
