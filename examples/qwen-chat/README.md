@@ -1,17 +1,20 @@
 # Qwen CUDA chat in Delphi and Lazarus
 
-QwenChat loads a converted Qwen2.5-0.5B-Instruct bundle and generates a short answer on NVIDIA GPU 0. Open the Delphi or Lazarus project. The CUDA profile uses FP32, all 24 layers, batch 1, context 64 and prefill chunk 64. Six new tokens is the default. EOS stops generation early.
+QwenChat loads a converted Qwen2.5-Instruct bundle and generates a short answer on NVIDIA GPU 0. Open the Delphi or Lazarus project. Both CUDA profiles use FP32, batch 1, context 64 and prefill chunk 64. Six new tokens is the default. EOS stops generation early.
 
-The model revision is `7ae557604adf67be50417f59c2c2f167def9a775`. A bundle produced for another profile is rejected. CPU fallback is disabled.
+| Model | Source revision | Layers | FP32 parameters |
+| --- | --- | --- | --- |
+| Qwen2.5-0.5B-Instruct | `7ae557604adf67be50417f59c2c2f167def9a775` | 24 | 1.84 GiB |
+| Qwen2.5-1.5B-Instruct | `989aa7980e4cf806f80c7fef2b1adb7bc71aa306` | 28 | 5.75 GiB |
 
 ## Prepare the folders in File Explorer
 
 1. In your browser, download the matching CrossPascal release archive and choose **Extract All** in File Explorer. Keep the repository folders together. The folders named `crosspascal`, `crosspascal-tvm` and `crosspascal-opencv` must be siblings.
-2. Obtain the converted bundle using the converter described in the [main README](../../README.md). Select the named Qwen CUDA profile above. Extract the complete generated bundle to a writable working folder.
+2. Obtain the converted bundle using the converter described in the [main README](../../README.md). Select the matching Qwen CUDA profile. Extract the complete generated bundle to a writable working folder.
 3. Keep `model.json`, `manifest.json`, `params.json`, `params.index`, `params.bin`, `qwen2-cuda.dll` and the five `tokenizer-*` / `tokenizer.index` files in the same model directory. The files must come from one completed conversion.
 4. Locate `crosspascal-tvm/runtime/windows-x64-cuda`. Install the four pinned runtime DLLs there using the [Windows setup guide](../../docs/WINDOWS-EARLY-ACCESS.md). Leave the DLLs together with their licences and notices.
 
-The PC needs a compatible NVIDIA driver and the Microsoft Visual C++ x64 runtime. Use the converter to build the model bundle for the CUDA architecture of the running device. Free enough GPU memory for the model before running; the application checks current free memory and reports allocation failures. Model parameters occupy about 1.84 GiB, with additional memory required for the runtime, temporary tensors and KV cache.
+The PC needs a compatible NVIDIA driver and the Microsoft Visual C++ x64 runtime. Use the converter to build the model bundle for the CUDA architecture of the running device. Allow free GPU memory for the parameters in the table and additional space for the runtime, temporary tensors and KV cache. The application checks current free memory and reports allocation failures.
 
 ## Open and build in Delphi
 

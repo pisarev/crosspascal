@@ -54,6 +54,6 @@ Open the `.dproj` in Delphi and select Windows 64-bit. Open the corresponding `.
 | `crosspascal/examples/vision-models/VisionModels` | A CPU classifier's top five classes or a detector's boxes |
 | `crosspascal/examples/qwen-chat/QwenChat` | A short answer generated on the selected CUDA GPU |
 
-For the two model applications, open `CrossPascalConvert.exe` at the SDK root. Choose the profile and its pinned source in the converter, convert it, and select the generated bundle in the application. The CPU profiles cover SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd. The Qwen2.5-0.5B-Instruct route uses the CUDA architecture detected by the converter or explicitly entered for the destination machine.
+For the two model applications, open `CrossPascalConvert.exe` at the SDK root. Choose the profile and its pinned source in the converter, convert it, and select the generated bundle in the application. The CPU profiles cover SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd. Both Qwen2.5-Instruct profiles (0.5B and 1.5B) use the CUDA architecture detected by the converter or explicitly entered for the destination machine.
 
 Read the per-profile and component limitations in the release notes. Keep the original upstream notices with the corresponding dependencies and source assets.

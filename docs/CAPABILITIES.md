@@ -15,7 +15,7 @@ The early access SDK supports Delphi 13.2 and Lazarus 4.8 with FPC 3.2.2. Keep t
 
 ## Model profiles
 
-The Qwen profile uses Qwen2.5-0.5B-Instruct in FP32 with all 24 layers, batch size one, and a 64-token context and prefill chunk. The converter detects the local CUDA architecture and also accepts a manually selected destination architecture. The application checks its CUDA device against the model bundle. The manual target was checked in Preview. Generation was checked for a build using the detected target.
+The two Qwen2.5-Instruct profiles use FP32, batch size one, and a 64-token context and prefill chunk. The 0.5B and 1.5B models have 24 and 28 layers respectively. The converter detects the local CUDA architecture and also accepts a manually selected destination architecture. The application checks its CUDA device against the model bundle. The manual target was checked in Preview. Generation was checked for a build using the detected target.
 
 CPU profiles include SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd. The companion source archive provides the matching inputs, exact source identities, and notices. Classifiers return ranked scores. Detectors return boxes, class IDs, and scores. Application results are scoped to the pinned profiles and tested inputs.
 

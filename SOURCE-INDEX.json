@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-008",
+  "release_id": "early-access-009",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -22,13 +22,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 2691,
-      "sha256": "0f997144f4b6866dd3cdc2c78cbefb6964a10cb6a7e1acc0160babb760952e39"
+      "bytes": 2716,
+      "sha256": "f82fbcf589f19aa3c84f5fb8f57fa4228519b33125600b5d981379f56226d1f5"
     },
     {
       "path": "docs/CAPABILITIES.md",
-      "bytes": 2489,
-      "sha256": "779ff805137b910905b141c53f54f4a86bf7fcb78e2c059cc4f203994d3e5924"
+      "bytes": 2522,
+      "sha256": "c2fad8cc56aff4ea6d93334db22db4a131d64d10ede8132411c106f24bd99847"
     },
     {
       "path": "docs/KNOWN-LIMITATIONS.md",
@@ -52,8 +52,8 @@
     },
     {
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
-      "bytes": 4812,
-      "sha256": "d8fe5a519cab3510181124988a48c41e6490848cc8bbb946681cd74665ebcc3c"
+      "bytes": 4826,
+      "sha256": "697f52d897f788f15fa8a780429a50bdb558467ba82e3794b1c4f57c82f9940d"
     },
     {
       "path": "examples/marker-lite/MarkerLite.dpr",
@@ -102,8 +102,8 @@
     },
     {
       "path": "examples/qwen-chat/README.md",
-      "bytes": 5348,
-      "sha256": "228f1713d5f5bf5b4a9979c1948347587e81f90d4766294a5ba1047febc4b1d2"
+      "bytes": 5388,
+      "sha256": "565f863a29a987a5968a02ca2e5cdd36f7ce2d1cc651f42b0efb8612665d752a"
     },
     {
       "path": "examples/vision-models/README.md",

@@ -12,7 +12,7 @@ Try the Geometry and DisjointSet projects first if you want examples with no ext
 
 ## Run a model locally
 
-Open `CrossPascalConvert.exe` to start the converter. For language generation, choose Qwen2.5-0.5B-Instruct, download the pinned model, and select the detected CUDA architecture or enter the target architecture yourself. Build the bundle, then open QwenChat in your IDE and run a prompt. The [converter guide](https://github.com/pisarev/crosspascal-convert/blob/main/INSTALL.md) walks through both IDEs.
+Open `CrossPascalConvert.exe` to start the converter. For language generation, choose Qwen2.5-0.5B-Instruct or Qwen2.5-1.5B-Instruct, download the pinned model, and select the detected CUDA architecture or enter the target architecture yourself. Build the bundle, then open QwenChat in your IDE and run a prompt. The [converter guide](https://github.com/pisarev/crosspascal-convert/blob/main/INSTALL.md) walks through both IDEs.
 
 For CPU vision, use the matching model source archive and the VisionModels example. The profiles cover SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd.
 
