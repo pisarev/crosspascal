@@ -1,4 +1,10 @@
-{ Copyright (c) 2026 Yuriy Pisarev                   }
+{ ************************************************************************** }
+{                                                                            }
+{ CrossVision.DisjointSet                                                    }
+{                                                                            }
+{ Copyright © 2026 Yuriy Pisarev (ypisareff@outlook.com)                     }
+{                                                                            }
+{ ************************************************************************** }
 
 unit CrossVision.DisjointSet;
 

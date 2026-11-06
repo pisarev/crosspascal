@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CONFIG>
+  <Package Version="5">
+    <PathDelim Value="/" />
+    <Name Value="crosspascal_cvcore" />
+    <Type Value="RunTime" />
+    <Author Value="Yuriy Pisarev" />
+    <Description Value="CrossPascal geometry, algorithms, and adapters for OpenCV and Leptonica." />
+    <License Value="See the repository license and source notices." />
+    <Version Major="1" Minor="0" Release="0" />
+    <CompilerOptions>
+      <Version Value="11" />
+      <SearchPaths>
+        <OtherUnitFiles Value="../../rtl-algorithms/src;../../vision;../../../crosspascal-opencv/pascal;../../../crosspascal-leptonica/pascal" />
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)" />
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <SyntaxMode Value="Delphi" />
+        </SyntaxOptions>
+      </Parsing>
+    </CompilerOptions>
+    <Files Count="11">
+      <Item1>
+        <Filename Value="../../rtl-algorithms/src/CrossVision.Binarize.pas" />
+        <UnitName Value="CrossVision.Binarize" />
+      </Item1>
+      <Item2>
+        <Filename Value="../../rtl-algorithms/src/CrossVision.Contour.pas" />
+        <UnitName Value="CrossVision.Contour" />
+      </Item2>
+      <Item3>
+        <Filename Value="../../rtl-algorithms/src/CrossVision.Curve.pas" />
+        <UnitName Value="CrossVision.Curve" />
+      </Item3>
+      <Item4>
+        <Filename Value="../../rtl-algorithms/src/CrossVision.DisjointSet.pas" />
+        <UnitName Value="CrossVision.DisjointSet" />
+      </Item4>
+      <Item5>
+        <Filename Value="../../rtl-algorithms/src/CrossVision.Geometry.pas" />
+        <UnitName Value="CrossVision.Geometry" />
+      </Item5>
+      <Item6>
+        <Filename Value="../../rtl-algorithms/src/CrossVision.Geometry.Types.pas" />
+        <UnitName Value="CrossVision.Geometry.Types" />
+      </Item6>
+      <Item7>
+        <Filename Value="../../rtl-algorithms/src/CrossVision.Image.pas" />
+        <UnitName Value="CrossVision.Image" />
+      </Item7>
+      <Item8>
+        <Filename Value="../../rtl-algorithms/src/CrossVision.Morphology.pas" />
+        <UnitName Value="CrossVision.Morphology" />
+      </Item8>
+      <Item9>
+        <Filename Value="../../vision/CrossVision.Image.Leptonica.pas" />
+        <UnitName Value="CrossVision.Image.Leptonica" />
+      </Item9>
+      <Item10>
+        <Filename Value="../../vision/CrossVision.Image.OpenCV.pas" />
+        <UnitName Value="CrossVision.Image.OpenCV" />
+      </Item10>
+      <Item11>
+        <Filename Value="../../vision/CrossVision.MatPix.pas" />
+        <UnitName Value="CrossVision.MatPix" />
+      </Item11>
+    </Files>
+    <RequiredPkgs Count="1">
+      <Item1>
+        <PackageName Value="FCL" />
+      </Item1>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)" />
+    </UsageOptions>
+  </Package>
+</CONFIG>

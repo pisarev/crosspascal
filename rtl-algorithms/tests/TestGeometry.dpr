@@ -113,7 +113,7 @@ begin
   Check(not PointInPolygon(PointD(-1, 2), Square), 'PointInPolygon: outside (left)');
   CheckClose(PolygonArea(Square), 16, 'PolygonArea: square 4x4');
   Triangle := [PointD(0, 0), PointD(4, 0), PointD(0, 3)];
-  CheckClose(PolygonArea(Triangle), 6, 'PolygonArea: triangle (BUGFIX: оригинал давал 0)');
+  CheckClose(PolygonArea(Triangle), 6, 'PolygonArea: triangle (BUGFIX: the original returned 0)');
   C := PolygonCentroid(Square);
   CheckClose(C.X, 2, 'PolygonCentroid square X');
   CheckClose(C.Y, 2, 'PolygonCentroid square Y');
@@ -134,17 +134,17 @@ begin
   CheckClose(AngularDifference(0, 3 * Pi / 2), Pi / 2, 'AngularDifference shortest');
   CheckClose(CircularMean([0.0, Pi / 2]), Pi / 4, 'CircularMean of 0 and 90 deg');
   CheckClose(CircularMean([2 * Pi - 0.02, 2 * Pi - 0.01, 0.01, 0.02]), 0,
-    'CircularMean: заворот через ноль дает ноль, а не Pi');
+    'CircularMean: wrapping across zero gives zero, not Pi');
   CheckClose(CircularMean([Pi - 0.02, Pi - 0.01, Pi + 0.01, Pi + 0.02]), Pi,
-    'CircularMean: без заворота совпадает с обычным средним');
-  CheckClose(CircularMean([1.234]), 1.234, 'CircularMean: один угол - он сам');
+    'CircularMean: without wrapping, matches the arithmetic mean');
+  CheckClose(CircularMean([1.234]), 1.234, 'CircularMean: a single angle is unchanged');
   CheckClose(CircularMean([3.99, 4.0, 4.01]), 4.0,
-    'CircularMean: ответ приведен к [0, 2*Pi), а не отрицателен');
+    'CircularMean: result is normalized to [0, 2*Pi), not negative');
   Angle := CircularMean([0.0, Pi]);
   Check((Angle >= 0) and (Angle < 2 * Pi),
-    Format('CircularMean: у противоположных ответ в [0,2Pi) (got %.6f)', [Angle]));
+    Format('CircularMean: opposite angles give a result in [0,2Pi) (got %.6f)', [Angle]));
   CheckClose(CircularMean([]), 0,
-    'CircularMean: пустой вход дает ноль - см. оговорку у объявления');
+    'CircularMean: empty input gives zero; see the declaration caveat');
   P := PointAtAngleDistance(PointD(0, 0), 0, 5);
   CheckClose(P.X, 5, 'PointAtAngleDistance X');
   CheckClose(P.Y, 0, 'PointAtAngleDistance Y');
@@ -164,7 +164,7 @@ begin
   CheckClose(Rot[0].Y, 1, 'RotatePoints Y');
   BB := BoundingBox([PointD(1, 2), PointD(5, 0), PointD(3, 8)]);
   CheckClose(BB.Left, 1, 'BoundingBox Left');
-  CheckClose(BB.Top, 0, 'BoundingBox Top (BUGFIX: оригинал float T/B из .X)');
+  CheckClose(BB.Top, 0, 'BoundingBox Top (BUGFIX: the original float T/B used .X)');
   CheckClose(BB.Right, 5, 'BoundingBox Right');
   CheckClose(BB.Bottom, 8, 'BoundingBox Bottom');
   Check(NearestPoint(PointD(0, 0), [PointD(5, 5), PointD(1, 1), PointD(9, 9)], Idx) and (Idx = 1),
@@ -215,130 +215,136 @@ begin
   CheckClose(R2.Right - R2.Left, 10 * Sqrt(2), 'RotatedRectBounds skew=45 width (diagonal)');
   Square := [PointD(0, 0), PointD(4, 0), PointD(4, 4), PointD(0, 4)];
   Triangle := [PointD(10, 0), PointD(14, 0), PointD(12, 4)];
-  Check(PointInAnyPolygon(PointD(2, 2), [Square, Triangle]), 'PointInAnyPolygon: внутри первого');
-  Check(PointInAnyPolygon(PointD(12, 1), [Square, Triangle]), 'PointInAnyPolygon: внутри второго');
-  Check(not PointInAnyPolygon(PointD(7, 2), [Square, Triangle]), 'PointInAnyPolygon: между ними - снаружи');
-  Check(not PointInAnyPolygon(PointD(2, 2), []), 'PointInAnyPolygon: пустой список - False');
+  Check(PointInAnyPolygon(PointD(2, 2), [Square, Triangle]), 'PointInAnyPolygon: inside the first polygon');
+  Check(PointInAnyPolygon(PointD(12, 1), [Square, Triangle]), 'PointInAnyPolygon: inside the second polygon');
+  Check(not PointInAnyPolygon(PointD(7, 2), [Square, Triangle]),
+    'PointInAnyPolygon: between the polygons is outside');
+  Check(not PointInAnyPolygon(PointD(2, 2), []), 'PointInAnyPolygon: an empty list gives False');
   Cloud := [PointD(1, 1), PointD(2, 2), PointD(3, 3)];
-  Check(PointsOnSegment(Cloud, PointD(0, 0), PointD(4, 4)), 'PointsOnSegment: все на отрезке');
+  Check(PointsOnSegment(Cloud, PointD(0, 0), PointD(4, 4)), 'PointsOnSegment: all points lie on the segment');
   Cloud := [PointD(1, 1), PointD(2, 2.5), PointD(3, 3)];
-  Check(not PointsOnSegment(Cloud, PointD(0, 0), PointD(4, 4)), 'PointsOnSegment: одна в стороне - False');
+  Check(not PointsOnSegment(Cloud, PointD(0, 0), PointD(4, 4)),
+    'PointsOnSegment: one point off the segment gives False');
   Cloud := [PointD(1, 1), PointD(9, 9)];
-  Check(not PointsOnSegment(Cloud, PointD(0, 0), PointD(4, 4)), 'PointsOnSegment: за концом - False');
-  Check(PointsOnSegment([], PointD(0, 0), PointD(4, 4)), 'PointsOnSegment: пустой набор - True');
-  Check(PointsOnSegment([PointD(2, 2)], PointD(2, 2), PointD(2, 2)), 'PointsOnSegment: вырожденный, совпало');
+  Check(not PointsOnSegment(Cloud, PointD(0, 0), PointD(4, 4)),
+    'PointsOnSegment: a point beyond the endpoint gives False');
+  Check(PointsOnSegment([], PointD(0, 0), PointD(4, 4)), 'PointsOnSegment: an empty set gives True');
+  Check(PointsOnSegment([PointD(2, 2)], PointD(2, 2), PointD(2, 2)),
+    'PointsOnSegment: a degenerate segment with a matching point');
   Check(not PointsOnSegment([PointD(2, 3)], PointD(2, 2), PointD(2, 2)),
-    'PointsOnSegment: вырожденный, не совпало');
+    'PointsOnSegment: a degenerate segment with a different point');
   Poly := ClosePolygon([PointD(0, 0), PointD(4, 0), PointD(4, 4)]);
-  Check(Length(Poly) = 4, 'ClosePolygon: незамкнутый вырос на одну вершину');
-  CheckClose(Poly[3].X, 0, 'ClosePolygon: последняя вершина равна первой по X');
-  CheckClose(Poly[3].Y, 0, 'ClosePolygon: последняя вершина равна первой по Y');
+  Check(Length(Poly) = 4, 'ClosePolygon: an open polygon gains one vertex');
+  CheckClose(Poly[3].X, 0, 'ClosePolygon: the last vertex matches the first in X');
+  CheckClose(Poly[3].Y, 0, 'ClosePolygon: the last vertex matches the first in Y');
   Poly := ClosePolygon([PointD(0, 0), PointD(4, 0), PointD(4, 4), PointD(0, 0)]);
-  Check(Length(Poly) = 4, 'ClosePolygon: уже замкнутый не растет');
-  Check(Length(ClosePolygon([])) = 0, 'ClosePolygon: пустой вход - пустой выход');
+  Check(Length(Poly) = 4, 'ClosePolygon: an already closed polygon does not grow');
+  Check(Length(ClosePolygon([])) = 0, 'ClosePolygon: empty input gives empty output');
   Cloud := [PointD(0, 0), PointD(1, 5), PointD(2, 9)];
   Poly := ReversePolyline(Cloud);
-  Check(Length(Poly) = 3, 'ReversePolyline: длина сохранилась');
-  CheckClose(Poly[0].Y, 9, 'ReversePolyline: первой стала последняя');
-  CheckClose(Poly[2].Y, 0, 'ReversePolyline: последней стала первая');
-  CheckClose(Cloud[0].Y, 0, 'ReversePolyline: вход не изменился');
-  Check(Length(ReversePolyline([])) = 0, 'ReversePolyline: пустой вход - пустой выход');
-  Check(IsInfinite(SanitizeSlope(PointD(2, 0), PointD(2, 10))), 'SanitizeSlope: вертикаль - Infinity');
-  CheckClose(SanitizeSlope(PointD(0, 3), PointD(10, 3)), 0, 'SanitizeSlope: горизонталь - ноль');
-  CheckClose(SanitizeSlope(PointD(0, 0), PointD(2, 4)), 2, 'SanitizeSlope: обычный наклон');
+  Check(Length(Poly) = 3, 'ReversePolyline: length is preserved');
+  CheckClose(Poly[0].Y, 9, 'ReversePolyline: the last point becomes the first');
+  CheckClose(Poly[2].Y, 0, 'ReversePolyline: the first point becomes the last');
+  CheckClose(Cloud[0].Y, 0, 'ReversePolyline: input is unchanged');
+  Check(Length(ReversePolyline([])) = 0, 'ReversePolyline: empty input gives empty output');
+  Check(IsInfinite(SanitizeSlope(PointD(2, 0), PointD(2, 10))),
+    'SanitizeSlope: a vertical line gives Infinity');
+  CheckClose(SanitizeSlope(PointD(0, 3), PointD(10, 3)), 0, 'SanitizeSlope: a horizontal line gives zero');
+  CheckClose(SanitizeSlope(PointD(0, 0), PointD(2, 4)), 2, 'SanitizeSlope: an ordinary slope');
   Check(LineSlope(PointD(0, 0), PointD(10, 1e-12)) <> 0,
-    'SanitizeSlope: у LineSlope почти-горизонталь не ноль');
-  Check(SanitizeSlope(PointD(0, 0), PointD(10, 1e-12)) = 0, 'SanitizeSlope: почти-горизонталь - ровный ноль');
-  CheckClose(SlopeToAngle(0), 0, 'SlopeToAngle: ноль - ноль');
-  CheckClose(SlopeToAngle(1), Pi / 4, 'SlopeToAngle: единица - 45 град');
-  CheckClose(SlopeToAngle(Infinity), Pi / 2, 'SlopeToAngle: Infinity - 90 град');
-  CheckClose(AngleToSlope(0), 0, 'AngleToSlope: ноль - ноль');
-  CheckClose(AngleToSlope(Pi), 0, 'AngleToSlope: Pi - ровный ноль');
-  CheckClose(AngleToSlope(Pi / 4), 1, 'AngleToSlope: 45 град - единица');
-  Check(IsInfinite(AngleToSlope(Pi / 2)), 'AngleToSlope: 90 град - Infinity');
-  CheckClose(SlopeToAngle(AngleToSlope(Pi / 6)), Pi / 6, 'SlopeToAngle(AngleToSlope) сходится');
+    'SanitizeSlope: LineSlope of a nearly horizontal line is nonzero');
+  Check(SanitizeSlope(PointD(0, 0), PointD(10, 1e-12)) = 0,
+    'SanitizeSlope: a nearly horizontal line gives exactly zero');
+  CheckClose(SlopeToAngle(0), 0, 'SlopeToAngle: zero gives zero');
+  CheckClose(SlopeToAngle(1), Pi / 4, 'SlopeToAngle: one gives 45 degrees');
+  CheckClose(SlopeToAngle(Infinity), Pi / 2, 'SlopeToAngle: Infinity gives 90 degrees');
+  CheckClose(AngleToSlope(0), 0, 'AngleToSlope: zero gives zero');
+  CheckClose(AngleToSlope(Pi), 0, 'AngleToSlope: Pi gives exactly zero');
+  CheckClose(AngleToSlope(Pi / 4), 1, 'AngleToSlope: 45 degrees gives one');
+  Check(IsInfinite(AngleToSlope(Pi / 2)), 'AngleToSlope: 90 degrees gives Infinity');
+  CheckClose(SlopeToAngle(AngleToSlope(Pi / 6)), Pi / 6, 'SlopeToAngle(AngleToSlope) round trip');
   C := PointD(10, 10);
-  Check(QuadrantOf(C, PointD(15, 5)) = qkRightTop, 'QuadrantOf: правая верхняя');
-  Check(QuadrantOf(C, PointD(5, 5)) = qkLeftTop, 'QuadrantOf: левая верхняя');
-  Check(QuadrantOf(C, PointD(5, 15)) = qkLeftBottom, 'QuadrantOf: левая нижняя');
-  Check(QuadrantOf(C, PointD(15, 15)) = qkRightBottom, 'QuadrantOf: правая нижняя');
-  Check(QuadrantOf(C, PointD(10, 5)) = qkRightTop, 'QuadrantOf: на вертикальной оси - правая');
-  Check(QuadrantOf(C, PointD(15, 10)) = qkRightBottom, 'QuadrantOf: на горизонтальной оси - нижняя');
-  Check(QuadrantOf(C, C) = qkRightBottom, 'QuadrantOf: сам центр');
+  Check(QuadrantOf(C, PointD(15, 5)) = qkRightTop, 'QuadrantOf: upper right');
+  Check(QuadrantOf(C, PointD(5, 5)) = qkLeftTop, 'QuadrantOf: upper left');
+  Check(QuadrantOf(C, PointD(5, 15)) = qkLeftBottom, 'QuadrantOf: lower left');
+  Check(QuadrantOf(C, PointD(15, 15)) = qkRightBottom, 'QuadrantOf: lower right');
+  Check(QuadrantOf(C, PointD(10, 5)) = qkRightTop, 'QuadrantOf: on the vertical axis counts as right');
+  Check(QuadrantOf(C, PointD(15, 10)) = qkRightBottom, 'QuadrantOf: on the horizontal axis counts as lower');
+  Check(QuadrantOf(C, C) = qkRightBottom, 'QuadrantOf: the center itself');
   Half := ToPolar(C, PointD(20, 10));
-  CheckClose(Half.Distance, 10, 'ToPolar: расстояние вправо');
-  CheckClose(Half.Angle, 0, 'ToPolar: угол вправо - ноль');
+  CheckClose(Half.Distance, 10, 'ToPolar: distance to the right');
+  CheckClose(Half.Angle, 0, 'ToPolar: angle to the right is zero');
   Half := ToPolar(C, PointD(10, 20));
-  CheckClose(Half.Distance, 10, 'ToPolar: расстояние вниз');
-  CheckClose(Half.Angle, Pi / 2, 'ToPolar: угол вниз - 90 град (экранные оси)');
+  CheckClose(Half.Distance, 10, 'ToPolar: distance downwards');
+  CheckClose(Half.Angle, Pi / 2, 'ToPolar: angle downwards is 90 degrees (screen coordinates)');
   Half := ToPolar(C, PointD(0, 10));
-  CheckClose(Half.Angle, Pi, 'ToPolar: угол влево - Pi, а не минус Pi');
+  CheckClose(Half.Angle, Pi, 'ToPolar: angle to the left is Pi, not minus Pi');
   Half := ToPolar(C, C);
-  CheckClose(Half.Distance, 0, 'ToPolar: сам центр - нулевое расстояние');
+  CheckClose(Half.Distance, 0, 'ToPolar: the center has zero distance');
   P := PointD(13, 17);
   Half := ToPolar(C, P);
   P := PointAtAngleDistance(C, Half.Angle, Half.Distance);
-  CheckClose(P.X, 13, 'ToPolar туда и обратно: X');
-  CheckClose(P.Y, 17, 'ToPolar туда и обратно: Y');
+  CheckClose(P.X, 13, 'ToPolar round trip: X');
+  CheckClose(P.Y, 17, 'ToPolar round trip: Y');
   P := PointD(4, 2);
   Half := ToPolar(C, P);
   P := PointAtAngleDistance(C, Half.Angle, Half.Distance);
-  CheckClose(P.X, 4, 'ToPolar туда и обратно, другая четверть: X');
-  CheckClose(P.Y, 2, 'ToPolar туда и обратно, другая четверть: Y');
-  CheckClose(CounterClockwiseAngle(qkRightTop, 0.5), 0.5, 'CCW: правая верхняя - без добавки');
-  CheckClose(CounterClockwiseAngle(qkLeftTop, 0.5), Pi + 0.5, 'CCW: левая верхняя - плюс Pi');
-  CheckClose(CounterClockwiseAngle(qkLeftBottom, 0.5), Pi + 0.5, 'CCW: левая нижняя - плюс Pi');
+  CheckClose(P.X, 4, 'ToPolar round trip in another quadrant: X');
+  CheckClose(P.Y, 2, 'ToPolar round trip in another quadrant: Y');
+  CheckClose(CounterClockwiseAngle(qkRightTop, 0.5), 0.5, 'CCW: upper right requires no addition');
+  CheckClose(CounterClockwiseAngle(qkLeftTop, 0.5), Pi + 0.5, 'CCW: upper left adds Pi');
+  CheckClose(CounterClockwiseAngle(qkLeftBottom, 0.5), Pi + 0.5, 'CCW: lower left adds Pi');
   CheckClose(CounterClockwiseAngle(qkRightBottom, 0.5), 2 * Pi + 0.5,
-    'CCW: правая нижняя - плюс полный оборот');
+    'CCW: lower right adds a full turn');
   CheckClose(CounterClockwiseAngle(qkLeftTop, 1.0), CounterClockwiseAngle(qkLeftBottom, 1.0),
-    'CCW: обе левые четверти дают одну добавку');
+    'CCW: both left quadrants add the same value');
   Check(RayLineIntersection(PointD(0, 0), PointD(1, 0), PointD(5, -1), PointD(5, 1), P),
-    'RayLine: точка впереди луча');
-  CheckClose(P.X, 5, 'RayLine: X впереди');
+    'RayLine: intersection ahead of the ray');
+  CheckClose(P.X, 5, 'RayLine: X of the forward intersection');
   Check(not RayLineIntersection(PointD(0, 0), PointD(1, 0), PointD(-5, -1), PointD(-5, 1), P),
-    'RayLine: точка позади луча - False');
+    'RayLine: intersection behind the ray gives False');
   Check(LinesIntersectionPoint(PointD(0, 0), PointD(1, 0), PointD(-5, -1), PointD(-5, 1), P),
-    'RayLine: прямая ту же точку находит');
+    'RayLine: the infinite line finds that same intersection');
   Check(not RayLineIntersection(PointD(0, 0), PointD(1, 0), PointD(0, 3), PointD(4, 3), P),
-    'RayLine: параллельные - False');
+    'RayLine: parallel lines give False');
   Check(RayLineIntersection(PointD(0, 0), PointD(1, 0), PointD(0, -1), PointD(0, 1), P),
-    'RayLine: точка в начале луча - True');
+    'RayLine: intersection at the ray origin gives True');
   N := LineCircleIntersection(PointD(-10, 0), PointD(10, 0), PointD(0, 0), 5, Q1, Q2);
-  Check(N = 2, 'LineCircle: секущая через центр - две точки');
-  CheckClose(Abs(Q1.X), 5, 'LineCircle: секущая, модуль X первой');
-  CheckClose(Abs(Q2.X), 5, 'LineCircle: секущая, модуль X второй');
+  Check(N = 2, 'LineCircle: a secant through the center gives two points');
+  CheckClose(Abs(Q1.X), 5, 'LineCircle: absolute X of the first secant point');
+  CheckClose(Abs(Q2.X), 5, 'LineCircle: absolute X of the second secant point');
   N := LineCircleIntersection(PointD(-10, 5), PointD(10, 5), PointD(0, 0), 5, Q1, Q2);
-  Check(N = 1, 'LineCircle: касание - одна точка');
-  CheckClose(Q1.Y, 5, 'LineCircle: касание, Y');
-  CheckClose(Q1.X, Q2.X, 'LineCircle: касание, обе выдачи совпали');
+  Check(N = 1, 'LineCircle: tangency gives one point');
+  CheckClose(Q1.Y, 5, 'LineCircle: Y at tangency');
+  CheckClose(Q1.X, Q2.X, 'LineCircle: both outputs match at tangency');
   Check(LineCircleIntersection(PointD(-10, 9), PointD(10, 9), PointD(0, 0), 5, Q1, Q2) = 0,
-    'LineCircle: мимо - ноль');
+    'LineCircle: a miss gives zero');
   Check(LineCircleIntersection(PointD(3, 3), PointD(3, 3), PointD(0, 0), 5, Q1, Q2) = 0,
-    'LineCircle: вырожденный отрезок - ноль');
+    'LineCircle: a degenerate segment gives zero');
   Check(LineCircleIntersection(PointD(-10, 0), PointD(10, 0), PointD(0, 0), 0, Q1, Q2) = 1,
-    'LineCircle: нулевой радиус через центр - одна');
+    'LineCircle: zero radius through the center gives one');
   Check(LineCircleIntersection(PointD(-10, 0), PointD(10, 0), PointD(0, 0), -5, Q1, Q2) = 0,
-    'LineCircle: отрицательный радиус - ноль');
+    'LineCircle: a negative radius gives zero');
   Check(CircleCircleIntersection(PointD(0, 0), 5, PointD(8, 0), 5, Q1, Q2) = 2,
-    'CircleCircle: пересекаются - две');
-  Check(Distance(Q1, Q2) > 1e-6, 'CircleCircle: две точки различны');
+    'CircleCircle: intersecting circles give two points');
+  Check(Distance(Q1, Q2) > 1e-6, 'CircleCircle: the two points differ');
   Check(CircleCircleIntersection(PointD(0, 0), 5, PointD(10, 0), 5, Q1, Q2) = 1,
-    'CircleCircle: внешнее касание - одна');
-  CheckClose(Q1.X, 5, 'CircleCircle: внешнее касание, X');
+    'CircleCircle: external tangency gives one point');
+  CheckClose(Q1.X, 5, 'CircleCircle: X at external tangency');
   Check(CircleCircleIntersection(PointD(0, 0), 10, PointD(5, 0), 5, Q1, Q2) = 1,
-    'CircleCircle: внутреннее касание - одна');
+    'CircleCircle: internal tangency gives one point');
   Check(CircleCircleIntersection(PointD(0, 0), 5, PointD(20, 0), 5, Q1, Q2) = 0,
-    'CircleCircle: далеко - ноль');
+    'CircleCircle: distant circles give zero');
   Check(CircleCircleIntersection(PointD(0, 0), 10, PointD(1, 0), 2, Q1, Q2) = 0,
-    'CircleCircle: одна внутри другой - ноль');
+    'CircleCircle: one circle inside the other gives zero');
   Check(CircleCircleIntersection(PointD(0, 0), 5, PointD(0, 0), 5, Q1, Q2) = 0,
-    'CircleCircle: совпадающие - ноль, а не две наугад');
+    'CircleCircle: coincident circles give zero, not two arbitrary points');
   Check(CircleCircleIntersection(PointD(0, 0), 5, PointD(0, 0), 3, Q1, Q2) = 0,
-    'CircleCircle: концентрические разных радиусов - ноль');
+    'CircleCircle: concentric circles of different radii give zero');
   Check(CircleCircleIntersection(PointD(0, 0), 0, PointD(4, 0), 4, Q1, Q2) = 1,
-    'CircleCircle: нулевой радиус на второй окружности - одна');
+    'CircleCircle: zero radius on the second circle gives one point');
   Check(CircleCircleIntersection(PointD(0, 0), -5, PointD(8, 0), 5, Q1, Q2) = 0,
-    'CircleCircle: отрицательный радиус - ноль');
+    'CircleCircle: a negative radius gives zero');
   Idx := 0;
   Failures := 0;
   for I := 0 to 24 do
@@ -358,9 +364,9 @@ begin
         if Abs(Distance(C, Q2) - J) > 1e-6 then Inc(Failures);
       end;
     end;
-  Check(Idx > 100, Format('CircleCircle перебор: набралось случаев с точками (%d)', [Idx]));
+  Check(Idx > 100, Format('CircleCircle sweep: cases with intersection points (%d)', [Idx]));
   Check(Failures = 0,
-    Format('CircleCircle перебор: точки лежат на обеих окружностях (промахов %d)', [Failures]));
+    Format('CircleCircle sweep: points lie on both circles (misses %d)', [Failures]));
   Idx := 0;
   Failures := 0;
   for I := -12 to 12 do
@@ -374,37 +380,37 @@ begin
         if Abs(Q1.Y - I) > 1e-6 then Inc(Failures);
       end;
     end;
-  Check(Idx > 100, Format('LineCircle перебор: набралось случаев с точками (%d)', [Idx]));
+  Check(Idx > 100, Format('LineCircle sweep: cases with intersection points (%d)', [Idx]));
   Check(Failures = 0,
-    Format('LineCircle перебор: точки на окружности и на прямой (промахов %d)', [Failures]));
+    Format('LineCircle sweep: points lie on the circle and line (misses %d)', [Failures]));
   Cloud := [PointD(0, 0), PointD(10, 0), PointD(0, 10)];
   Poly := ShearPoints(Cloud, Pi / 4, 0);
-  CheckClose(Poly[0].X, 0, 'ShearPoints: начало на месте');
-  CheckClose(Poly[1].X, 10, 'ShearPoints: точка на оси X не сдвинута');
-  CheckClose(Poly[2].X, 10, 'ShearPoints: точка на оси Y сдвинута на tan*Y');
-  CheckClose(Poly[2].Y, 10, 'ShearPoints: Y не тронут при сдвиге только по X');
-  CheckClose(Cloud[2].X, 0, 'ShearPoints: вход не изменился');
+  CheckClose(Poly[0].X, 0, 'ShearPoints: the origin stays in place');
+  CheckClose(Poly[1].X, 10, 'ShearPoints: a point on the X axis does not move');
+  CheckClose(Poly[2].X, 10, 'ShearPoints: a point on the Y axis moves by tan*Y');
+  CheckClose(Poly[2].Y, 10, 'ShearPoints: Y is unchanged when shearing only along X');
+  CheckClose(Cloud[2].X, 0, 'ShearPoints: input is unchanged');
   Poly := ShearPoints(ShearPoints(Cloud, 0.3, 0), -0.3, 0);
-  CheckClose(Poly[2].X, 0, 'ShearPoints туда и обратно по одной оси: X');
-  CheckClose(Poly[2].Y, 10, 'ShearPoints туда и обратно по одной оси: Y');
+  CheckClose(Poly[2].X, 0, 'ShearPoints round trip along one axis: X');
+  CheckClose(Poly[2].Y, 10, 'ShearPoints round trip along one axis: Y');
   Poly := ShearPoints(ShearPoints(Cloud, 0.3, 0.3), -0.3, -0.3);
-  CheckClose(Poly[2].X, 0, 'ShearPoints: по двум осям X все же возвращается');
-  Check(Abs(Poly[2].Y - 10) > 1e-6, 'ShearPoints: по двум осям Y НЕ возвращается');
-  Check(Length(ShearPoints([], 0.3, 0)) = 0, 'ShearPoints: пустой вход - пустой выход');
+  CheckClose(Poly[2].X, 0, 'ShearPoints: with both axes, X still returns');
+  Check(Abs(Poly[2].Y - 10) > 1e-6, 'ShearPoints: with both axes, Y does NOT return');
+  Check(Length(ShearPoints([], 0.3, 0)) = 0, 'ShearPoints: empty input gives empty output');
   Cloud := [PointD(0, 0), PointD(10, 0), PointD(10, 10), PointD(0, 10)];
   Poly := ScalePointsAboutMeanPoint(Cloud, 2);
-  CheckClose(Poly[0].X, -5, 'ScalePoints: угол ушел вдвое дальше по X');
-  CheckClose(Poly[0].Y, -5, 'ScalePoints: угол ушел вдвое дальше по Y');
-  CheckClose(MeanPoint(Poly).X, 5, 'ScalePoints: средняя точка не сдвинулась по X');
-  CheckClose(MeanPoint(Poly).Y, 5, 'ScalePoints: средняя точка не сдвинулась по Y');
+  CheckClose(Poly[0].X, -5, 'ScalePoints: a corner moves twice as far in X');
+  CheckClose(Poly[0].Y, -5, 'ScalePoints: a corner moves twice as far in Y');
+  CheckClose(MeanPoint(Poly).X, 5, 'ScalePoints: the mean point does not move in X');
+  CheckClose(MeanPoint(Poly).Y, 5, 'ScalePoints: the mean point does not move in Y');
   Poly := ScalePointsAboutMeanPoint(ScalePointsAboutMeanPoint(Cloud, 3), 1 / 3);
-  CheckClose(Poly[2].X, 10, 'ScalePoints туда и обратно: X');
-  CheckClose(Poly[2].Y, 10, 'ScalePoints туда и обратно: Y');
+  CheckClose(Poly[2].X, 10, 'ScalePoints round trip: X');
+  CheckClose(Poly[2].Y, 10, 'ScalePoints round trip: Y');
   Poly := ScalePointsAboutMeanPoint(Cloud, 0);
-  CheckClose(Poly[0].X, 5, 'ScalePoints: нулевой множитель стягивает все в среднюю точку');
-  Check(Length(ScalePointsAboutMeanPoint([], 2)) = 0, 'ScalePoints: пустой вход - пустой выход');
+  CheckClose(Poly[0].X, 5, 'ScalePoints: a zero factor collapses all points to the mean');
+  Check(Length(ScalePointsAboutMeanPoint([], 2)) = 0, 'ScalePoints: empty input gives empty output');
   Poly := TurnPointsAboutMeanPoint(Cloud, Pi / 2);
-  CheckClose(MeanPoint(Poly).X, 5, 'TurnPoints: средняя точка не сдвинулась');
+  CheckClose(MeanPoint(Poly).X, 5, 'TurnPoints: the mean point does not move');
   Poly := TurnPointsAboutMeanPoint(
     TurnPointsAboutMeanPoint(
       TurnPointsAboutMeanPoint(
@@ -418,30 +424,31 @@ begin
     ),
     Pi / 2
   );
-  CheckClose(Poly[0].X, 0, 'TurnPoints: четыре четверти оборота возвращают исходное, X');
-  CheckClose(Poly[0].Y, 0, 'TurnPoints: четыре четверти оборота возвращают исходное, Y');
-  Check(Length(TurnPointsAboutMeanPoint([], 1)) = 0, 'TurnPoints: пустой вход - пустой выход');
+  CheckClose(Poly[0].X, 0, 'TurnPoints: four quarter turns restore the original X');
+  CheckClose(Poly[0].Y, 0, 'TurnPoints: four quarter turns restore the original Y');
+  Check(Length(TurnPointsAboutMeanPoint([], 1)) = 0, 'TurnPoints: empty input gives empty output');
   Poly := TurnPointsAboutMeanPoint(Cloud, 0.7);
   Hull := RotatePoints(Cloud, 0.7, MeanPoint(Cloud));
-  CheckClose(Poly[1].X, Hull[1].X, 'TurnPoints: совпал с RotatePoints при явном центре, X');
-  CheckClose(Poly[1].Y, Hull[1].Y, 'TurnPoints: совпал с RotatePoints при явном центре, Y');
+  CheckClose(Poly[1].X, Hull[1].X, 'TurnPoints: matches RotatePoints with an explicit center, X');
+  CheckClose(Poly[1].Y, Hull[1].Y, 'TurnPoints: matches RotatePoints with an explicit center, Y');
   Cloud := [PointD(0, 0), PointD(1, 0), PointD(2, 0), PointD(9, 0), PointD(0, 9)];
   Check(Abs(MeanPoint(Cloud).X - PolygonCentroid(Cloud).X) > 0.5,
-    'TurnPoints: набор выбран так, что средняя и центроид РАСХОДЯТСЯ');
+    'TurnPoints: the chosen set has DIFFERENT mean point and centroid');
   Poly := TurnPointsAboutMeanPoint(Cloud, Pi / 2);
   Hull := RotatePoints(Cloud, Pi / 2, MeanPoint(Cloud));
-  CheckClose(Poly[3].X, Hull[3].X, 'TurnPoints: опора именно средняя точка');
+  CheckClose(Poly[3].X, Hull[3].X, 'TurnPoints: the pivot is specifically the mean point');
   Base := Rect(10, 10, 20, 20);
-  Check(RectRelativeAlignment(Base, Rect(0, 0, 5, 5)) = akTL, 'Alignment: сверху слева');
-  Check(RectRelativeAlignment(Base, Rect(25, 0, 30, 5)) = akTR, 'Alignment: сверху справа');
-  Check(RectRelativeAlignment(Base, Rect(0, 25, 5, 30)) = akLB, 'Alignment: снизу слева');
-  Check(RectRelativeAlignment(Base, Rect(25, 25, 30, 30)) = akRB, 'Alignment: снизу справа');
-  Check(RectRelativeAlignment(Base, Rect(12, 0, 18, 5)) = akT, 'Alignment: сверху');
-  Check(RectRelativeAlignment(Base, Rect(12, 25, 18, 30)) = akB, 'Alignment: снизу');
-  Check(RectRelativeAlignment(Base, Rect(0, 12, 5, 18)) = akL, 'Alignment: слева');
-  Check(RectRelativeAlignment(Base, Rect(25, 12, 30, 18)) = akR, 'Alignment: справа');
-  Check(RectRelativeAlignment(Base, Rect(12, 12, 18, 18)) = akNone, 'Alignment: внутри - никак');
-  Check(RectRelativeAlignment(Base, Rect(0, 12, 10, 18)) = akL, 'Alignment: касание слева - уже слева');
+  Check(RectRelativeAlignment(Base, Rect(0, 0, 5, 5)) = akTL, 'Alignment: upper left');
+  Check(RectRelativeAlignment(Base, Rect(25, 0, 30, 5)) = akTR, 'Alignment: upper right');
+  Check(RectRelativeAlignment(Base, Rect(0, 25, 5, 30)) = akLB, 'Alignment: lower left');
+  Check(RectRelativeAlignment(Base, Rect(25, 25, 30, 30)) = akRB, 'Alignment: lower right');
+  Check(RectRelativeAlignment(Base, Rect(12, 0, 18, 5)) = akT, 'Alignment: above');
+  Check(RectRelativeAlignment(Base, Rect(12, 25, 18, 30)) = akB, 'Alignment: below');
+  Check(RectRelativeAlignment(Base, Rect(0, 12, 5, 18)) = akL, 'Alignment: left');
+  Check(RectRelativeAlignment(Base, Rect(25, 12, 30, 18)) = akR, 'Alignment: right');
+  Check(RectRelativeAlignment(Base, Rect(12, 12, 18, 18)) = akNone, 'Alignment: inside gives no alignment');
+  Check(RectRelativeAlignment(Base, Rect(0, 12, 10, 18)) = akL,
+    'Alignment: touching the left edge already counts as left');
   Mismatches := 0;
   Idx := 0;
   for I := 0 to 7 do
@@ -454,137 +461,140 @@ begin
           if RectRelativeAlignment(Base, SecondIdx) <> ReferenceCases(Base, SecondIdx) then
             Inc(Mismatches);
         end;
-  Check(Idx = 1024, Format('Alignment перебор: случаев состоялось (%d, ждали 1024)', [Idx]));
-  Check(Mismatches = 0, Format('Alignment: совпал с дословным оригиналом на всех парах (расхождений %d)', [Mismatches]));
+  Check(Idx = 1024, Format('Alignment sweep: cases completed (%d, expected 1024)', [Idx]));
+  Check(Mismatches = 0,
+    Format('Alignment: matches the literal original on all pairs (differences %d)', [Mismatches]));
   SecondIdx := Rect(25, 12, 5, 18);
   Check(RectRelativeAlignment(Base, SecondIdx) = akNone,
-    'Alignment: перевернутый вход нормализуется и накрывает основу');
+    'Alignment: inverted input is normalized and covers the base');
   Check(ReferenceCases(Base, SecondIdx) = akL,
-    'Alignment: а дословный оригинал на нем говорит слева - отличие названо');
+    'Alignment: the literal original says left for that input; documented difference');
   Base := Rect(0, 0, 10, 10);
-  Check(RectsWithinMargin(Base, Rect(5, 5, 15, 15), 0, 0), 'WithinMargin: перекрываются - True');
-  Check(not RectsWithinMargin(Base, Rect(20, 0, 30, 10), 0, 0), 'WithinMargin: далеко - False');
+  Check(RectsWithinMargin(Base, Rect(5, 5, 15, 15), 0, 0), 'WithinMargin: overlapping rectangles give True');
+  Check(not RectsWithinMargin(Base, Rect(20, 0, 30, 10), 0, 0),
+    'WithinMargin: distant rectangles give False');
   Check(RectsWithinMargin(Base, Rect(15, 0, 25, 10), 3, 0),
-    'WithinMargin: зазор 5 при допуске 3 - True, потому что раздуваются ОБА');
+    'WithinMargin: gap 5 with margin 3 gives True because BOTH expand');
   Check(not RectsWithinMargin(Base, Rect(15, 0, 25, 10), 2, 0),
-    'WithinMargin: зазор 5 при допуске 2 - False');
+    'WithinMargin: gap 5 with margin 2 gives False');
   Check(not RectsWithinMargin(Base, Rect(16, 0, 26, 10), 3, 0),
-    'WithinMargin: зазор ровно в два допуска - касание, False');
+    'WithinMargin: gap exactly twice the margin is contact and gives False');
   Check(RectsWithinMargin(Base, Rect(16, 0, 26, 10), 4, 0),
-    'WithinMargin: тот же зазор при допуске 4 - уже True');
+    'WithinMargin: the same gap with margin 4 gives True');
   Check(not RectsWithinMargin(Base, Rect(0, 20, 10, 30), 20, 0),
-    'WithinMargin: щедрый допуск по X не спасает расхождение по Y');
+    'WithinMargin: a generous X margin does not bridge the Y gap');
   Check(RectsWithinMargin(Base, Rect(0, 20, 10, 30), 0, 6),
-    'WithinMargin: тот же случай лечится допуском по Y');
+    'WithinMargin: a Y margin bridges that same gap');
   Check(not RectsWithinMargin(Rect(0, 20, 10, 30), Rect(0, 0, 10, 10), 20, 0),
-    'WithinMargin: сосед сверху, щедрый допуск по X не спасает');
+    'WithinMargin: a generous X margin does not reach the neighbor above');
   Check(RectsWithinMargin(Rect(0, 20, 10, 30), Rect(0, 0, 10, 10), 0, 6),
-    'WithinMargin: сосед сверху лечится допуском по Y');
+    'WithinMargin: a Y margin reaches the neighbor above');
   Check(RectsWithinMargin(Base, Rect(15, 15, 5, 5), 0, 0),
-    'WithinMargin: перевернутый вход нормализуется');
-  Check(LargestTileSizeForCount(10, 10, 4, N, Idx), 'TileSize: решение найдено');
-  Check((10 div N) * (10 div Idx) >= 4, 'TileSize: плиток не меньше запрошенного');
-  Check(N * Idx = 25, Format('TileSize: площадь наибольшая из возможных, 5x5 (got %dx%d)', [N, Idx]));
-  Check(LargestTileSizeForCount(7, 3, 1, N, Idx), 'TileSize: одна плитка найдена');
-  Check(N * Idx = 21, Format('TileSize: одна плитка занимает все (got %dx%d)', [N, Idx]));
-  Check(not LargestTileSizeForCount(4, 4, 100, N, Idx), 'TileSize: столько не влезет - False');
-  Check(N = 0, Format('TileSize: при отказе ширина обнулена (got %d)', [N]));
-  Check(not LargestTileSizeForCount(0, 10, 1, N, Idx), 'TileSize: нулевой источник - False');
-  Check(not LargestTileSizeForCount(10, 10, 0, N, Idx), 'TileSize: ноль плиток - False');
-  Check(LargestTileSizeForCount(10, 10, 3, N, Idx), 'TileSize: три плитки, решение есть');
-  Check(N * Idx = 30, Format('TileSize: остаток теряется по каждой оси, 30 (got %dx%d)', [N, Idx]));
-  Check(LargestTileSizeForCount(12, 2, 6, N, Idx), 'TileSize: узкая полоса, решение есть');
-  Check((12 div N) * (2 div Idx) >= 6, 'TileSize: узкая полоса, плиток хватает');
+    'WithinMargin: inverted input is normalized');
+  Check(LargestTileSizeForCount(10, 10, 4, N, Idx), 'TileSize: a solution is found');
+  Check((10 div N) * (10 div Idx) >= 4, 'TileSize: tile count is at least the requested count');
+  Check(N * Idx = 25, Format('TileSize: maximum possible area, 5x5 (got %dx%d)', [N, Idx]));
+  Check(LargestTileSizeForCount(7, 3, 1, N, Idx), 'TileSize: a single tile is found');
+  Check(N * Idx = 21, Format('TileSize: one tile occupies the entire source (got %dx%d)', [N, Idx]));
+  Check(not LargestTileSizeForCount(4, 4, 100, N, Idx), 'TileSize: too many tiles gives False');
+  Check(N = 0, Format('TileSize: failure resets the width to zero (got %d)', [N]));
+  Check(not LargestTileSizeForCount(0, 10, 1, N, Idx), 'TileSize: a zero source gives False');
+  Check(not LargestTileSizeForCount(10, 10, 0, N, Idx), 'TileSize: zero tiles gives False');
+  Check(LargestTileSizeForCount(10, 10, 3, N, Idx), 'TileSize: three tiles have a solution');
+  Check(N * Idx = 30, Format('TileSize: each axis loses its remainder, 30 (got %dx%d)', [N, Idx]));
+  Check(LargestTileSizeForCount(12, 2, 6, N, Idx), 'TileSize: a narrow strip has a solution');
+  Check((12 div N) * (2 div Idx) >= 6, 'TileSize: a narrow strip contains enough tiles');
   N := 0;
   Pt := NextDistinctPointOnRay(PointD(0, 0), 0, N, Point(0, 0));
-  Check((Pt.X = 1) and (Pt.Y = 0), 'NextOnRay: вправо - соседний пиксель');
-  Check(N = 1, Format('NextOnRay: расстояние выросло до 1 (got %d)', [N]));
+  Check((Pt.X = 1) and (Pt.Y = 0), 'NextOnRay: to the right gives the adjacent pixel');
+  Check(N = 1, Format('NextOnRay: distance increases to 1 (got %d)', [N]));
   N := 0;
   Pt := NextDistinctPointOnRay(PointD(0, 0), 0.05, N, Point(0, 0));
-  Check((Pt.X <> 0) or (Pt.Y <> 0), 'NextOnRay: пологий луч все же сдвинулся');
-  Check(N >= 1, 'NextOnRay: расстояние выросло');
+  Check((Pt.X <> 0) or (Pt.Y <> 0), 'NextOnRay: a shallow ray still advances');
+  Check(N >= 1, 'NextOnRay: distance increases');
   N := 0;
   Pt := NextDistinctPointOnRay(PointD(0, 0), 0, N, Point(1, 0));
-  Check((Pt.X = 2) and (Pt.Y = 0), 'NextOnRay: совпавший шаг пропущен');
-  Check(N = 2, Format('NextOnRay: расстояние перескочило через совпадение (got %d)', [N]));
+  Check((Pt.X = 2) and (Pt.Y = 0), 'NextOnRay: a step matching the previous point is skipped');
+  Check(N = 2, Format('NextOnRay: distance skips past the matching step (got %d)', [N]));
   Second := NextDistinctPointOnRay(PointD(0, 0), 0.05, N, Pt);
-  Check((Second.X <> Pt.X) or (Second.Y <> Pt.Y), 'NextOnRay: следующая отлична от предыдущей');
+  Check((Second.X <> Pt.X) or (Second.Y <> Pt.Y), 'NextOnRay: the next point differs from the previous one');
   N := 7;
   Pt := NextDistinctPointOnRay(PointD(0, 0), 0 / 0.0, N, Point(3, 3));
-  Check((Pt.X = 3) and (Pt.Y = 3), 'NextOnRay: NaN - точка прежняя');
-  Check(N = 7, Format('NextOnRay: NaN - расстояние не тронуто (got %d)', [N]));
+  Check((Pt.X = 3) and (Pt.Y = 3), 'NextOnRay: NaN leaves the point unchanged');
+  Check(N = 7, Format('NextOnRay: NaN leaves distance unchanged (got %d)', [N]));
   Square := [PointD(0, 0), PointD(10, 0), PointD(10, 10), PointD(0, 10), PointD(0, 0)];
   Pieces := ClipSegmentByPolygon(PointD(-5, 5), PointD(15, 5), Square, csInside);
-  Check(Length(Pieces) = 1, Format('ClipSegment: внутри один кусок (got %d)', [Length(Pieces)]));
+  Check(Length(Pieces) = 1, Format('ClipSegment: one inner piece (got %d)', [Length(Pieces)]));
   if Length(Pieces) = 1 then
   begin
-    CheckClose(Pieces[0][0].X, 0, 'ClipSegment: внутренний кусок начинается на границе');
-    CheckClose(Pieces[0][1].X, 10, 'ClipSegment: и кончается на другой границе');
+    CheckClose(Pieces[0][0].X, 0, 'ClipSegment: the inner piece starts at the boundary');
+    CheckClose(Pieces[0][1].X, 10, 'ClipSegment: and ends at the opposite boundary');
   end;
   Pieces := ClipSegmentByPolygon(PointD(-5, 5), PointD(15, 5), Square, csOutside);
-  Check(Length(Pieces) = 2, Format('ClipSegment: снаружи два куска (got %d)', [Length(Pieces)]));
+  Check(Length(Pieces) = 2, Format('ClipSegment: two outer pieces (got %d)', [Length(Pieces)]));
   Pieces := ClipSegmentByPolygon(PointD(2, 5), PointD(8, 5), Square, csInside);
-  Check(Length(Pieces) = 1, 'ClipSegment: целиком внутри - один кусок');
-  if Length(Pieces) = 1 then CheckClose(Pieces[0][0].X, 2, 'ClipSegment: кусок от самого начала');
+  Check(Length(Pieces) = 1, 'ClipSegment: a segment entirely inside gives one piece');
+  if Length(Pieces) = 1 then
+    CheckClose(Pieces[0][0].X, 2, 'ClipSegment: the piece starts at the segment origin');
   Pieces := ClipSegmentByPolygon(PointD(20, 5), PointD(30, 5), Square, csInside);
-  Check(Length(Pieces) = 0, 'ClipSegment: целиком снаружи - внутренних нет');
+  Check(Length(Pieces) = 0, 'ClipSegment: a segment entirely outside gives no inner pieces');
   Pieces := ClipSegmentByPolygon(PointD(20, 5), PointD(30, 5), Square, csOutside);
-  Check(Length(Pieces) = 1, 'ClipSegment: целиком снаружи - один внешний');
+  Check(Length(Pieces) = 1, 'ClipSegment: a segment entirely outside gives one outer piece');
   Check(Length(ClipSegmentByPolygon(PointD(0, 0), PointD(9, 9), [PointD(1, 1)], csInside)) = 0,
-    'ClipSegment: одна вершина - пусто');
+    'ClipSegment: one vertex gives empty output');
   Poly := [PointD(0, 0), PointD(10, 0), PointD(10, 10), PointD(0, 10)];
   Pieces := ClipSegmentByPolygon(PointD(-5, 5), PointD(5, 5), Poly, csInside);
-  Check(Length(Pieces) = 1, 'ClipSegment: незамкнутый вход, кусок все равно один');
+  Check(Length(Pieces) = 1, 'ClipSegment: open input still gives one piece');
   CheckClose(Pieces[0][0].X, -5,
-    'ClipSegment: без замыкающего ребра левая граница НЕ найдена - кусок с самого начала');
+    'ClipSegment: without the closing edge the left boundary is NOT found; starts at origin');
   Pieces := ClipSegmentByPolygon(PointD(-5, 5), PointD(5, 5), ClosePolygon(Poly), csInside);
-  CheckClose(Pieces[0][0].X, 0, 'ClipSegment: после ClosePolygon левая граница найдена');
+  CheckClose(Pieces[0][0].X, 0, 'ClipSegment: ClosePolygon makes the left boundary detectable');
   Rays := BuildRadialScanLines(PointD(50, 50), 101, 101, 0, 2 * Pi, Pi / 180);
-  Check(Length(Rays) = 360, Format('RadialScan: полный круг - 360 лучей (got %d)', [Length(Rays)]));
-  Check((Length(Rays) > 0) and (Length(Rays[0]) = 2), 'RadialScan: луч - ровно две точки');
+  Check(Length(Rays) = 360, Format('RadialScan: a full circle gives 360 rays (got %d)', [Length(Rays)]));
+  Check((Length(Rays) > 0) and (Length(Rays[0]) = 2), 'RadialScan: a ray has exactly two points');
   if Length(Rays) > 0 then
   begin
-    CheckClose(Rays[0][0].X, 50, 'RadialScan: луч начинается в центре по X');
-    CheckClose(Rays[0][0].Y, 50, 'RadialScan: луч начинается в центре по Y');
+    CheckClose(Rays[0][0].X, 50, 'RadialScan: the ray starts at the center in X');
+    CheckClose(Rays[0][0].Y, 50, 'RadialScan: the ray starts at the center in Y');
   end;
   Rays := BuildRadialScanLines(PointD(50, 50), 101, 101, 0, Pi / 4, Pi / 2);
-  Check(Length(Rays) = 1, 'RadialScan: один шаг - один луч');
+  Check(Length(Rays) = 1, 'RadialScan: one step gives one ray');
   C := RayEnd(0, 101, 101);
-  CheckClose(C.X, 100, 'RadialScan: угол 0 упирается в правый край');
-  CheckClose(C.Y, 50, 'RadialScan: угол 0 идет по горизонтали');
+  CheckClose(C.X, 100, 'RadialScan: angle 0 reaches the right edge');
+  CheckClose(C.Y, 50, 'RadialScan: angle 0 runs horizontally');
   C := RayEnd(Pi / 2, 101, 101);
-  CheckClose(C.Y, 0, 'RadialScan: четверть круга упирается в ВЕРХНИЙ край');
-  CheckClose(C.X, 50, 'RadialScan: четверть круга идет по вертикали');
+  CheckClose(C.Y, 0, 'RadialScan: a quarter turn reaches the TOP edge');
+  CheckClose(C.X, 50, 'RadialScan: a quarter turn runs vertically');
   C := RayEnd(Pi, 101, 101);
-  CheckClose(C.X, 0, 'RadialScan: полкруга упирается в левый край');
+  CheckClose(C.X, 0, 'RadialScan: a half turn reaches the left edge');
   C := RayEnd(3 * Pi / 2, 101, 101);
-  CheckClose(C.Y, 100, 'RadialScan: три четверти упираются в НИЖНИЙ край');
+  CheckClose(C.Y, 100, 'RadialScan: three quarter turns reach the BOTTOM edge');
   C := RayEnd(7 * Pi / 4, 101, 101);
-  CheckClose(C.X, 100, 'RadialScan: диагональ - правый нижний угол по X');
-  CheckClose(C.Y, 100, 'RadialScan: диагональ - правый нижний угол по Y');
+  CheckClose(C.X, 100, 'RadialScan: a diagonal reaches the lower right corner in X');
+  CheckClose(C.Y, 100, 'RadialScan: a diagonal reaches the lower right corner in Y');
   C := RayEnd(0, 21, 11);
-  CheckClose(C.X, 20, 'RadialScan: широкий - правый край на 20, а не на 10');
+  CheckClose(C.X, 20, 'RadialScan: a wide image has its right edge at 20, not 10');
   Check(Length(BuildRadialScanLines(PointD(50, 50), 101, 101, 0, 0, Pi / 2)) = 0,
-    'RadialScan: пустой промежуток - лучей нет');
+    'RadialScan: an empty interval gives no rays');
   Check(Length(BuildRadialScanLines(PointD(50, 50), 101, 101, 0, Pi / 2, Pi / 2)) = 1,
-    'RadialScan: верхняя граница исключающая - один луч, не два');
+    'RadialScan: the upper bound is exclusive; one ray, not two');
   Check(Length(BuildRadialScanLines(PointD(500, 500), 101, 101, 0, 2 * Pi, Pi / 180)) = 0,
-    'RadialScan: центр снаружи - ни одного луча');
+    'RadialScan: a center outside the image gives no rays');
   Check(Length(BuildRadialScanLines(PointD(50, 50), 0, 101, 0, 2 * Pi, Pi / 180)) = 0,
-    'RadialScan: нулевая ширина - пусто');
+    'RadialScan: zero width gives empty output');
   Check(Length(BuildRadialScanLines(PointD(50, 50), 101, 101, 0, 2 * Pi, 0)) = 0,
-    'RadialScan: нулевой шаг - пусто, а не вечный цикл');
+    'RadialScan: zero step gives empty output, not an infinite loop');
   Check(Length(BuildRadialScanLines(PointD(50, 50), 101, 101, 0, 2 * Pi, -1)) = 0,
-    'RadialScan: шаг назад - пусто');
+    'RadialScan: a negative step gives empty output');
   Check(Length(BuildRadialScanLines(PointD(50, 50), 101, 101, 0 / 0.0, 2 * Pi, Pi / 180)) = 0,
-    'RadialScan: NaN в углу - пусто');
+    'RadialScan: a NaN angle gives empty output');
   Rays := BuildRadialScanLines(PointD(50, 50), 101, 101, 0, 2 * Pi, Pi / 180);
   Failures := 0;
   for I := 0 to High(Rays) do
     if not ((Abs(Rays[I][1].X) < 1e-6) or (Abs(Rays[I][1].X - 100) < 1e-6) or
       (Abs(Rays[I][1].Y) < 1e-6) or (Abs(Rays[I][1].Y - 100) < 1e-6)) then
         Inc(Failures);
-  Check(Failures = 0, Format('RadialScan: все концы на краю (мимо %d)', [Failures]));
+  Check(Failures = 0, Format('RadialScan: all endpoints lie on an edge (misses %d)', [Failures]));
   Mismatches := 0;
   for I := 0 to High(Rays) do
   begin
@@ -592,7 +602,7 @@ begin
     if Abs(AngularDifference(ArcTan2(-C.Y, C.X), I * Pi / 180)) > 1e-6 then
       Inc(Mismatches);
   end;
-  Check(Mismatches = 0, Format('RadialScan: направление совпадает с углом (мимо %d)', [Mismatches]));
+  Check(Mismatches = 0, Format('RadialScan: direction matches the angle (misses %d)', [Mismatches]));
   Ribbon := BuildRibbonPolygon(
     [
       PointD(
@@ -623,18 +633,18 @@ begin
       )
     ]
   );
-  Check(Length(Ribbon) = 7, Format('Ribbon: три и три дают семь вершин (got %d)', [Length(Ribbon)]));
-  CheckClose(Ribbon[0].X, 0, 'Ribbon: начало - первая точка левого края');
-  CheckClose(Ribbon[2].X, 10, 'Ribbon: левый край пройден ВПЕРЕД');
-  CheckClose(Ribbon[3].X, 10, 'Ribbon: правый край начат с КОНЦА');
-  CheckClose(Ribbon[3].Y, 4, 'Ribbon: и это точно правый край, а не левый');
-  CheckClose(Ribbon[5].X, 0, 'Ribbon: правый край пройден НАЗАД');
-  CheckClose(Ribbon[6].X, Ribbon[0].X, 'Ribbon: контур замкнут по X');
-  CheckClose(Ribbon[6].Y, Ribbon[0].Y, 'Ribbon: контур замкнут по Y');
-  CheckClose(PolygonArea(Ribbon), 40, 'Ribbon: площадь - как у прямоугольника, а не восьмерка');
+  Check(Length(Ribbon) = 7, Format('Ribbon: three and three give seven vertices (got %d)', [Length(Ribbon)]));
+  CheckClose(Ribbon[0].X, 0, 'Ribbon: starts at the first point of the left edge');
+  CheckClose(Ribbon[2].X, 10, 'Ribbon: the left edge is traversed FORWARDS');
+  CheckClose(Ribbon[3].X, 10, 'Ribbon: the right edge starts at its END');
+  CheckClose(Ribbon[3].Y, 4, 'Ribbon: this is the right edge, not the left');
+  CheckClose(Ribbon[5].X, 0, 'Ribbon: the right edge is traversed BACKWARDS');
+  CheckClose(Ribbon[6].X, Ribbon[0].X, 'Ribbon: the contour is closed in X');
+  CheckClose(Ribbon[6].Y, Ribbon[0].Y, 'Ribbon: the contour is closed in Y');
+  CheckClose(PolygonArea(Ribbon), 40, 'Ribbon: area matches a rectangle, not a figure eight');
   Ribbon := BuildRibbonPolygon([PointD(0, 0), PointD(10, 0)], [PointD(0, 4), PointD(10, 4)]);
-  Check(Length(Ribbon) = 5, Format('Ribbon: два и два дают пять вершин (got %d)', [Length(Ribbon)]));
-  CheckClose(PolygonArea(Ribbon), 40, 'Ribbon: у наименьшей ленты площадь та же');
+  Check(Length(Ribbon) = 5, Format('Ribbon: two and two give five vertices (got %d)', [Length(Ribbon)]));
+  CheckClose(PolygonArea(Ribbon), 40, 'Ribbon: the smallest ribbon has the same area');
   Ribbon := BuildRibbonPolygon(
     [
       PointD(
@@ -665,36 +675,40 @@ begin
       )
     ]
   );
-  Check(Length(Ribbon) = 7, Format('Ribbon: четыре и два дают семь (got %d)', [Length(Ribbon)]));
-  CheckClose(Ribbon[4].Y, 4, 'Ribbon: четыре и два - правый край начат с конца');
-  CheckClose(PolygonArea(Ribbon), 40, 'Ribbon: четыре и два - площадь та же');
+  Check(Length(Ribbon) = 7, Format('Ribbon: four and two give seven vertices (got %d)', [Length(Ribbon)]));
+  CheckClose(Ribbon[4].Y, 4, 'Ribbon: four and two start the right edge at its end');
+  CheckClose(PolygonArea(Ribbon), 40, 'Ribbon: four and two have the same area');
   Ribbon := BuildRibbonPolygon([PointD(0, 0), PointD(10, 0)], [PointD(0, 0), PointD(10, 4)]);
-  Check(Length(Ribbon) = 4, Format('Ribbon: замкнутый вход не удваивает вершину (got %d)', [Length(Ribbon)]));
+  Check(Length(Ribbon) = 4,
+    Format('Ribbon: closed input does not duplicate the vertex (got %d)', [Length(Ribbon)]));
   if Length(Ribbon) = 4 then
   begin
-    CheckClose(Ribbon[3].X, Ribbon[0].X, 'Ribbon: замкнутый вход - контур все же замкнут по X');
-    CheckClose(Ribbon[3].Y, Ribbon[0].Y, 'Ribbon: замкнутый вход - и по Y');
+    CheckClose(Ribbon[3].X, Ribbon[0].X, 'Ribbon: closed input still gives a contour closed in X');
+    CheckClose(Ribbon[3].Y, Ribbon[0].Y, 'Ribbon: and also in Y');
   end;
   Check(Length(BuildRibbonPolygon([PointD(0, 0)], [PointD(0, 4), PointD(10, 4)])) = 0,
-    'Ribbon: одна точка слева - пусто');
+    'Ribbon: one point on the left gives empty output');
   Check(Length(BuildRibbonPolygon([PointD(0, 0), PointD(10, 0)], [])) = 0,
-    'Ribbon: пустой правый край - пусто');
+    'Ribbon: an empty right edge gives empty output');
   Check(FitSizePreserveAspect(100, 50, 10, 10, fkContain, N, K),
-    'Fit: широкий внутрь квадрата - сработал');
-  Check((N = 10) and (K = 5), Format('Fit: широкий внутрь дает 10 на 5 (got %d на %d)', [N, K]));
-  Check(FitSizePreserveAspect(100, 50, 10, 10, fkCover, N, K),
-    'Fit: широкий поверх квадрата - сработал');
-  Check((N = 20) and (K = 10), Format('Fit: широкий поверх дает 20 на 10 (got %d на %d)', [N, K]));
+    'Fit: a wide image fits inside a square');
+  Check((N = 10) and (K = 5), Format('Fit: containing a wide image gives 10 by 5 (got %d by %d)', [N, K]));
+  Check(FitSizePreserveAspect(100, 50, 10, 10, fkCover, N, K), 'Fit: a wide image covers a square');
+  Check((N = 20) and (K = 10),
+    Format('Fit: covering with a wide image gives 20 by 10 (got %d by %d)', [N, K]));
   FitSizePreserveAspect(50, 100, 10, 10, fkContain, N, K);
-  Check((N = 5) and (K = 10), Format('Fit: высокий внутрь дает 5 на 10 (got %d на %d)', [N, K]));
+  Check((N = 5) and (K = 10), Format('Fit: containing a tall image gives 5 by 10 (got %d by %d)', [N, K]));
   FitSizePreserveAspect(50, 100, 10, 10, fkCover, N, K);
-  Check((N = 10) and (K = 20), Format('Fit: высокий поверх дает 10 на 20 (got %d на %d)', [N, K]));
+  Check((N = 10) and (K = 20),
+    Format('Fit: covering with a tall image gives 10 by 20 (got %d by %d)', [N, K]));
   FitSizePreserveAspect(100, 50, 20, 10, fkContain, N, K);
-  Check((N = 20) and (K = 10), Format('Fit: то же соотношение внутрь - вся коробка (got %d на %d)', [N, K]));
+  Check((N = 20) and (K = 10),
+    Format('Fit: matching ratios fill the box when contained (got %d by %d)', [N, K]));
   FitSizePreserveAspect(100, 50, 20, 10, fkCover, N, K);
-  Check((N = 20) and (K = 10), Format('Fit: то же соотношение поверх - вся коробка (got %d на %d)', [N, K]));
+  Check((N = 20) and (K = 10),
+    Format('Fit: matching ratios fill the box when covering (got %d by %d)', [N, K]));
   FitSizePreserveAspect(100, 50, 30, 30, fkContain, N, K);
-  Check((N = 30) and (K = 15), Format('Fit: 100x50 внутрь 30x30 (got %d на %d)', [N, K]));
+  Check((N = 30) and (K = 15), Format('Fit: 100x50 inside 30x30 (got %d by %d)', [N, K]));
   Failures := 0;
   Mismatches := 0;
   for I := 1 to 40 do
@@ -705,80 +719,78 @@ begin
       if FitSizePreserveAspect(I, J, 17, 11, fkCover, N, K) then
         if (N < 17) or (K < 11) then Inc(Mismatches);
     end;
-  Check(Failures = 0, Format('Fit: вписанное не вылезает из коробки (мимо %d)', [Failures]));
-  Check(Mismatches = 0, Format('Fit: накрывающее не меньше коробки (мимо %d)', [Mismatches]));
+  Check(Failures = 0, Format('Fit: the contained size stays inside the box (misses %d)', [Failures]));
+  Check(Mismatches = 0, Format('Fit: the covering size is at least the box size (misses %d)', [Mismatches]));
   Check(not FitSizePreserveAspect(100, 0, 10, 10, fkContain, N, K),
-    'Fit: нулевая высота источника - отказ, а не деление на ноль');
-  Check((N = 0) and (K = 0), 'Fit: при отказе размер обнулен, а не оставлен прежним');
-  Check(not FitSizePreserveAspect(0, 50, 10, 10, fkContain, N, K),
-    'Fit: нулевая ширина источника - отказ');
+    'Fit: zero source height fails without division by zero');
+  Check((N = 0) and (K = 0), 'Fit: failure resets the size instead of retaining the previous value');
+  Check(not FitSizePreserveAspect(0, 50, 10, 10, fkContain, N, K), 'Fit: zero source width fails');
   Check(not FitSizePreserveAspect(-100, -50, 10, 10, fkContain, N, K),
-    'Fit: обе стороны источника отрицательны - отказ, а не 20 на 10');
+    'Fit: two negative source dimensions fail instead of giving 20 by 10');
   Check(not FitSizePreserveAspect(0, 0, 10, 10, fkContain, N, K),
-    'Fit: источник ноль на ноль - отказ');
-  Check(not FitSizePreserveAspect(100, 50, 0, 10, fkContain, N, K), 'Fit: нулевая коробка - отказ');
-  Check(not FitSizePreserveAspect(100, 50, -3, 10, fkContain, N, K), 'Fit: коробка назад - отказ');
+    'Fit: a zero by zero source fails');
+  Check(not FitSizePreserveAspect(100, 50, 0, 10, fkContain, N, K), 'Fit: a zero box fails');
+  Check(not FitSizePreserveAspect(100, 50, -3, 10, fkContain, N, K), 'Fit: an inverted box fails');
   Check(not FitSizePreserveAspect(1000, 1, 5, 5, fkContain, N, K),
-    'Fit: схлопнулось в ноль - отказ, а не размер с нулем');
+    'Fit: rounding down to zero fails instead of returning a zero dimension');
   Check(SegmentsMeetByEnds(PointD(0, 0), PointD(10, 0), PointD(0, 1), PointD(9, 9), 2),
-    'MeetByEnds: начало с началом');
+    'MeetByEnds: start meets start');
   Check(SegmentsMeetByEnds(PointD(0, 0), PointD(10, 0), PointD(9, 9), PointD(0, 1), 2),
-    'MeetByEnds: начало с концом');
+    'MeetByEnds: start meets end');
   Check(SegmentsMeetByEnds(PointD(10, 0), PointD(0, 0), PointD(0, 1), PointD(9, 9), 2),
-    'MeetByEnds: конец с началом');
+    'MeetByEnds: end meets start');
   Check(SegmentsMeetByEnds(PointD(10, 0), PointD(0, 0), PointD(9, 9), PointD(0, 1), 2),
-    'MeetByEnds: конец с концом');
+    'MeetByEnds: end meets end');
   Check(SegmentsMeetByEnds(PointD(0, 0), PointD(10, 0), PointD(0, 2), PointD(50, 50), 2),
-    'MeetByEnds: одна пара ровно на пороге - сходятся');
+    'MeetByEnds: one pair exactly at the threshold meets');
   Check(not SegmentsMeetByEnds(PointD(0, 0), PointD(10, 0), PointD(0, 20), PointD(10, 20), 2),
-    'MeetByEnds: далеко - не сходятся');
+    'MeetByEnds: distant endpoints do not meet');
   Check(SegmentsMeetByEnds(PointD(0, 0), PointD(10, 0), PointD(0, 2), PointD(10, 2), 2),
-    'MeetByEnds: ровно на пороге - сходятся');
+    'MeetByEnds: endpoints exactly at the threshold meet');
   Segments := [[PointD(0, 10), PointD(20, 10)],
               [PointD(0, 10), PointD(0, 0)],
               [PointD(0, 0), PointD(20, 0)]];
   Orientations := [soHorizontal, soVertical, soHorizontal];
   Triples := FindBracketTriples(Segments, Orientations, 2);
-  Check(Length(Triples) = 1, Format('Bracket: скобка П найдена один раз (got %d)', [Length(Triples)]));
+  Check(Length(Triples) = 1, Format('Bracket: one U-shaped bracket is found (got %d)', [Length(Triples)]));
   if Length(Triples) = 1 then
   begin
-    Check(Triples[0].A = 0, 'Bracket: первым идет крайний');
-    Check(Triples[0].B = 1, 'Bracket: вторым поперечный');
-    Check(Triples[0].C = 2, 'Bracket: третьим второй крайний');
+    Check(Triples[0].A = 0, 'Bracket: the first side comes first');
+    Check(Triples[0].B = 1, 'Bracket: the transverse side comes second');
+    Check(Triples[0].C = 2, 'Bracket: the other outer side comes third');
   end;
   Segments := [[PointD(0, 10), PointD(20, 10)],
               [PointD(0, 0), PointD(0, 10)],
               [PointD(0, 0), PointD(20, 0)]];
   Triples := FindBracketTriples(Segments, Orientations, 2);
-  Check(Length(Triples) = 1,
-    Format('Bracket: развернутый поперечный - тройка одна (got %d)', [Length(Triples)]));
+  Check(Length(Triples) = 1, Format('Bracket: a reversed transverse side still gives one triple (got %d)', [Length(Triples)]));
   if Length(Triples) = 1 then
   begin
     Check((Triples[0].A = 2) and (Triples[0].B = 1) and (Triples[0].C = 0),
-      Format('Bracket: та же тройка, названная с другого конца (%d,%d,%d)',
+      Format('Bracket: the same triple listed from the other end (%d,%d,%d)',
         [Triples[0].A, Triples[0].B, Triples[0].C]));
   end;
   if Length(Triples) = 1 then
   begin
-    Check(Triples[0].A = 2, 'Bracket: развернутый - первым НИЖНИЙ крайний');
-    Check(Triples[0].C = 0, 'Bracket: развернутый - третьим ВЕРХНИЙ крайний');
+    Check(Triples[0].A = 2, 'Bracket: with reversed traversal, the LOWER outer side is first');
+    Check(Triples[0].C = 0, 'Bracket: with reversed traversal, the UPPER outer side is third');
   end;
   Segments := [[PointD(0, 10), PointD(20, 10)], [PointD(0, 10), PointD(0, 0)]];
   Check(Length(FindBracketTriples(Segments, [soHorizontal, soVertical], 2)) = 0,
-    'Bracket: двух сторон мало');
+    'Bracket: two sides are insufficient');
   Segments := [[PointD(0, 10), PointD(20, 10)],
               [PointD(0, 10), PointD(0, 0)],
               [PointD(0, 0), PointD(20, 0)]];
   Check(Length(FindBracketTriples(Segments, [soOther, soVertical, soHorizontal], 2)) = 0,
-    'Bracket: косой крайний - тройки нет');
+    'Bracket: a slanted outer side gives no triple');
   Check(Length(FindBracketTriples(Segments, [soOther, soVertical, soOther], 2)) = 0,
-    'Bracket: оба крайних косые - тройки нет');
+    'Bracket: two slanted outer sides give no triple');
   Segments := [[PointD(0, 10), PointD(20, 10)],
               [PointD(0, 10), PointD(0, 0)],
               [PointD(0, 0), PointD(20, 0)],
               [PointD(50, 50), PointD(70, 50)]];
   Check(Length(FindBracketTriples(Segments, Orientations, 2)) = 0,
-    'Bracket: наборы разной длины - пусто, даже когда скобка есть');
+    'Bracket: different array lengths give empty output even when a bracket exists');
   SetLength(Samples, 5);
   for I := 0 to 4 do
   begin
@@ -786,19 +798,19 @@ begin
     Samples[I].Last := 12;
     Samples[I].Spare := False;
   end;
-  Check(SpanWidth(Samples[0]) = 3, 'SpanWidth: от 10 до 12 - три');
+  Check(SpanWidth(Samples[0]) = 3, 'SpanWidth: from 10 to 12 gives three');
   Samples[2].First := -1;
-  Check(SpanWidth(Samples[2]) = 0, 'SpanWidth: замера нет - ноль');
-  Check(MeanSpanWidth(Samples, N) and (N = 3), Format('MeanSpanWidth: три (got %d)', [N]));
+  Check(SpanWidth(Samples[2]) = 0, 'SpanWidth: no measurement gives zero');
+  Check(MeanSpanWidth(Samples, N) and (N = 3), Format('MeanSpanWidth: three (got %d)', [N]));
   Samples[3].Last := 20;
   Check(MeanSpanWidth(Samples, N) and (N = 5),
-    Format('MeanSpanWidth: пустые не тянут среднее вниз (got %d)', [N]));
+    Format('MeanSpanWidth: missing measurements do not lower the mean (got %d)', [N]));
   SetLength(Samples, 2);
   Samples[0].First := -1;
   Samples[0].Last := -1;
   Samples[1].First := -1;
   Samples[1].Last := -1;
-  Check(not MeanSpanWidth(Samples, N), 'MeanSpanWidth: годных нет - отказ');
+  Check(not MeanSpanWidth(Samples, N), 'MeanSpanWidth: no valid measurements fails');
   SetLength(Samples, 10);
   for I := 0 to 9 do
   begin
@@ -808,19 +820,20 @@ begin
   end;
   Samples[4].Last := 20;
   Bulges := FindSpanBulges(Samples, 3, 1.2);
-  Check(Length(Bulges) = 1, Format('Bulges: одно вздутие (got %d)', [Length(Bulges)]));
+  Check(Length(Bulges) = 1, Format('Bulges: one bulge (got %d)', [Length(Bulges)]));
   if Length(Bulges) = 1 then
-    Check(Bulges[0] = 4, Format('Bulges: и оно на месте 4 (got %d)', [Bulges[0]]));
-  Check(Length(FindSpanBulges(Samples, 0, 1.2)) = 0, 'Bulges: без средней ширины - пусто');
+    Check(Bulges[0] = 4, Format('Bulges: the bulge is at position 4 (got %d)', [Bulges[0]]));
+  Check(Length(FindSpanBulges(Samples, 0, 1.2)) = 0, 'Bulges: no mean width gives empty output');
   Samples[4].Last := 13;
-  Check(Length(FindSpanBulges(Samples, 3, 1.2)) = 0, 'Bulges: ровно на пороге - НЕ вздутие');
+  Check(Length(FindSpanBulges(Samples, 3, 1.2)) = 0, 'Bulges: exactly at the threshold is NOT a bulge');
   Samples[4].Last := 14;
   Bulges := FindSpanBulges(Samples, 3, 1.2);
-  Check(Length(Bulges) = 1, 'Bulges: выше порога - вздутие');
+  Check(Length(Bulges) = 1, 'Bulges: above the threshold is a bulge');
   if Length(Bulges) = 1 then
-    Check(Bulges[0] = 4, Format('Bulges: выше порога - и оно на месте 4 (got %d)', [Bulges[0]]));
+    Check(Bulges[0] = 4,
+      Format('Bulges: above the threshold, the bulge is at position 4 (got %d)', [Bulges[0]]));
   Samples[4].Last := 12;
-  Check(Length(FindSpanBulges(Samples, 3, 1.2)) = 0, 'Bulges: ровной линии вздутий нет');
+  Check(Length(FindSpanBulges(Samples, 3, 1.2)) = 0, 'Bulges: a uniform line has no bulges');
   SetLength(Samples, 100);
   for I := 0 to 99 do
   begin
@@ -828,17 +841,18 @@ begin
     Samples[I].Last := 12;
     Samples[I].Spare := False;
   end;
-  Check(ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2), 'Classify: ровная тонкая - линовка');
+  Check(ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2), 'Classify: a uniform thin line is a ruling');
   Spared := 0;
   for I := 0 to 99 do if Samples[I].Spare then Inc(Spared);
-  Check(Spared = 0, Format('Classify: у ровной щадить нечего (got %d)', [Spared]));
+  Check(Spared = 0, Format('Classify: a uniform ruling has nothing to spare (got %d)', [Spared]));
   for I := 0 to 99 do
   begin
     Samples[I].First := 10;
     Samples[I].Last := 23;
     Samples[I].Spare := False;
   end;
-  Check(not ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2), 'Classify: слишком толстая - не линовка');
+  Check(not ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2),
+    'Classify: a line that is too thick is not a ruling');
   for I := 0 to 99 do
   begin
     Samples[I].First := 10;
@@ -846,7 +860,7 @@ begin
     Samples[I].Spare := False;
   end;
   Check(ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2),
-    'Classify: ширина РОВНО по пределу - еще линовка');
+    'Classify: width EXACTLY at the limit is still a ruling');
   for I := 0 to 99 do
   begin
     Samples[I].First := 10;
@@ -854,7 +868,7 @@ begin
     Samples[I].Spare := False;
   end;
   Check(not ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2),
-    'Classify: на единицу толще предела - уже не линовка');
+    'Classify: one unit thicker than the limit is not a ruling');
   SetLength(Samples, 101);
   for I := 0 to 100 do
   begin
@@ -864,10 +878,10 @@ begin
   end;
   Samples[50].Last := 20;
   Check(ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2),
-    'Classify: длинные ровные участки перевешивают вздутие');
-  Check(Samples[50].Spare, 'Classify: само вздутие пощажено');
-  Check(Samples[45].Spare, 'Classify: и его окрестность в пределах MaxWidth');
-  Check(not Samples[20].Spare, 'Classify: а середина длинного ровного участка - нет');
+    'Classify: long uniform sections outweigh the bulge');
+  Check(Samples[50].Spare, 'Classify: the bulge itself is spared');
+  Check(Samples[45].Spare, 'Classify: its neighborhood within MaxWidth is also spared');
+  Check(not Samples[20].Spare, 'Classify: the middle of a long uniform section is not spared');
   SetLength(Samples, 100);
   for I := 0 to 99 do
   begin
@@ -877,10 +891,10 @@ begin
     if I mod 20 = 10 then Samples[I].Last := 20;
   end;
   Check(not ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2),
-    'Classify: частые вздутия - текст, а не линовка');
+    'Classify: frequent bulges indicate text, not a ruling');
   Spared := 0;
   for I := 0 to 99 do if Samples[I].Spare then Inc(Spared);
-  Check(Spared = 100, Format('Classify: у текста пощажено все (got %d)', [Spared]));
+  Check(Spared = 100, Format('Classify: all text is spared (got %d)', [Spared]));
   SetLength(Samples, 60);
   for I := 0 to 59 do
   begin
@@ -890,7 +904,7 @@ begin
   end;
   Samples[55].Last := 20;
   Check(ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2),
-    'Classify: длинный участок ДО первого вздутия тоже считается');
+    'Classify: a long section BEFORE the first bulge also counts');
   SetLength(Samples, 100);
   for I := 0 to 99 do
   begin
@@ -900,10 +914,10 @@ begin
   end;
   Samples[98].Last := 20;
   Check(ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2),
-    'Classify: вздутие у самого конца - длинный участок перевесил');
-  Check(Samples[99].Spare, 'Classify: пощада дошла до последнего замера');
-  Check(Samples[91].Spare, 'Classify: и до начала окрестности');
-  Check(not Samples[89].Spare, 'Classify: а дальше окрестности - нет');
+    'Classify: a bulge at the end is outweighed by the long section');
+  Check(Samples[99].Spare, 'Classify: the last measurement is spared');
+  Check(Samples[91].Spare, 'Classify: the start of the neighborhood is also spared');
+  Check(not Samples[89].Spare, 'Classify: beyond the neighborhood is not spared');
   for I := 0 to 99 do
   begin
     Samples[I].First := 10;
@@ -912,348 +926,360 @@ begin
   end;
   Samples[1].Last := 20;
   Check(ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2),
-    'Classify: вздутие у самого начала - длинный участок перевесил');
-  Check(Samples[0].Spare, 'Classify: пощада дошла до первого замера');
-  Check(not Samples[11].Spare, 'Classify: а дальше окрестности - нет');
+    'Classify: a bulge at the start is outweighed by the long section');
+  Check(Samples[0].Spare, 'Classify: the first measurement is spared');
+  Check(not Samples[11].Spare, 'Classify: beyond the neighborhood is not spared');
   SetLength(Samples, 0);
-  Check(not ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2), 'Classify: пустой замер - не линовка');
+  Check(not ClassifyRuledLine(Samples, 8, 50, 40, 1.5, 1.2),
+    'Classify: an empty measurement is not a ruling');
   Border.Found := True;
   Border.FromAngle := 0.2;
   Border.LastAngle := 0.4;
   Border.Slip := 1;
-  CheckClose(BorderAngleValue(Border), 0.3, 'BorderAngle: середина промежутка');
+  CheckClose(BorderAngleValue(Border), 0.3, 'BorderAngle: midpoint of the interval');
   Border.FromAngle := -0.4;
   Border.LastAngle := -0.2;
-  CheckClose(BorderAngleValue(Border), -0.3, 'BorderAngle: и у отрицательных');
+  CheckClose(BorderAngleValue(Border), -0.3, 'BorderAngle: also for negative values');
   Border.Found := False;
-  CheckClose(BorderAngleValue(Border), 0, 'BorderAngle: ненайденная дает ноль');
+  CheckClose(BorderAngleValue(Border), 0, 'BorderAngle: a missing boundary gives zero');
   Border.Found := True;
   Border.FromAngle := 0;
   Border.LastAngle := 0;
-  CheckClose(BorderAngleValue(Border), 0, 'BorderAngle: и ровная граница дает ноль');
-  Check(Border.Found, 'BorderAngle: но у ровной Found истинен - в этом вся разница');
+  CheckClose(BorderAngleValue(Border), 0, 'BorderAngle: a level boundary also gives zero');
+  Check(Border.Found, 'BorderAngle: a level boundary has Found=True, which distinguishes it');
   Border.Found := True;
   Border.Slip := 1.0;
   SecondBorder.Found := True;
   SecondBorder.Slip := 0.5;
-  Check(ArbitrateOppositeBorders(Border, SecondBorder), 'Arbitrate: спор разобран');
-  Check(not Border.Found, 'Arbitrate: отброшена та, у которой доля БОЛЬШЕ');
-  Check(SecondBorder.Found, 'Arbitrate: та, у которой меньше, осталась');
+  Check(ArbitrateOppositeBorders(Border, SecondBorder), 'Arbitrate: the conflict is resolved');
+  Check(not Border.Found, 'Arbitrate: the boundary with the LARGER slip is discarded');
+  Check(SecondBorder.Found, 'Arbitrate: the boundary with the smaller slip remains');
   Border.Found := True;
   Border.Slip := 0.25;
   SecondBorder.Found := True;
   SecondBorder.Slip := 1.0;
-  Check(ArbitrateOppositeBorders(Border, SecondBorder), 'Arbitrate: зеркальный спор разобран');
-  Check(Border.Found, 'Arbitrate: зеркально - осталась первая');
-  Check(not SecondBorder.Found, 'Arbitrate: зеркально - отброшена вторая');
+  Check(ArbitrateOppositeBorders(Border, SecondBorder), 'Arbitrate: the mirrored conflict is resolved');
+  Check(Border.Found, 'Arbitrate: in the mirrored case the first boundary remains');
+  Check(not SecondBorder.Found, 'Arbitrate: in the mirrored case the second boundary is discarded');
   Border.Found := True;
   Border.Slip := 0.5;
   SecondBorder.Found := True;
   SecondBorder.Slip := 0.5;
-  Check(not ArbitrateOppositeBorders(Border, SecondBorder), 'Arbitrate: равные доли не спорят');
-  Check(Border.Found and SecondBorder.Found, 'Arbitrate: обе остались');
+  Check(not ArbitrateOppositeBorders(Border, SecondBorder), 'Arbitrate: equal slips do not conflict');
+  Check(Border.Found and SecondBorder.Found, 'Arbitrate: both boundaries remain');
   SecondBorder.Slip := 0.5 + 1e-12;
-  Check(not ArbitrateOppositeBorders(Border, SecondBorder), 'Arbitrate: почти равные не спорят');
+  Check(not ArbitrateOppositeBorders(Border, SecondBorder), 'Arbitrate: nearly equal slips do not conflict');
   Border.Found := False;
   Border.Slip := 1.0;
   SecondBorder.Found := True;
   SecondBorder.Slip := 0.5;
-  Check(not ArbitrateOppositeBorders(Border, SecondBorder), 'Arbitrate: ненайденная не спорит');
-  Check(SecondBorder.Found, 'Arbitrate: и найденная не пострадала');
+  Check(not ArbitrateOppositeBorders(Border, SecondBorder),
+    'Arbitrate: a missing boundary does not conflict');
+  Check(SecondBorder.Found, 'Arbitrate: the found boundary is unaffected');
   Angles := [0.1, 9.9];
   Kept := RejectSkewOutliers(Angles, 0.01);
-  Check(Length(Kept) = 2, 'RejectOutliers: двух не трогает');
+  Check(Length(Kept) = 2, 'RejectOutliers: two angles remain unchanged');
   if Length(Kept) = 2 then
   begin
-    CheckClose(Kept[0], 0.1, 'RejectOutliers: и первый тот же');
-    CheckClose(Kept[1], 9.9, 'RejectOutliers: и второй тот же');
+    CheckClose(Kept[0], 0.1, 'RejectOutliers: the first angle is unchanged');
+    CheckClose(Kept[1], 9.9, 'RejectOutliers: the second angle is unchanged');
   end;
   Angles := [7.7];
   Kept := RejectSkewOutliers(Angles, 0.01);
-  Check(Length(Kept) = 1, 'RejectOutliers: одного не трогает');
+  Check(Length(Kept) = 1, 'RejectOutliers: a single angle remains unchanged');
   if Length(Kept) = 1 then
-    CheckClose(Kept[0], 7.7, 'RejectOutliers: и он тот же');
-  Check(Length(RejectSkewOutliers(nil, 0.01)) = 0, 'RejectOutliers: пусто дает пусто');
+    CheckClose(Kept[0], 7.7, 'RejectOutliers: its value is unchanged');
+  Check(Length(RejectSkewOutliers(nil, 0.01)) = 0, 'RejectOutliers: empty input gives empty output');
   Angles := [5.0, 5.0, 5.1];
   Kept := RejectSkewOutliers(Angles, 0.5);
   Check(Length(Kept) = 0,
-    Format('RejectOutliers: согласных больших углов уцелело ноль (got %d)', [Length(Kept)]));
+    Format('RejectOutliers: no consistent large angles survive (got %d)', [Length(Kept)]));
   Angles := [0.10, 0.11, 0.12];
   Kept := RejectSkewOutliers(Angles, 0.5);
   Check(Length(Kept) = 3,
-    Format('RejectOutliers: согласных малых углов уцелело три (got %d)', [Length(Kept)]));
+    Format('RejectOutliers: three consistent small angles survive (got %d)', [Length(Kept)]));
   if Length(Kept) = 3 then
   begin
-    CheckClose(Kept[0], 0.10, 'RejectOutliers: тройка - первый тот же');
-    CheckClose(Kept[1], 0.11, 'RejectOutliers: тройка - второй тот же');
-    CheckClose(Kept[2], 0.12, 'RejectOutliers: тройка - третий тот же');
+    CheckClose(Kept[0], 0.10, 'RejectOutliers: the first of three angles is unchanged');
+    CheckClose(Kept[1], 0.11, 'RejectOutliers: the second of three angles is unchanged');
+    CheckClose(Kept[2], 0.12, 'RejectOutliers: the third of three angles is unchanged');
   end;
   Angles := [0.1, 0.2, 9.0];
   Kept := RejectSkewOutliers(Angles, 0.5);
-  Check(Length(Kept) = 2,
-    Format('RejectOutliers: далекий прощает малым, но не себе (got %d)', [Length(Kept)]));
+  Check(Length(Kept) = 2, Format('RejectOutliers: a distant angle saves the small ones, but not itself (got %d)', [Length(Kept)]));
   if Length(Kept) = 2 then
-    Check((Kept[0] < 1) and (Kept[1] < 1), 'RejectOutliers: уцелели ИМЕННО малые, а не любые два');
+    Check((Kept[0] < 1) and (Kept[1] < 1),
+      'RejectOutliers: specifically the small angles survive, not an arbitrary pair');
   Angles := [1.0, 1.0, 5.0];
   Kept := RejectSkewOutliers(Angles, 0.5);
   Check(Length(Kept) = 2,
-    Format('RejectOutliers: разброс спасает единицы (got %d)', [Length(Kept)]));
+    Format('RejectOutliers: spread saves the unit angles (got %d)', [Length(Kept)]));
   Angles := [0.1, 0.2, 9.0];
   Kept := RejectSkewOutliers(Angles, 0);
   Check(Length(Kept) = 2,
-    Format('RejectOutliers: допуск ноль - малые уцелели (got %d)', [Length(Kept)]));
+    Format('RejectOutliers: small angles survive with zero tolerance (got %d)', [Length(Kept)]));
   Kept := RejectSkewOutliers(Angles, -0.001);
   Check(Length(Kept) = 0,
-    Format('RejectOutliers: отрицательный допуск отсевает всех (got %d)', [Length(Kept)]));
+    Format('RejectOutliers: negative tolerance rejects all angles (got %d)', [Length(Kept)]));
   Angles := [0.10, 0.11, 0.12];
   Kept := RejectSkewOutliers(Angles, 0.5);
   if Length(Kept) = 3 then
     Check((Kept[0] < Kept[1]) and (Kept[1] < Kept[2]),
-      'RejectOutliers: порядок уцелевших сохранен');
+      'RejectOutliers: surviving angles retain their order');
   Angles := [0.2, 0.4, 0.6];
-  Check(CombineSkewAngles(Angles, spMean, 1, Skew), 'Combine: среднее сработало');
-  CheckClose(Skew, 0.4, 'Combine: среднее трех');
-  Check(CombineSkewAngles(Angles, spMaximum, 1, Skew), 'Combine: наибольший сработал');
-  CheckClose(Skew, 0.6, 'Combine: наибольший из трех');
+  Check(CombineSkewAngles(Angles, spMean, 1, Skew), 'Combine: mean succeeds');
+  CheckClose(Skew, 0.4, 'Combine: mean of three angles');
+  Check(CombineSkewAngles(Angles, spMaximum, 1, Skew), 'Combine: maximum succeeds');
+  CheckClose(Skew, 0.6, 'Combine: maximum of three angles');
   Angles := [0.2, -0.9, 0.6];
   CombineSkewAngles(Angles, spMaximum, 1, Skew);
-  CheckClose(Skew, -0.9, 'Combine: наибольший ПО МОДУЛЮ, знак свой');
+  CheckClose(Skew, -0.9, 'Combine: the maximum is by ABSOLUTE VALUE and retains its sign');
   CombineSkewAngles(Angles, spMean, 1, Skew);
-  CheckClose(Skew, -0.1 / 3 * 1, 'Combine: среднее со знаками');
+  CheckClose(Skew, -0.1 / 3 * 1, 'Combine: mean includes signs');
   Skew := 7;
-  Check(not CombineSkewAngles([0.5, 0.5], spMean, 3, Skew), 'Combine: двух мало при трех нужных');
-  CheckClose(Skew, 0, 'Combine: при отказе перекос обнулен');
-  Check(not CombineSkewAngles(nil, spMean, 1, Skew), 'Combine: пусто - отказ');
-  Check(CombineSkewAngles([0.5, 0.5], spMean, 2, Skew), 'Combine: ровно по требованию - довольно');
+  Check(not CombineSkewAngles([0.5, 0.5], spMean, 3, Skew),
+    'Combine: two angles are insufficient when three are required');
+  CheckClose(Skew, 0, 'Combine: failure resets the skew to zero');
+  Check(not CombineSkewAngles(nil, spMean, 1, Skew), 'Combine: empty input fails');
+  Check(CombineSkewAngles([0.5, 0.5], spMean, 2, Skew), 'Combine: exactly the required count is sufficient');
   Segments := [[PointD(0, 10), PointD(20, 10)], [PointD(25, 10), PointD(50, 10)]];
   MergedLines := MergeCollinearLines(Segments, True, 2, 10, 5);
-  Check(Length(MergedLines) = 1, Format('Merge: два куска сшиты в один (got %d)', [Length(MergedLines)]));
+  Check(Length(MergedLines) = 1, Format('Merge: two pieces join into one (got %d)', [Length(MergedLines)]));
   if Length(MergedLines) = 1 then
   begin
-    CheckClose(MergedLines[0][0].X, 0, 'Merge: сшитый начинается у левого края');
-    CheckClose(MergedLines[0][1].X, 50, 'Merge: и кончается у правого');
-    CheckClose(MergedLines[0][0].Y, 10, 'Merge: поперек - середина первого');
+    CheckClose(MergedLines[0][0].X, 0, 'Merge: the joined line starts at the left edge');
+    CheckClose(MergedLines[0][1].X, 50, 'Merge: and ends at the right edge');
+    CheckClose(MergedLines[0][0].Y, 10, 'Merge: the transverse coordinate is the midpoint of the first line');
   end;
   Segments := [[PointD(0, 10), PointD(20, 10)], [PointD(45, 10), PointD(50, 10)]];
   Check(Length(MergeCollinearLines(Segments, True, 2, 10, 5)) = 2,
-    'Merge: разрыв больше допуска - не сшиты');
+    'Merge: a gap exceeding tolerance prevents joining');
   Segments := [[PointD(0, 10), PointD(20, 10)], [PointD(21, 30), PointD(50, 30)]];
   Check(Length(MergeCollinearLines(Segments, True, 2, 10, 5)) = 2,
-    'Merge: разная высота - не сшиты');
+    'Merge: different heights prevent joining');
   Segments := [[PointD(0, 10), PointD(20, 10)], [PointD(25, 12), PointD(50, 12)]];
   MergedLines := MergeCollinearLines(Segments, True, 3, 10, 5);
-  Check(Length(MergedLines) = 1, 'Merge: разная высота в пределах допуска - сшиты');
+  Check(Length(MergedLines) = 1, 'Merge: heights differing within tolerance allow joining');
   if Length(MergedLines) = 1 then
   begin
-    CheckClose(MergedLines[0][0].Y, 10, 'Merge: один конец на высоте первого');
-    CheckClose(MergedLines[0][1].Y, 12, 'Merge: другой на высоте второго - сшитый НАКЛОНЕН');
+    CheckClose(MergedLines[0][0].Y, 10, 'Merge: one endpoint is at the height of the first line');
+    CheckClose(MergedLines[0][1].Y, 12,
+      'Merge: the other is at the height of the second; the joined line is SLANTED');
   end;
   Segments := [[PointD(0, 10), PointD(3, 10)], [PointD(5, 10), PointD(8, 10)]];
   Check(Length(MergeCollinearLines(Segments, True, 2, 10, 50)) = 2,
-    'Merge: сшивка короче предела - оставлены как были');
+    'Merge: a join shorter than the limit leaves the inputs unchanged');
   Check(Length(MergeCollinearLines(Segments, True, 2, 10, 5)) = 1,
-    'Merge: тот же вход при малом пределе - сшит');
+    'Merge: the same input joins with a smaller limit');
   Segments := [[PointD(0, 10), PointD(10, 10)], [PointD(15, 10), PointD(25, 10)],
               [PointD(30, 10), PointD(40, 10)]];
   MergedLines := MergeCollinearLines(Segments, True, 2, 10, 5);
-  Check(Length(MergedLines) = 1, Format('Merge: три куска сшиты в один (got %d)', [Length(MergedLines)]));
+  Check(Length(MergedLines) = 1, Format('Merge: three pieces join into one (got %d)', [Length(MergedLines)]));
   if Length(MergedLines) = 1 then
-    CheckClose(MergedLines[0][1].X, 40, 'Merge: сшитый из трех достает до дальнего края');
+    CheckClose(MergedLines[0][1].X, 40, 'Merge: the line joined from three pieces reaches the far edge');
   Segments := [[PointD(0, 10), PointD(50, 10)], [PointD(10, 10), PointD(20, 10)]];
   MergedLines := MergeCollinearLines(Segments, True, 2, 0, 5);
-  Check(Length(MergedLines) = 1, Format('Merge: вложенный поглощен (got %d)', [Length(MergedLines)]));
+  Check(Length(MergedLines) = 1,
+    Format('Merge: the nested line is absorbed (got %d)', [Length(MergedLines)]));
   if Length(MergedLines) = 1 then
   begin
-    CheckClose(MergedLines[0][0].X, 0, 'Merge: уцелел длинный, а не короткий');
-    CheckClose(MergedLines[0][1].X, 50, 'Merge: и целиком');
+    CheckClose(MergedLines[0][0].X, 0, 'Merge: the long line survives, not the short one');
+    CheckClose(MergedLines[0][1].X, 50, 'Merge: the entire long line survives');
   end;
   Segments := [[PointD(10, 10), PointD(20, 10)], [PointD(0, 12), PointD(50, 12)]];
   MergedLines := MergeCollinearLines(Segments, True, 3, 0, 5);
-  Check(Length(MergedLines) = 1, 'Merge: вложенный на другой высоте - один');
+  Check(Length(MergedLines) = 1, 'Merge: a nested line at a different height still gives one line');
   if Length(MergedLines) = 1 then
   begin
-    CheckClose(MergedLines[0][0].Y, 12, 'Merge: уцелевший ВЕСЬ на высоте длинного');
-    CheckClose(MergedLines[0][1].Y, 12, 'Merge: и второй конец тоже - не наклонен');
+    CheckClose(MergedLines[0][0].Y, 12, 'Merge: the ENTIRE survivor is at the height of the long line');
+    CheckClose(MergedLines[0][1].Y, 12, 'Merge: the second endpoint is also at that height; no slant');
   end;
   Segments := [[PointD(10, 10), PointD(20, 10)], [PointD(0, 10), PointD(50, 10)]];
   MergedLines := MergeCollinearLines(Segments, True, 2, 0, 5);
-  Check(Length(MergedLines) = 1, 'Merge: вложенный поглощен и в обратном порядке');
+  Check(Length(MergedLines) = 1, 'Merge: the nested line is also absorbed in reverse order');
   if Length(MergedLines) = 1 then
-    CheckClose(MergedLines[0][1].X - MergedLines[0][0].X, 50, 'Merge: уцелел длинный и тут');
+    CheckClose(MergedLines[0][1].X - MergedLines[0][0].X, 50,
+      'Merge: the long line survives in reverse order too');
   Segments := [[PointD(0, 10), PointD(30, 10)], [PointD(20, 10), PointD(50, 10)]];
   MergedLines := MergeCollinearLines(Segments, True, 2, 0, 5);
-  Check(Length(MergedLines) = 1, 'Merge: налегающие сведены в один');
+  Check(Length(MergedLines) = 1, 'Merge: overlapping lines merge into one');
   if Length(MergedLines) = 1 then
-    CheckClose(MergedLines[0][1].X - MergedLines[0][0].X, 50, 'Merge: и размах общий');
+    CheckClose(MergedLines[0][1].X - MergedLines[0][0].X, 50, 'Merge: the merged line spans both inputs');
   Segments := [[PointD(10, 0), PointD(10, 20)], [PointD(10, 25), PointD(10, 50)]];
   MergedLines := MergeCollinearLines(Segments, False, 2, 10, 5);
-  Check(Length(MergedLines) = 1, Format('Merge: вертикали сшиты (got %d)', [Length(MergedLines)]));
+  Check(Length(MergedLines) = 1, Format('Merge: vertical lines join (got %d)', [Length(MergedLines)]));
   if Length(MergedLines) = 1 then
   begin
-    CheckClose(MergedLines[0][0].Y, 0, 'Merge: вертикаль от верха');
-    CheckClose(MergedLines[0][1].Y, 50, 'Merge: и до низа');
+    CheckClose(MergedLines[0][0].Y, 0, 'Merge: the vertical line starts at the top');
+    CheckClose(MergedLines[0][1].Y, 50, 'Merge: and reaches the bottom');
   end;
   Check(Length(MergeCollinearLines(Segments, True, 2, 10, 5)) = 2,
-    'Merge: вертикали как горизонтали - не сшиты');
-  Check(Length(MergeCollinearLines(nil, True, 2, 10, 5)) = 0, 'Merge: пусто дает пусто');
+    'Merge: treating vertical lines as horizontal prevents joining');
+  Check(Length(MergeCollinearLines(nil, True, 2, 10, 5)) = 0, 'Merge: empty input gives empty output');
   Segments := [[PointD(0, 10), PointD(20, 10)]];
-  Check(Length(MergeCollinearLines(Segments, True, 2, 10, 5)) = 1, 'Merge: один остается один');
+  Check(Length(MergeCollinearLines(Segments, True, 2, 10, 5)) = 1,
+    'Merge: a single line remains a single line');
   Segments := [[PointD(0, 10), PointD(20, 10)], [PointD(25, 10), PointD(50, 10)]];
   Check(Length(MergeCollinearLines(Segments, True, -1, 10, 5)) = 0,
-    'Merge: отрицательный допуск поперек - отказ');
-  Check(Length(MergeCollinearLines(Segments, True, 2, -1, 5)) = 0,
-    'Merge: отрицательный разрыв - отказ');
+    'Merge: negative transverse tolerance fails');
+  Check(Length(MergeCollinearLines(Segments, True, 2, -1, 5)) = 0, 'Merge: a negative gap fails');
   Contour := [PointD(0, 0), PointD(50, 0), PointD(50, 40), PointD(0, 40), PointD(0, 0)];
   N := ExtractAxisLinesFromContour(Contour, 0.05, 10, 5, Horizontals, Verticals);
-  Check(N = 4, Format('AxisLines: у прямоугольника четыре стороны (got %d)', [N]));
-  Check(Length(Horizontals) = 2, Format('AxisLines: две горизонтали (got %d)', [Length(Horizontals)]));
-  Check(Length(Verticals) = 2, Format('AxisLines: две вертикали (got %d)', [Length(Verticals)]));
+  Check(N = 4, Format('AxisLines: a rectangle has four sides (got %d)', [N]));
+  Check(Length(Horizontals) = 2, Format('AxisLines: two horizontal lines (got %d)', [Length(Horizontals)]));
+  Check(Length(Verticals) = 2, Format('AxisLines: two vertical lines (got %d)', [Length(Verticals)]));
   if Length(Horizontals) = 2 then
   begin
-    CheckClose(Horizontals[0][0].X, 0, 'AxisLines: первая горизонталь от нуля');
-    CheckClose(Horizontals[0][1].X, 50, 'AxisLines: и до пятидесяти');
-    CheckClose(Horizontals[0][0].Y, 0, 'AxisLines: и она именно верхняя');
+    CheckClose(Horizontals[0][0].X, 0, 'AxisLines: the first horizontal line starts at zero');
+    CheckClose(Horizontals[0][1].X, 50, 'AxisLines: and ends at fifty');
+    CheckClose(Horizontals[0][0].Y, 0, 'AxisLines: it is specifically the top line');
   end;
   if Length(Verticals) = 2 then
-    CheckClose(Verticals[0][0].X, 50, 'AxisLines: первая вертикаль - правая');
+    CheckClose(Verticals[0][0].X, 50, 'AxisLines: the first vertical line is on the right');
   Contour := [PointD(0, 0), PointD(50, 30), PointD(20, 60), PointD(0, 0)];
   Check(ExtractAxisLinesFromContour(Contour, 0.05, 10, 5, Horizontals, Verticals) = 0,
-    'AxisLines: у косого контура осевых нет');
+    'AxisLines: a slanted contour has no axis-aligned lines');
   Check((Length(Horizontals) = 0) and (Length(Verticals) = 0),
-    'AxisLines: и наборы пусты, а не с мусором');
+    'AxisLines: both arrays are empty, with no stale entries');
   Contour := [PointD(0, 0), PointD(50, 5)];
   Check(ExtractAxisLinesFromContour(Contour, 0.05, 10, 5, Horizontals, Verticals) = 0,
-    'AxisLines: наклон вне допуска - не осевой');
+    'AxisLines: a slope outside tolerance is not axis-aligned');
   Check(ExtractAxisLinesFromContour(Contour, 0.15, 10, 5, Horizontals, Verticals) = 1,
-    'AxisLines: тот же наклон при щедром допуске - осевой');
+    'AxisLines: the same slope is axis-aligned with a larger tolerance');
   Contour := [PointD(0, 0), PointD(5, 0)];
   Check(ExtractAxisLinesFromContour(Contour, 0.05, 10, 5, Horizontals, Verticals) = 0,
-    'AxisLines: короткая сторона не берется');
+    'AxisLines: a short side is excluded');
   Check(ExtractAxisLinesFromContour(Contour, 0.05, 3, 5, Horizontals, Verticals) = 1,
-    'AxisLines: она же при малом пределе - берется');
+    'AxisLines: that same side is included with a smaller length limit');
   Contour := [PointD(0, 0), PointD(2, 0), PointD(4, 0), PointD(6, 0), PointD(50, 0)];
   N := ExtractAxisLinesFromContour(Contour, 0.05, 10, 5, Horizontals, Verticals);
-  Check(N = 1, Format('AxisLines: мелкие шаги не дробят линию (got %d)', [N]));
+  Check(N = 1, Format('AxisLines: small steps do not fragment a line (got %d)', [N]));
   if Length(Horizontals) = 1 then
   begin
-    CheckClose(Horizontals[0][0].X, 0, 'AxisLines: и он от самого начала');
-    CheckClose(Horizontals[0][1].X, 50, 'AxisLines: до самого конца');
+    CheckClose(Horizontals[0][0].X, 0, 'AxisLines: the line starts at the very beginning');
+    CheckClose(Horizontals[0][1].X, 50, 'AxisLines: and reaches the very end');
   end;
   Contour := [PointD(0, 0), PointD(20, 12), PointD(24, 12), PointD(50, 0)];
   N := ExtractAxisLinesFromContour(Contour, 0.05, 10, 40, Horizontals, Verticals);
-  Check(N >= 1, Format('AxisLines: заглядывание нашло осевой (got %d)', [N]));
+  Check(N >= 1, Format('AxisLines: lookahead finds an axis-aligned line (got %d)', [N]));
   Contour := [PointD(0, 0), PointD(20, 12), PointD(5, 0), PointD(50, 0)];
   N := ExtractAxisLinesFromContour(Contour, 0.05, 10, 40, Horizontals, Verticals);
-  Check(N >= 1, Format('AxisLines: заглядывание мимо короткого нашло осевой (got %d)', [N]));
+  Check(N >= 1, Format('AxisLines: lookahead past a short segment finds an axis-aligned line (got %d)', [N]));
   if Length(Horizontals) >= 1 then
-    CheckClose(Horizontals[0][1].X, 50, 'AxisLines: взят ДЛИННЫЙ, а не огрызок до пятой точки');
+    CheckClose(Horizontals[0][1].X, 50,
+      'AxisLines: the LONG line is taken, not the fragment ending at the fifth point');
   Contour := [PointD(0, 0), PointD(20, 12), PointD(24, 12), PointD(50, 0)];
   Check(ExtractAxisLinesFromContour(Contour, 0.05, 10, 2, Horizontals, Verticals) = 0,
-    'AxisLines: малый разрыв - заглядывание не достает');
+    'AxisLines: a small gap limit prevents lookahead from reaching the line');
   Check(ExtractAxisLinesFromContour(nil, 0.05, 10, 5, Horizontals, Verticals) = 0,
-    'AxisLines: пустой контур - ноль');
+    'AxisLines: an empty contour gives zero');
   Contour := [PointD(7, 7)];
   Check(ExtractAxisLinesFromContour(Contour, 0.05, 10, 5, Horizontals, Verticals) = 0,
-    'AxisLines: одна точка - ноль');
+    'AxisLines: one point gives zero');
   Contour := [PointD(0, 0), PointD(50, 0)];
   Check(ExtractAxisLinesFromContour(Contour, -1, 10, 5, Horizontals, Verticals) = 0,
-    'AxisLines: отрицательный допуск угла - отказ');
+    'AxisLines: a negative angle tolerance fails');
   Check(ExtractAxisLinesFromContour(Contour, 0.05, 0, 5, Horizontals, Verticals) = 0,
-    'AxisLines: нулевой предел длины - отказ');
+    'AxisLines: a zero length limit fails');
   Check(ExtractAxisLinesFromContour(Contour, 0.05, 10, -1, Horizontals, Verticals) = 0,
-    'AxisLines: отрицательный разрыв - отказ');
+    'AxisLines: a negative gap fails');
   RR := NormalizeRect(RectD(30, 40, 10, 20));
-  CheckClose(RR.Left, 10, 'Normalize: левый стал меньшим');
-  CheckClose(RR.Right, 30, 'Normalize: правый большим');
-  CheckClose(RR.Top, 20, 'Normalize: верхний меньшим');
-  CheckClose(RR.Bottom, 40, 'Normalize: нижний большим');
+  CheckClose(RR.Left, 10, 'Normalize: left becomes the smaller value');
+  CheckClose(RR.Right, 30, 'Normalize: right becomes the larger value');
+  CheckClose(RR.Top, 20, 'Normalize: top becomes the smaller value');
+  CheckClose(RR.Bottom, 40, 'Normalize: bottom becomes the larger value');
   RR := NormalizeRect(RectD(10, 20, 30, 40));
   Check((RR.Left = 10) and (RR.Right = 30) and (RR.Top = 20) and (RR.Bottom = 40),
-    'Normalize: упорядоченный не тронут');
-  CheckClose(RectHeight(RectD(10, 20, 30, 45)), 25, 'RectHeight: высота 25');
+    'Normalize: ordered input is unchanged');
+  CheckClose(RectHeight(RectD(10, 20, 30, 45)), 25, 'RectHeight: height is 25');
   CheckClose(RectHeight(RectD(10, 45, 30, 20)), -25,
-    'RectHeight: у вывернутого высота ОТРИЦАТЕЛЬНА, а не по модулю');
-  Check(RectIsEmpty(RectD(10, 20, 10, 45)), 'RectIsEmpty: нулевая ширина - пуст');
-  Check(RectIsEmpty(RectD(10, 20, 30, 20)), 'RectIsEmpty: нулевая высота - пуст');
-  Check(not RectIsEmpty(RectD(10, 20, 30, 45)), 'RectIsEmpty: полноценный не пуст');
-  Check(RectIsEmpty(RectD(30, 20, 10, 45)), 'RectIsEmpty: вывернутый по X - пуст');
+    'RectHeight: an inverted rectangle has NEGATIVE height, not an absolute value');
+  Check(RectIsEmpty(RectD(10, 20, 10, 45)), 'RectIsEmpty: zero width is empty');
+  Check(RectIsEmpty(RectD(10, 20, 30, 20)), 'RectIsEmpty: zero height is empty');
+  Check(not RectIsEmpty(RectD(10, 20, 30, 45)), 'RectIsEmpty: a valid rectangle is not empty');
+  Check(RectIsEmpty(RectD(30, 20, 10, 45)), 'RectIsEmpty: a rectangle inverted in X is empty');
   Square := [PointD(0, 0), PointD(10, 0), PointD(10, 10), PointD(0, 10)];
-  Check(PolygonSignedArea(Square) <> 0, 'SignedArea: у квадрата площадь не ноль');
-  CheckClose(Abs(PolygonSignedArea(Square)), 100, 'SignedArea: и по модулю сто');
+  Check(PolygonSignedArea(Square) <> 0, 'SignedArea: a square has nonzero area');
+  CheckClose(Abs(PolygonSignedArea(Square)), 100, 'SignedArea: its absolute area is one hundred');
   CheckClose(PolygonSignedArea(ReversePolyline(Square)), -PolygonSignedArea(Square),
-    'SignedArea: обратный обход дает противоположный ЗНАК');
+    'SignedArea: reverse traversal gives the opposite SIGN');
   CheckClose(PolygonSignedArea([PointD(0, 0), PointD(10, 0)]), 0,
-    'SignedArea: у отрезка площади нет');
+    'SignedArea: a segment has no area');
   R1 := RectD(0, 0, 10, 10);
   R2 := RectD(15, 0, 25, 10);
-  Check(RectsCloserThan(R1, R2, 6), 'CloserThan: зазор 5 при допуске 6 - ближе');
-  Check(not RectsCloserThan(R1, R2, 4), 'CloserThan: тот же зазор при допуске 4 - нет');
-  Check(RectsCloserThan(R1, R2, 5), 'CloserThan: ровно по допуску - ближе, порог нестрогий');
-  Check(RectsCloserThan(R1, RectD(5, 5, 15, 15), 0), 'CloserThan: налегающие - при нулевом допуске');
-  CheckClose(WrapAngle180(0.3), 0.3, 'Wrap180: свое остается своим');
-  CheckClose(WrapAngle180(Pi + 0.3), 0.3, 'Wrap180: за Pi заворачивается');
-  CheckClose(WrapAngle180(-0.3), Pi - 0.3, 'Wrap180: отрицательное заворачивается ВВЕРХ');
-  CheckClose(WrapAngle180(2 * Pi + 0.3), 0.3, 'Wrap180: два оборота тоже');
-  CheckClose(WrapAngle180(Pi), 0, 'Wrap180: ровно Pi дает ноль - промежуток ПОЛУОТКРЫТ');
-  Check(RotatedBoundingSize(100, 40, 0, N, K), 'RotBounds: сработал');
-  Check((N = 100) and (K = 40), Format('RotBounds: ноль градусов - тот же (got %d на %d)', [N, K]));
+  Check(RectsCloserThan(R1, R2, 6), 'CloserThan: gap 5 with tolerance 6 is close enough');
+  Check(not RectsCloserThan(R1, R2, 4), 'CloserThan: the same gap with tolerance 4 is not close enough');
+  Check(RectsCloserThan(R1, R2, 5),
+    'CloserThan: exactly at tolerance is close enough; threshold is inclusive');
+  Check(RectsCloserThan(R1, RectD(5, 5, 15, 15), 0),
+    'CloserThan: overlapping rectangles qualify with zero tolerance');
+  CheckClose(WrapAngle180(0.3), 0.3, 'Wrap180: an in-range angle stays unchanged');
+  CheckClose(WrapAngle180(Pi + 0.3), 0.3, 'Wrap180: an angle beyond Pi wraps');
+  CheckClose(WrapAngle180(-0.3), Pi - 0.3, 'Wrap180: a negative angle wraps UPWARDS');
+  CheckClose(WrapAngle180(2 * Pi + 0.3), 0.3, 'Wrap180: two turns also wrap');
+  CheckClose(WrapAngle180(Pi), 0, 'Wrap180: exactly Pi gives zero; the interval is HALF-OPEN');
+  Check(RotatedBoundingSize(100, 40, 0, N, K), 'RotBounds: succeeds');
+  Check((N = 100) and (K = 40), Format('RotBounds: zero degrees preserves the size (got %d by %d)', [N, K]));
   RotatedBoundingSize(100, 40, Pi / 2, N, K);
-  Check((N = 40) and (K = 100), Format('RotBounds: четверть - стороны местами (got %d на %d)', [N, K]));
+  Check((N = 40) and (K = 100),
+    Format('RotBounds: a quarter turn swaps the dimensions (got %d by %d)', [N, K]));
   RotatedBoundingSize(100, 40, Pi, N, K);
-  Check((N = 100) and (K = 40), Format('RotBounds: полоборота - тот же (got %d на %d)', [N, K]));
+  Check((N = 100) and (K = 40), Format('RotBounds: a half turn preserves the size (got %d by %d)', [N, K]));
   RotatedBoundingSize(100, 40, Pi / 4, N, K);
-  Check(K > 40, Format('RotBounds: наискось рамка ВЫШЕ исходной (got %d)', [K]));
-  Check(N < 100, Format('RotBounds: и УЖЕ исходной по ширине (got %d)', [N]));
-  CheckClose(N, K, 'RotBounds: у наискось на 45 стороны равны');
+  Check(K > 40, Format('RotBounds: an oblique frame is TALLER than the source (got %d)', [K]));
+  Check(N < 100, Format('RotBounds: and NARROWER than the source (got %d)', [N]));
+  CheckClose(N, K, 'RotBounds: at 45 degrees the dimensions are equal');
   RotatedBoundingSize(100, 40, 0.3, N, K);
   RotatedBoundingSize(100, 40, -0.3, I, J);
-  Check((N = I) and (K = J), 'RotBounds: знак угла не меняет охвата');
-  Check(not RotatedBoundingSize(0, 40, 0.3, N, K), 'RotBounds: нулевая ширина - отказ');
-  Check((N = 0) and (K = 0), 'RotBounds: при отказе размер обнулен');
-  Check(not RotatedBoundingSize(100, 40, 0 / 0.0, N, K), 'RotBounds: NaN в угле - отказ');
+  Check((N = I) and (K = J), 'RotBounds: the angle sign does not change the bounds');
+  Check(not RotatedBoundingSize(0, 40, 0.3, N, K), 'RotBounds: zero width fails');
+  Check((N = 0) and (K = 0), 'RotBounds: failure resets both dimensions');
+  Check(not RotatedBoundingSize(100, 40, 0 / 0.0, N, K), 'RotBounds: a NaN angle fails');
   Pt := InverseRotateMapPoint(Point(70, 30), Point(50, 20), Point(60, 25), qkRightTop, 0);
   Check((Pt.X = 60) and (Pt.Y = 25),
-    Format('InvRotate: нулевой угол - перенос середин (got %d,%d)', [Pt.X, Pt.Y]));
+    Format('InvRotate: a zero angle translates the centers (got %d,%d)', [Pt.X, Pt.Y]));
   Pt := InverseRotateMapPoint(Point(60, 25), Point(50, 20), Point(60, 25), qkRightTop, 0.3);
   Check((Pt.X = 50) and (Pt.Y = 20),
-    Format('InvRotate: середина цели идет в середину источника (got %d,%d)',
+    Format('InvRotate: the target center maps to the source center (got %d,%d)',
       [Pt.X, Pt.Y]));
   Pt := InverseRotateMapPoint(Point(60, 25), Point(50, 20), Point(60, 25), qkLeftBottom, -0.7);
   Check((Pt.X = 50) and (Pt.Y = 20),
-    'InvRotate: и при другой четверти с другим углом - тоже середина');
+    'InvRotate: another quadrant and angle also map center to center');
   Pt := InverseRotateMapPoint(Point(70, 10), Point(50, 20), Point(60, 25), qkRightTop, 0.4);
   Check((Pt.X = 65) and (Pt.Y = 10),
-    Format('InvRotate: правая верхняя дает 65,10 (got %d,%d)', [Pt.X, Pt.Y]));
+    Format('InvRotate: upper right gives 65,10 (got %d,%d)', [Pt.X, Pt.Y]));
   Pt := InverseRotateMapPoint(Point(70, 10), Point(50, 20), Point(60, 25), qkLeftTop, 0.4);
   Check((Pt.X = 47) and (Pt.Y = 38),
-    Format('InvRotate: левая верхняя дает 47,38 (got %d,%d)', [Pt.X, Pt.Y]));
+    Format('InvRotate: upper left gives 47,38 (got %d,%d)', [Pt.X, Pt.Y]));
   Pt := InverseRotateMapPoint(Point(70, 10), Point(50, 20), Point(60, 25), qkLeftBottom, 0.4);
   Check((Pt.X = 35) and (Pt.Y = 30),
-    Format('InvRotate: левая нижняя дает 35,30 (got %d,%d)', [Pt.X, Pt.Y]));
+    Format('InvRotate: lower left gives 35,30 (got %d,%d)', [Pt.X, Pt.Y]));
   Pt := InverseRotateMapPoint(Point(70, 10), Point(50, 20), Point(60, 25), qkRightBottom, 0.4);
   Check((Pt.X = 53) and (Pt.Y = 2),
-    Format('InvRotate: правая нижняя дает 53,2 (got %d,%d)', [Pt.X, Pt.Y]));
+    Format('InvRotate: lower right gives 53,2 (got %d,%d)', [Pt.X, Pt.Y]));
   Pt := InverseRotateMapPoint(Point(70, 30), Point(50, 20), Point(60, 25), qkRightTop, 1e-12);
-  Check((Pt.X = 60) and (Pt.Y = 25), 'InvRotate: почти нулевой угол - тоже перенос');
+  Check((Pt.X = 60) and (Pt.Y = 25), 'InvRotate: a nearly zero angle also translates');
   Second := InverseRotateMapPoint(Point(70, 30), Point(50, 20), Point(60, 25), qkRightTop, 0.5);
-  Check((Second.X <> Pt.X) or (Second.Y <> Pt.Y), 'InvRotate: за пределом идет настоящий расчет');
-  Check(ZoneGridSize(100, 60, 20, 20, N, K), 'ZoneGrid: сработал');
-  Check((N = 5) and (K = 3), Format('ZoneGrid: 100 на 60 по 20 - пять на три (got %d на %d)', [N, K]));
+  Check((Second.X <> Pt.X) or (Second.Y <> Pt.Y), 'InvRotate: beyond the threshold, rotation is calculated');
+  Check(ZoneGridSize(100, 60, 20, 20, N, K), 'ZoneGrid: succeeds');
+  Check((N = 5) and (K = 3),
+    Format('ZoneGrid: 100 by 60 with size 20 gives five by three (got %d by %d)', [N, K]));
   ZoneGridSize(101, 61, 20, 20, N, K);
   Check((N = 6) and (K = 4),
-    Format('ZoneGrid: остаток дает лишнюю зону по каждой оси (got %d на %d)', [N, K]));
+    Format('ZoneGrid: a remainder adds one zone along each axis (got %d by %d)', [N, K]));
   ZoneGridSize(10, 10, 50, 50, N, K);
-  Check((N = 1) and (K = 1), Format('ZoneGrid: зона больше листа - одна (got %d на %d)', [N, K]));
+  Check((N = 1) and (K = 1),
+    Format('ZoneGrid: a zone larger than the page gives one zone (got %d by %d)', [N, K]));
   ZoneGridSize(100, 60, 20, 30, N, K);
-  Check((N = 5) and (K = 2), Format('ZoneGrid: разные зоны по осям (got %d на %d)', [N, K]));
-  Check(not ZoneGridSize(0, 60, 20, 20, N, K), 'ZoneGrid: нулевая ширина - отказ');
-  Check(not ZoneGridSize(100, 60, 0, 20, N, K), 'ZoneGrid: нулевая зона - отказ');
-  Check((N = 0) and (K = 0), 'ZoneGrid: при отказе счет обнулен');
+  Check((N = 5) and (K = 2), Format('ZoneGrid: different zone sizes along the axes (got %d by %d)', [N, K]));
+  Check(not ZoneGridSize(0, 60, 20, 20, N, K), 'ZoneGrid: zero width fails');
+  Check(not ZoneGridSize(100, 60, 0, 20, N, K), 'ZoneGrid: a zero zone size fails');
+  Check((N = 0) and (K = 0), 'ZoneGrid: failure resets the counts');
   Writeln('');
   RectCloud := [PointD(0, 0), PointD(40, 0), PointD(40, 10), PointD(0, 10)];
-  CheckClose(MinAreaRectAngle(RectCloud), 0, 'MinArea: лежачий прямоугольник - угол ноль');
+  CheckClose(MinAreaRectAngle(RectCloud), 0, 'MinArea: a horizontal rectangle has zero angle');
   RectCloud := [PointD(0, 0), PointD(10, 0), PointD(10, 40), PointD(0, 40)];
-  CheckClose(MinAreaRectAngle(RectCloud), Pi / 2, 'MinArea: стоячий прямоугольник - прямой угол');
+  CheckClose(MinAreaRectAngle(RectCloud), Pi / 2, 'MinArea: a vertical rectangle has a right angle');
   Angle30 := Pi / 6;
   SetLength(RectCloud, 4);
   RectCloud[0] := PointD(0, 0);
@@ -1261,10 +1287,10 @@ begin
   RectCloud[2] := PointD(40 * Cos(Angle30) - 10 * Sin(Angle30),
                       40 * Sin(Angle30) + 10 * Cos(Angle30));
   RectCloud[3] := PointD(-10 * Sin(Angle30), 10 * Cos(Angle30));
-  CheckClose(MinAreaRectAngle(RectCloud), Angle30, 'MinArea: поворот на 30 градусов узнан');
+  CheckClose(MinAreaRectAngle(RectCloud), Angle30, 'MinArea: a 30-degree rotation is recognized');
   RectCloud := [PointD(0, 0), PointD(40, 0), PointD(40, 10), PointD(0, 10),
              PointD(20, 5), PointD(3, 7), PointD(38, 2)];
-  CheckClose(MinAreaRectAngle(RectCloud), 0, 'MinArea: внутренние точки ответа не меняют');
+  CheckClose(MinAreaRectAngle(RectCloud), 0, 'MinArea: interior points do not change the answer');
   Angle30 := 5 * Pi / 6;
   SetLength(RectCloud, 4);
   RectCloud[0] := PointD(0, 0);
@@ -1272,27 +1298,27 @@ begin
   RectCloud[2] := PointD(40 * Cos(Angle30) - 10 * Sin(Angle30),
                       40 * Sin(Angle30) + 10 * Cos(Angle30));
   RectCloud[3] := PointD(-10 * Sin(Angle30), 10 * Cos(Angle30));
-  CheckClose(MinAreaRectAngle(RectCloud), Angle30, 'MinArea: ответ приведен к [0, Pi)');
+  CheckClose(MinAreaRectAngle(RectCloud), Angle30, 'MinArea: the answer is normalized to [0, Pi)');
   RectCloud := [PointD(0, 0), PointD(10, 10)];
-  CheckClose(MinAreaRectAngle(RectCloud), Pi / 4, 'MinArea: две точки задают направление');
+  CheckClose(MinAreaRectAngle(RectCloud), Pi / 4, 'MinArea: two points define a direction');
   RectCloud := [PointD(0, 0), PointD(5, 0), PointD(9, 0), PointD(2, 0)];
-  CheckClose(MinAreaRectAngle(RectCloud), 0, 'MinArea: коллинеарные дают направление прямой');
-  Check(MinAreaRectAngle(nil) < 0, 'MinArea: пусто - отказ');
+  CheckClose(MinAreaRectAngle(RectCloud), 0, 'MinArea: collinear points give the line direction');
+  Check(MinAreaRectAngle(nil) < 0, 'MinArea: empty input fails');
   RectCloud := [PointD(3, 4)];
-  Check(MinAreaRectAngle(RectCloud) < 0, 'MinArea: одна точка - отказ');
+  Check(MinAreaRectAngle(RectCloud) < 0, 'MinArea: one point fails');
   RectCloud := [PointD(3, 4), PointD(3, 4), PointD(3, 4), PointD(3, 4)];
-  Check(MinAreaRectAngle(RectCloud) < 0, 'MinArea: все точки совпали - отказ');
+  Check(MinAreaRectAngle(RectCloud) < 0, 'MinArea: all coincident points fail');
   RectCloud := [PointD(0, 0), PointD(20, 0), PointD(2, 3)];
   Angle := MinAreaRectAngle(RectCloud);
-  CheckClose(Angle, 0, 'MinArea: у треугольника рамка по длинной стороне');
+  CheckClose(Angle, 0, 'MinArea: a triangle has its frame along the long side');
   RectCloud := [PointD(0, 0), PointD(10, -10)];
   CheckClose(MinAreaRectAngle(RectCloud), 3 * Pi / 4,
-    'MinArea: отрезок вниз приведен к [0, Pi), а не отрицателен');
+    'MinArea: a downward segment is normalized to [0, Pi), not negative');
   RectCloud := [PointD(0, 0), PointD(40, 0), PointD(40, 10), PointD(0, 10)];
   Angle := MinAreaRectAngle(RectCloud, Longer, Shorter);
-  CheckClose(Longer, 40, 'MinArea: длинная сторона рамки');
-  CheckClose(Shorter, 10, 'MinArea: короткая сторона рамки');
-  Check(Longer >= Shorter, 'MinArea: длинная не меньше короткой');
+  CheckClose(Longer, 40, 'MinArea: the long side of the frame');
+  CheckClose(Shorter, 10, 'MinArea: the short side of the frame');
+  Check(Longer >= Shorter, 'MinArea: the long side is at least as long as the short side');
   Angle30 := Pi / 6;
   SetLength(RectCloud, 4);
   RectCloud[0] := PointD(0, 0);
@@ -1301,10 +1327,10 @@ begin
                       40 * Sin(Angle30) + 10 * Cos(Angle30));
   RectCloud[3] := PointD(-10 * Sin(Angle30), 10 * Cos(Angle30));
   Angle := MinAreaRectAngle(RectCloud, Longer, Shorter);
-  CheckClose(Longer, 40, 'MinArea: длинная под углом та же');
-  CheckClose(Shorter, 10, 'MinArea: короткая под углом та же');
+  CheckClose(Longer, 40, 'MinArea: rotation preserves the long side');
+  CheckClose(Shorter, 10, 'MinArea: rotation preserves the short side');
   Angle := MinAreaRectAngle(nil, Longer, Shorter);
-  Check((Angle < 0) and (Longer = 0) and (Shorter = 0), 'MinArea: при отказе размеры обнулены');
+  Check((Angle < 0) and (Longer = 0) and (Shorter = 0), 'MinArea: failure resets both dimensions');
   Writeln(Format('PASSED %d, FAILED %d', [Passed, Failed]));
   if Failed > 0 then
     Halt(1);

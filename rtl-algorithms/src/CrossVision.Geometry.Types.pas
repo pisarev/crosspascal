@@ -1,4 +1,10 @@
-{ Copyright © 2026 Yuriy Pisarev                     }
+{ ************************************************************************** }
+{                                                                            }
+{ CrossVision.Geometry.Types                                                 }
+{                                                                            }
+{ Copyright © 2026 Yuriy Pisarev (ypisareff@outlook.com)                     }
+{                                                                            }
+{ ************************************************************************** }
 
 unit CrossVision.Geometry.Types;
 

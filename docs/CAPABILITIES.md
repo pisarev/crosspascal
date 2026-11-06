@@ -1,18 +1,24 @@
-# Capabilities of this source preview
+# Windows x64 capabilities
 
-This table describes the files prepared for private testing. A result from a larger internal package does not extend the contents or support of this snapshot.
+The early access SDK supports Delphi 13.2 and Lazarus 4.8 with FPC 3.2.2. Keep the repository folders from the same SDK together. See the [Windows setup guide](WINDOWS-EARLY-ACCESS.md) for installation and project paths.
 
-| Component | Included here | Evidence and current limit |
+| Route | Example | Verified result |
 | --- | --- | --- |
-| Geometry and DisjointSet | Pascal units, console tests, and a Windows launcher | Final prepared sources tested on Windows with Delphi 37 Win64: Geometry 541 passed, DisjointSet 9 passed, no failures. |
-| Leptonica bindings | 29 units, Delphi package, test and tool source, notices | A source subset of a separately tested package. Its native DLL and six codec fixtures are absent. No fresh full native suite was run for this subset. |
-| Converter | 26 Python source files | Architectural source snapshot. Required family modules are omitted, so it is not an installable Python package or a supported CLI. |
-| TVM | CPU build-options template and upstream license/NOTICE | No TVM source distribution, compiler, runtime DLL, or compiled model is included. |
-| OpenCV | Package description | Native package acceptance and distribution are still pending. |
-| OmDet | No model or runnable inference bundle | A separate Windows CPU investigation accepted two fixed cases under an application-level numerical contract. This does not make OmDet runnable from this preview. |
+| Pure Pascal geometry and sets | Geometry and DisjointSet | 541 and 9 checks passed, respectively, in both compilers |
+| OpenCV image access | CrossCVHello | Pixel sum of 84 and 12 nonzero pixels in both compilers |
+| OpenCV image resize | LoadResizeSave | The GUI opened a PNG and saved identical 640 × 480 outputs in both compilers |
+| Document imaging | LeptonicaHello | A 256 × 96 grayscale gradient in both compilers |
+| Interactive image processing | MarkerLite | The GUI opened a PNG and saved identical grayscale outputs in both compilers. The example also exposes Sauvola and Canny |
+| Video I/O | Native OpenCV bridge | The FFmpeg backend wrote and read a test video |
+| CUDA language generation | Converter and QwenChat | The converter built the bundle for the detected architecture. Both IDE builds returned the same six tokens for the first-run prompt |
+| CPU vision | Converter and VisionModels | Five pinned application profiles produced finite classifications or detections in both compilers |
 
-The OmDet investigation retained the original strict raw comparison result as a failure. It accepted the measured differences for the two tested inputs after checking probabilities, box corners, and discrete decisions. Pascal outputs matched the TVM output bit patterns. Broader accuracy and arbitrary-input behavior remain unverified.
+## Model profiles
 
-Linux, FPC, CUDA, hosted CI, and other model families are not supported by this source preview. Historical results for those components remain part of the wider project record.
+The Qwen profile uses Qwen2.5-0.5B-Instruct in FP32 with all 24 layers, batch size one, and a 64-token context and prefill chunk. The converter detects the local CUDA architecture and also accepts a manually selected destination architecture. The application checks its CUDA device against the model bundle. The manual target was checked in Preview. Generation was checked for a build using the detected target.
 
-See [known limitations](KNOWN-LIMITATIONS.md) before choosing an example.
+CPU profiles include SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd. The companion source archive provides the matching inputs, exact source identities, and notices. Classifiers return ranked scores. Detectors return boxes, class IDs, and scores. Application results are scoped to the pinned profiles and tested inputs.
+
+## Native setup
+
+The SDK installer builds OpenCV and Leptonica from their companion source assets. The ordinary online setup fetched the pinned native build inputs in a clean Windows SDK installation. The TVM installer uses the official Apache TVM 0.26.0 and Apache TVM FFI 0.1.14 Windows wheels. See [known limitations](KNOWN-LIMITATIONS.md) for the scope of these checks.

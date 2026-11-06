@@ -1,0 +1,118 @@
+{
+  "schema": "crosspascal.cpu-vision-profiles.v1",
+  "description": "Explicit CPU float32 consumer profiles. Model binaries are external inputs; profile support does not constitute model-quality or release acceptance.",
+  "models": [
+    {
+      "id": "squeezenet",
+      "title": "SqueezeNet 1.1 (trained Model Zoo)",
+      "task_kind": "classification",
+      "adapter": "yolo11",
+      "input_name": "data",
+      "input_size": 224,
+      "class_count": 1000,
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "score_threshold": 0.25,
+      "nms_threshold": 0.45,
+      "accepted_source_sha256": [
+        "1eeff551a67ae8d565ca33b572fc4b66e3ef357b0eb2863bb9ff47a918cc4088"
+      ],
+      "source_url": "https://huggingface.co/onnxmodelzoo/squeezenet1.1-7/tree/61e525224ad479521059f4586bcacf50ad3627ca",
+      "source_license": "Apache-2.0",
+      "source_note": "The source hash identifies the trained ONNX file: input data [1,3,224,224], output squeezenet0_flatten0_reshape0 [1,1000]. The final node is Reshape; no Softmax is present. The old ONNX light test fixture is excluded."
+    },
+    {
+      "id": "resnet50",
+      "title": "ResNet50 v1 (ONNX Model Zoo)",
+      "task_kind": "classification",
+      "adapter": "yolo11",
+      "input_name": "data",
+      "input_size": 224,
+      "class_count": 1000,
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "score_threshold": 0.25,
+      "nms_threshold": 0.45,
+      "accepted_source_sha256": [
+        "3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526"
+      ],
+      "source_url": "https://huggingface.co/onnxmodelzoo/resnet50-v1-12/tree/1f95315d8bd3b3ca2ceabe54d274e0cdf5a83bbe",
+      "source_license": "Apache-2.0",
+      "source_note": "Original trained ONNX Model Zoo ResNet50 v1, opset 12. Input data binds symbolic batch N to 1; output resnetv17_dense0_fwd is [1,1000]. No ONNX rewrite or added softmax. Direct square resize with the declared RGB normalization; upstream benchmark equivalence is not claimed."
+    },
+    {
+      "id": "yolo11n-cls",
+      "title": "YOLO11n classification",
+      "task_kind": "classification",
+      "adapter": "yolo11",
+      "input_name": "images",
+      "input_size": 224,
+      "class_count": 1000,
+      "mean": [],
+      "std": [],
+      "score_threshold": 0.25,
+      "nms_threshold": 0.45,
+      "accepted_source_sha256": [
+        "218f8ef1d4005d1bab740a805dbf994b1dfddb83fd54880245f0a0db17aa1844"
+      ],
+      "source_url": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n-cls.pt",
+      "source_license": "AGPL-3.0",
+      "source_note": "Prospective export of the pinned official YOLO11n classification checkpoint, SHA-256 c62d41bf9625777760018bf914d2e6cd472420ccd01706d97a61cb6c82502bd7, using Ultralytics 8.4.146, CPU FP32, batch 1, opset 17 and no simplifier. Output output0 is [1,1000]; this profile adds no mean/std or extra softmax. Original model terms and exporter source accompany the source pack; the own helper's MIT notice does not replace upstream terms."
+    },
+    {
+      "id": "yolo11n",
+      "title": "YOLO11n detection",
+      "task_kind": "object_detection",
+      "adapter": "yolo11",
+      "input_name": "images",
+      "input_size": 640,
+      "class_count": 80,
+      "mean": [],
+      "std": [],
+      "score_threshold": 0.25,
+      "nms_threshold": 0.45,
+      "accepted_source_sha256": [
+        "7951f527c60cee719f9b40bb71071a3f08dc1214061dcd13639d4e4920b8d2b0",
+        "d8c8a19fd65ca76d702dd4b756a1922682d7ef9546d163dcd1bbda4522fdfcb2"
+      ],
+      "source_url": "https://huggingface.co/Ultralytics/YOLO11/tree/5599de6f3b0ef95f98f37530ed0f3bf149c10b37",
+      "source_license": "AGPL-3.0",
+      "source_note": "Prospective export of official yolo11n.pt, SHA-256 0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1, using Ultralytics 8.4.146, CPU FP32, batch 1, opset 17, no simplifier and no exported NMS. Output output0 is [1,84,8400], a dense 4+80 head. Preserve the upstream model licence and accompanying exporter source. Use the source pack's fixed-slice ONNX for new conversions."
+    },
+    {
+      "id": "rtdetr-r18vd",
+      "title": "RT-DETR R18vd detection",
+      "task_kind": "object_detection",
+      "adapter": "rtdetr",
+      "input_name": "pixel_values",
+      "input_size": 640,
+      "class_count": 80,
+      "mean": [],
+      "std": [],
+      "score_threshold": 0.3,
+      "nms_threshold": 0.45,
+      "accepted_source_sha256": [
+        "4750cf32e9e7e3ef5d8dea600377246ce4c408dec5f418d103d41c39edc01c17"
+      ],
+      "source_url": "https://huggingface.co/PekingU/rtdetr_r18vd/tree/ac77a11ff0170a41b771c03264987f8ce2b0d753",
+      "source_license": "Apache-2.0",
+      "source_note": "Prospective export of PekingU/rtdetr_r18vd at the recorded revision; model.safetensors SHA-256 fe87a5a30f5daf298d10794c7682a63b6107986f97d6a770ba948d89e4340093. Transformers 4.45.2, CPU FP32, batch 1 and opset 17 produce logits [1,300,80] and normalized pred_boxes [1,300,4]. Best class per query, sigmoid once, threshold 0.3. This adapter does not apply NMS; the numeric nms_threshold is an unused catalogue field."
+    }
+  ]
+}

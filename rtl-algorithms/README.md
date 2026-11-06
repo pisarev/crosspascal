@@ -1,12 +1,18 @@
 # RTL algorithms
 
-This package contains `CrossVision.Geometry`, `CrossVision.Geometry.Types`, and `CrossVision.DisjointSet`, with console tests.
+This package contains `CrossVision.Geometry`, `CrossVision.Geometry.Types`, and `CrossVision.DisjointSet`, with console tests. It also includes the pure Pascal `CrossVision.Image`, `Binarize`, `Morphology`, `Contour`, and `Curve` units needed by the image examples. These algorithms have no direct OpenCV or Leptonica dependency.
 
-The final prepared sources passed 541 Geometry checks and 9 DisjointSet checks with Delphi 37 Win64 on Windows, with no failures. Source preparation is complete.
+On Windows x64, the two console tests passed 541 Geometry checks and 9 DisjointSet checks with Delphi 13.2 and Lazarus 4.8. These programs test Geometry and DisjointSet.
 
 ## Run the example
 
-From the repository root, run `powershell -NoProfile -File scripts/smoke-win64.ps1`. The launcher defaults to a separate temporary directory. Keep any custom output location outside the source tree. Other compilers and platforms are not covered by this preview.
+Open `tests/TestGeometry.dproj` or `tests/TestDisjointSet.dproj` in Delphi 13.2. Select Windows 64-bit and either Debug or Release, then build and run the console project. The executables appear in `build/Win64/<configuration>/`.
+
+In Lazarus 4.8, open `tests/TestGeometry.lpi` or `tests/TestDisjointSet.lpi`. Build for Windows x64 and run. The executables appear in `tests/bin/lazarus-win64/`. Both IDEs use the relative `../src` unit path. Each executable prints its passed and failed counts and returns exit code 1 if a check fails.
+
+## Image algorithms
+
+For the graphical image route, open `../examples/marker-lite/MarkerLite.dproj` in Delphi or `../examples/marker-lite/MarkerLite.lpi` in Lazarus and follow its README. Backend adapters are in `../vision`. The full image source closure is Image, Binarize, Morphology, Contour, Curve, Geometry, Geometry.Types, and DisjointSet.
 
 ## Geometry conventions and edge cases
 
@@ -49,4 +55,4 @@ The notes below describe the current implementation and its input requirements. 
 
 ## License
 
-The source uses the [MIT license](LICENSE).
+Original code uses the [MIT license](LICENSE). `CrossVision.Binarize.pas` and `CrossVision.Curve.pas` use [MPL 1.1](licenses/MPL-1.1.txt); see the [source attribution and changes](licenses/CROSSFPCCOMMON-NOTICE.md).

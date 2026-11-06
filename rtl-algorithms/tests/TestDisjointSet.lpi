@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12" />
+    <General>
+      <Flags>
+        <MainUnitHasCreateFormStatements Value="False" />
+        <MainUnitHasTitleStatement Value="False" />
+        <MainUnitHasScaledStatement Value="False" />
+      </Flags>
+      <Title Value="TestDisjointSet" />
+      <ResourceType Value="res" />
+    </General>
+    <BuildModes>
+      <Item Name="Release" Default="True" />
+    </BuildModes>
+    <Units>
+      <Unit>
+        <Filename Value="TestDisjointSet.dpr" />
+        <IsPartOfProject Value="True" />
+      </Unit>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11" />
+    <Target>
+      <Filename Value="bin/lazarus-win64/TestDisjointSet" />
+    </Target>
+    <SearchPaths>
+      <OtherUnitFiles Value="../src" />
+      <UnitOutputDirectory Value="bin/lazarus-win64/units" />
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <SyntaxMode Value="Delphi" />
+      </SyntaxOptions>
+    </Parsing>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="False" />
+        </Win32>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+</CONFIG>
