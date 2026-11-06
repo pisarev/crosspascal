@@ -20,7 +20,7 @@ type
     FBundle: string;
     FRuntime: string;
     FPrompt: string;
-    FMaxTokens: Int64;
+    FOptions: TQwenGenerationOptions;
     FResult: TQwenCudaResult;
     FErrorText: string;
     FProgressText: string;
@@ -32,7 +32,7 @@ type
     procedure Execute; override;
   public
     constructor Create(const Form: TQwenChatForm; const Bundle, Runtime, Prompt: string;
-      const MaxTokens: Int64);
+      const Options: TQwenGenerationOptions);
   end;
 
   TQwenChatForm = class(TForm)
@@ -42,6 +42,14 @@ type
     FPrompt: TMemo;
     FOutput: TMemo;
     FMaxTokens: TEdit;
+    FGeneration: TGroupBox;
+    FSampling: TComboBox;
+    FEffort: TComboBox;
+    FTemperature: TEdit;
+    FTopP: TEdit;
+    FTopK: TEdit;
+    FRepetitionPenalty: TEdit;
+    FSeed: TEdit;
     FRun: TButton;
     FStop: TButton;
     FBundleBrowse: TButton;
@@ -60,6 +68,7 @@ type
     procedure WorkerTick(Sender: TObject);
     procedure CheckClose(Sender: TObject; var CanClose: Boolean);
     procedure SetRunning(const Value: Boolean);
+    function ReadGenerationOptions: TQwenGenerationOptions;
   public
     constructor Create(AOwner: TComponent); override;
     procedure SetStatus(const MessageText: string);
@@ -73,7 +82,8 @@ procedure WriteNewReport(const Path, JSONText: string);
 implementation
 
 uses
-  {$IFDEF FPC}Windows, Dialogs{$ELSE}Winapi.Windows, Vcl.Dialogs, Vcl.FileCtrl{$ENDIF};
+  {$IFDEF FPC}Windows, Dialogs{$ELSE}Winapi.Windows, Vcl.Dialogs, Vcl.FileCtrl{$ENDIF},
+  CrossPascal.Json;
 
 function ChooseBundleDirectory(const Caption: string; var Directory: string;
   const Owner: TWinControl): Boolean;
@@ -141,7 +151,7 @@ begin
 end;
 
 constructor TQwenWorker.Create(const Form: TQwenChatForm; const Bundle, Runtime, Prompt: string;
-  const MaxTokens: Int64);
+  const Options: TQwenGenerationOptions);
 begin
   inherited Create(True);
   FreeOnTerminate := False;
@@ -149,7 +159,7 @@ begin
   FBundle := Bundle;
   FRuntime := Runtime;
   FPrompt := Prompt;
-  FMaxTokens := MaxTokens;
+  FOptions := Options;
 end;
 
 function TQwenWorker.StopRequested: Boolean;
@@ -172,7 +182,7 @@ end;
 procedure TQwenWorker.Execute;
 begin
   try
-    FResult := RunQwenCuda(FBundle, FRuntime, FPrompt, FMaxTokens, ReportProgress, StopRequested);
+    FResult := RunQwenCuda(FBundle, FRuntime, FPrompt, FOptions, ReportProgress, StopRequested);
   except
     on EQwenCudaCancelled do
       FStoppedBeforeGeneration := True;
@@ -184,6 +194,7 @@ end;
 constructor TQwenChatForm.Create(AOwner: TComponent);
 var
   LabelControl: TLabel;
+  Options: TQwenGenerationOptions;
 
   function AddLabel(const Text: string; const Y: Integer): TLabel;
   begin
@@ -191,6 +202,27 @@ var
     Result.Parent := Self;
     Result.Caption := Text;
     Result.SetBounds(16, Y, 860, 20);
+  end;
+
+  procedure PlaceSetting(const Control: TWinControl; const Text: string;
+    const X, Y, Width: Integer);
+  var
+    SettingLabel: TLabel;
+  begin
+    SettingLabel := TLabel.Create(Self);
+    SettingLabel.Parent := FGeneration;
+    SettingLabel.Caption := Text;
+    SettingLabel.SetBounds(X, Y, Width, 20);
+    SettingLabel.FocusControl := Control;
+    Control.Parent := FGeneration;
+    Control.SetBounds(X, Y + 20, Width, 26);
+  end;
+
+  function AddSetting(const CaptionText, DefaultText: string; const X, Width: Integer): TEdit;
+  begin
+    Result := TEdit.Create(Self);
+    PlaceSetting(Result, CaptionText, X, 18, Width);
+    Result.Text := DefaultText;
   end;
 
 begin
@@ -237,40 +269,67 @@ begin
   AddLabel('Prompt (the chat template and generated tokens share the context window)', 176);
   FPrompt := TMemo.Create(Self);
   FPrompt.Parent := Self;
-  FPrompt.SetBounds(16, 200, 868, 100);
+  FPrompt.SetBounds(16, 200, 868, 76);
   FPrompt.Anchors := [akLeft, akTop, akRight];
   FPrompt.ScrollBars := ssVertical;
   FPrompt.Lines.Text := 'Say hello in English.';
-  AddLabel('Max new tokens (0 = Auto)', 316);
+  Options := DefaultQwenGenerationOptions;
+  FGeneration := TGroupBox.Create(Self);
+  FGeneration.Parent := Self;
+  FGeneration.Caption := 'Generation settings';
+  FGeneration.SetBounds(16, 282, 868, 132);
+  FGeneration.Anchors := [akLeft, akTop, akRight];
+  FTemperature := AddSetting('Temperature', FloatToStr(Options.Temperature, JSONInvariantFormat), 12, 98);
+  FTopP := AddSetting('Top-P', FloatToStr(Options.TopP, JSONInvariantFormat), 122, 72);
+  FTopK := AddSetting('Top-K', IntToStr(Options.TopK), 206, 72);
+  FRepetitionPenalty := AddSetting('Repetition penalty',
+    FloatToStr(Options.RepetitionPenalty, JSONInvariantFormat), 290, 125);
+  FSeed := AddSetting('Seed (blank = random)', '', 427, 155);
+  FSampling := TComboBox.Create(Self);
+  PlaceSetting(FSampling, 'Token selection', 12, 72, 265);
+  FSampling.Style := csDropDownList;
+  FSampling.Items.Add('Default (sample in Auto)');
+  FSampling.Items.Add('Sample');
+  FSampling.Items.Add('Greedy');
+  FSampling.ItemIndex := Ord(Options.Sampling);
+  FEffort := TComboBox.Create(Self);
+  PlaceSetting(FEffort, 'Answer effort (Auto only)', 290, 72, 245);
+  FEffort.Style := csDropDownList;
+  FEffort.Items.Add('Full context');
+  FEffort.Items.Add('Brief (128 tokens)');
+  FEffort.Items.Add('Balanced (512 tokens)');
+  FEffort.Items.Add('Detailed (1024 tokens)');
+  FEffort.ItemIndex := Ord(Options.Effort);
+  AddLabel('Max new tokens (0 = Auto)', 434);
   FMaxTokens := TEdit.Create(Self);
   FMaxTokens.Parent := Self;
-  FMaxTokens.SetBounds(180, 310, 110, 28);
+  FMaxTokens.SetBounds(180, 428, 110, 28);
   FMaxTokens.NumbersOnly := True;
   FMaxTokens.Text := IntToStr(QwenDefaultMaxNewTokens);
   FRun := TButton.Create(Self);
   FRun.Parent := Self;
   FRun.Caption := 'Run on GPU';
-  FRun.SetBounds(300, 310, 135, 30);
+  FRun.SetBounds(300, 428, 135, 30);
   FRun.OnClick := RunClick;
   FStop := TButton.Create(Self);
   FStop.Parent := Self;
   FStop.Caption := 'Stop';
-  FStop.SetBounds(445, 310, 90, 30);
+  FStop.SetBounds(445, 428, 90, 30);
   FStop.Enabled := False;
   FStop.OnClick := StopClick;
   FSave := TButton.Create(Self);
   FSave.Parent := Self;
   FSave.Caption := 'Save result...';
-  FSave.SetBounds(545, 310, 135, 30);
+  FSave.SetBounds(545, 428, 135, 30);
   FSave.Enabled := False;
   FSave.OnClick := SaveClick;
-  FStatus := AddLabel('Select a converted bundle, enter a short prompt, and click Run on GPU.', 354);
-  FStatus.SetBounds(16, 354, 868, 44);
+  FStatus := AddLabel('Select a converted bundle, enter a short prompt, and click Run on GPU.', 468);
+  FStatus.SetBounds(16, 468, 868, 44);
   FStatus.Anchors := [akLeft, akTop, akRight];
   FStatus.WordWrap := True;
   FOutput := TMemo.Create(Self);
   FOutput.Parent := Self;
-  FOutput.SetBounds(16, 408, 868, 266);
+  FOutput.SetBounds(16, 520, 868, 154);
   FOutput.Anchors := [akLeft, akTop, akRight, akBottom];
   FOutput.ReadOnly := True;
   FOutput.ScrollBars := ssVertical;
@@ -309,22 +368,48 @@ begin
   FRuntimeBrowse.Enabled := not Value;
   FPrompt.Enabled := not Value;
   FMaxTokens.Enabled := not Value;
+  FGeneration.Enabled := not Value;
   FSave.Enabled := not Value and (FLastJSON <> '');
+end;
+
+function TQwenChatForm.ReadGenerationOptions: TQwenGenerationOptions;
+
+  function ReadDecimal(const Edit: TEdit; const CaptionText: string): Double;
+  begin
+    if not TryStrToFloat(StringReplace(Trim(Edit.Text), ',', '.', [rfReplaceAll]), Result,
+      JSONInvariantFormat) then
+        raise EQwenCuda.Create(CaptionText + ' must be a number.');
+  end;
+
+begin
+  Result := DefaultQwenGenerationOptions;
+  if not TryStrToInt64(Trim(FMaxTokens.Text), Result.MaxNewTokens) then
+    raise EQwenCuda.Create('Max new tokens must be 0 (Auto) or a positive whole number.');
+  Result.Sampling := TQwenSamplingMode(FSampling.ItemIndex);
+  Result.Effort := TQwenAnswerEffort(FEffort.ItemIndex);
+  Result.Temperature := ReadDecimal(FTemperature, 'Temperature');
+  Result.TopP := ReadDecimal(FTopP, 'Top-P');
+  if not TryStrToInt(Trim(FTopK.Text), Result.TopK) then
+    raise EQwenCuda.Create('Top-K must be a whole number.');
+  Result.RepetitionPenalty := ReadDecimal(FRepetitionPenalty, 'Repetition penalty');
+  if Trim(FSeed.Text) <> '' then
+    if not TryStrToInt64(Trim(FSeed.Text), Result.Seed) or (Result.Seed < 0) then
+      raise EQwenCuda.Create('Seed must be blank or a nonnegative whole number.');
+  ValidateQwenGenerationOptions(Result);
 end;
 
 procedure TQwenChatForm.RunClick(Sender: TObject);
 var
-  MaxTokens: Int64;
+  Options: TQwenGenerationOptions;
 begin
   if Assigned(FWorker) then
     Exit;
-  if not TryStrToInt64(Trim(FMaxTokens.Text), MaxTokens) or (MaxTokens < 0) then
-    raise Exception.Create('Max new tokens must be 0 (Auto) or a positive whole number.');
+  Options := ReadGenerationOptions;
   FLastJSON := '';
   FOutput.Clear;
   SetRunning(True);
   try
-    FWorker := TQwenWorker.Create(Self, FBundle.Text, FRuntime.Text, Trim(FPrompt.Text), MaxTokens);
+    FWorker := TQwenWorker.Create(Self, FBundle.Text, FRuntime.Text, Trim(FPrompt.Text), Options);
     FWorker.Start;
     FTimer.Enabled := True;
   except

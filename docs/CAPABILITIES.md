@@ -10,7 +10,7 @@ The early access SDK supports Delphi 13.2 and Lazarus 4.8 with FPC 3.2.2. Keep t
 | Document imaging | LeptonicaHello | A 256 × 96 grayscale gradient in both compilers |
 | Interactive image processing | MarkerLite | The GUI opened a PNG and saved identical grayscale outputs in both compilers. The example also exposes Sauvola and Canny |
 | Video I/O | Native OpenCV bridge | The FFmpeg backend wrote and read a test video |
-| CUDA language generation | Converter and QwenChat | Convert a pinned Qwen2.5-Instruct model or a compatible local dense Qwen checkpoint for the detected or selected CUDA architecture. QwenChat supports Auto, a manual answer length, and Stop |
+| CUDA language generation | Converter and QwenChat | Convert a pinned Qwen2.5-Instruct model or a compatible local dense Qwen checkpoint for the detected or selected CUDA architecture. QwenChat supports configurable sampling, Auto answer budgets, a manual token limit, and Stop |
 | CPU vision | Converter and VisionModels | Five pinned application profiles produced finite classifications or detections in both compilers |
 
 ## Model profiles

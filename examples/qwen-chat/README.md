@@ -1,6 +1,6 @@
 # Qwen CUDA chat in Delphi and Lazarus
 
-QwenChat loads a converted Qwen2.5-Instruct bundle and generates an answer on NVIDIA GPU 0. Open the Delphi or Lazarus project. Both CUDA profiles use FP32 and batch 1. Auto is the default. Generation stops at EOS, when you click Stop, or when the context window is full.
+QwenChat loads a converted Qwen2.5 bundle and generates an answer on NVIDIA GPU 0. Open the Delphi or Lazarus project. The CUDA profiles use FP32 and batch 1. Auto with the full context is the default.
 
 The source-neutral `qwen2-compatible-cuda-f32-2048-v1` bundle is a third **profile type**, not a third pinned checkpoint. It describes compatible local dense Qwen2 text models via `model.json.qwen_compatibility` (`crosspascal.qwen2-compatible.v1`). The same QwenChat form and four runtime entry points accept it, with independently derived parameter counts, exact tensor index/shape checks, local source-tree SHA-256 and conservative GPU and host-memory admission before loading. Its source is deliberately identified as `local-sha256`, with no asserted official repository or revision. This does not validate an arbitrary tokenizer, MoE, multimodal, quantized or sliding-window model.
 
@@ -36,14 +36,28 @@ The form is created in Pascal code; there is no missing `.dfm` file. You do not 
 
 ## Run a short prompt
 
-1. Run the project in your IDE or open the compiled `QwenChat.exe` in File Explorer.
+1. Open the supplied Lazarus-built `bin\lazarus-win64\QwenChat.exe` in File Explorer, or build and run the project in your IDE.
 2. Beside **Converted model bundle**, click **Browse** and select the directory containing `model.json`.
 3. Beside **Pinned CUDA runtime directory**, select `crosspascal-tvm/runtime/windows-x64-cuda`. The application fills this in automatically when it can locate the sibling repository.
 4. Enter a short prompt, for example `Say hello in English.`. Leave **Max new tokens** at `0` for Auto, or enter a positive whole number to request a shorter answer.
 5. Click **Run on GPU**. The status line shows validation, weight loading and generation progress. The result identifies the actual GPU and compute capability, then shows the generated text.
 6. Use **Save result** to save a new JSON report if needed. Existing reports are not overwritten. Close the application normally after the current operation finishes.
 
-The prompt, chat template and answer share a 2,048-token runtime window in both modes. The result shows how many tokens were available for the answer. The remaining window bounds any larger manual request. Auto uses Qwen sampling. Manual mode selects the highest-scoring token at each step. Click **Stop** to keep the partial answer once the current operation finishes.
+The prompt, chat template and answer share the bundle's context window. The result shows how many tokens were available for the answer. The remaining window bounds any larger manual request. Click **Stop** to keep the partial answer once the current operation finishes.
+
+## Adjust generation
+
+| Setting | Default | Effect |
+| --- | --- | --- |
+| Token selection | Default | Samples when Max new tokens is 0 and uses Greedy for a positive limit. Choose Sample or Greedy to use that method in either mode. |
+| Temperature | 0.7 | Lower values favour the most likely words. Higher values give other words a greater chance. Range 0.01–2. |
+| Top-P | 0.8 | Samples from the smallest set that reaches this share of the probability mass among the Top-K candidates. Range greater than 0 through 1. |
+| Top-K | 20 | Considers at most this many candidates per step. Range 1–128. |
+| Repetition penalty | 1.1 | Reduces the likelihood of tokens already present in the prompt or answer. Use 1 to disable it. Range 1–2. |
+| Seed | Blank | Uses a fresh seed for sampling. Enter a whole number from 0 through 4294967295 to repeat a comparison with the same model, settings and environment. |
+| Answer effort | Full context | In Auto, limits the answer to the remaining window, or to 128, 512 or 1024 tokens if you choose Brief, Balanced or Detailed. EOS can end the answer sooner. |
+
+Greedy selects the highest-scoring token at each step. Temperature, Top-P, Top-K, the repetition penalty and the seed apply to sampling. Answer effort controls only the token budget in Auto. A positive Max new tokens setting takes precedence. Saved JSON reports include the actual selection method and, for sampling, the parameters and seed used.
 
 ## What the example checks
 
