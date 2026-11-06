@@ -20,17 +20,19 @@ type
     FBundle: string;
     FRuntime: string;
     FPrompt: string;
-    FMaxTokens: Integer;
+    FMaxTokens: Int64;
     FResult: TQwenCudaResult;
     FErrorText: string;
     FProgressText: string;
+    FStoppedBeforeGeneration: Boolean;
+    function StopRequested: Boolean;
     procedure ShowProgress;
     procedure ReportProgress(const MessageText: string);
   protected
     procedure Execute; override;
   public
     constructor Create(const Form: TQwenChatForm; const Bundle, Runtime, Prompt: string;
-      const MaxTokens: Integer);
+      const MaxTokens: Int64);
   end;
 
   TQwenChatForm = class(TForm)
@@ -41,6 +43,7 @@ type
     FOutput: TMemo;
     FMaxTokens: TEdit;
     FRun: TButton;
+    FStop: TButton;
     FBundleBrowse: TButton;
     FRuntimeBrowse: TButton;
     FSave: TButton;
@@ -51,6 +54,7 @@ type
     procedure BrowseBundle(Sender: TObject);
     procedure BrowseRuntime(Sender: TObject);
     procedure RunClick(Sender: TObject);
+    procedure StopClick(Sender: TObject);
     procedure SaveClick(Sender: TObject);
     procedure WorkerTerminated(Sender: TObject);
     procedure WorkerTick(Sender: TObject);
@@ -137,7 +141,7 @@ begin
 end;
 
 constructor TQwenWorker.Create(const Form: TQwenChatForm; const Bundle, Runtime, Prompt: string;
-  const MaxTokens: Integer);
+  const MaxTokens: Int64);
 begin
   inherited Create(True);
   FreeOnTerminate := False;
@@ -148,6 +152,11 @@ begin
   FMaxTokens := MaxTokens;
 end;
 
+function TQwenWorker.StopRequested: Boolean;
+begin
+  Result := Terminated;
+end;
+
 procedure TQwenWorker.ReportProgress(const MessageText: string);
 begin
   FProgressText := MessageText;
@@ -156,14 +165,17 @@ end;
 
 procedure TQwenWorker.ShowProgress;
 begin
-  FForm.SetStatus(FProgressText);
+  if not Terminated then
+    FForm.SetStatus(FProgressText);
 end;
 
 procedure TQwenWorker.Execute;
 begin
   try
-    FResult := RunQwenCuda(FBundle, FRuntime, FPrompt, FMaxTokens, ReportProgress);
+    FResult := RunQwenCuda(FBundle, FRuntime, FPrompt, FMaxTokens, ReportProgress, StopRequested);
   except
+    on EQwenCudaCancelled do
+      FStoppedBeforeGeneration := True;
     on E: Exception do
       FErrorText := E.ClassName + ': ' + E.Message;
   end;
@@ -219,31 +231,37 @@ begin
   FRuntimeBrowse.SetBounds(784, 104, 100, 27);
   FRuntimeBrowse.Anchors := [akTop, akRight];
   FRuntimeBrowse.OnClick := BrowseRuntime;
-  LabelControl := AddLabel('CUDA architecture from the bundle / float32 / batch 1 / context 64 / chunk 64.', 144);
+  LabelControl := AddLabel(Format('CUDA / float32 / %d-token context.',
+    [QwenDefaultContextSize]), 144);
   LabelControl.Font.Style := [fsBold];
-  AddLabel('Prompt (the chat template and generated tokens share the 64-token context)', 176);
+  AddLabel('Prompt (the chat template and generated tokens share the context window)', 176);
   FPrompt := TMemo.Create(Self);
   FPrompt.Parent := Self;
   FPrompt.SetBounds(16, 200, 868, 100);
   FPrompt.Anchors := [akLeft, akTop, akRight];
   FPrompt.ScrollBars := ssVertical;
   FPrompt.Lines.Text := 'Say hello in English.';
-  AddLabel('Max new tokens', 316);
+  AddLabel('Max new tokens (0 = Auto)', 316);
   FMaxTokens := TEdit.Create(Self);
   FMaxTokens.Parent := Self;
-  FMaxTokens.SetBounds(140, 310, 70, 28);
+  FMaxTokens.SetBounds(180, 310, 110, 28);
   FMaxTokens.NumbersOnly := True;
-  FMaxTokens.MaxLength := 2;
   FMaxTokens.Text := IntToStr(QwenDefaultMaxNewTokens);
   FRun := TButton.Create(Self);
   FRun.Parent := Self;
   FRun.Caption := 'Run on GPU';
-  FRun.SetBounds(228, 310, 135, 30);
+  FRun.SetBounds(300, 310, 135, 30);
   FRun.OnClick := RunClick;
+  FStop := TButton.Create(Self);
+  FStop.Parent := Self;
+  FStop.Caption := 'Stop';
+  FStop.SetBounds(445, 310, 90, 30);
+  FStop.Enabled := False;
+  FStop.OnClick := StopClick;
   FSave := TButton.Create(Self);
   FSave.Parent := Self;
   FSave.Caption := 'Save result...';
-  FSave.SetBounds(380, 310, 135, 30);
+  FSave.SetBounds(545, 310, 135, 30);
   FSave.Enabled := False;
   FSave.OnClick := SaveClick;
   FStatus := AddLabel('Select a converted bundle, enter a short prompt, and click Run on GPU.', 354);
@@ -284,6 +302,7 @@ end;
 procedure TQwenChatForm.SetRunning(const Value: Boolean);
 begin
   FRun.Enabled := not Value;
+  FStop.Enabled := Value;
   FBundle.Enabled := not Value;
   FRuntime.Enabled := not Value;
   FBundleBrowse.Enabled := not Value;
@@ -295,12 +314,12 @@ end;
 
 procedure TQwenChatForm.RunClick(Sender: TObject);
 var
-  MaxTokens: Integer;
+  MaxTokens: Int64;
 begin
   if Assigned(FWorker) then
     Exit;
-  if not TryStrToInt(Trim(FMaxTokens.Text), MaxTokens) or (MaxTokens < 1) or (MaxTokens > 16) then
-    raise Exception.Create('Max new tokens must be an integer between 1 and 16.');
+  if not TryStrToInt64(Trim(FMaxTokens.Text), MaxTokens) or (MaxTokens < 0) then
+    raise Exception.Create('Max new tokens must be 0 (Auto) or a positive whole number.');
   FLastJSON := '';
   FOutput.Clear;
   SetRunning(True);
@@ -313,6 +332,15 @@ begin
     SetRunning(False);
     raise;
   end;
+end;
+
+procedure TQwenChatForm.StopClick(Sender: TObject);
+begin
+  if not Assigned(FWorker) then
+    Exit;
+  FWorker.Terminate;
+  FStop.Enabled := False;
+  SetStatus('Stopping after the current operation...');
 end;
 
 procedure TQwenChatForm.WorkerTick(Sender: TObject);
@@ -340,22 +368,29 @@ var
 begin
   Worker := TQwenWorker(Sender);
   FWorker := nil;
-  if Worker.FErrorText <> '' then
-  begin
-    FOutput.Lines.Text := Worker.FErrorText;
-    SetStatus('Run failed. No CPU fallback was attempted.');
-  end
-  else begin
-    FLastJSON := QwenResultJSON(Worker.FResult);
-    FOutput.Lines.Add('GPU: ' + Worker.FResult.DeviceName +
-      ' (compute ' + Worker.FResult.ComputeVersion + ')');
-    FOutput.Lines.Add(Format('Prompt tokens: %d; generated tokens: %d; stop: %s',
-      [Length(Worker.FResult.PromptTokenIDs), Length(Worker.FResult.GeneratedTokenIDs),
-       Worker.FResult.StopReason]));
-    FOutput.Lines.Add('');
-    FOutput.Lines.Add(Worker.FResult.Answer);
-    SetStatus('CUDA generation finished. Model and cache objects have been released.');
-  end;
+  if Worker.FStoppedBeforeGeneration then
+    SetStatus('Stopped before generation. Model and cache objects have been released.')
+  else if Worker.FErrorText <> '' then
+    begin
+      FOutput.Lines.Text := Worker.FErrorText;
+      SetStatus('Run failed. No CPU fallback was attempted.');
+    end
+    else begin
+      FLastJSON := QwenResultJSON(Worker.FResult);
+      FOutput.Lines.Add('GPU: ' + Worker.FResult.DeviceName +
+        ' (compute ' + Worker.FResult.ComputeVersion + ')');
+      FOutput.Lines.Add(Format('Context: %d tokens; available for the answer: %d',
+        [Worker.FResult.ContextTokens, Worker.FResult.AvailableNewTokens]));
+      FOutput.Lines.Add(Format('Prompt tokens: %d; generated tokens: %d; stop: %s',
+        [Length(Worker.FResult.PromptTokenIDs), Length(Worker.FResult.GeneratedTokenIDs),
+         Worker.FResult.StopReason]));
+      FOutput.Lines.Add('');
+      FOutput.Lines.Add(Worker.FResult.Answer);
+      if Worker.FResult.StopReason = 'cancelled' then
+        SetStatus('Stopped. The partial answer is shown below.')
+      else
+        SetStatus('CUDA generation finished. Model and cache objects have been released.');
+    end;
   SetRunning(False);
 end;
 
@@ -363,7 +398,7 @@ procedure TQwenChatForm.CheckClose(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := not Assigned(FWorker);
   if not CanClose then
-    MessageDlg('Wait for the current GPU operation to finish before closing the application.',
+    MessageDlg('Use Stop or wait for the current GPU operation to finish before closing.',
       mtInformation, [mbOK], 0);
 end;
 

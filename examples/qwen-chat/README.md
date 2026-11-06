@@ -1,6 +1,8 @@
 # Qwen CUDA chat in Delphi and Lazarus
 
-QwenChat loads a converted Qwen2.5-Instruct bundle and generates a short answer on NVIDIA GPU 0. Open the Delphi or Lazarus project. Both CUDA profiles use FP32, batch 1, context 64 and prefill chunk 64. Six new tokens is the default. EOS stops generation early.
+QwenChat loads a converted Qwen2.5-Instruct bundle and generates an answer on NVIDIA GPU 0. Open the Delphi or Lazarus project. Both CUDA profiles use FP32 and batch 1. Auto is the default. Generation stops at EOS, when you click Stop, or when the context window is full.
+
+The source-neutral `qwen2-compatible-cuda-f32-2048-v1` bundle is a third **profile type**, not a third pinned checkpoint. It describes compatible local dense Qwen2 text models via `model.json.qwen_compatibility` (`crosspascal.qwen2-compatible.v1`). The same QwenChat form and four runtime entry points accept it, with independently derived parameter counts, exact tensor index/shape checks, local source-tree SHA-256 and conservative GPU and host-memory admission before loading. Its source is deliberately identified as `local-sha256`, with no asserted official repository or revision. This does not validate an arbitrary tokenizer, MoE, multimodal, quantized or sliding-window model.
 
 | Model | Source revision | Layers | FP32 parameters |
 | --- | --- | --- | --- |
@@ -37,17 +39,17 @@ The form is created in Pascal code; there is no missing `.dfm` file. You do not 
 1. Run the project in your IDE or open the compiled `QwenChat.exe` in File Explorer.
 2. Beside **Converted model bundle**, click **Browse** and select the directory containing `model.json`.
 3. Beside **Pinned CUDA runtime directory**, select `crosspascal-tvm/runtime/windows-x64-cuda`. The application fills this in automatically when it can locate the sibling repository.
-4. Enter a short prompt, for example `Say hello in English.`, and leave **Max new tokens** at `6`.
+4. Enter a short prompt, for example `Say hello in English.`. Leave **Max new tokens** at `0` for Auto, or enter a positive whole number to request a shorter answer.
 5. Click **Run on GPU**. The status line shows validation, weight loading and generation progress. The result identifies the actual GPU and compute capability, then shows the generated text.
 6. Use **Save result** to save a new JSON report if needed. Existing reports are not overwritten. Close the application normally after the current operation finishes.
 
-The chat template consumes some of the 64-token context. The application rejects a prompt when template tokens plus the requested new tokens exceed that limit. A six-token answer may end mid-sentence; that is the selected generation limit, not an automatic failure.
+The prompt, chat template and answer share a 2,048-token runtime window in both modes. The result shows how many tokens were available for the answer. The remaining window bounds any larger manual request. Auto uses Qwen sampling. Manual mode selects the highest-scoring token at each step. Click **Stop** to keep the partial answer once the current operation finishes.
 
 ## What the example checks
 
 Before loading model parameters onto the GPU, the application checks the model profile, source identity, full parameter layout and hash, model-library hash, tokenizer hashes and runtime hashes. It rejects incompatible files and checks that GPU 0 matches the architecture recorded in the model and artifact manifests. Inputs are held open against writes throughout the run.
 
-Embedding, prefill and decode must return the expected float32 CUDA tensor shapes. The application checks for nonfinite logits, performs greedy token selection and honours EOS. Each run releases its tensor, model and cache references. The runtime DLLs remain loaded until ordinary process shutdown, as required by the runtime's thread lifetime; the program does not use `Halt` to bypass normal exit.
+Embedding, prefill and decode must return the expected float32 CUDA tensor shapes. The application checks for nonfinite logits, honours EOS and checks for Stop between generated tokens. Each run releases its tensor, model and cache references. The runtime DLLs remain loaded until ordinary process shutdown, as required by the runtime's thread lifetime; the program does not use `Halt` to bypass normal exit.
 
 A successful result applies to that bundle, prompt and device. Consult the matching [release notes](https://github.com/pisarev/crosspascal/releases) for the measured validation scope.
 

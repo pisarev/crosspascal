@@ -39,7 +39,7 @@ end;
 procedure RunRecorded;
 var
   ResultValue: TQwenCudaResult;
-  MaxTokens: Integer;
+  MaxTokens: Int64;
   ReportPath, Value: string;
 begin
   ReportPath := OptionValue('--report');
@@ -50,7 +50,7 @@ begin
   Value := OptionValue('--max-new-tokens');
   if Value = '' then
     MaxTokens := QwenDefaultMaxNewTokens
-  else if not TryStrToInt(Value, MaxTokens) then
+  else if not TryStrToInt64(Value, MaxTokens) then
       raise Exception.Create('Invalid --max-new-tokens value.');
   ResultValue := RunQwenCuda(OptionValue('--bundle'), OptionValue('--runtime'),
     OptionValue('--prompt'), MaxTokens);

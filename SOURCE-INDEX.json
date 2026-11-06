@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-009",
+  "release_id": "early-access-010",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -22,13 +22,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 2716,
-      "sha256": "f82fbcf589f19aa3c84f5fb8f57fa4228519b33125600b5d981379f56226d1f5"
+      "bytes": 2798,
+      "sha256": "2e3052a7958be87254622d9100aa629cc7e73afee2ac8e0530ce9cab2d5ce287"
     },
     {
       "path": "docs/CAPABILITIES.md",
-      "bytes": 2522,
-      "sha256": "c2fad8cc56aff4ea6d93334db22db4a131d64d10ede8132411c106f24bd99847"
+      "bytes": 2579,
+      "sha256": "e3786b8e0c0215250a893964cc787c556d2ab964a298880780a2b842519df7e4"
     },
     {
       "path": "docs/KNOWN-LIMITATIONS.md",
@@ -82,13 +82,13 @@
     },
     {
       "path": "examples/qwen-chat/QwenChat.Main.pas",
-      "bytes": 11151,
-      "sha256": "667f0240a4c6aea4bd4926dc57fabdb7de31f5d4b4c471d82ea259eb21699572"
+      "bytes": 12303,
+      "sha256": "5f3e6dd320d67f768a7c2c82da35371bdad5702f22b0feb3a24342b442399702"
     },
     {
       "path": "examples/qwen-chat/QwenChat.dpr",
       "bytes": 2905,
-      "sha256": "2724f1ebda4551213df8dcb19b226cb42886f518e95f4d214609d50d46ab12e4"
+      "sha256": "63b5abeb277a9f5dea807c0035dc08b116a739f97e9f901aed87aa6a2a265957"
     },
     {
       "path": "examples/qwen-chat/QwenChat.dproj",
@@ -102,8 +102,8 @@
     },
     {
       "path": "examples/qwen-chat/README.md",
-      "bytes": 5388,
-      "sha256": "565f863a29a987a5968a02ca2e5cdd36f7ce2d1cc651f42b0efb8612665d752a"
+      "bytes": 6264,
+      "sha256": "7c3c2e98294f78c533ec3982eb73f7b1982ed127b6cf77914220573a73632cf2"
     },
     {
       "path": "examples/vision-models/README.md",
