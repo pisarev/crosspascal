@@ -1,30 +1,83 @@
-# GemmaChat
+# GemmaChat in Delphi and Lazarus
 
-Ask a Gemma 3n model a question from a Delphi or Lazarus application. The answer appears as it is generated. The application keeps the model loaded between requests and releases it when you close the window or choose another bundle.
+Gemma 2 CPU remains an experimental text profile. Gemma 3n supports CPU/CUDA text bundles and, with a converted compatible vision projector, CUDA text-and-image bundles. Existing numerical acceptance limits remain in force.
 
-This example accepts **text**. It uses the experimental native TVM CUDA W8A32 bundle produced by the Gemma converter: int8 projection weights with FP32 arithmetic. Inference does not run in PyTorch or Ollama. The Pascal application communicates over private local pipes with the included Python TVM runtime. It does not contact a server. QwenChat uses a separate, native Pascal consumer; its model bundles are not interchangeable with Gemma bundles.
+## Open and build
 
-## Prepare the files
+Keep the extracted SDK folders together. The SDK root contains `crosspascal`,
+`crosspascal-tvm`, `crosspascal-opencv`, `crosspascal-convert` and `runtime`.
 
-1. Download the coordinated Windows x64 SDK and its **Gemma runtime** companion asset from the same private release.
-2. Extract both archives into the same parent directory. The resulting `crosspascal-windows-x64` folder must contain `crosspascal`, `crosspascal-convert` and `runtime/gemma-python/python.exe`.
-3. Prepare a compatible Gemma 3n GGUF through the [Gemma converter](../../../crosspascal-convert/docs/GEMMA3N.md). Select CUDA or automatic device detection. Keep the resulting bundle directory intact. It contains `model.json`, the generated DLL, parameters and tokenizer.
+1. In Delphi 13.2, open `GemmaChat.dproj`, select **Release / Windows 64-bit**,
+   then choose **Project → Build**.
+2. Alternatively, in Lazarus 4.8, open `GemmaChat.lpi` and choose **Run → Build**.
+3. Run the program. The supplied release executable is built with Lazarus.
+   Delphi builds demonstrate source compatibility and are not distributed.
 
-To run an already converted compatible bundle, you need the supplied runtime, a compatible NVIDIA driver and enough GPU memory. You do not need the conversion toolchain, PyTorch or a separately installed Python. The model's original access and license conditions continue to apply; model weights are not included in the release.
+The form is created in Pascal code; there is no separate form resource or
+design-time package to install. Both demos share the same form and model API.
+The underlying Qwen consumer is native Pascal. Gemma uses the supplied Python
+runtime to call compiled TVM libraries; it does not run PyTorch or Ollama.
 
-## Build and run manually
+## First answer
 
-1. Keep the example inside the extracted SDK so its relative source paths work.
-2. In Delphi 13.2, open `GemmaChat.dproj`, select **Release / Windows 64-bit**, then **Project > Build GemmaChat**. In Lazarus 4.8 with FPC 3.2.2, open `GemmaChat.lpi` and choose **Run > Build**.
-3. Run the application. The distributed EXE, when supplied, is built with Lazarus.
-4. In the first field, select the **converted bundle directory**, not the original GGUF file. The second field should automatically find the SDK root; use **Browse** if you moved the application.
-5. Keep the default question and click **Run on GPU**. An instruct model should answer “Paris”. Ask another question without closing the window: the status should report that the model was reused.
-6. Keep **Max new tokens = 0** for automatic generation. A positive number is your manual output limit. **Stop** preserves the text already generated. **Save result** writes text, token IDs, timings and the stop reason to a JSON file.
+1. Beside **Converted model bundle**, select the folder containing `model.json`.
+   Select a completed converter output, not original model weights.
+2. Beside **Installed SDK root**, select the extracted SDK root.
+3. Click **Load model**. Loading does not generate an answer.
+4. Enter a question. Leave **New tokens** at `0` and **Answer budget** at
+   **Full context** for automatic output.
+5. Click **Generate**. Text appears progressively. **Stop** keeps the partial
+   answer after the current model operation finishes.
+6. Ask another question to reuse loaded weights. Each request has a fresh
+   context; the demo does not automatically add earlier messages.
+7. Click **Unload model** to release model memory. Closing normally also unloads.
 
-Each request is independent: reusing the weights does not preserve conversation history. **Plain completion** is for base models; leave it unchecked for the usual instruct/chat bundle. This example uses greedy decoding. It does not offer sampling controls that the backend does not implement.
+**Save result** writes a new JSON report with the effective settings, timings
+and stop reason. Existing reports are not overwritten. Smaller windows scroll
+so that every setting and action remains accessible.
 
-The bundle's compiled context is a real capacity: prompt and answer share it. Automatic mode ends at EOS, Stop or this capacity. A `context_limit` result is reported explicitly; convert with a larger supported context for longer answers. No fixed 16-token output limit is applied.
+## Settings
 
-## Images
+| Control | Default | Meaning |
+| --- | --- | --- |
+| New tokens | 0 | Automatic output; a positive integer requests a manual maximum with no artificial demo ceiling. |
+| Sampling | Auto | Sample in automatic mode, greedy with a manual limit; choose either explicitly. |
+| Temperature | 0.7 | Sampling variability, 0.01–2.0. |
+| Top P | 0.8 | Nucleus probability within Top K, greater than 0 through 1. |
+| Top K | 20 | Sampling candidates, 1–128. |
+| Repetition penalty | 1.1 | Penalize previously seen tokens when sampling, 1–2. |
+| Seed | -1 | Random seed; use 0–4294967295 for a repeatable sampling comparison. |
+| Answer budget | Full context | Optional automatic budgets of 128, 512 or 1024 tokens; a positive manual maximum takes precedence. |
+| Instructions | You are a helpful assistant. | Qwen system role; Gemma instructions are prepended to the user prompt. |
+| Plain completion | Off | Disable the chat template. System instructions do not apply to plain Qwen completion. |
 
-The original Gemma 3n architecture supports images, but this converter and demo currently implement only its text decoder. A text-only GGUF does not contain a vision encoder. See [text and image capabilities](../../docs/MODEL-MODALITIES.md) before choosing a model. Selecting a picture is not a supported input for this example.
+Temperature, Top P, Top K, repetition penalty and seed affect sampling. Greedy
+selects the highest score. Answer budget is not a separate reasoning mode.
+Automatic output ends at the model's end-of-answer token, Stop, or the actual
+converted context capacity. The prompt, image tokens and answer share that
+capacity; `0` cannot make a fixed-size cache infinite.
+
+## Attach a picture
+
+Click **Attach image**, choose a PNG, JPEG or BMP, and check its thumbnail. Enter
+a question about it, then click **Generate**. **Remove image** returns to text
+input. Images remain local.
+
+Image capability comes from the selected bundle, not its family name. A
+text-only bundle displays a clear explanation and blocks image inference;
+it never silently ignores the picture. Remove the image or select a compatible
+Gemma 3n image bundle. Dense Qwen2.5 is text-only; Qwen-VL requires a different
+architecture and is not implemented by this consumer.
+
+For Gemma 3n, open **Add images to a Gemma 3n bundle** in the converter. Select
+an existing CUDA text bundle and its matching `gemma3nv` projector GGUF, inspect
+the selection, then build a new image bundle. Text conversion is reused. This
+profile processes a 768-pixel image into 256 image tokens; context must also fit
+the question and answer. Audio is not implemented. A text GGUF alone does not
+contain the required vision weights.
+
+## Use the same API without a window
+
+The [minimal console examples](../language-models/README.md) demonstrate explicit
+loading, all settings, streaming, Stop, repeated requests, images and unloading.
+They use the same `TLanguageModel` and `TLanguageOptions` as these demos.

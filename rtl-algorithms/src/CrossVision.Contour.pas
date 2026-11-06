@@ -2,7 +2,7 @@
 {                                                                            }
 { CrossVision.Contour                                                        }
 {                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                     }
+{ Copyright © 2026 Yuriy Pisarev                                             }
 {                                                                            }
 { ************************************************************************** }
 
@@ -42,9 +42,6 @@ end;
 
 function Fg_At(const Fg: TArray<Boolean>; const W, H, X, Y: Integer): Boolean;
 begin
-  { Outside the image is background. Otherwise a component touching an edge
-    would have an underestimated perimeter and a thin strip along that edge
-    could appear indistinguishable from a filled region. }
   Result := (X >= 0) and (Y >= 0) and (X < W) and (Y < H) and Fg[Y * W + X];
 end;
 

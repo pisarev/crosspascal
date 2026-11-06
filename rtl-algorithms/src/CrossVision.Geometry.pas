@@ -2,7 +2,7 @@
 {                                                                            }
 { CrossVision.Geometry                                                       }
 {                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                     }
+{ Copyright © 2026 Yuriy Pisarev                                             }
 {                                                                            }
 { ************************************************************************** }
 

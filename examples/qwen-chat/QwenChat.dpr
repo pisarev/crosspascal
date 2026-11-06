@@ -12,7 +12,7 @@ program QwenChat;
 uses
   {$IFDEF FPC}Interfaces, Windows, SysUtils, Forms, {$ELSE}
   Winapi.Windows, System.SysUtils, Vcl.Forms, {$ENDIF}
-  CrossPascal.Json, QwenCuda, QwenChat.Main in 'QwenChat.Main.pas';
+  CrossPascal.Json, QwenCuda, LanguageChat.Form, QwenChat.Main in 'QwenChat.Main.pas';
 
 function RecordedMode: Boolean;
 var

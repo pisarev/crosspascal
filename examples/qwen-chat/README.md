@@ -1,69 +1,85 @@
-# Qwen CUDA chat in Delphi and Lazarus
+# QwenChat in Delphi and Lazarus
 
-QwenChat loads a converted Qwen2.5 bundle and generates an answer on NVIDIA GPU 0. Open the Delphi or Lazarus project. The CUDA profiles use FP32 and batch 1. Auto with the full context is the default.
+Dense Qwen2-compatible CUDA bundles are selected by architecture and tensor shapes, not by checkpoint name or graphics-card model. Qwen2.5 text models cannot inspect images.
 
-The source-neutral `qwen2-compatible-cuda-f32-2048-v1` bundle is a third **profile type**, not a third pinned checkpoint. It describes compatible local dense Qwen2 text models via `model.json.qwen_compatibility` (`crosspascal.qwen2-compatible.v1`). The same QwenChat form and four runtime entry points accept it, with independently derived parameter counts, exact tensor index/shape checks, local source-tree SHA-256 and conservative GPU and host-memory admission before loading. Its source is deliberately identified as `local-sha256`, with no asserted official repository or revision. This does not validate an arbitrary tokenizer, MoE, multimodal, quantized or sliding-window model.
+## Open and build
 
-| Model | Source revision | Layers | FP32 parameters |
-| --- | --- | --- | --- |
-| Qwen2.5-0.5B-Instruct | `7ae557604adf67be50417f59c2c2f167def9a775` | 24 | 1.84 GiB |
-| Qwen2.5-1.5B-Instruct | `989aa7980e4cf806f80c7fef2b1adb7bc71aa306` | 28 | 5.75 GiB |
+Extract the main SDK and the matching Gemma runtime companion into the same parent folder. The companion also supplies the four native TVM DLLs used by Qwen; no conversion tools are needed to run a completed bundle.
 
-## Prepare the folders in File Explorer
+Keep the extracted SDK folders together. The SDK root contains `crosspascal`,
+`crosspascal-tvm`, `crosspascal-opencv`, `crosspascal-convert` and `runtime`.
 
-1. In your browser, download the matching CrossPascal release archive and choose **Extract All** in File Explorer. Keep the repository folders together. The folders named `crosspascal`, `crosspascal-tvm` and `crosspascal-opencv` must be siblings.
-2. Obtain the converted bundle using the converter described in the [main README](../../README.md). Select the matching Qwen CUDA profile. Extract the complete generated bundle to a writable working folder.
-3. Keep `model.json`, `manifest.json`, `params.json`, `params.index`, `params.bin`, `qwen2-cuda.dll` and the five `tokenizer-*` / `tokenizer.index` files in the same model directory. The files must come from one completed conversion.
-4. Locate `crosspascal-tvm/runtime/windows-x64-cuda`. Install the four pinned runtime DLLs there using the [Windows setup guide](../../docs/WINDOWS-EARLY-ACCESS.md). Leave the DLLs together with their licences and notices.
+1. In Delphi 13.2, open `QwenChat.dproj`, select **Release / Windows 64-bit**,
+   then choose **Project → Build**.
+2. Alternatively, in Lazarus 4.8, open `QwenChat.lpi` and choose **Run → Build**.
+3. Run the program. The supplied release executable is built with Lazarus.
+   Delphi builds demonstrate source compatibility and are not distributed.
 
-The PC needs a compatible NVIDIA driver and the Microsoft Visual C++ x64 runtime. Use the converter to build the model bundle for the CUDA architecture of the running device. Allow free GPU memory for the parameters in the table and additional space for the runtime, temporary tensors and KV cache. The application checks current free memory and reports allocation failures.
+The form is created in Pascal code; there is no separate form resource or
+design-time package to install. Both demos share the same form and model API.
+The underlying Qwen consumer is native Pascal. Gemma uses the supplied Python
+runtime to call compiled TVM libraries; it does not run PyTorch or Ollama.
 
-## Open and build in Delphi
+## First answer
 
-1. Choose **File > Open Project** and open `crosspascal/examples/qwen-chat/QwenChat.dproj`. Open the project file, rather than creating a new project around the `.dpr`.
-2. In Project Manager, activate **Release** and **Windows 64-bit**.
-3. Open **Project > Options > Building > Delphi Compiler** if you want to inspect the supplied settings. The search path includes `..\..\..\crosspascal-tvm\pascal` and `..\..\..\crosspascal-opencv\pascal`. The conditional defines include `TVM_LAZY_INIT`.
-4. Keep runtime packages disabled. Integer overflow checking is disabled for the tokenizer's intentional unsigned hash arithmetic.
-5. Choose **Project > Build QwenChat**. The executable goes to `bin\Win64\Release\QwenChat.exe`; compiled units go to `build\Win64\Release`.
+1. Beside **Converted model bundle**, select the folder containing `model.json`.
+   Select a completed converter output, not original model weights.
+2. Beside **Installed SDK root**, select the extracted SDK root.
+3. Click **Load model**. Loading does not generate an answer.
+4. Enter a question. Leave **New tokens** at `0` and **Answer budget** at
+   **Full context** for automatic output.
+5. Click **Generate**. Text appears progressively. **Stop** keeps the partial
+   answer after the current model operation finishes.
+6. Ask another question to reuse loaded weights. Each request has a fresh
+   context; the demo does not automatically add earlier messages.
+7. Click **Unload model** to release model memory. Closing normally also unloads.
 
-The form is created in Pascal code; there is no missing `.dfm` file. You do not need to install a design-time component package. The current TVM unit uses the sibling OpenCV Pascal sources for its image-interface types, but this text example does not initialize OpenCV. Leptonica is not required.
+**Save result** writes a new JSON report with the effective settings, timings
+and stop reason. Existing reports are not overwritten. Smaller windows scroll
+so that every setting and action remains accessible.
 
-## Open and build in Lazarus
+## Settings
 
-1. In Lazarus 4.8, open `crosspascal/examples/qwen-chat/QwenChat.lpi`.
-2. Build with the Windows x64 FPC 3.2.2 compiler. The project supplies the relative unit paths and compiler settings.
-3. Run the project or open `bin\lazarus-win64\QwenChat.exe` in File Explorer.
-
-## Run a short prompt
-
-1. Open the supplied Lazarus-built `bin\lazarus-win64\QwenChat.exe` in File Explorer, or build and run the project in your IDE.
-2. Beside **Converted model bundle**, click **Browse** and select the directory containing `model.json`.
-3. Beside **Pinned CUDA runtime directory**, select `crosspascal-tvm/runtime/windows-x64-cuda`. The application fills this in automatically when it can locate the sibling repository.
-4. Enter a short prompt, for example `Say hello in English.`. Leave **Max new tokens** at `0` for Auto, or enter a positive whole number to request a shorter answer.
-5. Click **Run on GPU**. The status line shows validation and loading progress. The answer appears as it is generated. The final result identifies the GPU and compute capability.
-6. Use **Save result** to save a new JSON report if needed. Existing reports are not overwritten. Close the application normally after the current operation finishes.
-
-The prompt, chat template and answer share the bundle's context window. The result shows how many tokens were available for the answer. The remaining window bounds any larger manual request. Click **Stop** to keep the partial answer once the current operation finishes.
-
-## Adjust generation
-
-| Setting | Default | Effect |
+| Control | Default | Meaning |
 | --- | --- | --- |
-| Token selection | Default | Samples when Max new tokens is 0 and uses Greedy for a positive limit. Choose Sample or Greedy to use that method in either mode. |
-| Temperature | 0.7 | Lower values favour the most likely words. Higher values give other words a greater chance. Range 0.01–2. |
-| Top-P | 0.8 | Samples from the smallest set that reaches this share of the probability mass among the Top-K candidates. Range greater than 0 through 1. |
-| Top-K | 20 | Considers at most this many candidates per step. Range 1–128. |
-| Repetition penalty | 1.1 | Reduces the likelihood of tokens already present in the prompt or answer. Use 1 to disable it. Range 1–2. |
-| Seed | Blank | Uses a fresh seed for sampling. Enter a whole number from 0 through 4294967295 to repeat a comparison with the same model, settings and environment. |
-| Answer effort | Full context | In Auto, limits the answer to the remaining window, or to 128, 512 or 1024 tokens if you choose Brief, Balanced or Detailed. EOS can end the answer sooner. |
+| New tokens | 0 | Automatic output; a positive integer requests a manual maximum with no artificial demo ceiling. |
+| Sampling | Auto | Sample in automatic mode, greedy with a manual limit; choose either explicitly. |
+| Temperature | 0.7 | Sampling variability, 0.01–2.0. |
+| Top P | 0.8 | Nucleus probability within Top K, greater than 0 through 1. |
+| Top K | 20 | Sampling candidates, 1–128. |
+| Repetition penalty | 1.1 | Penalize previously seen tokens when sampling, 1–2. |
+| Seed | -1 | Random seed; use 0–4294967295 for a repeatable sampling comparison. |
+| Answer budget | Full context | Optional automatic budgets of 128, 512 or 1024 tokens; a positive manual maximum takes precedence. |
+| Instructions | You are a helpful assistant. | Qwen system role; Gemma instructions are prepended to the user prompt. |
+| Plain completion | Off | Disable the chat template. System instructions do not apply to plain Qwen completion. |
 
-Greedy selects the highest-scoring token at each step. Temperature, Top-P, Top-K, the repetition penalty and the seed apply to sampling. Answer effort controls only the token budget in Auto. A positive Max new tokens setting takes precedence. Saved JSON reports include the actual selection method and, for sampling, the parameters and seed used.
+Temperature, Top P, Top K, repetition penalty and seed affect sampling. Greedy
+selects the highest score. Answer budget is not a separate reasoning mode.
+Automatic output ends at the model's end-of-answer token, Stop, or the actual
+converted context capacity. The prompt, image tokens and answer share that
+capacity; `0` cannot make a fixed-size cache infinite.
 
-## What the example checks
+## Attach a picture
 
-Before loading model parameters onto the GPU, the application checks the model profile, source identity, full parameter layout and hash, model-library hash, tokenizer hashes and runtime hashes. It rejects incompatible files and checks that GPU 0 matches the architecture recorded in the model and artifact manifests.
+Click **Attach image**, choose a PNG, JPEG or BMP, and check its thumbnail. Enter
+a question about it, then click **Generate**. **Remove image** returns to text
+input. Images remain local.
 
-Embedding, prefill and decode must return the expected float32 CUDA tensor shapes. The application checks for nonfinite logits, honours EOS and checks for Stop between generated tokens. Subsequent requests using the same paths reuse the loaded weights and tokenizer. Each request starts with an empty attention sequence. The model stays in GPU memory and the verified inputs remain open against writes until you load a different model or close the example. The runtime DLLs stay loaded until ordinary process shutdown.
+Image capability comes from the selected bundle, not its family name. A
+text-only bundle displays a clear explanation and blocks image inference;
+it never silently ignores the picture. Remove the image or select a compatible
+Gemma 3n image bundle. Dense Qwen2.5 is text-only; Qwen-VL requires a different
+architecture and is not implemented by this consumer.
 
-A successful result applies to that bundle, prompt and device. Consult the matching [release notes](https://github.com/pisarev/crosspascal/releases) for the measured validation scope.
+For Gemma 3n, open **Add images to a Gemma 3n bundle** in the converter. Select
+an existing CUDA text bundle and its matching `gemma3nv` projector GGUF, inspect
+the selection, then build a new image bundle. Text conversion is reused. This
+profile processes a 768-pixel image into 256 image tokens; context must also fit
+the question and answer. Audio is not implemented. A text GGUF alone does not
+contain the required vision weights.
 
+## Use the same API without a window
+
+The [minimal console examples](../language-models/README.md) demonstrate explicit
+loading, all settings, streaming, Stop, repeated requests, images and unloading.
+They use the same `TLanguageModel` and `TLanguageOptions` as these demos.
