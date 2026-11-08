@@ -53,6 +53,7 @@ type
     FImageSHA256: string;
     FLastJSON: string;
     FAuditDirectory: string;
+    procedure FitOnScreen(Sender: TObject);
     procedure BrowseBundle(Sender: TObject);
     procedure BrowseRuntime(Sender: TObject);
     procedure OpenImage(Sender: TObject);
@@ -192,109 +193,164 @@ begin
   FImage := nil;
 end;
 
+procedure TVisionModelsForm.FitOnScreen(Sender: TObject);
+var
+  Area: TRect;
+  AvailableWidth, AvailableHeight: Integer;
+begin
+  Area := Monitor.WorkareaRect;
+  AvailableWidth := Area.Right - Area.Left;
+  AvailableHeight := Area.Bottom - Area.Top;
+  if Constraints.MinWidth > AvailableWidth then Constraints.MinWidth := AvailableWidth;
+  if Constraints.MinHeight > AvailableHeight then Constraints.MinHeight := AvailableHeight;
+  if Width > AvailableWidth then Width := AvailableWidth;
+  if Height > AvailableHeight then Height := AvailableHeight;
+  if Left + Width > Area.Right then Left := Area.Right - Width;
+  if Top + Height > Area.Bottom then Top := Area.Bottom - Height;
+  if Left < Area.Left then Left := Area.Left;
+  if Top < Area.Top then Top := Area.Top;
+end;
+
 constructor TVisionModelsForm.Create(AOwner: TComponent);
 var
-  TopPanel, ImagePanel: TPanel;
+  Content, Header, Row, ImagePanel, ResultsPanel, Footer: TPanel;
   Splitter: TSplitter;
   I: Integer;
   CatalogPath: string;
 
-  procedure AddLabel(const Text: string; const X, Y: Integer);
-  var
-    LabelControl: TLabel;
+  function Panel(Parent: TWinControl; Alignment: TAlign; Height: Integer): TPanel;
   begin
-    LabelControl := TLabel.Create(Self);
-    LabelControl.Parent := TopPanel;
-    LabelControl.Caption := Text;
-    LabelControl.SetBounds(X, Y, 920, 22);
+    Result := TPanel.Create(Self);
+    Result.BevelOuter := bvNone;
+    Result.Caption := '';
+    if Alignment = alTop then Result.Top := 30000;
+    if Alignment in [alTop, alBottom] then Result.Height := Height;
+    if Alignment in [alLeft, alRight] then Result.Width := Height;
+    Result.Align := Alignment;
+    Result.Parent := Parent;
   end;
 
-  function AddButton(const Text: string; const X, Y, W: Integer;
-    const Handler: TNotifyEvent): TButton;
+  procedure LabelOn(Parent: TWinControl; const Text: string);
+  var
+    Heading: TLabel;
   begin
+    Heading := TLabel.Create(Self);
+    Heading.Parent := Parent;
+    Heading.AutoSize := False;
+    Heading.Align := alTop;
+    Heading.Height := 24;
+    Heading.Caption := Text;
+    Heading.Layout := tlCenter;
+  end;
+
+  function ButtonOn(Parent: TWinControl; const Text: string; Width: Integer;
+    const Handler: TNotifyEvent): TButton;
+  var
+    Cell: TPanel;
+  begin
+    Cell := Panel(Parent, alRight, Width);
+    Cell.BorderWidth := 3;
     Result := TButton.Create(Self);
-    Result.Parent := TopPanel;
+    Result.Parent := Cell;
+    Result.Align := alClient;
     Result.Caption := Text;
-    Result.SetBounds(X, Y, W, 28);
     Result.OnClick := Handler;
+  end;
+
+  function FolderRow(const Title, Value: string; Handler: TNotifyEvent; out Browse: TButton): TEdit;
+  var
+    Field, Line: TPanel;
+  begin
+    Field := Panel(Header, alTop, 64);
+    Field.Top := (Header.ControlCount - 1) * 64;
+    LabelOn(Field, Title);
+    Line := Panel(Field, alClient, 0);
+    Line.BorderWidth := 3;
+    Browse := ButtonOn(Line, 'Browse...', 100, Handler);
+    Result := TEdit.Create(Self);
+    Result.Parent := Line;
+    Result.Align := alClient;
+    Result.Text := Value;
   end;
 
 begin
   inherited CreateNew(AOwner);
-  Caption := 'CrossPascal CPU Vision Models';
+  Caption := 'CrossPascal Vision Models';
   Position := poScreenCenter;
-  ClientWidth := 1000;
-  ClientHeight := 780;
-  Constraints.MinWidth := 850;
-  Constraints.MinHeight := 650;
+  OnShow := FitOnScreen;
   Font.Name := 'Segoe UI';
   Font.Size := 10;
+  ClientWidth := 1080;
+  ClientHeight := 740;
+  Constraints.MinWidth := 800;
+  Constraints.MinHeight := 600;
   OnCloseQuery := CheckClose;
   CatalogPath := DefaultCatalogPath;
   if CatalogPath = '' then
     raise Exception.Create('models.json was not found. Keep the delivered example folder together.');
   FProfiles := LoadCpuVisionProfiles(CatalogPath);
-  TopPanel := TPanel.Create(Self);
-  TopPanel.Parent := Self;
-  TopPanel.Align := alTop;
-  TopPanel.Height := 240;
-  TopPanel.BevelOuter := bvNone;
-  AddLabel('Model profile (CPU / float32 / batch 1)', 16, 12);
+  Content := Panel(Self, alClient, 0);
+  Content.DisableAlign;
+  Content.BorderWidth := 12;
+  Header := Panel(Content, alTop, 196);
+  Header.DisableAlign;
+  Row := Panel(Header, alTop, 64);
+  Row.Top := 0;
+  LabelOn(Row, 'Model profile');
+  Row := Panel(Row, alClient, 0);
+  Row.DisableAlign;
+  Row.BorderWidth := 3;
+  FSave := ButtonOn(Row, 'Save result...', 124, SaveClick);
+  FRun := ButtonOn(Row, 'Run on CPU', 124, RunClick);
+  FOpen := ButtonOn(Row, 'Open image...', 124, OpenImage);
   FProfile := TComboBox.Create(Self);
-  FProfile.Parent := TopPanel;
+  FProfile.Parent := Row;
+  FProfile.Align := alClient;
   FProfile.Style := csDropDownList;
-  FProfile.SetBounds(16, 36, 390, 28);
   for I := 0 to High(FProfiles) do FProfile.Items.Add(FProfiles[I].Title);
   FProfile.ItemIndex := 0;
-  FOpen := AddButton('Open image...', 422, 36, 120, OpenImage);
-  FRun := AddButton('Run on CPU', 554, 36, 120, RunClick);
-  FSave := AddButton('Save result...', 686, 36, 120, SaveClick);
-  FSave.Enabled := False;
-  AddLabel('Converted model bundle (manifest.json, model DLL and DLL.inputs)', 16, 80);
-  FBundle := TEdit.Create(Self);
-  FBundle.Parent := TopPanel;
-  FBundle.SetBounds(16, 104, 852, 27);
-  FBundle.Anchors := [akLeft, akTop, akRight];
-  FBrowseBundle := AddButton('Browse...', 880, 104, 104, BrowseBundle);
-  FBrowseBundle.Anchors := [akTop, akRight];
-  AddLabel('Pinned TVM runtime directory (the CPU loader uses three of the supplied DLLs)', 16, 144);
-  FRuntime := TEdit.Create(Self);
-  FRuntime.Parent := TopPanel;
-  FRuntime.SetBounds(16, 168, 852, 27);
-  FRuntime.Anchors := [akLeft, akTop, akRight];
-  FRuntime.Text := DefaultRuntimeDirectory;
-  FBrowseRuntime := AddButton('Browse...', 880, 168, 104, BrowseRuntime);
-  FBrowseRuntime.Anchors := [akTop, akRight];
+  FOpen.Parent.Left := 0;
+  FRun.Parent.Left := 124;
+  FSave.Parent.Left := 248;
+  Row.EnableAlign;
+  FBundle := FolderRow('Converted model folder', '', BrowseBundle, FBrowseBundle);
+  FRuntime := FolderRow('TVM runtime folder', DefaultRuntimeDirectory,
+    BrowseRuntime, FBrowseRuntime);
+  Header.EnableAlign;
+  Footer := Panel(Content, alBottom, 40);
+  Footer.Top := 30000;
   FStatus := TLabel.Create(Self);
-  FStatus.Parent := TopPanel;
+  FStatus.Parent := Footer;
+  FStatus.Align := alClient;
   FStatus.AutoSize := False;
-  FStatus.SetBounds(16, 204, 968, 32);
-  FStatus.Anchors := [akLeft, akTop, akRight];
   FStatus.WordWrap := True;
-  FStatus.Caption := 'Select a profile and converted bundle, then open an image.';
+  FStatus.Layout := tlCenter;
+  FStatus.Caption := 'Choose a model and open an image to begin.';
+  ResultsPanel := Panel(Content, alBottom, 180);
+  ResultsPanel.Top := 20000;
+  LabelOn(ResultsPanel, 'Result');
   FOutput := TMemo.Create(Self);
-  FOutput.Parent := Self;
-  FOutput.Align := alBottom;
-  FOutput.Height := 220;
+  FOutput.Parent := ResultsPanel;
+  FOutput.Align := alClient;
   FOutput.ReadOnly := True;
   FOutput.ScrollBars := ssBoth;
   FOutput.WordWrap := False;
   FOutput.Font.Name := 'Consolas';
   FOutput.Font.Size := 10;
   Splitter := TSplitter.Create(Self);
-  Splitter.Parent := Self;
+  Splitter.Parent := Content;
   Splitter.Align := alBottom;
-  Splitter.Height := 5;
-  ImagePanel := TPanel.Create(Self);
-  ImagePanel.Parent := Self;
-  ImagePanel.Align := alClient;
-  ImagePanel.BevelOuter := bvNone;
+  Splitter.Height := 8;
+  Splitter.Top := 10000;
+  ImagePanel := Panel(Content, alClient, 0);
+  LabelOn(ImagePanel, 'Image');
   FPreview := TImage.Create(Self);
   FPreview.Parent := ImagePanel;
   FPreview.Align := alClient;
   FPreview.Proportional := True;
   FPreview.Stretch := True;
   FPreview.Center := True;
+  Content.EnableAlign;
   FTimer := TTimer.Create(Self);
   FTimer.Enabled := False;
   FTimer.Interval := 100;

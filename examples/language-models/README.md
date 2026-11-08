@@ -27,15 +27,27 @@ not converted bundles. A bundle contains `model.json` and its referenced files.
 
    `"D:\Models\my-converted-bundle" "D:\CrossPascal"`
 
-4. For `ImagePrompt`, add a third quoted argument: the image filename.
+4. To include an image, add its filename as a third quoted argument. This is
+   optional for `GenerateText`, `GenerationSettings`, `StreamAndStop` and
+   `RepeatedRequests`, and required for `ImagePrompt`. `LoadUnload` demonstrates
+   lifecycle only. For example: `"D:\Models\my-bundle" "D:\CrossPascal" "D:\Photos\cat.jpg"`.
 5. Run the program. Read the status and answer in its console window. You can
    also start the built program from a terminal with the same arguments.
 
-Extract the main SDK and the matching Gemma runtime companion together. The companion supplies the four native DLLs for Qwen and the portable runtime for Gemma. The SDK root contains `crosspascal-tvm`, `crosspascal-convert` and the supplied `runtime` directory. Qwen also accepts its pinned native runtime
+Extract the main SDK and `crosspascal-language-runtime-windows-x64-ea015.zip`
+together. The companion supplies the four native DLLs for dense Qwen and the
+portable runtime for Gemma and Qwen2.5-VL. The SDK root contains
+`crosspascal-tvm`, `crosspascal-convert` and the supplied `runtime` directory.
+Dense Qwen also accepts its pinned native runtime
 directory directly. A compatible NVIDIA driver is required for CUDA bundles;
-an experimental Gemma 2 CPU bundle uses system memory instead.
+CPU bundles use system memory instead. Qwen2.5-VL and Gemma use the portable
+language runtime, including its local tokenizer and image-decoding libraries.
 
 ## The five operations
+
+`ImagePrompt` streams a brief image description with greedy decoding. Hold
+Escape to stop it. Its output setting remains automatic (`0`); the request for
+one sentence is an instruction to the model, not an artificial token ceiling.
 
 Create a `TLanguageModel`, call `Load`, fill `TLanguageOptions`, call `Generate`,
 then call `Unload`. Always free the object in a `finally` block. `Generate`
@@ -58,7 +70,7 @@ the example does not automatically remember the previous conversation.
 | `RepetitionPenalty` | Sampling penalty, 1–2; default 1.1 |
 | `Seed` | `-1` chooses a random seed; 0–4294967295 gives a repeatable seed for the same runtime and inputs |
 | `Effort` | Optional answer budget: full context, 128, 512 or 1024 tokens. This is an output budget, not a reasoning mode. |
-| `SystemPrompt` | Qwen system instructions; Gemma receives these instructions at the start of the user prompt |
+| `SystemPrompt` | Dense Qwen system instructions; the Gemma/Qwen-VL worker prepends them to the user prompt |
 | `PlainCompletion` | Disable the chat template for plain text completion; system instructions do not apply to plain Qwen completion |
 
 Temperature, Top P, Top K, seed and repetition penalty affect sampling. Greedy
@@ -74,7 +86,7 @@ bundle and enough memory; `0` cannot make a fixed-size cache infinite.
 
 The API dispatches by the converted bundle architecture, not by a list of
 model sizes or GPU names. Qwen2 dense text bundles, experimental Gemma 2 CPU,
-and Gemma 3n CPU/CUDA text bundles use the same lifecycle.
+Qwen2.5-VL CPU, and Gemma 3n CPU/CUDA bundles use the same lifecycle.
 
 `SupportsImages` describes the actual bundle and runtime. It is not a promise
 based on a family name. The dense Qwen2.5 models are text models; adding an
@@ -82,11 +94,15 @@ image filename cannot make them see. A multimodal family member needs its own
 vision weights and compatible conversion/runtime support. An unsupported image
 request fails clearly before inference and is never silently reduced to text.
 
-Gemma 3n CUDA bundles with a verified `vision.json` and its referenced encoder
+Gemma 3n CPU or CUDA bundles with a verified `vision.json` and its referenced encoder
 files also accept image paths. Use the converter's **Add images to a Gemma 3n
 bundle** section to create one from a text bundle and its matching projector
 GGUF. A selected image occupies 256 tokens in the verified 768-pixel profile.
-The runtime includes Pillow for image decoding; inference still uses TVM.
+Qwen2.5-VL CPU bundles include their vision graph. A 224-pixel profile uses 64
+image tokens and aspect-preserving padding. The runtime includes Pillow for
+image decoding; inference still uses TVM. All generation examples validate
+`SupportsImages` before submitting an optional picture. Neither dense Qwen2.5
+nor Gemma 2 gains vision merely by passing an image filename.
 
 Gemma 2 remains experimental with the limitations documented in its bundle.
 These examples do not expand the numerical acceptance scope of that profile.

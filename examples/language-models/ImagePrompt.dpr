@@ -23,8 +23,13 @@ begin
     if not Info.SupportsImages then
       raise Exception.Create(Info.ImageExplanation);
     Model.Load(ParamStr(1), ParamStr(2));
+    Model.OnText := Output.Text;
+    Model.ShouldStop := Output.StopRequested;
+    ConsoleWriteLine('Hold Escape to stop generation.');
     Options := DefaultLanguageOptions;
-    PrintAnswer(Model.Generate('Describe this image.', Options, [ParamStr(3)]));
+    Options.Sampling := qsGreedy;
+    Model.Generate('Describe the main object in this image in one sentence.', Options, [ParamStr(3)]);
+    ConsoleWriteLine('');
     Model.Unload;
   finally
     Model.Free;

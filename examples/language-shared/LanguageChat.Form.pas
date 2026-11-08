@@ -42,6 +42,8 @@ type
   private
     FModel: TLanguageModel;
     FContent: TScrollBox;
+    FAdvanced: TScrollBox;
+    FSettingsToggle: TButton;
     FWorker: TLanguageWorker;
     FTimer: TTimer;
     FBundle: TEdit;
@@ -77,6 +79,8 @@ type
     FLoadedBundle: string;
     FLoadedRuntime: string;
     FClosing: Boolean;
+    procedure FitOnScreen(Sender: TObject);
+    procedure ToggleSettings(Sender: TObject);
     procedure BrowseBundle(Sender: TObject);
     procedure BrowseRuntime(Sender: TObject);
     procedure AttachImage(Sender: TObject);
@@ -116,6 +120,11 @@ end;
 function FromUI(const Value: TUIText): string;
 begin
   Result := {$IFDEF FPC}UTF8Decode(Value){$ELSE}Value{$ENDIF};
+end;
+
+function FolderFromUI(const Value: TUIText): string;
+begin
+  Result := StringReplace(Trim(FromUI(Value)), '/', PathDelim, [rfReplaceAll]);
 end;
 
 function ChooseFolder(const Title: string; var Path: string; Owner: TWinControl): Boolean;
@@ -184,8 +193,8 @@ begin
   FreeOnTerminate := False;
   FForm := Form;
   FAction := Action;
-  FBundle := FromUI(Form.FBundle.Text);
-  FRuntime := FromUI(Form.FRuntime.Text);
+  FBundle := FolderFromUI(Form.FBundle.Text);
+  FRuntime := FolderFromUI(Form.FRuntime.Text);
   FPrompt := FromUI(Form.FPrompt.Text);
   FImage := Form.FImagePath;
   if Action = maGenerate then
@@ -252,41 +261,99 @@ begin
   end;
 end;
 
+procedure TLanguageChatForm.FitOnScreen(Sender: TObject);
+var
+  Area: TRect;
+  AvailableWidth, AvailableHeight: Integer;
+begin
+  Area := Monitor.WorkareaRect;
+  AvailableWidth := Area.Right - Area.Left;
+  AvailableHeight := Area.Bottom - Area.Top;
+  if Constraints.MinWidth > AvailableWidth then Constraints.MinWidth := AvailableWidth;
+  if Constraints.MinHeight > AvailableHeight then Constraints.MinHeight := AvailableHeight;
+  if Width > AvailableWidth then Width := AvailableWidth;
+  if Height > AvailableHeight then Height := AvailableHeight;
+  if Left + Width > Area.Right then Left := Area.Right - Width;
+  if Top + Height > Area.Bottom then Top := Area.Bottom - Height;
+  if Left < Area.Left then Left := Area.Left;
+  if Top < Area.Top then Top := Area.Top;
+end;
+
 constructor TLanguageChatForm.Create(AOwner: TComponent);
 var
-  LabelControl: TLabel;
+  Header, ModelRow, Actions, Composer, Attachments, PromptPanel: TPanel;
+  AnswerPanel, SettingsBody, Footer, Row: TPanel;
+  Heading: TLabel;
+  SettingsY: Integer;
 
-  function AddLabel(const Text: string; X, Y, W: Integer; Parent: TWinControl): TLabel;
+  function Panel(Parent: TWinControl; Alignment: TAlign; Size: Integer): TPanel;
+  begin
+    Result := TPanel.Create(Self);
+    Result.BevelOuter := bvNone;
+    Result.Caption := '';
+    if Alignment = alTop then Result.Top := 30000;
+    if Alignment = alLeft then Result.Left := 30000;
+    if Alignment in [alTop, alBottom] then Result.Height := Size;
+    if Alignment in [alLeft, alRight] then Result.Width := Size;
+    Result.Align := Alignment;
+    Result.Parent := Parent;
+  end;
+
+  function LabelOn(Parent: TWinControl; const Text: string; Alignment: TAlign): TLabel;
   begin
     Result := TLabel.Create(Self);
     Result.Parent := Parent;
-    Result.Caption := ToUI(Text); Result.SetBounds(X, Y, W, 20);
-  end;
-
-  function AddEdit(const Text, Value: string; X, Y, W: Integer; Parent: TWinControl): TEdit;
-  begin
-    Result := TEdit.Create(Self);
-    Result.Parent := Parent;
-    LabelControl := AddLabel(Text, X, Y, W, Parent);
-    LabelControl.FocusControl := Result;
-    Result.SetBounds(X, Y + 21, W, 26);
-    Result.Text := ToUI(Value);
-  end;
-
-  function AddButton(const Text: string; X, Y, W: Integer; Handler: TNotifyEvent): TButton;
-  begin
-    Result := TButton.Create(Self);
-    Result.Parent := FContent;
+    Result.AutoSize := False;
+    Result.Align := Alignment;
+    Result.Height := 24;
     Result.Caption := ToUI(Text);
-    Result.SetBounds(X, Y, W, 28);
+    Result.Layout := tlCenter;
+  end;
+
+  function ButtonOn(Parent: TWinControl; const Text: string; Width: Integer; Alignment: TAlign;
+    Handler: TNotifyEvent): TButton;
+  var
+    Cell: TPanel;
+  begin
+    Cell := Panel(Parent, Alignment, Width);
+    Cell.BorderWidth := 3;
+    Result := TButton.Create(Self);
+    Result.Parent := Cell;
+    Result.Align := alClient;
+    Result.Caption := ToUI(Text);
     Result.OnClick := Handler;
   end;
 
-  function AddCombo(const Text, Items: string; X, Y, W: Integer): TComboBox;
+  function SettingRow(const Text: string; Height: Integer): TPanel;
+  var
+    Cell: TPanel;
   begin
+    Cell := Panel(SettingsBody, alTop, Height + 12);
+    Cell.Top := SettingsY;
+    Result := Panel(Cell, alTop, Height);
+    if Text <> '' then LabelOn(Result, Text, alTop);
+    Inc(SettingsY, Height + 12);
+  end;
+
+  function SettingEdit(const Text, Value: string): TEdit;
+  var
+    Field: TPanel;
+  begin
+    Field := SettingRow(Text, 52);
+    Result := TEdit.Create(Self);
+    Result.Parent := Field;
+    Result.Align := alClient;
+    Result.Text := ToUI(Value);
+  end;
+
+  function SettingCombo(const Text, Items: string): TComboBox;
+  var
+    Field: TPanel;
+  begin
+    Field := SettingRow(Text, 52);
     Result := TComboBox.Create(Self);
-    Result.Parent := FSettings;
-    AddLabel(Text, X, Y, W, FSettings); Result.SetBounds(X, Y + 21, W, 28);
+    Result.Parent := Field;
+    Result.Align := alClient;
     Result.Style := csDropDownList;
     Result.Items.Text := ToUI(Items);
     Result.ItemIndex := 0;
@@ -296,79 +363,146 @@ begin
   inherited CreateNew(AOwner);
   Caption := 'CrossPascal Language Chat';
   Position := poScreenCenter;
-  ClientWidth := 980;
-  ClientHeight := 850;
-  if ClientHeight > Screen.WorkAreaHeight - 80 then
-    ClientHeight := Screen.WorkAreaHeight - 80;
-  Constraints.MinWidth := 996;
-  Constraints.MinHeight := 460;
+  OnShow := FitOnScreen;
+  Font.Name := 'Segoe UI';
+  Font.Size := 10;
+  ClientWidth := 1080;
+  ClientHeight := 740;
+  Constraints.MinWidth := 760;
+  Constraints.MinHeight := 560;
+  FModel := TLanguageModel.Create;
   FContent := TScrollBox.Create(Self);
   FContent.Parent := Self;
   FContent.Align := alClient;
   FContent.BorderStyle := bsNone;
-  FContent.AutoScroll := True;
-  FModel := TLanguageModel.Create;
-  FBundle := AddEdit('Converted model bundle (the folder containing model.json)', '', 16, 12, 820, FContent);
-  FBundleBrowse := AddButton('Browse...', 850, 33, 110, BrowseBundle);
-  FRuntime := AddEdit('Installed SDK root (contains crosspascal-tvm and runtime)', FindSDK, 16, 65,
-    820, FContent);
-  FRuntimeBrowse := AddButton('Browse...', 850, 86, 110, BrowseRuntime);
-  FCapability := AddLabel('Select a converted bundle. Supported inputs are checked before inference.',
-    16, 122, 940, FContent);
+  FContent.AutoScroll := False;
+  Header := Panel(FContent, alTop, 112);
+  Header.BorderWidth := 12;
+  Heading := LabelOn(Header, 'Model', alTop);
+  Heading.Font.Style := [fsBold];
+  ModelRow := Panel(Header, alTop, 36);
+  ModelRow.DisableAlign;
+  FUnload := ButtonOn(ModelRow, 'Unload', 86, alRight, UnloadClick);
+  FLoad := ButtonOn(ModelRow, 'Load model', 110, alRight, LoadClick);
+  FBundleBrowse := ButtonOn(ModelRow, 'Browse...', 92, alRight, BrowseBundle);
+  Row := Panel(ModelRow, alClient, 0);
+  Row.BorderWidth := 3;
+  FBundle := TEdit.Create(Self);
+  FBundle.Parent := Row;
+  FBundle.Align := alClient;
+  FBundle.ShowHint := True;
+  FBundle.Hint := 'Select the converted folder containing model.json.';
+  FBundleBrowse.Parent.Left := 100;
+  FLoad.Parent.Left := 200;
+  FUnload.Parent.Left := 300;
+  ModelRow.EnableAlign;
+  Row := Panel(Header, alClient, 0);
+  FSettingsToggle := ButtonOn(Row, 'Settings', 110, alRight, ToggleSettings);
+  FCapability := LabelOn(Row, 'Choose a model to see its supported inputs.', alClient);
   FCapability.WordWrap := True;
-  FCapability.Height := 38;
-  FLoad := AddButton('Load model', 16, 164, 120, LoadClick);
-  FUnload := AddButton('Unload model', 146, 164, 120, UnloadClick);
+  Footer := Panel(FContent, alBottom, 44);
+  Footer.BorderWidth := 8;
+  FStatus := LabelOn(Footer, 'Ready. Load a model, then enter a message.', alClient);
+  FStatus.WordWrap := True;
+  FAdvanced := TScrollBox.Create(Self);
+  FAdvanced.Parent := FContent;
+  FAdvanced.Align := alRight;
+  FAdvanced.Width := 300;
+  FAdvanced.BorderStyle := bsNone;
+  FAdvanced.HorzScrollBar.Visible := False;
+  FAdvanced.Visible := False;
   FSettings := TGroupBox.Create(Self);
-  FSettings.Parent := FContent;
-  FSettings.Caption := 'Generation settings'; FSettings.SetBounds(16, 205, 944, 138);
-  FMaxTokens := AddEdit('New tokens (0 = auto)', '0', 12, 20, 155, FSettings);
-  FSampling := AddCombo('Sampling', 'Auto' + sLineBreak + 'Sample' + sLineBreak + 'Greedy', 180, 20, 145);
-  FEffort := AddCombo('Answer budget', 'Full context' + sLineBreak + 'Brief (128)' + sLineBreak +
-    'Balanced (512)' + sLineBreak + 'Detailed (1024)', 340, 20, 185);
-  FTemperature := AddEdit('Temperature', '0.7', 540, 20, 110, FSettings);
-  FTopP := AddEdit('Top P', '0.8', 665, 20, 110, FSettings);
-  FTopK := AddEdit('Top K', '20', 790, 20, 110, FSettings);
-  FPenalty := AddEdit('Repetition penalty', '1.1', 12, 78, 155, FSettings);
-  FSeed := AddEdit('Seed (-1 = random)', '-1', 180, 78, 145, FSettings);
+  FSettings.Parent := FAdvanced;
+  FSettings.Caption := 'Settings';
+  FSettings.SetBounds(8, 0, 278, 920);
+  FSettings.Anchors := [akLeft, akTop, akRight];
+  SettingsBody := Panel(FSettings, alClient, 0);
+  SettingsBody.BorderWidth := 8;
+  SettingsBody.DisableAlign;
+  SettingsY := 8;
+  FMaxTokens := SettingEdit('New tokens (0 = automatic)', '0');
+  FSampling := SettingCombo('Sampling', 'Auto' + sLineBreak + 'Sample' + sLineBreak + 'Greedy');
+  FEffort := SettingCombo('Answer budget', 'Full context' + sLineBreak + 'Brief (128)' +
+    sLineBreak + 'Balanced (512)' + sLineBreak + 'Detailed (1024)');
+  FTemperature := SettingEdit('Temperature', '0.7');
+  FTopP := SettingEdit('Top P', '0.8');
+  FTopK := SettingEdit('Top K', '20');
+  FPenalty := SettingEdit('Repetition penalty', '1.1');
+  FSeed := SettingEdit('Seed (-1 = random)', '-1');
+  Row := SettingRow('', 32);
   FPlain := TCheckBox.Create(Self);
-  FPlain.Parent := FSettings;
-  FPlain.Caption := 'Plain completion (no chat template)'; FPlain.SetBounds(340, 99, 340, 24);
-  AddLabel('Instructions (Qwen: system role; Gemma: prepended to the user prompt)', 16, 355, 940, FContent);
+  FPlain.Parent := Row;
+  FPlain.Align := alClient;
+  FPlain.Caption := 'Plain completion';
+  Row := SettingRow('Instructions', 100);
   FSystem := TMemo.Create(Self);
-  FSystem.Parent := FContent; FSystem.SetBounds(16, 377, 944, 46);
+  FSystem.Parent := Row;
+  FSystem.Align := alClient;
   FSystem.Text := 'You are a helpful assistant.';
   FSystem.ScrollBars := ssVertical;
-  AddLabel('Prompt', 16, 432, 740, FContent);
-  FPrompt := TMemo.Create(Self);
-  FPrompt.Parent := FContent; FPrompt.SetBounds(16, 454, 740, 100);
-  FPrompt.Text := 'Say hello in English.';
-  FPrompt.ScrollBars := ssVertical;
+  Row := SettingRow('Installed SDK folder', 60);
+  FRuntimeBrowse := ButtonOn(Row, '...', 40, alRight, BrowseRuntime);
+  FRuntime := TEdit.Create(Self);
+  FRuntime.Parent := Row;
+  FRuntime.Align := alClient;
+  FRuntime.Text := ToUI(FindSDK);
+  FSettings.Height := SettingsY + 40;
+  SettingsBody.EnableAlign;
+  AnswerPanel := Panel(FContent, alClient, 0);
+  AnswerPanel.BorderWidth := 12;
+  Composer := Panel(AnswerPanel, alBottom, 206);
+  Composer.BorderWidth := 3;
+  Heading := LabelOn(Composer, 'Message', alTop);
+  Heading.Font.Style := [fsBold];
+  Actions := Panel(Composer, alBottom, 40);
+  FStop := ButtonOn(Actions, 'Stop', 82, alRight, StopClick);
+  FRun := ButtonOn(Actions, 'Generate', 116, alRight, RunClick);
+  FSave := ButtonOn(Actions, 'Save result...', 126, alLeft, SaveClick);
+  Attachments := Panel(Composer, alBottom, 36);
+  Attachments.DisableAlign;
+  FAttach := ButtonOn(Attachments, 'Attach image...', 132, alLeft, AttachImage);
+  FRemove := ButtonOn(Attachments, 'Remove', 86, alLeft, RemoveImage);
+  FImageName := LabelOn(Attachments, 'No image attached', alClient);
+  FImageName.ShowHint := True;
+  FAttach.Parent.Left := 0;
+  FRemove.Parent.Left := 132;
+  Attachments.EnableAlign;
+  PromptPanel := Panel(Composer, alClient, 0);
+  PromptPanel.BorderWidth := 3;
   FPreview := TImage.Create(Self);
-  FPreview.Parent := FContent; FPreview.SetBounds(775, 454, 185, 100);
+  FPreview.Parent := PromptPanel;
+  FPreview.Align := alRight;
+  FPreview.Width := 112;
   FPreview.Proportional := True;
   FPreview.Center := True;
   FPreview.Stretch := True;
-  FAttach := AddButton('Attach image...', 16, 565, 140, AttachImage);
-  FRemove := AddButton('Remove image', 166, 565, 135, RemoveImage);
-  FImageName := AddLabel('No image attached', 315, 570, 645, FContent);
-  FRun := AddButton('Generate', 16, 607, 130, RunClick);
-  FStop := AddButton('Stop', 156, 607, 110, StopClick);
-  FSave := AddButton('Save result...', 276, 607, 140, SaveClick);
-  FStatus := AddLabel('Ready. Auto stops at end of answer, Stop, or the real bundle context limit.',
-    16, 646, 940, FContent);
-  FStatus.WordWrap := True;
-  FStatus.Height := 38;
+  FPreview.Visible := False;
+  FPrompt := TMemo.Create(Self);
+  FPrompt.Parent := PromptPanel;
+  FPrompt.Align := alClient;
+  FPrompt.Text := 'Say hello in English.';
+  FPrompt.ScrollBars := ssVertical;
+  Heading := LabelOn(AnswerPanel, 'Answer', alTop);
+  Heading.Font.Style := [fsBold];
   FOutput := TMemo.Create(Self);
-  FOutput.Parent := FContent; FOutput.SetBounds(16, 692, 944, 142);
+  FOutput.Parent := AnswerPanel;
+  FOutput.Align := alClient;
   FOutput.ReadOnly := True;
   FOutput.ScrollBars := ssVertical;
-  FOutput.Anchors := [akLeft, akTop, akRight];
   FTimer := TTimer.Create(Self);
   FTimer.Interval := 40;
   FTimer.OnTimer := Tick;
   OnCloseQuery := CheckClose;
   RefreshControls;
+end;
+
+procedure TLanguageChatForm.ToggleSettings(Sender: TObject);
+begin
+  FAdvanced.Visible := not FAdvanced.Visible;
+  if FAdvanced.Visible then
+    FSettingsToggle.Caption := 'Hide settings'
+  else
+    FSettingsToggle.Caption := 'Settings';
 end;
 
 procedure TLanguageChatForm.SetDemoTitle(const Title: string);
@@ -403,7 +537,7 @@ var
   Path: string;
   Info: TLanguageCapabilities;
 begin
-  Path := FromUI(FBundle.Text);
+  Path := FolderFromUI(FBundle.Text);
   if not ChooseFolder('Select a converted model bundle', Path, Self) then Exit;
   FBundle.Text := ToUI(Path);
   try
@@ -422,7 +556,7 @@ procedure TLanguageChatForm.BrowseRuntime(Sender: TObject);
 var
   Path: string;
 begin
-  Path := FromUI(FRuntime.Text);
+  Path := FolderFromUI(FRuntime.Text);
   if ChooseFolder('Select the installed SDK root', Path, Self) then FRuntime.Text := ToUI(Path);
 end;
 
@@ -436,14 +570,20 @@ begin
     D.Title := 'Attach an image';
     D.Filter := 'Images|*.png;*.jpg;*.jpeg;*.bmp';
     if not D.Execute then Exit;
-    FPreview.Picture.LoadFromFile(D.FileName);
-    FImagePath := {$IFDEF FPC}UTF8Decode(D.FileName){$ELSE}D.FileName{$ENDIF};
-    FImageName.Caption := ToUI(ExtractFileName(FImagePath));
-    if FBundle.Text <> '' then
-    begin
-      Info := TLanguageModel.Inspect(FromUI(FBundle.Text));
-      if not Info.SupportsImages then
-        FStatus.Caption := 'This is a text-only bundle. Remove the image to continue, or select a compatible image bundle.';
+    try
+      FPreview.Picture.LoadFromFile(D.FileName);
+      FImagePath := {$IFDEF FPC}UTF8Decode(D.FileName){$ELSE}D.FileName{$ENDIF};
+      FImageName.Caption := ToUI(ExtractFileName(FImagePath));
+      FImageName.Hint := ToUI(FImagePath);
+      FPreview.Visible := True;
+      if FBundle.Text <> '' then
+      begin
+        Info := TLanguageModel.Inspect(FolderFromUI(FBundle.Text));
+        if not Info.SupportsImages then
+          FStatus.Caption := 'This is a text-only bundle. Remove the image to continue, or select a compatible image bundle.';
+      end;
+    except
+      on E: Exception do FStatus.Caption := ToUI(E.Message);
     end;
     RefreshControls;
   finally
@@ -455,6 +595,8 @@ procedure TLanguageChatForm.RemoveImage(Sender: TObject);
 begin
   FImagePath := '';
   FPreview.Picture.Assign(nil);
+  FPreview.Visible := False;
+  FImageName.Hint := '';
   FImageName.Caption := 'No image attached';
   FStatus.Caption := 'Image removed. The next request will contain text only.';
   RefreshControls;
@@ -465,22 +607,30 @@ var
   Info: TLanguageCapabilities;
 begin
   if FWorker <> nil then Exit;
-  if (Action = maGenerate) and (FImagePath <> '') then
-  begin
-    Info := TLanguageModel.Inspect(FromUI(FBundle.Text));
-    if not Info.SupportsImages then
+  try
+    if (Action = maGenerate) and (FImagePath <> '') then
     begin
-      FStatus.Caption := 'Image cannot be used with this bundle. Click Remove image for a text-only request, or choose a multimodal bundle.';
-      Exit;
+      Info := TLanguageModel.Inspect(FolderFromUI(FBundle.Text));
+      if not Info.SupportsImages then
+      begin
+        FStatus.Caption := 'Image cannot be used with this bundle. Click Remove image for a text-only request, or choose a multimodal bundle.';
+        Exit;
+      end;
+    end;
+    FWorker := TLanguageWorker.Create(Self, Action);
+    if Action = maGenerate then
+    begin
+      FOutput.Clear;
+      FLastJSON := '';
+    end;
+    FStatus.Caption := 'Working...'; RefreshControls; FWorker.Start;
+  except
+    on E: Exception do
+    begin
+      FStatus.Caption := ToUI(E.Message);
+      RefreshControls;
     end;
   end;
-  FWorker := TLanguageWorker.Create(Self, Action);
-  if Action = maGenerate then
-  begin
-    FOutput.Clear;
-    FLastJSON := '';
-  end;
-  FStatus.Caption := 'Working...'; RefreshControls; FWorker.Start;
 end;
 
 procedure TLanguageChatForm.LoadClick(Sender: TObject);

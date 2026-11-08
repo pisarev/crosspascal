@@ -12,15 +12,18 @@ var
   Model: TLanguageModel;
   Output: TConsoleOutput;
   Options: TLanguageOptions;
+  Images: TExampleImages;
 begin
   RequireArguments(False);
+  Images := ExampleImages;
   Output := TConsoleOutput.Create;
   Model := TLanguageModel.Create;
   try
     Model.OnStatus := Output.Status;
     Model.Load(ParamStr(1), ParamStr(2));
     Options := DefaultLanguageOptions;
-    PrintAnswer(Model.Generate('Say hello in English.', Options, []));
+    PrintAnswer(Model.Generate(ExamplePrompt('Say hello in English.', 'Describe this image.'),
+      Options, Images));
     Model.Unload;
   finally
     Model.Free;

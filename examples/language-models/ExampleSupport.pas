@@ -9,6 +9,8 @@ uses
   LanguageModel;
 
 type
+  TExampleImages = array of string;
+
   TConsoleOutput = class
   private
     FPrevious: string;
@@ -19,6 +21,8 @@ type
   end;
 
 procedure RequireArguments(const ImageRequired: Boolean = False);
+function ExampleImages: TExampleImages;
+function ExamplePrompt(const TextPrompt, ImagePrompt: string): string;
 procedure PrintAnswer(const Report: string);
 procedure ConsoleWrite(const Text: string);
 procedure ConsoleWriteLine(const Text: string);
@@ -51,9 +55,34 @@ end;
 procedure RequireArguments(const ImageRequired: Boolean);
 begin
   SetConsoleOutputCP(CP_UTF8);
+  if (ParamCount > 3) then
+    raise Exception.Create('Too many arguments: expected bundle, SDK folder and an optional image.');
   if (ParamCount < 2) or (ImageRequired and (ParamCount < 3)) then
     raise Exception.Create('Arguments: "converted bundle" "SDK root" ["image.png"]. ' +
       'Use the supplied SDK root, not the original model directory.');
+end;
+
+function ExampleImages: TExampleImages;
+var
+  Info: TLanguageCapabilities;
+begin
+  SetLength(Result, 0);
+  if ParamCount < 3 then Exit;
+  if not FileExists(ParamStr(3)) then
+    raise Exception.Create('Image file was not found: ' + ParamStr(3));
+  Info := TLanguageModel.Inspect(ParamStr(1));
+  if not Info.SupportsImages then
+    raise Exception.Create(Info.ImageExplanation);
+  SetLength(Result, 1);
+  Result[0] := ExpandFileName(ParamStr(3));
+end;
+
+function ExamplePrompt(const TextPrompt, ImagePrompt: string): string;
+begin
+  if ParamCount >= 3 then
+    Result := ImagePrompt
+  else
+    Result := TextPrompt;
 end;
 
 procedure TConsoleOutput.Status(const Text: string);

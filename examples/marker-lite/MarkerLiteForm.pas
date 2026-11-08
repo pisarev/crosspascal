@@ -18,6 +18,12 @@ type
   private
     FImage: TImage;
     FMat: IMat;
+    FStatus: TLabel;
+    FGray: TButton;
+    FSauvola: TButton;
+    FCanny: TButton;
+    FSave: TButton;
+    procedure FitOnScreen(Sender: TObject);
     function AddButton(const ACaption: string; AHandler: TNotifyEvent; AParent: TWinControl;
       ALeft: Integer): TButton;
     procedure ShowMat(const M: IMat);
@@ -33,34 +39,79 @@ type
 
 implementation
 
+procedure TMarkerLiteForm.FitOnScreen(Sender: TObject);
+var
+  Area: TRect;
+  AvailableWidth, AvailableHeight: Integer;
+begin
+  Area := Monitor.WorkareaRect;
+  AvailableWidth := Area.Right - Area.Left;
+  AvailableHeight := Area.Bottom - Area.Top;
+  if Constraints.MinWidth > AvailableWidth then Constraints.MinWidth := AvailableWidth;
+  if Constraints.MinHeight > AvailableHeight then Constraints.MinHeight := AvailableHeight;
+  if Width > AvailableWidth then Width := AvailableWidth;
+  if Height > AvailableHeight then Height := AvailableHeight;
+  if Left + Width > Area.Right then Left := Area.Right - Width;
+  if Top + Height > Area.Bottom then Top := Area.Bottom - Height;
+  if Left < Area.Left then Left := Area.Left;
+  if Top < Area.Top then Top := Area.Top;
+end;
+
 constructor TMarkerLiteForm.Create(AOwner: TComponent);
 var
-  Panel: TPanel;
-  Box: TScrollBox;
-  L: Integer;
+  Content, Toolbar, Preview, Footer: TPanel;
 begin
   inherited CreateNew(AOwner);
-  Caption := 'CrossPascal MarkerLite - open an image';
-  Width := 960;
-  Height := 680;
+  Caption := 'CrossPascal MarkerLite';
+  Font.Name := 'Segoe UI';
+  Font.Size := 10;
+  ClientWidth := 960;
+  ClientHeight := 680;
+  Constraints.MinWidth := 680;
+  Constraints.MinHeight := 400;
   Position := poScreenCenter;
-  Panel := TPanel.Create(Self);
-  Panel.Parent := Self;
-  Panel.Align := alTop;
-  Panel.Height := 42;
-  Panel.BevelOuter := bvNone;
-  L := 8;
-  L := AddButton('Open...', DoOpen, Panel, L).Left + 116;
-  L := AddButton('Grayscale', DoGray, Panel, L).Left + 116;
-  L := AddButton('Sauvola', DoSauvola, Panel, L).Left + 116;
-  L := AddButton('Canny edges', DoCanny, Panel, L).Left + 116;
-  AddButton('Save PNG...', DoSave, Panel, L);
-  Box := TScrollBox.Create(Self);
-  Box.Parent := Self;
-  Box.Align := alClient;
+  OnShow := FitOnScreen;
+  Content := TPanel.Create(Self);
+  Content.Parent := Self;
+  Content.Align := alClient;
+  Content.BevelOuter := bvNone;
+  Content.BorderWidth := 12;
+  Toolbar := TPanel.Create(Self);
+  Toolbar.Parent := Content;
+  Toolbar.Align := alTop;
+  Toolbar.Height := 44;
+  Toolbar.BevelOuter := bvNone;
+  AddButton('Open image...', DoOpen, Toolbar, 0);
+  FGray := AddButton('Grayscale', DoGray, Toolbar, 1);
+  FSauvola := AddButton('Sauvola', DoSauvola, Toolbar, 2);
+  FCanny := AddButton('Canny edges', DoCanny, Toolbar, 3);
+  FSave := AddButton('Save PNG...', DoSave, Toolbar, 4);
+  FGray.Enabled := False;
+  FSauvola.Enabled := False;
+  FCanny.Enabled := False;
+  FSave.Enabled := False;
+  Footer := TPanel.Create(Self);
+  Footer.Parent := Content;
+  Footer.Align := alBottom;
+  Footer.Height := 36;
+  Footer.BevelOuter := bvNone;
+  FStatus := TLabel.Create(Self);
+  FStatus.Parent := Footer;
+  FStatus.Align := alClient;
+  FStatus.AutoSize := False;
+  FStatus.Layout := tlCenter;
+  FStatus.Caption := 'Open an image, choose an operation, then save the result.';
+  Preview := TPanel.Create(Self);
+  Preview.Parent := Content;
+  Preview.Align := alClient;
+  Preview.BevelOuter := bvNone;
+  Preview.BorderWidth := 4;
   FImage := TImage.Create(Self);
-  FImage.Parent := Box;
-  FImage.AutoSize := True;
+  FImage.Parent := Preview;
+  FImage.Align := alClient;
+  FImage.Proportional := True;
+  FImage.Stretch := True;
+  FImage.Center := True;
 end;
 
 destructor TMarkerLiteForm.Destroy;
@@ -71,12 +122,21 @@ end;
 
 function TMarkerLiteForm.AddButton(const ACaption: string; AHandler: TNotifyEvent;
   AParent: TWinControl; ALeft: Integer): TButton;
+var
+  Cell: TPanel;
 begin
+  Cell := TPanel.Create(Self);
+  Cell.Parent := AParent;
+  Cell.BevelOuter := bvNone;
+  Cell.BorderWidth := 3;
+  Cell.Left := ALeft * 124;
+  Cell.Width := 124;
+  Cell.Align := alLeft;
   Result := TButton.Create(Self);
-  Result.Parent := AParent;
+  Result.Parent := Cell;
+  Result.Align := alClient;
   Result.Caption := ACaption;
   Result.OnClick := AHandler;
-  Result.SetBounds(ALeft, 8, 108, 26);
 end;
 
 procedure TMarkerLiteForm.ShowMat(const M: IMat);
@@ -119,7 +179,11 @@ begin
         end;
     end;
     FImage.Picture.Assign(Bmp);
-    Caption := Format('CrossPascal MarkerLite - %d x %d', [W, H]);
+    FStatus.Caption := Format('%d x %d pixels. Preview fitted to the window.', [W, H]);
+    FGray.Enabled := True;
+    FSauvola.Enabled := True;
+    FCanny.Enabled := True;
+    FSave.Enabled := True;
   finally
     Bmp.Free;
   end;
@@ -238,7 +302,7 @@ begin
       if Encoded <> nil then
         CV.ImgCodecs.FreeBuf(Encoded);
     end;
-    Caption := 'CrossPascal MarkerLite - saved ' + ExtractFileName(Dlg.FileName);
+    FStatus.Caption := 'Saved ' + ExtractFileName(Dlg.FileName);
   finally
     Dlg.Free;
   end;

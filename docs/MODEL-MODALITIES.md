@@ -7,15 +7,18 @@ A family name alone does not establish image support. The converted bundle needs
 | Dense Qwen2/Qwen2.5, including Instruct and Coder | Text on CUDA | QwenChat and console examples |
 | Gemma 2 | Experimental CPU text with its retained numerical restrictions | GemmaChat and console examples |
 | Gemma 3n text bundle | Text on CPU or CUDA | GemmaChat and console examples |
-| Gemma 3n CUDA with a converted gemma3nv projector | Text and images | Shared chat form and ImagePrompt |
-| Qwen2.5-VL and other vision architectures | Not implemented by the dense Qwen adapter | Explicitly rejected |
+| Gemma 3n CPU or CUDA with a converted gemma3nv projector | Text and images | Both chat forms and all generation console examples |
+| Qwen2.5-VL | Text and images on CPU through its separate architecture adapter | Both chat forms and all generation console examples |
+| Other vision architectures | No implicit compatibility claim | Unsupported inputs are explicitly rejected |
 
 Both chat forms have Attach image, a thumbnail and Remove image. A text-only bundle displays an explanation and blocks the image request before inference. Remove the image or select a compatible image bundle. No external captioning, OCR substitution or silent omission is used.
 
-Use **Add images to a Gemma 3n bundle** in the converter. Supply an existing CUDA text bundle and its matching projector GGUF. It creates a separate bundle with vision.json, an encoder DLL, parameters and artifact hashes. The architecture comes from the text bundle, not a graphics-card name. Original model terms and access conditions still apply.
+Use **Add images to a Gemma 3n bundle** in the converter. Supply a CPU or CUDA text bundle with host embeddings and its matching projector GGUF. It creates a separate bundle with vision.json, an encoder DLL, parameters and artifact hashes. Older CPU text bundles may require reconversion. The architecture comes from the text bundle, not a graphics-card name. Original model terms and access conditions still apply.
 
 The verified image profile resizes RGB input to 768 by 768 with bilinear interpolation and produces 256 image tokens. These tokens, the question and the answer share the converted context. TVM executes vision encoding and text decoding; Pillow decodes image files. Audio and video input are not implemented.
 
-The vision encoder was compared with the same source weights in PyTorch. Changing the image while keeping the question fixed produced different, correct colour answers. This bounded check does not establish accuracy for every image or checkpoint. The text decoder consumes image tokens one at a time, which increases time to the first answer.
+Qwen2.5-VL has a separate checkpoint-folder conversion section. Its default 224-pixel profile preserves image aspect ratio, pads the image and contributes 64 image tokens. It uses the original vision weights and multimodal rotary positions. It is not the dense Qwen2.5 text adapter with an image filename added.
 
-The [console examples](../examples/language-models/README.md) show how to check SupportsImages before submitting an image. [Gemma conversion](../../crosspascal-convert/docs/GEMMA3N.md) describes the setup and manual steps.
+New CPU image profiles use block prefill before token-by-token decoding. A previously encoded, unchanged image can reuse its features while the model stays loaded. Exact timings depend on the model, processor, available memory and storage. Numerical and bounded semantic checks do not establish accuracy for every image or checkpoint.
+
+The [console examples](../examples/language-models/README.md) show how to check SupportsImages before submitting an image. [Gemma conversion](../../crosspascal-convert/docs/GEMMA3N.md) and [Qwen2.5-VL conversion](../../crosspascal-convert/docs/QWEN2.5-VL.md) describe setup and manual steps. LoadUnload is a lifecycle example and does not perform inference; all generation examples accept an image when the selected bundle supports it.

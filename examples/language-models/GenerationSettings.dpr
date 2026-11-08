@@ -12,8 +12,10 @@ var
   Model: TLanguageModel;
   Output: TConsoleOutput;
   Options: TLanguageOptions;
+  Images: TExampleImages;
 begin
   RequireArguments(False);
+  Images := ExampleImages;
   Output := TConsoleOutput.Create;
   Model := TLanguageModel.Create;
   try
@@ -30,7 +32,8 @@ begin
     Options.Effort := qeFullContext;
     Options.SystemPrompt := 'Answer clearly and briefly.';
     Options.PlainCompletion := False;
-    PrintAnswer(Model.Generate('What is a black hole?', Options, []));
+    PrintAnswer(Model.Generate(ExamplePrompt('What is a black hole?', 'Describe the important details in this image.'),
+      Options, Images));
     Model.Unload;
   finally
     Model.Free;
