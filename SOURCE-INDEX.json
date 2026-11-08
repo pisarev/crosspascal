@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-013",
+  "release_id": "early-access-014",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -227,8 +227,8 @@
     },
     {
       "path": "examples/qwen-chat/README.md",
-      "bytes": 4973,
-      "sha256": "9495d9cc0ddb2d4b789914d92e0b86466a3a7475abd50fbfc33b1d3e7bce7ba6"
+      "bytes": 5515,
+      "sha256": "231245ffd1a4b7bf26890b3524cd0196a50e2e2b6b91105d42870a18cf6be217"
     },
     {
       "path": "examples/vision-models/models.json",

@@ -38,6 +38,14 @@ runtime to call compiled TVM libraries; it does not run PyTorch or Ollama.
 and stop reason. Existing reports are not overwritten. Smaller windows scroll
 so that every setting and action remains accessible.
 
+Loading checks the complete model files before copying weights to the GPU.
+On Windows, both compiler variants use the same Windows SHA-256 implementation.
+This verification is still performed in full; no filename-only or timestamp-only
+cache skips it. Keep the model loaded to avoid repeating verification and upload
+for each question. The progress messages distinguish verification, loading and
+generation. Startup time depends on storage speed, model size and available GPU
+memory; a longer answer also takes more generation time.
+
 ## Settings
 
 | Control | Default | Meaning |
