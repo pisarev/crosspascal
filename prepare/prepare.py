@@ -83,9 +83,9 @@ def github_authentication():
     if saved:
         os.environ['GH_TOKEN'] = saved
         return
-    print('GitHub did not allow an anonymous request. The release may be private or the public request limit may be reached.')
+    print('GitHub did not allow the anonymous request. Check the release URL and public request limit.')
     print('Public releases do not normally need a token. To retry with your account, use a token with read access.')
-    print('A fine-grained token needs this repository selected and Contents: Read-only.')
+    print('An optional token can raise the request limit; public downloads need no repository invitation.')
     token = getpass.getpass('GitHub token (hidden input): ').strip()
     if not token:
         raise RuntimeError('Authenticated retry cancelled. Public downloads normally need no token; check the release URL or try again after the GitHub request limit resets.')

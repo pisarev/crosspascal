@@ -5,11 +5,10 @@ Download **crosspascal-examples-prepare-ea017.zip** from the
 and extract it to a writable folder. Open your example's folder and run
 **Prepare.cmd**. Shared example folders offer a menu.
 
-Public releases download without a GitHub account or token. While a release is
-private, your GitHub account needs repository access. If anonymous access is
-denied or GitHub's public request limit is reached, Prepare can retry with your
-existing GitHub CLI login, a saved credential, or a token entered with hidden
-input. Saving a token in Windows Credential Manager is optional. A fine-grained
+The source repositories and releases are public. Prepare downloads without a
+GitHub account or token. If GitHub's anonymous request limit is reached, you can
+retry with an existing GitHub CLI login, a saved credential, or an optional token
+entered with hidden input. Saving a token in Windows Credential Manager is optional. A fine-grained
 token needs Contents: Read-only for this repository. Never paste tokens into a
 project, script or issue.
 

@@ -2,7 +2,7 @@
 
 ## Prepare and Run
 
-Run **Prepare.cmd** in this folder and choose a console example, or use its named `Prepare-<Project>.cmd` file. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/early-access-016/docs/PREPARE-EXAMPLES.md) for first-time private GitHub access, model sizes and the other examples.
+Run **Prepare.cmd** in this folder and choose a console example, or use its named `Prepare-<Project>.cmd` file. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
 
 
 These small console programs show the same API used by QwenChat and GemmaChat.

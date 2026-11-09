@@ -2,7 +2,7 @@
 
 ## Prepare and Run
 
-Download [Prepare-VisionModels-ea016.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-016/Prepare-VisionModels-ea016.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/early-access-016/docs/PREPARE-EXAMPLES.md) for first-time private GitHub access, model sizes and the other examples.
+Download [Prepare-VisionModels-ea016.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-016/Prepare-VisionModels-ea016.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
 
 
 Open `VisionModels.dproj` in Delphi or `VisionModels.lpi` in Lazarus to build a small image-classification and object-detection application for Windows x64. The form lets you select a model profile, choose a converted bundle, open a picture, run on CPU, and save a JSON result. It uses the supplied Pascal TVM adapters and OpenCV image types.
@@ -21,7 +21,7 @@ The source project has five explicit profiles. Model weights and compiled model 
 
 This manual example uses `C:\CrossPascal` as the installation directory. Choose another writable local folder if needed and substitute it throughout. First install the compiler/runtime prerequisites described in the [converter installation guide](../../../crosspascal-convert/INSTALL.md); the supplied portable Python is already included.
 
-1. In your browser, open [CrossPascal Releases](https://github.com/pisarev/crosspascal/releases). Sign in with the GitHub account that has access while the projects are private.
+1. In your browser, open [CrossPascal Releases](https://github.com/pisarev/crosspascal/releases). The source repositories and releases are public; no GitHub sign-in is required for downloads.
 2. Download the Windows x64 SDK and its matching CPU model source asset listed in the release notes.
 3. In Explorer, right-click the Windows SDK ZIP and choose **Extract All**. Use the directory containing `CrossPascalConvert.exe`, `runtime`, and the five sibling project folders as `C:\CrossPascal`. Keep the complete directory together.
 4. Create `C:\CrossPascal\Sources` and extract the complete source-model ZIP there. Its `crosspascal-cpu-model-sources` folder contains:

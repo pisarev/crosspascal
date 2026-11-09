@@ -37,13 +37,13 @@
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 4194,
-      "sha256": "b1d9d34a5e44dcf1c27ccfc72ba3642fb3a678d189c0ec0ade12d9764ed5d4be"
+      "bytes": 4139,
+      "sha256": "a065593a5f1195d16e4ba2f8c72385f5915d9283034adafa07565253c3df9b9b"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
-      "bytes": 660,
-      "sha256": "fca1de267c2e83999d087d4ad79f356a14363b60f1dcc959e0ddd130d7b18839"
+      "bytes": 649,
+      "sha256": "a1c1b70f5d9f22a1be59f44612ae59328b347e439f6b4591f798e4a3ecf0dcf9"
     },
     {
       "path": "docs/ROADMAP.md",
@@ -82,8 +82,8 @@
     },
     {
       "path": "examples/gemma-chat/README.md",
-      "bytes": 6573,
-      "sha256": "a2d181931bcc49ce796883dd6202f2fc5be715e4f04c2dda54dedc7d88f0ec5d"
+      "bytes": 6588,
+      "sha256": "0b0632faa56c1b582ceae4025654fb46e6fbf8577c87ca897623aff48a66d0fa"
     },
     {
       "path": "examples/language-models/ExampleSupport.pas",
@@ -187,8 +187,8 @@
     },
     {
       "path": "examples/language-models/README.md",
-      "bytes": 6766,
-      "sha256": "24c62af884943d4ab81beb0f66d29282e48d99dc349f855479ff28e085ad0d34"
+      "bytes": 6781,
+      "sha256": "8b693a6621419ffcd4d6fbfa1a5a77dc8268e0fc4e85497b8716597be96eec7f"
     },
     {
       "path": "examples/language-models/RepeatedRequests.dpr",
@@ -252,8 +252,8 @@
     },
     {
       "path": "examples/marker-lite/README.md",
-      "bytes": 3890,
-      "sha256": "7827a1ce309614de59278c0c0cc3bd8a637247e26cb5eddab8b734d4b4724c1b"
+      "bytes": 3905,
+      "sha256": "c143c8b716b3e1ba63f24522feb2868280cfd615f867efc65dc84782c748a39f"
     },
     {
       "path": "examples/qwen-chat/Prepare.cmd",
@@ -282,8 +282,8 @@
     },
     {
       "path": "examples/qwen-chat/README.md",
-      "bytes": 6568,
-      "sha256": "5ecdc0f0d06f159ef34f292c8189a64926a136feec6c3bcc62b282f9fde1b91e"
+      "bytes": 6583,
+      "sha256": "f4dd3104469541e338755cdf0e358f84e6924dddf44aa62eef1d1a6ef5a0c31d"
     },
     {
       "path": "examples/vision-models/models.json",
@@ -297,8 +297,8 @@
     },
     {
       "path": "examples/vision-models/README.md",
-      "bytes": 14740,
-      "sha256": "52d30cac1c260ff201e14fe80b1c47c3a3d02dcedd1dea7c10ee6a3f70f6b63b"
+      "bytes": 14769,
+      "sha256": "8776914ae749568da59b40b617cb6ebc32fa0cec519126139375284037390698"
     },
     {
       "path": "examples/vision-models/VisionModels.dpr",
@@ -362,8 +362,8 @@
     },
     {
       "path": "prepare/prepare.py",
-      "bytes": 23400,
-      "sha256": "e637e4e610a5e77428a2df2627f773c3605e0571cfe267b22ff165b970b3dda9"
+      "bytes": 23396,
+      "sha256": "af3a6e8de7602c67c3f7ce162623b42c16160b9cba2aed53659482acf8922aa7"
     },
     {
       "path": "README.md",
@@ -490,5 +490,6 @@
       "bytes": 2859,
       "sha256": "19ee39908eea00c1f9386955f00de7491746e88d05d500adbb6cdbfc1923a584"
     }
-  ]
+  ],
+  "documentation_revision": "public-access-20261109"
 }
