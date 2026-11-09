@@ -1,5 +1,3 @@
-{ Copyright © 2026 Yuriy Pisarev                                             }
-
 program TestDisjointSet;
 
 {$APPTYPE CONSOLE}

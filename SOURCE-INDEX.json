@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-016",
+  "release_id": "early-access-017",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -27,8 +27,8 @@
     },
     {
       "path": "docs/LICENSE-SCOPE.md",
-      "bytes": 2193,
-      "sha256": "ff8dd56fba77ba54a0c324df330cfea33bc1b12adf9ec9b19432df79fcb51d3f"
+      "bytes": 3809,
+      "sha256": "325d8df965d268b454b24d6c055bb643492991282898afcb2520a21edad09f01"
     },
     {
       "path": "docs/MODEL-MODALITIES.md",
@@ -37,13 +37,13 @@
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 3245,
-      "sha256": "c0112c1766aaede721f3c7d9abfdca94d8035a29f85db6d42d8b8e1f161efee8"
+      "bytes": 4194,
+      "sha256": "b1d9d34a5e44dcf1c27ccfc72ba3642fb3a678d189c0ec0ade12d9764ed5d4be"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
-      "bytes": 1947,
-      "sha256": "d773b16ae701ce814a538d6f7d71c77eab8686a86ad8a7dc38d47194a956a8ba"
+      "bytes": 660,
+      "sha256": "fca1de267c2e83999d087d4ad79f356a14363b60f1dcc959e0ddd130d7b18839"
     },
     {
       "path": "docs/ROADMAP.md",
@@ -322,8 +322,8 @@
     },
     {
       "path": "launcher/CrossPascalConvert.dpr",
-      "bytes": 3169,
-      "sha256": "3d3f118ff8d9097fd14580aeca9c9bee40ba309644bda14308994ca1a7823dcd"
+      "bytes": 3643,
+      "sha256": "0b089e6f6b750d120866d09289a584beda7ff92151d772d7a2725993ce9e3333"
     },
     {
       "path": "launcher/CrossPascalConvert.dproj",
@@ -352,23 +352,23 @@
     },
     {
       "path": "prepare/ExampleDefaults.pas",
-      "bytes": 2147,
-      "sha256": "1f355de0651084adeb6d497a37f09e831a004f01e3d3d1c265c807b3dc1379cc"
+      "bytes": 2793,
+      "sha256": "a1d1a2b3d46d52e083729904c73a8837daf856b60ae84ec092eec22fdb5a5344"
     },
     {
       "path": "prepare/prepare-bootstrap.json",
       "bytes": 299,
-      "sha256": "dde44100f2f753a1a424f95716a9bc3629777f4722c1dd9dbd463bf6a015d24a"
+      "sha256": "6d633a8ddb21b185843c99e0d5c83142a45e9bdec13da0773c6678acc8df9b17"
     },
     {
       "path": "prepare/prepare.py",
-      "bytes": 22242,
-      "sha256": "d2ab2e3cb894284b9799b0b3bae52065504f4904a181eaf0673d9048483ec00e"
+      "bytes": 23400,
+      "sha256": "e637e4e610a5e77428a2df2627f773c3605e0571cfe267b22ff165b970b3dda9"
     },
     {
       "path": "README.md",
-      "bytes": 3880,
-      "sha256": "00feb63a73d95fe108f4c1bb1064bc34cfc7789459e5dd40ab129f02da1db24c"
+      "bytes": 3988,
+      "sha256": "eb0b2aaccce727d3d381f948c348d5ae5ea75c4b6b6710d4647f27555527f268"
     },
     {
       "path": "rtl-algorithms/LICENSE",
@@ -432,8 +432,8 @@
     },
     {
       "path": "rtl-algorithms/tests/TestDisjointSet.dpr",
-      "bytes": 1257,
-      "sha256": "d8d0e73e9697f44e7cbd2a27329e1555649d7817e2f8e418370b06ddad3c865a"
+      "bytes": 1176,
+      "sha256": "c7cbdff445c9790fe1031ee3d89fbe30cef711eef16eef2c3aead6a44f17da04"
     },
     {
       "path": "rtl-algorithms/tests/TestDisjointSet.dproj",
@@ -447,8 +447,8 @@
     },
     {
       "path": "rtl-algorithms/tests/TestGeometry.dpr",
-      "bytes": 75739,
-      "sha256": "34aa85b98e710bc9ab6083b931e3b69e93416e8c93d3fb70df1d5869681567c4"
+      "bytes": 76521,
+      "sha256": "a96bb4700195bde8a07d292e0da2130a7eec196a15181c52a125ab5b7d69cec6"
     },
     {
       "path": "rtl-algorithms/tests/TestGeometry.dproj",

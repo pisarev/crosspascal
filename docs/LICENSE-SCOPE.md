@@ -19,3 +19,22 @@ The OpenCV source asset builds the CrossCV DLL with statically linked FFmpeg und
 The companion OpenCV source asset includes FFmpeg, OpenCV and contrib inputs, and the C++ bridge sources. Follow `RELINKING.md` and `Dockerfile.ffmpeg-relink.example` in that asset to rebuild with a modified FFmpeg. It uses a full-source rebuild. The asset does not supply precompiled relink objects.
 
 The Leptonica asset includes its original source archives, codec sources, build configuration, and notices. Preserve the notices when redistributing the matching libraries or sources.
+
+## Supplied language and vision models
+
+| Model | Applicable terms |
+| --- | --- |
+| Qwen2.5-VL 3B Instruct, used by CPU QwenChat/ImagePrompt | [Qwen Research License](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct/blob/66285546d2b821cf421d4f5eb2576359d3770cd3/LICENSE): non-commercial research and evaluation; commercial use requires a separate license from Alibaba Cloud. Built with Qwen. |
+| Gemma 2 and Gemma 3n | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) and [Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy). Copies, NOTICE, modification records and use/redistribution conditions accompany each supplied bundle. |
+| YOLO11n detection and classification | AGPL-3.0 as declared in the source packs. Review [Ultralytics licensing](https://www.ultralytics.com/license) for proprietary deployments. |
+| SqueezeNet 1.1, ResNet50 and RT-DETR R18vd | Apache-2.0 as declared by the pinned source packs; keep all additional notices. |
+
+Gemma use restrictions apply to these model derivatives and must remain enforceable
+in onward distribution agreements. Keep all supplied licenses and notices, and mark
+your changes. Qwen Research restrictions apply to the named 3B vision-language
+checkpoint, not automatically to the separately licensed dense Qwen checkpoints.
+
+The bundled bus photograph retains its upstream Ultralytics source and license.
+Replace it with an image you have the right to use for your own application.
+The preparation helper uses the public-domain 7zr executable from the
+[LZMA SDK](https://www.7-zip.org/sdk.html).

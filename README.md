@@ -10,15 +10,15 @@ CrossPascal gives Object Pascal applications image processing, geometry, and loc
 2. Extract the SDK into a writable directory such as `C:\CrossPascal`. Keep the five repository folders together.
 3. Follow the [Windows setup guide](docs/WINDOWS-EARLY-ACCESS.md) for the dependencies and example projects. Use Delphi 13.2 or Lazarus 4.8 with FPC 3.2.2 and build for Windows x64.
 
-Try the Geometry and DisjointSet projects first if you want examples with no external runtime. To work with images, build the OpenCV or Leptonica library using the corresponding source asset, then open its example project.
+Try the Geometry and DisjointSet projects first if you want examples with no external runtime. For images, Prepare downloads the ready OpenCV or Leptonica runtime and sets the example paths. The matching source assets remain available for rebuilding.
 
 ## Run a model locally
 
 Open `CrossPascalConvert.exe` to start the converter. Choose a pinned Qwen2.5-Instruct download or a compatible local Safetensors folder, such as Qwen2.5-Coder-0.5B-Instruct. Select the detected CUDA architecture or enter the target architecture, then build the bundle. Open the supplied QwenChat executable or build it in your IDE. Auto uses the shared context window, and **Stop** keeps the partial answer. See the [QwenChat guide](examples/qwen-chat/README.md) for sampling and answer budgets, and the [converter guide](https://github.com/pisarev/crosspascal-convert/blob/main/INSTALL.md) for setup.
 
-For CPU vision, use the matching model source archive and the VisionModels example. The profiles cover SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd.
+For CPU vision, run the VisionModels preparation script to download the ready model bundles and libraries. The profiles cover SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd.
 
-For Gemma 3n, use the experimental GGUF-to-TVM CPU or CUDA route and [GemmaChat](examples/gemma-chat/README.md). Extract the release's language runtime companion asset into the SDK. GemmaChat streams text and retains loaded weights between requests, as QwenChat now does. Both demos expose explicit loading and unloading, generation settings, streaming, Stop, and image attachment. Compatible Gemma 3n CPU and CUDA image bundles accept pictures. The separate Qwen2.5-VL adapter converts compatible checkpoints for CPU text-and-image inference. Dense Qwen text bundles explain that an image cannot be used. See [model input capabilities](docs/MODEL-MODALITIES.md).
+For Gemma 3n, run the GemmaChat preparation script for the ready CPU model. The GGUF-to-TVM converter remains available for custom CPU or CUDA bundles. See [GemmaChat](examples/gemma-chat/README.md). GemmaChat streams text and retains loaded weights between requests, as QwenChat now does. Both demos expose explicit loading and unloading, generation settings, streaming, Stop, and image attachment. Compatible Gemma 3n CPU and CUDA image bundles accept pictures. The separate Qwen2.5-VL adapter converts compatible checkpoints for CPU text-and-image inference. Dense Qwen text bundles explain that an image cannot be used. See [model input capabilities](docs/MODEL-MODALITIES.md).
 
 For short console programs, start with [Language models in a few Pascal calls](examples/language-models/README.md): load, configure, generate, stream, reuse, attach an image, and unload.
 

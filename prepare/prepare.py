@@ -21,6 +21,8 @@ import xml.etree.ElementTree as XML
 
 
 VERIFIED_PACKAGES = {}
+GITHUB_RELEASES = {}
+GITHUB_AUTH_ATTEMPTED = False
 
 
 class Credential(ctypes.Structure):
@@ -81,11 +83,12 @@ def github_authentication():
     if saved:
         os.environ['GH_TOKEN'] = saved
         return
-    print('This Early Access release is private. Use a GitHub token with read access to pisarev/crosspascal.')
+    print('GitHub did not allow an anonymous request. The release may be private or the public request limit may be reached.')
+    print('Public releases do not normally need a token. To retry with your account, use a token with read access.')
     print('A fine-grained token needs this repository selected and Contents: Read-only.')
     token = getpass.getpass('GitHub token (hidden input): ').strip()
     if not token:
-        raise RuntimeError('A GitHub token is required for this private release.')
+        raise RuntimeError('Authenticated retry cancelled. Public downloads normally need no token; check the release URL or try again after the GitHub request limit resets.')
     os.environ['GH_TOKEN'] = token
     with open_url('https://api.github.com/repos/pisarev/crosspascal', {'Accept': 'application/vnd.github+json'}) as response:
         json.load(response)
@@ -131,6 +134,7 @@ def file_hash(path):
 
 
 def open_url(url, headers=None):
+    global GITHUB_AUTH_ATTEMPTED
     values = {'User-Agent': 'CrossPascal-Prepare', 'Accept-Encoding': 'identity'}
     values.update(headers or {})
     if urllib.parse.urlsplit(url).hostname == 'api.github.com':
@@ -142,7 +146,12 @@ def open_url(url, headers=None):
         return urllib.request.build_opener(DownloadRedirect()).open(request, timeout=90)
     except urllib.error.HTTPError as error:
         if error.code in (401, 403, 404) and urllib.parse.urlsplit(url).hostname == 'api.github.com':
-            raise RuntimeError('GitHub did not grant access. Check your account, repository access and token permissions.') from None
+            if not values.get('Authorization') and not GITHUB_AUTH_ATTEMPTED:
+                GITHUB_AUTH_ATTEMPTED = True
+                error.close()
+                github_authentication()
+                return open_url(url, headers)
+            raise RuntimeError('GitHub did not grant access. Check the release URL, account access and token permissions, or wait for its request limit to reset.') from None
         raise
 
 
@@ -151,11 +160,15 @@ def asset_url(asset):
         headers = {'Accept': 'application/octet-stream'} if urllib.parse.urlsplit(asset['url']).hostname == 'api.github.com' else {}
         return asset['url'], headers
     url = 'https://api.github.com/repos/' + asset['repository'] + '/releases/tags/' + asset['release']
-    with open_url(url, {'Accept': 'application/vnd.github+json'}) as response:
-        release = json.load(response)
+    if url not in GITHUB_RELEASES:
+        with open_url(url, {'Accept': 'application/vnd.github+json'}) as response:
+            GITHUB_RELEASES[url] = json.load(response)
+    release = GITHUB_RELEASES[url]
     matches = [row for row in release['assets'] if row['name'] == asset['name']]
     if len(matches) != 1 or matches[0]['size'] != asset['bytes']:
         raise RuntimeError('The release does not contain the expected asset: ' + asset['name'])
+    if not (os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')) and matches[0].get('browser_download_url'):
+        return matches[0]['browser_download_url'], {}
     return matches[0]['url'], {'Accept': 'application/octet-stream'}
 
 
@@ -394,13 +407,12 @@ def prepare_example(example, manifest, installed, cache):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--manifest', type=Path, default=Path(__file__).with_name('prepare-manifest.json'))
-    parser.add_argument('--release', default='early-access-016')
+    parser.add_argument('--release', default='early-access-017')
     parser.add_argument('--example')
     parser.add_argument('--home', type=Path)
     parser.add_argument('--cache', type=Path)
     parser.add_argument('--all', action='store_true')
     options = parser.parse_args()
-    github_authentication()
     if options.manifest.is_file():
         manifest = json.loads(options.manifest.read_text(encoding='utf-8-sig'))
     else:
@@ -431,6 +443,12 @@ def main():
         selected = [row for row in examples if row['id'] == chosen]
         if not selected:
             raise RuntimeError('Choose a listed example.')
+    for example in selected:
+        for package_id in example['packages']:
+            package = manifest['packages'][package_id]
+            if package.get('license_notice'):
+                print(package['title'] + ': ' + package['license_notice'], flush=True)
+                print('Terms: ' + package['license_url'], flush=True)
     with preparation_lock(cache):
         results = [prepare_example(row, manifest, installed, cache) for row in selected]
     report = installed / 'prepare-result.json'
