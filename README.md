@@ -1,5 +1,7 @@
 # CrossPascal
 
+For a first run, use the [Prepare.cmd quickstart](docs/PREPARE-EXAMPLES.md) to download the dependencies and sample data automatically.
+
 CrossPascal gives Object Pascal applications image processing, geometry, and local model inference. The Windows x64 early access SDK brings together five repositories, a browser-based model converter, and Delphi and Lazarus examples.
 
 ## Get started

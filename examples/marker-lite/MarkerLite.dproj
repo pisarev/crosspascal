@@ -4,7 +4,7 @@
     <ProjectVersion>20.4</ProjectVersion>
     <MainSource>MarkerLite.dpr</MainSource>
     <Base>True</Base>
-    <Config Condition="'$(Config)'==''">Debug</Config>
+    <Config Condition="'$(Config)'==''">Release</Config>
     <Platform Condition="'$(Platform)'==''">Win64</Platform>
     <TargetedPlatforms>2</TargetedPlatforms>
     <AppType>Application</AppType>
@@ -31,7 +31,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Base)'!=''">
     <DCC_Namespace>System;Winapi;Vcl;$(DCC_Namespace)</DCC_Namespace>
-    <DCC_UnitSearchPath>..\..\rtl-algorithms\src;..\..\vision;..\..\..\crosspascal-opencv\pascal;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+    <DCC_UnitSearchPath>../../prepare;..\..\rtl-algorithms\src;..\..\vision;..\..\..\crosspascal-opencv\pascal;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     <DCC_ExeOutput>..\..\build\$(Platform)\$(Config)</DCC_ExeOutput>
     <DCC_DcuOutput>..\..\build\$(Platform)\$(Config)\dcu\MarkerLite</DCC_DcuOutput>
     <DCC_ObjOutput>..\..\build\$(Platform)\$(Config)\obj\MarkerLite</DCC_ObjOutput>

@@ -11,7 +11,7 @@ uses
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Dialogs,
   {$ENDIF}
   OpenCVTypes, OpenCVConsts, OpenCV, CrossVision.Mat, CrossVision.Image, CrossVision.Binarize,
-  CrossVision.Image.OpenCV;
+  CrossVision.Image.OpenCV, ExampleDefaults;
 
 type
   TMarkerLiteForm = class(TForm)
@@ -28,6 +28,7 @@ type
       ALeft: Integer): TButton;
     procedure ShowMat(const M: IMat);
     procedure DoOpen(Sender: TObject);
+    procedure LoadImage(const Path: string);
     procedure DoGray(Sender: TObject);
     procedure DoSauvola(Sender: TObject);
     procedure DoCanny(Sender: TObject);
@@ -112,6 +113,7 @@ begin
   FImage.Proportional := True;
   FImage.Stretch := True;
   FImage.Center := True;
+  if PreparedPath('image') <> '' then LoadImage(PreparedPath('image'));
 end;
 
 destructor TMarkerLiteForm.Destroy;
@@ -192,42 +194,47 @@ end;
 procedure TMarkerLiteForm.DoOpen(Sender: TObject);
 var
   Dlg: TOpenDialog;
-  InputStream: TFileStream;
-  InputBytes: TBytes;
-  RawMat: TMat;
-  Loaded: IMat;
 begin
   Dlg := TOpenDialog.Create(Self);
   try
     Dlg.Title := 'Open an image';
     Dlg.Filter := 'Images|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.webp|All files|*.*';
     Dlg.Options := [ofFileMustExist, ofPathMustExist, ofEnableSizing];
-    if not Dlg.Execute then Exit;
-    InputStream := TFileStream.Create(Dlg.FileName, fmOpenRead or fmShareDenyWrite);
-    try
-      if (InputStream.Size <= 0) or (InputStream.Size > High(Integer)) then
-        raise Exception.Create('The selected image file is empty or too large to decode.');
-      SetLength(InputBytes, Integer(InputStream.Size));
-      InputStream.ReadBuffer(InputBytes[0], Length(InputBytes));
-    finally
-      InputStream.Free;
-    end;
-    RawMat := nil;
-    try
-      if not CV.ImgCodecs.ImDecode(@InputBytes[0], Length(InputBytes), IMREAD_COLOR, @RawMat) then
-        raise Exception.Create('Cannot decode the selected image: ' + CV.GetError);
-      if RawMat = nil then
-        raise Exception.Create('The image decoder returned no image.');
-      Loaded := WrapMat(RawMat, True);
-      RawMat := nil;
-      ShowMat(Loaded);
-      FMat := Loaded;
-    finally
-      if RawMat <> nil then
-        CV.Core.DeleteMat(@RawMat);
-    end;
+    if Dlg.Execute then LoadImage(Dlg.FileName);
   finally
     Dlg.Free;
+  end;
+end;
+
+procedure TMarkerLiteForm.LoadImage(const Path: string);
+var
+  InputStream: TFileStream;
+  InputBytes: TBytes;
+  RawMat: TMat;
+  Loaded: IMat;
+begin
+  InputStream := TFileStream.Create(Path, fmOpenRead or fmShareDenyWrite);
+  try
+    if (InputStream.Size <= 0) or (InputStream.Size > High(Integer)) then
+      raise Exception.Create('The selected image file is empty or too large to decode.');
+    SetLength(InputBytes, Integer(InputStream.Size));
+    InputStream.ReadBuffer(InputBytes[0], Length(InputBytes));
+  finally
+    InputStream.Free;
+  end;
+  RawMat := nil;
+  try
+    if not CV.ImgCodecs.ImDecode(@InputBytes[0], Length(InputBytes), IMREAD_COLOR, @RawMat) then
+      raise Exception.Create('Cannot decode the selected image: ' + CV.GetError);
+    if RawMat = nil then
+      raise Exception.Create('The image decoder returned no image.');
+    Loaded := WrapMat(RawMat, True);
+    RawMat := nil;
+    ShowMat(Loaded);
+    FMat := Loaded;
+  finally
+    if RawMat <> nil then
+      CV.Core.DeleteMat(@RawMat);
   end;
 end;
 

@@ -20,7 +20,7 @@ begin
   Model := TLanguageModel.Create;
   try
     Model.OnStatus := Output.Status;
-    Model.Load(ParamStr(1), ParamStr(2));
+    Model.Load(ExampleArgument(1), ExampleArgument(2));
     Model.OnText := Output.Text;
     Model.ShouldStop := Output.StopRequested;
     ConsoleWriteLine('Hold Escape to stop generation.');
@@ -45,4 +45,5 @@ begin
       ExitCode := 1;
     end;
   end;
+  FinishExample;
 end.

@@ -1,5 +1,7 @@
 # CrossPascal on Windows x64
 
+For a first run, use the [Prepare.cmd quickstart](PREPARE-EXAMPLES.md). The manual setup below remains available for conversion and rebuilding native dependencies.
+
 Use the coordinated Windows SDK, the companion OpenCV and Leptonica source assets, and the model source assets listed in the release notes. Keep the five repository folders beside one another in a writable directory such as `C:\CrossPascal`. The compiler targets for this early-access release are Delphi 13.2 and Lazarus 4.8 with FPC 3.2.2. Support for earlier compiler versions is planned for subsequent updates.
 
 ## Install the dependencies you need

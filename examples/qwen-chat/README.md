@@ -1,5 +1,10 @@
 # QwenChat in Delphi and Lazarus
 
+## Prepare and Run
+
+Download [Prepare-QwenChat-ea016.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-016/Prepare-QwenChat-ea016.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/early-access-016/docs/PREPARE-EXAMPLES.md) for first-time private GitHub access, model sizes and the other examples.
+
+
 Both chat demos use the same controls and `TLanguageModel` API. Choose a
 converted model by its `model.json`, not by its filename or a graphics-card name.
 Dense Qwen2.5 and Gemma 2 are text-only architectures. Qwen2.5-VL and a Gemma 3n

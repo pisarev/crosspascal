@@ -32,7 +32,7 @@
   <PropertyGroup Condition="'$(Base)'!=''">
     <SanitizedProjectName>QwenChat</SanitizedProjectName>
     <DCC_Namespace>System;Winapi;System.Win;Vcl;Vcl.Imaging;$(DCC_Namespace)</DCC_Namespace>
-    <DCC_UnitSearchPath>..\language-shared;..\..\..\crosspascal-tvm\pascal;..\..\..\crosspascal-opencv\pascal;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+    <DCC_UnitSearchPath>../../prepare;..\language-shared;..\..\..\crosspascal-tvm\pascal;..\..\..\crosspascal-opencv\pascal;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     <DCC_Define>TVM_LAZY_INIT;$(DCC_Define)</DCC_Define>
     <DCC_ExeOutput>bin\$(Platform)\$(Config)</DCC_ExeOutput>
     <DCC_DcuOutput>build\$(Platform)\$(Config)</DCC_DcuOutput>

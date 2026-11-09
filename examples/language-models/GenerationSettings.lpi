@@ -27,7 +27,7 @@
       <Filename Value="bin/lazarus-win64/GenerationSettings" />
     </Target>
     <SearchPaths>
-      <OtherUnitFiles Value="../../../crosspascal-opencv/pascal;../../../crosspascal-leptonica/pascal;../../rtl-algorithms/src;../../vision;../../../crosspascal-tvm/pascal" />
+      <OtherUnitFiles Value="../../prepare;../../../crosspascal-opencv/pascal;../../../crosspascal-leptonica/pascal;../../rtl-algorithms/src;../../vision;../../../crosspascal-tvm/pascal" />
       <UnitOutputDirectory Value="bin/lazarus-win64/units/GenerationSettings" />
     </SearchPaths>
     <Parsing>
@@ -36,6 +36,9 @@
       </SyntaxOptions>
     </Parsing>
     <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf3" />
+      </Debugging>
       <Options>
         <Win32>
           <GraphicApplication Value="False" />

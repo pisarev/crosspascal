@@ -1,5 +1,10 @@
 # MarkerLite: manual image processing
 
+## Prepare and Run
+
+Download [Prepare-MarkerLite-ea016.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-016/Prepare-MarkerLite-ea016.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/early-access-016/docs/PREPARE-EXAMPLES.md) for first-time private GitHub access, model sizes and the other examples.
+
+
 MarkerLite is a small desktop example for Delphi and Lazarus on Windows x64. Open an image, inspect the result of each operation, and save the displayed image as PNG. The form is created in Pascal code; no DFM file is required.
 
 ## Open, build, and run

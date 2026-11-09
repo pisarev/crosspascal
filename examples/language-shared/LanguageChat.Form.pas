@@ -8,7 +8,7 @@ uses
   {$IFDEF FPC}Classes, SysUtils, Controls, Forms, Graphics, StdCtrls, ExtCtrls,
   Dialogs, Windows, {$ELSE}System.Classes, System.SysUtils, Vcl.Controls, Vcl.Forms,
   Vcl.Graphics, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Dialogs, Winapi.Windows, {$ENDIF}
-  QwenCuda, LanguageModel;
+  QwenCuda, LanguageModel, ExampleDefaults;
 
 type
   TLanguageChatForm = class;
@@ -493,6 +493,21 @@ begin
   FTimer.Interval := 40;
   FTimer.OnTimer := Tick;
   OnCloseQuery := CheckClose;
+  if HasPreparedExample then
+  begin
+    FBundle.Text := ToUI(PreparedPath('model'));
+    FRuntime.Text := ToUI(PreparedPath('sdk', FindSDK));
+    FPrompt.Text := ToUI(PreparedValue('prompt', 'Say hello in English.'));
+    FImagePath := PreparedPath('image');
+    if FImagePath <> '' then
+    begin
+      FPreview.Picture.LoadFromFile(ToUI(FImagePath));
+      FPreview.Visible := True;
+      FImageName.Caption := ToUI(ExtractFileName(FImagePath));
+      FImageName.Hint := ToUI(FImagePath);
+    end;
+    FStatus.Caption := 'Prepared example. Click Load model, then Generate.';
+  end;
   RefreshControls;
 end;
 

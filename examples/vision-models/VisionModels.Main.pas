@@ -57,6 +57,8 @@ type
     procedure BrowseBundle(Sender: TObject);
     procedure BrowseRuntime(Sender: TObject);
     procedure OpenImage(Sender: TObject);
+    procedure LoadImage(const Path: string);
+    procedure SelectProfile(Sender: TObject);
     procedure RunClick(Sender: TObject);
     procedure SaveClick(Sender: TObject);
     procedure WorkerTick(Sender: TObject);
@@ -80,7 +82,7 @@ implementation
 uses
   {$IFDEF FPC}Math, Types, Dialogs, IntfGraphics, FPImage, {$ELSE}
   System.Math, System.Types, Vcl.Dialogs, Vcl.FileCtrl, {$ENDIF} CrossPascal.SHA256,
-  OpenCVTypes, OpenCVConsts, OpenCV;
+  OpenCVTypes, OpenCVConsts, OpenCV, ExampleDefaults;
 
 function ChooseBundleDirectory(const Caption: string; var Directory: string;
   const Owner: TWinControl): Boolean;
@@ -309,6 +311,7 @@ begin
   FProfile.Style := csDropDownList;
   for I := 0 to High(FProfiles) do FProfile.Items.Add(FProfiles[I].Title);
   FProfile.ItemIndex := 0;
+  FProfile.OnChange := SelectProfile;
   FOpen.Parent.Left := 0;
   FRun.Parent.Left := 124;
   FSave.Parent.Left := 248;
@@ -355,6 +358,13 @@ begin
   FTimer.Enabled := False;
   FTimer.Interval := 100;
   FTimer.OnTimer := WorkerTick;
+  if HasPreparedExample then
+  begin
+    for I := 0 to High(FProfiles) do
+      if FProfiles[I].ID = PreparedValue('profile', 'resnet50') then FProfile.ItemIndex := I;
+    SelectProfile(nil);
+    if PreparedPath('image') <> '' then LoadImage(PreparedPath('image'));
+  end;
   SetRunning(False);
 end;
 
@@ -390,8 +400,6 @@ end;
 procedure TVisionModelsForm.OpenImage(Sender: TObject);
 var
   Dialog: TOpenDialog;
-  Loaded: IMat;
-  Hash: string;
 begin
   Dialog := TOpenDialog.Create(Self);
   try
@@ -399,19 +407,36 @@ begin
     Dialog.Filter := 'Images|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.webp|All files|*.*';
     Dialog.Options := [ofFileMustExist, ofPathMustExist, ofEnableSizing];
     if not Dialog.Execute then Exit;
-    Loaded := DecodeVisionImage(Dialog.FileName, Hash);
-    FImage := Loaded;
-    FImagePath := ExpandFileName(Dialog.FileName);
-    FImageSHA256 := Hash;
-    FLastJSON := '';
-    FOutput.Clear;
-    ShowImage(nil);
-    FStatus.Caption := Format('%s: %d x %d. Select a matching bundle and click Run on CPU.',
-      [ExtractFileName(FImagePath), FImage.Width, FImage.Height]);
-    SetRunning(False);
+    LoadImage(Dialog.FileName);
   finally
     Dialog.Free;
   end;
+end;
+
+procedure TVisionModelsForm.LoadImage(const Path: string);
+var
+  Loaded: IMat;
+  Hash: string;
+begin
+  Loaded := DecodeVisionImage(Path, Hash);
+  FImage := Loaded;
+  FImagePath := ExpandFileName(Path);
+  FImageSHA256 := Hash;
+  FLastJSON := '';
+  FOutput.Clear;
+  ShowImage(nil);
+  FStatus.Caption := Format('%s: %d x %d. Select a matching bundle and click Run on CPU.',
+    [ExtractFileName(FImagePath), FImage.Width, FImage.Height]);
+  SetRunning(False);
+end;
+
+procedure TVisionModelsForm.SelectProfile(Sender: TObject);
+var
+  Directory: string;
+begin
+  if not HasPreparedExample or (FProfile.ItemIndex < 0) then Exit;
+  Directory := PreparedPath('model_' + FProfiles[FProfile.ItemIndex].ID);
+  if Directory <> '' then FBundle.Text := Directory;
 end;
 
 procedure TVisionModelsForm.SetRunning(const Value: Boolean);

@@ -20,7 +20,7 @@ begin
   Model := TLanguageModel.Create;
   try
     Model.OnStatus := Output.Status;
-    Model.Load(ParamStr(1), ParamStr(2));
+    Model.Load(ExampleArgument(1), ExampleArgument(2));
     Options := DefaultLanguageOptions;
     Options.MaxNewTokens := 0;
     Options.Sampling := qsSample;
@@ -51,4 +51,5 @@ begin
       ExitCode := 1;
     end;
   end;
+  FinishExample;
 end.

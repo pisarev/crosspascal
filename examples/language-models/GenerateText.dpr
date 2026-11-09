@@ -20,7 +20,7 @@ begin
   Model := TLanguageModel.Create;
   try
     Model.OnStatus := Output.Status;
-    Model.Load(ParamStr(1), ParamStr(2));
+    Model.Load(ExampleArgument(1), ExampleArgument(2));
     Options := DefaultLanguageOptions;
     PrintAnswer(Model.Generate(ExamplePrompt('Say hello in English.', 'Describe this image.'),
       Options, Images));
@@ -41,4 +41,5 @@ begin
       ExitCode := 1;
     end;
   end;
+  FinishExample;
 end.

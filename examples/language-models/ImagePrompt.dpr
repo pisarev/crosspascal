@@ -19,16 +19,16 @@ begin
   Model := TLanguageModel.Create;
   try
     Model.OnStatus := Output.Status;
-    Info := TLanguageModel.Inspect(ParamStr(1));
+    Info := TLanguageModel.Inspect(ExampleArgument(1));
     if not Info.SupportsImages then
       raise Exception.Create(Info.ImageExplanation);
-    Model.Load(ParamStr(1), ParamStr(2));
+    Model.Load(ExampleArgument(1), ExampleArgument(2));
     Model.OnText := Output.Text;
     Model.ShouldStop := Output.StopRequested;
     ConsoleWriteLine('Hold Escape to stop generation.');
     Options := DefaultLanguageOptions;
     Options.Sampling := qsGreedy;
-    Model.Generate('Describe the main object in this image in one sentence.', Options, [ParamStr(3)]);
+    Model.Generate('Describe the main object in this image in one sentence.', Options, [ExampleArgument(3)]);
     ConsoleWriteLine('');
     Model.Unload;
   finally
@@ -47,4 +47,5 @@ begin
       ExitCode := 1;
     end;
   end;
+  FinishExample;
 end.

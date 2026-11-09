@@ -18,10 +18,10 @@ begin
   Model := TLanguageModel.Create;
   try
     Model.OnStatus := Output.Status;
-    Info := TLanguageModel.Inspect(ParamStr(1));
+    Info := TLanguageModel.Inspect(ExampleArgument(1));
     ConsoleWriteLine('Bundle architecture: ' + Info.Architecture);
     ConsoleWriteLine('Image support: ' + BoolToStr(Info.SupportsImages, True));
-    Model.Load(ParamStr(1), ParamStr(2));
+    Model.Load(ExampleArgument(1), ExampleArgument(2));
     ConsoleWriteLine('Loaded architecture: ' + Model.Capabilities.Architecture);
     ConsoleWriteLine('Device: ' + Model.Capabilities.Device);
     ConsoleWriteLine('Context tokens: ' + IntToStr(Model.Capabilities.ContextTokens));
@@ -43,4 +43,5 @@ begin
       ExitCode := 1;
     end;
   end;
+  FinishExample;
 end.

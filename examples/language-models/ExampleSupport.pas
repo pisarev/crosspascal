@@ -21,6 +21,8 @@ type
   end;
 
 procedure RequireArguments(const ImageRequired: Boolean = False);
+function ExampleArgument(const Index: Integer): string;
+procedure FinishExample;
 function ExampleImages: TExampleImages;
 function ExamplePrompt(const TextPrompt, ImagePrompt: string): string;
 procedure PrintAnswer(const Report: string);
@@ -29,7 +31,7 @@ procedure ConsoleWriteLine(const Text: string);
 
 implementation
 
-uses CrossPascal.Json;
+uses CrossPascal.Json, ExampleDefaults;
 
 procedure ConsoleWrite(const Text: string);
 var
@@ -52,14 +54,37 @@ begin
   ConsoleWrite(Text + #13#10);
 end;
 
+function ExampleArgument(const Index: Integer): string;
+begin
+  if ParamCount > 0 then Exit(ParamStr(Index));
+  case Index of
+    1: Result := PreparedPath('model');
+    2: Result := PreparedPath('sdk');
+    3: Result := PreparedPath('image');
+  else
+    Result := '';
+  end;
+end;
+
+procedure FinishExample;
+begin
+  if (ParamCount = 0) and HasPreparedExample and
+    ({$IFDEF FPC}SysUtils{$ELSE}System.SysUtils{$ENDIF}.GetEnvironmentVariable('CROSSPASCAL_EXAMPLE_NO_PAUSE') <> '1') then
+    begin
+      ConsoleWriteLine('Press Enter to close this example.');
+      Readln;
+    end;
+end;
+
 procedure RequireArguments(const ImageRequired: Boolean);
 begin
   SetConsoleOutputCP(CP_UTF8);
   if (ParamCount > 3) then
     raise Exception.Create('Too many arguments: expected bundle, SDK folder and an optional image.');
-  if (ParamCount < 2) or (ImageRequired and (ParamCount < 3)) then
-    raise Exception.Create('Arguments: "converted bundle" "SDK root" ["image.png"]. ' +
-      'Use the supplied SDK root, not the original model directory.');
+  if ((ParamCount > 0) and (ParamCount < 2)) or (ExampleArgument(1) = '') or
+    (ExampleArgument(2) = '') or (ImageRequired and (ExampleArgument(3) = '')) then
+      raise Exception.Create('Arguments: "converted bundle" "SDK root" ["image.png"]. ' +
+        'Use the supplied SDK root, not the original model directory.');
 end;
 
 function ExampleImages: TExampleImages;
@@ -67,19 +92,19 @@ var
   Info: TLanguageCapabilities;
 begin
   SetLength(Result, 0);
-  if ParamCount < 3 then Exit;
-  if not FileExists(ParamStr(3)) then
-    raise Exception.Create('Image file was not found: ' + ParamStr(3));
-  Info := TLanguageModel.Inspect(ParamStr(1));
+  if ExampleArgument(3) = '' then Exit;
+  if not FileExists(ExampleArgument(3)) then
+    raise Exception.Create('Image file was not found: ' + ExampleArgument(3));
+  Info := TLanguageModel.Inspect(ExampleArgument(1));
   if not Info.SupportsImages then
     raise Exception.Create(Info.ImageExplanation);
   SetLength(Result, 1);
-  Result[0] := ExpandFileName(ParamStr(3));
+  Result[0] := ExpandFileName(ExampleArgument(3));
 end;
 
 function ExamplePrompt(const TextPrompt, ImagePrompt: string): string;
 begin
-  if ParamCount >= 3 then
+  if ExampleArgument(3) <> '' then
     Result := ImagePrompt
   else
     Result := TextPrompt;
