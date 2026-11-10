@@ -1,8 +1,3 @@
-{ SPDX-License-Identifier: MPL-1.1
-  Original Code: CrossFPC-Common BinarizeText. Initial Developer: Yuriy Pisarev.
-  Original copyright (c) 2024 Yuriy Pisarev. See licenses/MPL-1.1.txt.
-  This file is a CrossPascal adaptation. See licenses/CROSSFPCCOMMON-NOTICE.md. }
-
 { ************************************************************************** }
 {                                                                            }
 { CrossVision.Binarize                                                       }
@@ -10,6 +5,11 @@
 { Copyright © 2026 Yuriy Pisarev (ypisareff@outlook.com)                     }
 {                                                                            }
 { ************************************************************************** }
+
+{ SPDX-License-Identifier: MPL-1.1
+  Original Code: CrossFPC-Common BinarizeText. Initial Developer: Yuriy Pisarev.
+  Original copyright (c) 2024 Yuriy Pisarev. See licenses/MPL-1.1.txt.
+  This file is a CrossPascal adaptation. See licenses/CROSSFPCCOMMON-NOTICE.md. }
 
 unit CrossVision.Binarize;
 
@@ -31,24 +31,6 @@ function BinarizeSauvola(const Src: IImageAccessor; const Radius: Integer; const
 function BinarizeWolfJolion(const Src: IImageAccessor; const Radius: Integer;
   const K: Double = 0.5): IImageBuffer;
 
-{
-  Binarize TEXT by searching the Wolf-Jolion coefficient K, ported from the
-  original BinarizeText routine.
-
-  No single K suits every scan. A small K can turn paper into noise; a large
-  K can remove thin strokes. Try several values and select the one whose
-  connected components form the most text rows. Counting components alone
-  would favor noise, whereas row alignment distinguishes text from scattered
-  components.
-
-  On a tie, use the midpoint of the tied range for a reproducible result.
-  This intentionally corrects the original (MaxK - MinK) / 2, a half-range
-  rather than a midpoint: 0.81 and 0.01 gave 0.40 instead of 0.41.
-  The implementation uses (MaxK + MinK) / 2.
-
-  Deskewing is separate. The original also deskewed at every search step;
-  callers can perform that operation independently or supply an upright page.
-}
 function BinarizeTextBySweep(const Src: IImageAccessor; out ChosenK: Double;
   const Radius: Integer = 10; const MaxK: Double = 0.81; const MinK: Double = 0.01;
   const StepK: Double = 0.05; const CloseW: Integer = 3; const CloseH: Integer = 3;
@@ -62,8 +44,7 @@ function ScoreTextRows(const Bin: IImageAccessor; const CloseW: Integer = 3;
 implementation
 
 uses
-  {$IFDEF FPC}Math{$ELSE}System.Math{$ENDIF},
-  CrossVision.Morphology, CrossVision.Contour;
+  {$IFDEF FPC}Math{$ELSE}System.Math{$ENDIF}, CrossVision.Morphology, CrossVision.Contour;
 
 type
   TIntegral = record
@@ -261,15 +242,6 @@ var
 
 begin
   Result := 0;
-  { Add a border BEFORE closing. Outside the image is background, so erosion
-    after dilation can otherwise remove an edge row or column from a component.
-    That reduces its width and the permitted gap to its neighbor, breaking a row.
-
-    The original pixCloseSafeBrick supplied this border internally. Here it is
-    explicit; the kernel width is sufficient to cover the affected region.
-
-    No coordinate adjustment is needed afterward because vertical overlap and
-    inter-component gaps are differences, unchanged by a common translation. }
   Pad := CloseW;
   if CloseH > Pad then
     Pad := CloseH;

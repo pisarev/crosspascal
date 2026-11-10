@@ -211,12 +211,15 @@ begin
   if Top + Height > Area.Bottom then Top := Area.Bottom - Height;
   if Left < Area.Left then Left := Area.Left;
   if Top < Area.Top then Top := Area.Top;
+  GetWindowRect(FProfile.Handle, Area);
+  FProfile.Top := (FProfile.Parent.ClientHeight - (Area.Bottom - Area.Top)) div 2;
 end;
 
 constructor TVisionModelsForm.Create(AOwner: TComponent);
 var
   Content, Header, Row, ImagePanel, ResultsPanel, Footer: TPanel;
   Splitter: TSplitter;
+  ProfileField: TPanel;
   I: Integer;
   CatalogPath: string;
 
@@ -251,10 +254,13 @@ var
     Cell: TPanel;
   begin
     Cell := Panel(Parent, alRight, Width);
-    Cell.BorderWidth := 3;
+    Cell.BorderWidth := 0;
+    Cell.Width := 128;
+    Cell.TabStop := False;
     Result := TButton.Create(Self);
     Result.Parent := Cell;
-    Result.Align := alClient;
+    Result.SetBounds(4, 2, 120, 32);
+    Result.TabOrder := 0;
     Result.Caption := Text;
     Result.OnClick := Handler;
   end;
@@ -266,12 +272,15 @@ var
     Field := Panel(Header, alTop, 64);
     Field.Top := (Header.ControlCount - 1) * 64;
     LabelOn(Field, Title);
-    Line := Panel(Field, alClient, 0);
-    Line.BorderWidth := 3;
+    Line := Panel(Field, alTop, 36);
+    Line.Top := 24;
     Browse := ButtonOn(Line, 'Browse...', 100, Handler);
+    Field := Panel(Line, alClient, 0);
+    Field.BorderWidth := 2;
     Result := TEdit.Create(Self);
-    Result.Parent := Line;
+    Result.Parent := Field;
     Result.Align := alClient;
+    Result.AutoSize := False;
     Result.Text := Value;
   end;
 
@@ -301,20 +310,22 @@ begin
   LabelOn(Row, 'Model profile');
   Row := Panel(Row, alClient, 0);
   Row.DisableAlign;
-  Row.BorderWidth := 3;
+  Row.BorderWidth := 2;
   FSave := ButtonOn(Row, 'Save result...', 124, SaveClick);
   FRun := ButtonOn(Row, 'Run on CPU', 124, RunClick);
   FOpen := ButtonOn(Row, 'Open image...', 124, OpenImage);
+  ProfileField := Panel(Row, alClient, 0);
   FProfile := TComboBox.Create(Self);
-  FProfile.Parent := Row;
-  FProfile.Align := alClient;
+  FProfile.Parent := ProfileField;
+  FProfile.SetBounds(0, 0, ProfileField.ClientWidth, 24);
+  FProfile.Anchors := [akLeft, akTop, akRight];
   FProfile.Style := csDropDownList;
   for I := 0 to High(FProfiles) do FProfile.Items.Add(FProfiles[I].Title);
   FProfile.ItemIndex := 0;
   FProfile.OnChange := SelectProfile;
   FOpen.Parent.Left := 0;
-  FRun.Parent.Left := 124;
-  FSave.Parent.Left := 248;
+  FRun.Parent.Left := 128;
+  FSave.Parent.Left := 256;
   Row.EnableAlign;
   FBundle := FolderRow('Converted model folder', '', BrowseBundle, FBrowseBundle);
   FRuntime := FolderRow('TVM runtime folder', DefaultRuntimeDirectory,
@@ -365,6 +376,22 @@ begin
     SelectProfile(nil);
     if PreparedPath('image') <> '' then LoadImage(PreparedPath('image'));
   end;
+  Header.TabOrder := 0;
+  ResultsPanel.TabOrder := 1;
+  ImagePanel.TabOrder := 2;
+  Footer.TabOrder := 3;
+  ProfileField.TabOrder := 0;
+  FProfile.TabOrder := 0;
+  FOpen.Parent.TabOrder := 1;
+  FRun.Parent.TabOrder := 2;
+  FSave.Parent.TabOrder := 3;
+  FBundle.Parent.TabOrder := 0;
+  FBundle.TabOrder := 0;
+  FBrowseBundle.Parent.TabOrder := 1;
+  FRuntime.Parent.TabOrder := 0;
+  FRuntime.TabOrder := 0;
+  FBrowseRuntime.Parent.TabOrder := 1;
+  FOutput.TabOrder := 0;
   SetRunning(False);
 end;
 

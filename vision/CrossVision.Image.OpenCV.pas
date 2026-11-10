@@ -2,7 +2,7 @@
 {                                                                            }
 { CrossVision.Image.OpenCV                                                   }
 {                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
+{ Copyright © 2026 Yuriy Pisarev (ypisareff@outlook.com)                     }
 {                                                                            }
 { ************************************************************************** }
 

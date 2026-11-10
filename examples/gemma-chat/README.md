@@ -18,8 +18,8 @@ and `runtime` beside one another. Completed bundles run without conversion
 tools. CPU bundles use system memory; CUDA bundles need a compatible driver.
 
 1. In Delphi 13.2, open `GemmaChat.dproj`, select **Release / Windows 64-bit**,
-   and choose **Project → Build**.
-2. Alternatively, in Lazarus 4.8, open `GemmaChat.lpi` and choose **Run → Build**.
+   and choose **Project to Build**.
+2. Alternatively, in Lazarus 4.8, open `GemmaChat.lpi` and choose **Run to Build**.
 3. Run the program. Distributed executables are built with Lazarus; Delphi
    builds are used to check source compatibility.
 
@@ -61,11 +61,11 @@ timings. A previously encoded, unchanged image can reuse its cached features.
 | --- | --- | --- |
 | New tokens | 0 | Automatic output; a positive integer requests a manual maximum without an artificial demo ceiling. |
 | Sampling | Auto | Sample in automatic mode, greedy with a manual limit; either can be selected explicitly. |
-| Temperature | 0.7 | Sampling variability, 0.01–2.0. |
+| Temperature | 0.7 | Sampling variability, 0.01-2.0. |
 | Top P | 0.8 | Nucleus probability within Top K, greater than 0 through 1. |
-| Top K | 20 | Sampling candidates, 1–128. |
-| Repetition penalty | 1.1 | Penalty for previously seen tokens when sampling, 1–2. |
-| Seed | -1 | Random seed; 0–4294967295 gives repeatable sampling with the same runtime and inputs. |
+| Top K | 20 | Sampling candidates, 1-128. |
+| Repetition penalty | 1.1 | Penalty for previously seen tokens when sampling, 1-2. |
+| Seed | -1 | Random seed; 0-4294967295 gives repeatable sampling with the same runtime and inputs. |
 | Answer budget | Full context | Optional automatic budgets of 128, 512 or 1024 tokens; a positive manual maximum takes precedence. |
 | Instructions | You are a helpful assistant. | Dense Qwen uses a system role; the Gemma/Qwen-VL worker prepends these instructions to the user prompt. |
 | Plain completion | Off | Disable the chat template. System instructions do not apply to plain dense-Qwen completion. |

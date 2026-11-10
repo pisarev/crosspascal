@@ -42,8 +42,8 @@
     },
     {
       "path": "docs/RELEASE-NOTES.md",
-      "bytes": 649,
-      "sha256": "a1c1b70f5d9f22a1be59f44612ae59328b347e439f6b4591f798e4a3ecf0dcf9"
+      "bytes": 1140,
+      "sha256": "1bfc599e4077d52e89be09ff9f330cdd7c4aa37c7b256822141adc17f0d33627"
     },
     {
       "path": "docs/ROADMAP.md",
@@ -82,8 +82,8 @@
     },
     {
       "path": "examples/gemma-chat/README.md",
-      "bytes": 6588,
-      "sha256": "0b0632faa56c1b582ceae4025654fb46e6fbf8577c87ca897623aff48a66d0fa"
+      "bytes": 6578,
+      "sha256": "12987aec97b3a2879890ed41498a856db87ffce4c3a74b6c92cbbfa507ab2276"
     },
     {
       "path": "examples/language-models/ExampleSupport.pas",
@@ -92,8 +92,8 @@
     },
     {
       "path": "examples/language-models/GenerateText.dpr",
-      "bytes": 952,
-      "sha256": "7322a8bf245836dec52eb4102f65e0a6d4cf3f06a3ed8ef47bd9597f0ff6e3d3"
+      "bytes": 950,
+      "sha256": "747176d9e1b1d58d9e36f7db04b90eb14d28acb3de4fd7b62812cb91a191e524"
     },
     {
       "path": "examples/language-models/GenerateText.dproj",
@@ -107,8 +107,8 @@
     },
     {
       "path": "examples/language-models/GenerationSettings.dpr",
-      "bytes": 1325,
-      "sha256": "7293edf408dde1155e6b705dedf41154c493110190c73c96e8d9c538f5103953"
+      "bytes": 1323,
+      "sha256": "7ae20b605196eb6823f9964baec47bbb188c5486f949acde5b1351c8ba0eff7f"
     },
     {
       "path": "examples/language-models/GenerationSettings.dproj",
@@ -122,8 +122,8 @@
     },
     {
       "path": "examples/language-models/ImagePrompt.dpr",
-      "bytes": 1259,
-      "sha256": "9e918309e38eacb580533ba495ccd82c3c6ad84014d8178ec3cdc7330e462e2b"
+      "bytes": 1257,
+      "sha256": "6a7c8455ee4d039d110e78bdfe5ed1536ad770c02b5c3e2767d4faa76d63fd84"
     },
     {
       "path": "examples/language-models/ImagePrompt.dproj",
@@ -137,8 +137,8 @@
     },
     {
       "path": "examples/language-models/LoadUnload.dpr",
-      "bytes": 1214,
-      "sha256": "e36de309ed2ad8c10d8a11d315413181f44045fe500f0e47ecf048f6b8436715"
+      "bytes": 1212,
+      "sha256": "c68dddbbc1dfca5692b36aa338b2ff356be992eec8fa74719a6608262f2cc0e5"
     },
     {
       "path": "examples/language-models/LoadUnload.dproj",
@@ -187,13 +187,13 @@
     },
     {
       "path": "examples/language-models/README.md",
-      "bytes": 6781,
-      "sha256": "8b693a6621419ffcd4d6fbfa1a5a77dc8268e0fc4e85497b8716597be96eec7f"
+      "bytes": 6771,
+      "sha256": "a3c94b1a1fc7d2472303d18eed1dcce26b703c608346426755825cf55fd82b1e"
     },
     {
       "path": "examples/language-models/RepeatedRequests.dpr",
-      "bytes": 1075,
-      "sha256": "220ecbb12f8d6ab370936b401f473aaacf31aa4b61883f4fe265e092fc75b23f"
+      "bytes": 1073,
+      "sha256": "3cfdc1d8c773958f2db1aff403f7f6a67c678c35bfb680f438f901ec6e57eb16"
     },
     {
       "path": "examples/language-models/RepeatedRequests.dproj",
@@ -207,8 +207,8 @@
     },
     {
       "path": "examples/language-models/StreamAndStop.dpr",
-      "bytes": 1123,
-      "sha256": "eda63367ae852de3ebfd57c676d07f7e6640d340f6d01799b2b2c65d60cc233e"
+      "bytes": 1121,
+      "sha256": "bcbfda1c39229c4330eec34c9359604f9799c9cb5acd9e407a057dd3cfdd5fae"
     },
     {
       "path": "examples/language-models/StreamAndStop.dproj",
@@ -222,8 +222,8 @@
     },
     {
       "path": "examples/language-shared/LanguageChat.Form.pas",
-      "bytes": 23358,
-      "sha256": "993c50f45f08dd2a6054aba169821286dfc981eb68a0e8afffbf57f5b6ccfce9"
+      "bytes": 25252,
+      "sha256": "b59e88c236581d966b3ff6228eeb23601d8d5f2ab19a65c10378d8691464027d"
     },
     {
       "path": "examples/marker-lite/MarkerLite.dpr",
@@ -242,8 +242,8 @@
     },
     {
       "path": "examples/marker-lite/MarkerLiteForm.pas",
-      "bytes": 9383,
-      "sha256": "b4354590a69553bc248b741cf63d5659f46da0a5d705e4c41aeeed729e5b5e66"
+      "bytes": 9863,
+      "sha256": "655b62662c0dbaf09de809cb33a9dc163d6a26b2cb0d145bcc775ad6169436f4"
     },
     {
       "path": "examples/marker-lite/Prepare.cmd",
@@ -282,8 +282,8 @@
     },
     {
       "path": "examples/qwen-chat/README.md",
-      "bytes": 6583,
-      "sha256": "f4dd3104469541e338755cdf0e358f84e6924dddf44aa62eef1d1a6ef5a0c31d"
+      "bytes": 6573,
+      "sha256": "87ec879e85534fa2e67db134e40c5b31b91fb581a2973cd1984b74e9e093e653"
     },
     {
       "path": "examples/vision-models/models.json",
@@ -317,13 +317,13 @@
     },
     {
       "path": "examples/vision-models/VisionModels.Main.pas",
-      "bytes": 19681,
-      "sha256": "bd4f9db7f8b2f3b99492e2c6ae6f95c372a91832460e25fbce189d52743de57a"
+      "bytes": 21251,
+      "sha256": "87cc73f582da88bb38f633dd18fd8a159c41da003427c954e4b6a586d1b31a71"
     },
     {
       "path": "launcher/CrossPascalConvert.dpr",
       "bytes": 3643,
-      "sha256": "0b089e6f6b750d120866d09289a584beda7ff92151d772d7a2725993ce9e3333"
+      "sha256": "b1ec84a46326a693c8de236352bea6764a22d259b4fbe53442deb39a7fbb3a92"
     },
     {
       "path": "launcher/CrossPascalConvert.dproj",
@@ -353,7 +353,7 @@
     {
       "path": "prepare/ExampleDefaults.pas",
       "bytes": 2793,
-      "sha256": "a1d1a2b3d46d52e083729904c73a8837daf856b60ae84ec092eec22fdb5a5344"
+      "sha256": "cc2326ca5ee30eee51f0655a24580cc8b59ce204e6b7a89c83ccad5142c039c7"
     },
     {
       "path": "prepare/prepare-bootstrap.json",
@@ -392,43 +392,43 @@
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Binarize.pas",
-      "bytes": 11878,
-      "sha256": "c03618b3cd18a11d9c1caa5011130bb7a1109a80f2bd01db4da946d97f8852e6"
+      "bytes": 10480,
+      "sha256": "32f128fbf2543d8a148d09053c049df36532a8a3fcaa9dda9b31b49f26320162"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Contour.pas",
       "bytes": 6127,
-      "sha256": "7eeb49fc8e32fdbffca8b2f4a5d22fb830d2c939b96384a045eed6db298f475c"
+      "sha256": "65dd316ce4ebe185457c76ceb2c18de3daaf0d923a5624d09c79b08b7f329de3"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Curve.pas",
-      "bytes": 54921,
-      "sha256": "10833c1b72e55768a59e1b01b47911fa3fe7bb548b9129428d08683a4f9f5ff9"
+      "bytes": 53024,
+      "sha256": "2b6881c0920e872631cc25a7d530b457b0000065c11f9e47f4baad93a1d1cc52"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.DisjointSet.pas",
       "bytes": 2176,
-      "sha256": "a5d4477c45840e3c766df212d6cbb244efceeff986638bd4cc8aed8092297412"
+      "sha256": "d178a0a9058574ab4e5e51e7018bcf9dcb5f9eaed1a3b7618ce1f54269304bc2"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Geometry.pas",
       "bytes": 62801,
-      "sha256": "29e470b54857a470aa48f073eb4d6f480a7e996695e8642a1f2669e1de195868"
+      "sha256": "a11e4ab8aec2614548b39e61c868e08281393c2a10cd69c5ed63fb42027a8405"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Geometry.Types.pas",
       "bytes": 3113,
-      "sha256": "4ff86e1ea04163c14ad8c7703bf7ef024758fbcf730fc4c144d7ec7fba00fe0c"
+      "sha256": "1c5c8f2eadca826616aaa97eb98579cbf31ab0ca3dd3aef8028b16e37ec2621c"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Image.pas",
       "bytes": 2735,
-      "sha256": "e516c10f80ecf8e33d6e4a40a702e6173a504508e0947bb2d99fc9d7b2475823"
+      "sha256": "7bdd62691d734f4a38151b5f592e373badd70ff8de13eff84c7b0fcbc7ef08a6"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Morphology.pas",
       "bytes": 7376,
-      "sha256": "2b509f933fa60fdab75f09339b690286f14e9470e1cf04a8590e911f00bb2a5b"
+      "sha256": "7a544ee6678a7e5d09715434cc112fa1d233590c72d714d521c6a7873f5b0d76"
     },
     {
       "path": "rtl-algorithms/tests/TestDisjointSet.dpr",
@@ -473,17 +473,17 @@
     {
       "path": "vision/CrossVision.Image.Leptonica.pas",
       "bytes": 2311,
-      "sha256": "c3849caf30b85c9cbcba5b29b3c0f82bbe23c8e96bca5a5c17a4869a50b97116"
+      "sha256": "b8bf3216d4665783fac22c8e96cb899b3a1fdde6bf3bdf04c59b830b51479df6"
     },
     {
       "path": "vision/CrossVision.Image.OpenCV.pas",
       "bytes": 2476,
-      "sha256": "50c77d4b6bad0c8daf5e6843be108b90c83f860b198c486bda5f6561832bf1d7"
+      "sha256": "db1b514ff0e2f813fc125169bcbc38fa777f5082ac524256ba03252a23e9bb1e"
     },
     {
       "path": "vision/CrossVision.MatPix.pas",
       "bytes": 5626,
-      "sha256": "3b4bd39e6ccc0f4ea4a2cebc89bb7d533a627678612f31d204a0758e42668985"
+      "sha256": "227b0a4d28fb0dfacdd770569f3154ed98773d0bed54fa73e7230d062dc9e158"
     },
     {
       "path": "vision/README.md",
@@ -491,5 +491,6 @@
       "sha256": "19ee39908eea00c1f9386955f00de7491746e88d05d500adbb6cdbfc1923a584"
     }
   ],
-  "documentation_revision": "public-access-20261109"
+  "documentation_revision": "maintenance-20261110",
+  "source_revision": "controls-format-20261110"
 }

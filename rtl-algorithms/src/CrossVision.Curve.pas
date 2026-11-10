@@ -1,8 +1,3 @@
-{ SPDX-License-Identifier: MPL-1.1
-  Original Code: CrossFPC-Common CompareCurve/GetOverlap. Initial Developer: Yuriy Pisarev.
-  Original copyright (c) 2025 Yuriy Pisarev. See licenses/MPL-1.1.txt.
-  This file is a CrossPascal adaptation. See licenses/CROSSFPCCOMMON-NOTICE.md. }
-
 { ************************************************************************** }
 {                                                                            }
 { CrossVision.Curve                                                          }
@@ -10,6 +5,11 @@
 { Copyright © 2026 Yuriy Pisarev (ypisareff@outlook.com)                     }
 {                                                                            }
 { ************************************************************************** }
+
+{ SPDX-License-Identifier: MPL-1.1
+  Original Code: CrossFPC-Common CompareCurve/GetOverlap. Initial Developer: Yuriy Pisarev.
+  Original copyright (c) 2025 Yuriy Pisarev. See licenses/MPL-1.1.txt.
+  This file is a CrossPascal adaptation. See licenses/CROSSFPCCOMMON-NOTICE.md. }
 
 unit CrossVision.Curve;
 
@@ -118,43 +118,10 @@ function CompareCurveShapes(const A, B: TPolyline; const Metric: TCurveMetric): 
 
 function AngleVariationTortuosity(const C: TPolyline; const Radius: Integer): Double;
 
-{
-  OVERLAP OF TWO CURVE SETS WITH MUTUAL SUPPRESSION OF CROSSINGS.
-  Ported from GetOverlap inside the original CompareCurve. It complements
-  HausdorffDistance and DynamicTimeWarpingCost, corresponding to the original
-  ctOverlap, ctDWTCost, and ctHausdorffDistance choices.
-
-  Nearby curves share points because their shapes agree. Curves can also
-  share points simply because they cross at an angle. Suppress those crossing
-  neighborhoods in BOTH sets so incidental intersections do not count as
-  shape agreement.
-
-  Computation:
-    1. Thin each curve set: retain a point only when no previously retained
-       point lies within radius one. Use these thinned sets for scoring.
-    2. Form chords at least Radius long along the original curves, estimating
-       direction over a meaningful distance rather than adjacent-point jitter.
-    3. Compare chord pairs. When their directions differ by at least
-       AngleTolerance AND their segments intersect, suppress a Radius-sized
-       disk around each chord tail in that curve's own mask.
-    4. Intersect the Radius-wide footprints of both sets, then expand that
-       intersection by another Radius to obtain the common region.
-    5. Multiply the fractions of unsuppressed A and B points in that region.
-
-  The product requires BOTH curves to agree. A short stroke entirely on a
-  much longer curve scores one times a small fraction; an average would hide
-  this one-sided match. Results lie in [0..1]: one for agreement, zero when
-  nothing is shared or all points are suppressed.
-
-  The algorithm uses up to six byte masks of canvas size. For short curves
-  on a large canvas, crop the canvas and translate coordinates to reduce
-  memory use. Points outside the canvas are skipped.
-}
 type
   TOverlapParam = record
     Radius: Integer;
     AngleTolerance: Double;
-    { Original defaults: radius based on canvas size and a 10-degree threshold. }
     class function Make(const Width, Height: Integer): TOverlapParam; static;
   end;
 
@@ -1444,7 +1411,8 @@ function Make4Connected(const PointArray: TPolyline): TPolyline;
 const
   Shift8: array[0..7] of TPointI = (
     (X: 0; Y: -1), (X: 1; Y: -1), (X: 1; Y: 0), (X: 1; Y: 1),
-    (X: 0; Y: 1), (X: -1; Y: 1), (X: -1; Y: 0), (X: -1; Y: -1));
+    (X: 0; Y: 1), (X: -1; Y: 1), (X: -1; Y: 0), (X: -1; Y: -1)
+  );
 var
   I, J, K, Count, Index, NCount: Integer;
   Neighbors: TPolyline;
@@ -1850,7 +1818,6 @@ begin
     Result := Pi - Result;
 end;
 
-{ Fraction of UNSUPPRESSED curve points inside the common region. }
 function OverlapShare(const Curve: TPolyline; const Ignore, Common: TArray<Boolean>;
   const Width: Integer): Double;
 var

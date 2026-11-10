@@ -4,8 +4,7 @@ program ImagePrompt;
 {$APPTYPE CONSOLE}
 
 uses
-  {$IFDEF FPC}SysUtils{$ELSE}System.SysUtils{$ENDIF},
-  QwenCuda, LanguageModel, ExampleSupport;
+  {$IFDEF FPC}SysUtils{$ELSE}System.SysUtils{$ENDIF}, QwenCuda, LanguageModel, ExampleSupport;
 
 procedure Run;
 var

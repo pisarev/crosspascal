@@ -25,8 +25,8 @@ not converted bundles. A bundle contains `model.json` and its referenced files.
 ## Build and run by hand
 
 1. In Delphi 13.2, open the chosen `.dproj`. Select **Release / Windows 64-bit**,
-   then **Project → Build**.
-2. Alternatively, in Lazarus 4.8, open the matching `.lpi` and choose **Run → Build**.
+   then **Project to Build**.
+2. Alternatively, in Lazarus 4.8, open the matching `.lpi` and choose **Run to Build**.
 3. Open the IDE's run-parameters dialog. Enter the converted bundle directory,
    then the SDK root, each in double quotes. For example:
 
@@ -69,11 +69,11 @@ the example does not automatically remember the previous conversation.
 | --- | --- |
 | `MaxNewTokens` | `0` is automatic. A positive integer is a manual limit; there is no arbitrary demo ceiling. |
 | `Sampling` | `qsSample` samples tokens; `qsGreedy` chooses the highest score. `qsDefault` samples in automatic mode and uses greedy decoding with a manual limit. |
-| `Temperature` | Sampling temperature, 0.01–2.0; default 0.7 |
+| `Temperature` | Sampling temperature, 0.01-2.0; default 0.7 |
 | `TopP` | Nucleus probability, greater than 0 and at most 1; default 0.8 |
-| `TopK` | Candidate count, 1–128; default 20 |
-| `RepetitionPenalty` | Sampling penalty, 1–2; default 1.1 |
-| `Seed` | `-1` chooses a random seed; 0–4294967295 gives a repeatable seed for the same runtime and inputs |
+| `TopK` | Candidate count, 1-128; default 20 |
+| `RepetitionPenalty` | Sampling penalty, 1-2; default 1.1 |
+| `Seed` | `-1` chooses a random seed; 0-4294967295 gives a repeatable seed for the same runtime and inputs |
 | `Effort` | Optional answer budget: full context, 128, 512 or 1024 tokens. This is an output budget, not a reasoning mode. |
 | `SystemPrompt` | Dense Qwen system instructions; the Gemma/Qwen-VL worker prepends them to the user prompt |
 | `PlainCompletion` | Disable the chat template for plain text completion; system instructions do not apply to plain Qwen completion |

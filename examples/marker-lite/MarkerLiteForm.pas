@@ -113,6 +113,9 @@ begin
   FImage.Proportional := True;
   FImage.Stretch := True;
   FImage.Center := True;
+  Toolbar.TabOrder := 0;
+  Preview.TabOrder := 1;
+  Footer.TabOrder := 2;
   if PreparedPath('image') <> '' then LoadImage(PreparedPath('image'));
 end;
 
@@ -130,13 +133,16 @@ begin
   Cell := TPanel.Create(Self);
   Cell.Parent := AParent;
   Cell.BevelOuter := bvNone;
-  Cell.BorderWidth := 3;
-  Cell.Left := ALeft * 124;
-  Cell.Width := 124;
+  Cell.BorderWidth := 0;
+  Cell.Left := ALeft * 128;
+  Cell.Width := 128;
+  Cell.TabOrder := ALeft;
+  Cell.TabStop := False;
   Cell.Align := alLeft;
   Result := TButton.Create(Self);
   Result.Parent := Cell;
-  Result.Align := alClient;
+  Result.SetBounds(4, 2, 120, 32);
+  Result.TabOrder := 0;
   Result.Caption := ACaption;
   Result.OnClick := AHandler;
 end;
