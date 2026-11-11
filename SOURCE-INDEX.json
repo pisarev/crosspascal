@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-017",
+  "release_id": "early-access-018",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -47,13 +47,13 @@
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 4073,
-      "sha256": "fe2ff7b4dee416e0165dee24828758f22f26243f1a9935642eee39c40e806991"
+      "bytes": 4066,
+      "sha256": "f9dc6ad0c134e76fa3526f8abd17b62b9e937d3559688cb6b4e67a106fa756c3"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
-      "bytes": 1949,
-      "sha256": "feecd1f687ffe36d375bcac0560a0c407d935978d804feeaa5f0abfc9c5b4fb6"
+      "bytes": 2402,
+      "sha256": "ebe5d540377fa41d36e2e89da908e4fc1de5102be05fa5956ba3c34e5b76081a"
     },
     {
       "path": "docs/ROADMAP.md",
@@ -93,7 +93,7 @@
     {
       "path": "examples/gemma-chat/README.md",
       "bytes": 6426,
-      "sha256": "dc04101ed66240c191eaf34061d63507edb69c416f502a724462ece579de79b4"
+      "sha256": "4a44ae7429549bb5adacc57d9fdd7efb06969481c00d25bb1c3f49f0aec3ceee"
     },
     {
       "path": "examples/language-models/ExampleSupport.pas",
@@ -263,7 +263,7 @@
     {
       "path": "examples/marker-lite/README.md",
       "bytes": 3905,
-      "sha256": "a02d686b1c57bb7e35956fe4b8c3a5a7c2583abddae861d16c4f366a6219c98f"
+      "sha256": "f467199d20c4aeb8f6aee7c0f5504070d4212afb19535e0c68f39e4d2bd01c52"
     },
     {
       "path": "examples/qwen-chat/Prepare.cmd",
@@ -293,7 +293,7 @@
     {
       "path": "examples/qwen-chat/README.md",
       "bytes": 6421,
-      "sha256": "d0d99b78f98d56a36cac646ad836e7f84d0073f10956f5c96984e3db7ba7150b"
+      "sha256": "10bb4aa628222f0bc60d048d66c977273d048c9eab385f00649b4ace713ef08a"
     },
     {
       "path": "examples/vision-models/Prepare.cmd",
@@ -303,7 +303,7 @@
     {
       "path": "examples/vision-models/README.md",
       "bytes": 12756,
-      "sha256": "6585d0be2a2650520378ba86383665e0936e2edb94c842597f39f5d9cfa56f8e"
+      "sha256": "7c9090ae5bfff2438c29122abf216c3d4056a83fd4184d88272494b9bad1fa6e"
     },
     {
       "path": "examples/vision-models/VisionModels.Main.pas",
@@ -372,8 +372,8 @@
     },
     {
       "path": "prepare/prepare-bootstrap.json",
-      "bytes": 90,
-      "sha256": "7824bb0905d194064af815020848b446f353078268f72c354d689f2bdaa8616f"
+      "bytes": 83,
+      "sha256": "4194be4d92ed1b33f13b7c188d1717d693bbb32518347c9e6de3f051e2a1c906"
     },
     {
       "path": "rtl-algorithms/LICENSE",

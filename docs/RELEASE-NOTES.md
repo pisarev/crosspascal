@@ -1,5 +1,15 @@
 # Release notes
 
+## EA018 native TVM release
+
+EA018 packages the verified native Windows x64 SDK as a separate pre-release.
+Pascal calls TVM directly to run the supported language and vision models.
+CrossPascal Converter builds TVM bundles from supported original checkpoints.
+Inference and conversion run without Python.
+
+Prepare installs EA018 in `%LOCALAPPDATA%/CrossPascal/early-access-018` by default.
+The shared download cache can reuse model archives.
+
 ## EA017 native TVM update
 
 The Windows x64 SDK runs the supported language and vision models through TVM

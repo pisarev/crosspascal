@@ -1,7 +1,7 @@
 # Prepare and run an example
 
-Download **crosspascal-examples-prepare-ea017.zip** from the
-[EA017 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-017)
+Download **crosspascal-examples-prepare-ea018.zip** from the
+[EA018 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-018)
 and extract it to a writable folder. Open your example's folder and run
 **Prepare.cmd**. Shared example folders offer a menu.
 
@@ -23,7 +23,7 @@ Model, library and image paths are already in the generated *.prepared.ini files
 Keep the prepared folder together. Distributed Pascal executables are built with
 Lazarus; Delphi builds verify source compatibility.
 
-The default installation is %LOCALAPPDATA%/CrossPascal/early-access-017-native. Set
+The default installation is %LOCALAPPDATA%/CrossPascal/early-access-018. Set
 CROSSPASCAL_PREPARE_HOME before running Prepare.cmd to choose another drive.
 Downloads use a sibling downloads folder. Repeating preparation preserves your
 editable source and settings changes. A changed fixed dependency requires a new
