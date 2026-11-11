@@ -15,6 +15,9 @@
     <BuildModes>
       <Item Name="Release" Default="True"/>
     </BuildModes>
+    <RequiredPackages>
+      <Item><PackageName Value="LCL"/></Item>
+    </RequiredPackages>
     <Units>
       <Unit>
         <Filename Value="CrossPascalConvert.dpr"/>

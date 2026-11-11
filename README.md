@@ -2,7 +2,7 @@
 
 For a first run, use the [Prepare.cmd quickstart](docs/PREPARE-EXAMPLES.md) to download the dependencies and sample data automatically.
 
-CrossPascal gives Object Pascal applications image processing, geometry, and local model inference. The Windows x64 early access SDK brings together five repositories, a browser-based model converter, and Delphi and Lazarus examples.
+CrossPascal gives Object Pascal applications image processing, geometry, and local model inference. The Windows x64 early access SDK brings together five repositories, a native desktop model converter, and Delphi and Lazarus examples.
 
 ## Get started
 
@@ -14,7 +14,7 @@ Try the Geometry and DisjointSet projects first if you want examples with no ext
 
 ## Run a model locally
 
-Open `CrossPascalConvert.exe` to start the converter. Choose a pinned Qwen2.5-Instruct download or a compatible local Safetensors folder, such as Qwen2.5-Coder-0.5B-Instruct. Select the detected CUDA architecture or enter the target architecture, then build the bundle. Open the supplied QwenChat executable or build it in your IDE. Auto uses the shared context window, and **Stop** keeps the partial answer. See the [QwenChat guide](examples/qwen-chat/README.md) for sampling and answer budgets, and the [converter guide](https://github.com/pisarev/crosspascal-convert/blob/main/INSTALL.md) for setup.
+The supplied language and vision models run through native TVM from Pascal. Open `CrossPascalConvert.exe` to build a bundle from an original checkpoint. Choose a profile, the source and a new output folder, then use **Preview** and **Build**. The [converter guide](https://github.com/pisarev/crosspascal-convert/blob/main/INSTALL.md) lists the supported formats and Windows and CUDA toolchains. Inference and conversion run without Python.
 
 For CPU vision, run the VisionModels preparation script to download the ready model bundles and libraries. The profiles cover SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd.
 
@@ -27,7 +27,7 @@ For short console programs, start with [Language models in a few Pascal calls](e
 | Project | What it provides |
 | --- | --- |
 | CrossPascal | Pascal algorithms, image adapters, and runnable examples |
-| [CrossPascal Converter](https://github.com/pisarev/crosspascal-convert) | Model acquisition, conversion, and a local browser interface |
+| [CrossPascal Converter](https://github.com/pisarev/crosspascal-convert) | Native checkpoint import and TVM graph compilation |
 | [CrossPascal TVM](https://github.com/pisarev/crosspascal-tvm) | Native Pascal TVM and DLPack interfaces, model helpers, and runtime setup |
 | [CrossPascal OpenCV](https://github.com/pisarev/crosspascal-opencv) | Pascal bindings, a native bridge, image processing, and video I/O |
 | [CrossPascal Leptonica](https://github.com/pisarev/crosspascal-leptonica) | Pascal bindings and helpers for scans and document images |

@@ -2,7 +2,7 @@
 
 ## Prepare and Run
 
-Download [Prepare-VisionModels-ea016.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-016/Prepare-VisionModels-ea016.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
+Download [Prepare-VisionModels-ea017.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-017/Prepare-VisionModels-ea017.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
 
 
 Open `VisionModels.dproj` in Delphi or `VisionModels.lpi` in Lazarus to build a small image-classification and object-detection application for Windows x64. The form lets you select a model profile, choose a converted bundle, open a picture, run on CPU, and save a JSON result. It uses the supplied Pascal TVM adapters and OpenCV image types.
@@ -19,7 +19,7 @@ The source project has five explicit profiles. Model weights and compiled model 
 
 ## Download the coordinated Windows SDK and source models
 
-This manual example uses `C:\CrossPascal` as the installation directory. Choose another writable local folder if needed and substitute it throughout. First install the compiler/runtime prerequisites described in the [converter installation guide](../../../crosspascal-convert/INSTALL.md); the supplied portable Python is already included.
+This manual example uses `C:\CrossPascal` as the installation directory. Choose another writable local folder if needed and substitute it throughout. First install the compiler/runtime prerequisites described in the [converter installation guide](../../../crosspascal-convert/INSTALL.md); the SDK includes the native TVM compiler.
 
 1. In your browser, open [CrossPascal Releases](https://github.com/pisarev/crosspascal/releases). The source repositories and releases are public; no GitHub sign-in is required for downloads.
 2. Download the Windows x64 SDK and its matching CPU model source asset listed in the release notes.
@@ -36,22 +36,13 @@ This manual example uses `C:\CrossPascal` as the installation directory. Choose 
 
 Each model folder must retain its adjacent `SOURCE.json`, licence and accompanying records. The ONNX files are the inputs for the converter. Generated model DLLs are created in a separate output folder.
 
-## Convert one source model in the GUI
+## Convert one source model
 
-1. For a first example, open `C:\CrossPascal\Sources\crosspascal-cpu-model-sources\resnet50` in Explorer.
-2. Right-click `resnet50-v1-12.onnx` and choose **Copy as path**. On older Windows, hold **Shift** while right-clicking.
-3. Open `C:\CrossPascal\CrossPascalConvert.exe`. On **Step 1: Select a model**, paste that path into the model-path field and click **Recognise**. Explorer's enclosing quotes are accepted. Use this field for source packs; uploading one file through the browser does not carry its neighbouring metadata.
-4. Recognition must show **Source pack**, the intended profile, declared model licence and public source. If it says **No adjacent SOURCE.json**, return to the extracted source folder and paste the original ONNX path.
-5. Continue through **Step 2: Detect this computer** and resolve any reported missing required compiler/linker prerequisite.
-6. On **Step 3: Choose the target computer**, keep the filled **CPU**, **Windows**, **x86_64**, and tuning **Off** settings. The source pack supplies the exact input name and shape.
-7. Create `C:\CrossPascal\Models` in Explorer if needed. In the converter, enter the new child `C:\CrossPascal\Models\resnet50-cpu` as the output directory. Leave that child nonexistent; the converter will create it. Use a different new child for each model or conversion.
-8. On **Step 4: Model settings**, leave the source-pack values in place. ResNet50 uses input `data:1,3,224,224`, classification, adapter `yolo11`, NCHW, mean `0.485,0.456,0.406`, and std `0.229,0.224,0.225`. YOLO classification deliberately leaves both normalization fields empty. RT-DETR uses adapter `rtdetr` and an empty NMS field.
-9. Review **Step 5: Review the expected output**, including source profile, licence, target and output path. The converter binds the selected model and accompanying file hashes to this Preview.
-10. Continue to **Step 6: Build and export**, choose **Build**, and wait for completion. Read a specific failure before trying again; do not use a partially produced bundle.
-11. Use the output folder directly on this PC. **Download ZIP** is optional when transferring the generated bundle; it preserves the selected source metadata and licences.
-
-Run the Pascal application after converting the model. If you change the source bytes or profile settings, recognize the source again and request a fresh Preview.
-
+Open `CrossPascalConvert.exe` from the SDK. Choose the model profile and
+select its source file. SqueezeNet and ResNet50 accept ONNX, YOLO11n accepts
+the pinned Ultralytics `.pt` or matching ONNX, and RT-DETR accepts its pinned
+Safetensors or matching ONNX. Choose a new output directory, review **Preview**,
+then click **Build**. Open the resulting bundle in VisionModels.
 
 ## Open and build
 

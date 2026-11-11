@@ -2,7 +2,7 @@
 
 ## Prepare and Run
 
-Download [Prepare-GemmaChat-ea016.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-016/Prepare-GemmaChat-ea016.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
+Download [Prepare-GemmaChat-ea017.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-017/Prepare-GemmaChat-ea017.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
 
 
 Both chat demos use the same controls and `TLanguageModel` API. Choose a
@@ -12,7 +12,7 @@ bundle containing its converted vision encoder accept a picture and a question.
 
 ## Open and build
 
-Extract the main SDK and its matching language runtime companion together.
+Extract the Windows x64 SDK.
 Keep `crosspascal`, `crosspascal-tvm`, `crosspascal-opencv`, `crosspascal-convert`
 and `runtime` beside one another. Completed bundles run without conversion
 tools. CPU bundles use system memory; CUDA bundles need a compatible driver.
@@ -24,9 +24,8 @@ tools. CPU bundles use system memory; CUDA bundles need a compatible driver.
    builds are used to check source compatibility.
 
 The form is created in Pascal code; no form resource or design-time package is
-required. Dense Qwen CUDA uses the native Pascal consumer. Qwen2.5-VL and Gemma
-use the supplied portable Python runtime to call native TVM libraries. These
-inference routes do not run PyTorch or Ollama.
+required. Dense Qwen, Qwen2.5-VL and Gemma run through native TVM libraries
+called from Pascal.
 
 ## First answer
 
@@ -67,7 +66,7 @@ timings. A previously encoded, unchanged image can reuse its cached features.
 | Repetition penalty | 1.1 | Penalty for previously seen tokens when sampling, 1-2. |
 | Seed | -1 | Random seed; 0-4294967295 gives repeatable sampling with the same runtime and inputs. |
 | Answer budget | Full context | Optional automatic budgets of 128, 512 or 1024 tokens; a positive manual maximum takes precedence. |
-| Instructions | You are a helpful assistant. | Dense Qwen uses a system role; the Gemma/Qwen-VL worker prepends these instructions to the user prompt. |
+| Instructions | You are a helpful assistant. | Dense Qwen uses a system role; the Gemma and Qwen-VL paths prepend these instructions to the user prompt. |
 | Plain completion | Off | Disable the chat template. System instructions do not apply to plain dense-Qwen completion. |
 
 Temperature, Top P, Top K, repetition penalty and seed affect sampling. Greedy

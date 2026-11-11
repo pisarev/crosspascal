@@ -75,7 +75,7 @@ the example does not automatically remember the previous conversation.
 | `RepetitionPenalty` | Sampling penalty, 1-2; default 1.1 |
 | `Seed` | `-1` chooses a random seed; 0-4294967295 gives a repeatable seed for the same runtime and inputs |
 | `Effort` | Optional answer budget: full context, 128, 512 or 1024 tokens. This is an output budget, not a reasoning mode. |
-| `SystemPrompt` | Dense Qwen system instructions; the Gemma/Qwen-VL worker prepends them to the user prompt |
+| `SystemPrompt` | Dense Qwen system instructions; the Gemma and Qwen-VL paths prepend them to the user prompt |
 | `PlainCompletion` | Disable the chat template for plain text completion; system instructions do not apply to plain Qwen completion |
 
 Temperature, Top P, Top K, seed and repetition penalty affect sampling. Greedy

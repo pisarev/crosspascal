@@ -8,7 +8,8 @@ The [MIT license](../LICENSE) covers original CrossPascal code and documentation
 | OpenCV, contrib, and native codec dependencies | Original notices and license files in the OpenCV companion source asset |
 | Leptonica bindings, runtime, and codec dependencies | [Leptonica notices](https://github.com/pisarev/crosspascal-leptonica/blob/main/THIRD-PARTY-NOTICES.md) and its companion source asset |
 | Apache TVM, TVM FFI, and DLPack | [TVM notices and setup](https://github.com/pisarev/crosspascal-tvm), the original wheel metadata, and the runtime notices |
-| Portable Python and its packages | The portable Python license under `runtime/python/` and the license files in the pinned upstream wheels fetched by the installer |
+| SentencePiece and its dependencies | `runtime/third-party-licenses/sentencepiece` in the Windows SDK |
+| GGML dequantization library | [Source and license notes](https://github.com/pisarev/crosspascal-convert/blob/main/licenses/ggml-base.md) |
 | Qwen2.5-0.5B-Instruct and tokenizer | Apache 2.0 notices and the exact upstream revision in the TVM runtime source metadata |
 | CPU vision inputs | Each model pack's `SOURCE.json` and accompanying license and provenance files |
 

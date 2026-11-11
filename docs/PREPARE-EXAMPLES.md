@@ -12,9 +12,9 @@ entered with hidden input. Saving a token in Windows Credential Manager is optio
 token needs Contents: Read-only for this repository. Never paste tokens into a
 project, script or issue.
 
-Prepare downloads a portable preparation runtime, the SDK, native libraries,
-model bundles and a sample image. No Python installation, manual DLL copying,
-native-library build or CPU model conversion is required. Downloads are checked
+Prepare uses Windows PowerShell to download the SDK, native libraries, model
+bundles and a sample image. The prepared examples run without Python. Prepare
+sets up the DLLs and CPU bundles automatically. Downloads are checked
 with SHA-256, shared across examples, and resumed after interruption.
 
 Wait for **READY**. In the opened project folder, use the .dproj in Delphi 13.2
@@ -23,7 +23,7 @@ Model, library and image paths are already in the generated *.prepared.ini files
 Keep the prepared folder together. Distributed Pascal executables are built with
 Lazarus; Delphi builds verify source compatibility.
 
-The default installation is %LOCALAPPDATA%/CrossPascal/early-access-017. Set
+The default installation is %LOCALAPPDATA%/CrossPascal/early-access-017-native. Set
 CROSSPASCAL_PREPARE_HOME before running Prepare.cmd to choose another drive.
 Downloads use a sibling downloads folder. Repeating preparation preserves your
 editable source and settings changes. A changed fixed dependency requires a new
@@ -57,4 +57,4 @@ perform small native-library checks.
 
 GPU conversion remains available in CrossPascalConvert.exe. Detect the local CUDA
 architecture or select a target manually. CPU preparation does not install a CUDA
-toolchain. Model behavior and accepted scope are unchanged from EA016.
+toolchain. Both CPU and GPU conversion use the native TVM compiler.

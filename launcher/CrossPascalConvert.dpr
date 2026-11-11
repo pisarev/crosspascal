@@ -8,111 +8,61 @@
 
 program CrossPascalConvert;
 
-{$IFDEF FPC}
-  {$MODE DELPHIUNICODE}
-{$ENDIF}
+{$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 {$APPTYPE GUI}
 
 uses
-  {$IFDEF FPC}
-  Windows, SysUtils;
-  {$ELSE}
-  Winapi.Windows, System.SysUtils;
-  {$ENDIF}
+  {$IFDEF FPC}Interfaces, Forms, Windows, SysUtils{$ELSE}Vcl.Forms, Winapi.Windows, System.SysUtils{$ENDIF},
+  CrossPascalConvert.Form in 'CrossPascalConvert.Form.pas',
+  CrossPascalConvert.Native in 'CrossPascalConvert.Native.pas';
 
-function ExecutableFolder: UnicodeString;
+function SelectedProfile(const Name: string): TConverterProfile;
 var
-  Buffer: array[0..32767] of WideChar;
-  Count: DWORD;
+  Profile: TConverterProfile;
 begin
-  Count := GetModuleFileNameW(0, @Buffer[0], Length(Buffer));
-  if Count = 0 then
-    RaiseLastOSError;
-  if Count >= Length(Buffer) then
-    raise Exception.Create('The application path is too long.');
-  SetString(Result, PWideChar(@Buffer[0]), Count);
-  Result := ExtractFilePath(Result);
+  for Profile := Low(TConverterProfile) to High(TConverterProfile) do
+    if SameText(Name, ProfileIDs[Profile]) then Exit(Profile);
+  raise Exception.Create('Unknown conversion profile: ' + Name);
 end;
 
-function IsFile(const FileName: UnicodeString): Boolean;
+procedure BuildFromCommandLine;
 var
-  Attributes: DWORD;
+  Command: TConversionCommand;
+  Process: THandle;
+  Status: DWORD;
+  Projector, Log: string;
 begin
-  Attributes := GetFileAttributesW(PWideChar(FileName));
-  Result := (Attributes <> INVALID_FILE_ATTRIBUTES) and
-    ((Attributes and FILE_ATTRIBUTE_DIRECTORY) = 0);
-end;
-
-procedure OpenConverter;
-var
-  BundleRoot, PythonPath, CommandLine: UnicodeString;
-  Startup: TStartupInfoW;
-  ProcessInfo: TProcessInformation;
-  WaitResult, ChildExit: DWORD;
-begin
-  BundleRoot := ExecutableFolder;
-  PythonPath := BundleRoot + 'runtime\python\pythonw.exe';
-  if not IsFile(PythonPath) then
-    raise Exception.Create(
-      'The application runtime is missing.' + sLineBreak + 'Extract the complete CrossPascal SDK and start CrossPascalConvert.exe from its top-level folder.'
-    );
-  if not IsFile(BundleRoot + 'crosspascal-convert\source\pascalvision_convert\wizard_entry.py') then
-    raise Exception.Create(
-      'The converter source folder is missing.' + sLineBreak + 'Keep crosspascal-convert and runtime beside CrossPascalConvert.exe.'
-    );
-  CommandLine := '"' + PythonPath + '" -B -m pascalvision_convert.wizard_entry';
-  UniqueString(CommandLine);
-  FillChar(Startup, SizeOf(Startup), 0);
-  Startup.cb := SizeOf(Startup);
-  Startup.dwFlags := STARTF_USESHOWWINDOW;
-  Startup.wShowWindow := SW_HIDE;
-  FillChar(ProcessInfo, SizeOf(ProcessInfo), 0);
-  if not CreateProcessW(
-    PWideChar(PythonPath),
-    PWideChar(CommandLine),
-    nil,
-    nil,
-    False,
-    CREATE_UNICODE_ENVIRONMENT,
-    nil,
-    PWideChar(BundleRoot),
-    Startup,
-    ProcessInfo
-  ) then
-      RaiseLastOSError;
+  if (ParamStr(1) <> '--build') or (ParamCount <> 8) then
+    raise Exception.Create('Usage: CrossPascalConvert --build profile source destination projector-or-- context prefill architecture-or--');
+  Projector := ParamStr(5);
+  if Projector = '-' then Projector := '';
+  Command := PrepareConversion(ExecutableFolder, ParamStr(3), Projector, ParamStr(4), ParamStr(8),
+    SelectedProfile(ParamStr(2)), StrToInt(ParamStr(6)), StrToInt(ParamStr(7)));
+  Process := StartConversion(Command, Log);
   try
-    WaitResult := WaitForSingleObject(ProcessInfo.hProcess, 1500);
-    if WaitResult = WAIT_FAILED then
-      RaiseLastOSError;
-    if WaitResult = WAIT_OBJECT_0 then
-    begin
-      if not GetExitCodeProcess(ProcessInfo.hProcess, ChildExit) then
-        RaiseLastOSError;
-      if ChildExit <> 0 then
-        raise Exception.CreateFmt(
-          'The converter could not start (exit %u).' + sLineBreak + 'See the startup message and the logs in Local AppData\CrossPascal\Convert\logs.',
-          [ChildExit]
-        );
-    end;
+    if WaitForSingleObject(Process, INFINITE) <> WAIT_OBJECT_0 then RaiseLastOSError;
+    if not GetExitCodeProcess(Process, Status) then RaiseLastOSError;
+    ExitCode := Status;
   finally
-    CloseHandle(ProcessInfo.hThread);
-    CloseHandle(ProcessInfo.hProcess);
+    CloseHandle(Process);
   end;
 end;
 
 begin
-  ExitCode := 0;
   try
-    OpenConverter;
+    if ParamCount > 0 then
+      BuildFromCommandLine
+    else begin
+      Application.Initialize;
+      {$IFNDEF FPC}Application.MainFormOnTaskbar := True;{$ENDIF}
+      Application.CreateForm(TConverterForm, ConverterForm);
+      Application.Run;
+    end;
   except
     on E: Exception do
     begin
-      MessageBoxW(
-        0,
-        PWideChar(UnicodeString(E.Message)),
-        'CrossPascal Converter',
-        MB_OK or MB_ICONERROR
-      );
+      if ParamCount = 0 then
+        MessageBoxW(0, PWideChar(UnicodeString(E.Message)), 'CrossPascal Converter', MB_OK or MB_ICONERROR);
       ExitCode := 2;
     end;
   end;

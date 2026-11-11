@@ -8,38 +8,17 @@ Use the coordinated Windows SDK, the companion OpenCV and Leptonica source asset
 
 - **RTL algorithms.** Open the Geometry or DisjointSet example in your Pascal IDE. These examples need no external runtime.
 - **OpenCV and Leptonica.** Extract the companion native source assets, start a Linux Docker engine, and run the command below with the actual extracted paths. The script checks the source inventories and the build inputs and installs the libraries into the appropriate SDK directories. Pass only the source path for the component you use when setting up an independent component.
-- **Converter and native TVM.** Use the SDK's portable Python. Run the TVM setup command below to fetch the pinned Apache TVM, TVM FFI, and Python dependencies from PyPI. The installer checks each wheel and the four runtime DLLs. To use the same cached wheels again, add `--offline`.
+- **TVM.** The SDK includes the native runtime and compiler. Keep its library folders together. Install the Windows x64 C++ linker and SDK libraries for model conversion. CUDA conversion also uses NVIDIA NVRTC. See the [converter guide](https://github.com/pisarev/crosspascal-convert/blob/main/INSTALL.md).
 
-Run these commands from the root of the extracted SDK:
+To rebuild the image libraries from their source assets, run this command from the extracted SDK:
 
 ```powershell
 & .\crosspascal\scripts\install-native-win64.ps1 `
     -OpenCVSource C:\CrossPascalInputs\opencv-windows-x64 `
     -LeptonicaSource C:\CrossPascalInputs\leptonica-windows-x64
-
-& .\runtime\python\python.exe -B .\crosspascal-tvm\scripts\install_tvm_windows.py `
-    --cache .\dependency-cache `
-    --destination .\crosspascal-tvm\runtime\windows-x64-cuda `
-    --site-packages .\runtime\python\Lib\site-packages `
-    --dependencies .\crosspascal-tvm\runtime\WINDOWS-PYTHON-WHEELS.json
 ```
 
-The OpenCV and Leptonica DLLs are generated on your machine from the corresponding native sources. Windows model conversion also requires the Windows C++ libraries and the LLVM executables described in the [converter guide](../../crosspascal-convert/INSTALL.md). CUDA model conversion requires the NVIDIA driver and the CUDA Toolkit listed there.
-
-The native installer uses the Windows Docker command on PATH by default. If Docker is installed directly inside an existing WSL distribution, add `-WslDistribution` followed by its name to the same command. The distribution must be able to access the Windows source and SDK directories.
-
-## Prepare the TVM cache on a connected PC
-
-If the SDK computer cannot reach PyPI, extract the same SDK on another Windows x64 computer with Internet access and run this command there:
-
-```powershell
-& .\runtime\python\python.exe -B .\crosspascal-tvm\scripts\install_tvm_windows.py `
-    --cache .\dependency-cache `
-    --dependencies .\crosspascal-tvm\runtime\WINDOWS-PYTHON-WHEELS.json `
-    --download-only
-```
-
-Copy the resulting `dependency-cache` folder to the root of the SDK on the destination computer. Run the TVM setup command above with `--offline` appended. The installer checks the same file hashes in both modes.
+The rebuild uses a Linux Docker engine. For Docker inside WSL, add `-WslDistribution` followed by the distribution name.
 
 ## Open the examples
 
@@ -61,4 +40,4 @@ For the two model applications, open `CrossPascalConvert.exe` at the SDK root. C
 
 Read the per-profile and component limitations in the release notes. Keep the original upstream notices with the corresponding dependencies and source assets.
 
-For both language chat forms and the console language examples, extract the language runtime companion asset into the same SDK root. It supplies `runtime/gemma-python/python.exe` and its pinned execution dependencies. No separate Python installation or conversion tools are needed to run an already converted bundle. Follow the [GemmaChat manual steps](../examples/gemma-chat/README.md) or the [Qwen2.5-VL guide](../../crosspascal-convert/docs/QWEN2.5-VL.md). Converting an original checkpoint requires the additional exporter environment described in the converter guides. For CPU image conversion, select the appropriate Qwen2.5-VL section or add a matching vision projector to a Gemma 3n text bundle. The [modality matrix](MODEL-MODALITIES.md) lists the supported inputs.
+The SDK supplies the native libraries for language inference. Gemma 3n image conversion uses the original GGUF and its matching projector. Qwen2.5-VL uses its supported Safetensors checkpoint. See the [model input matrix](MODEL-MODALITIES.md).

@@ -69,8 +69,10 @@
       "score_threshold": 0.25,
       "nms_threshold": 0.45,
       "accepted_source_sha256": [
-        "218f8ef1d4005d1bab740a805dbf994b1dfddb83fd54880245f0a0db17aa1844"
+        "218f8ef1d4005d1bab740a805dbf994b1dfddb83fd54880245f0a0db17aa1844",
+        "c62d41bf9625777760018bf914d2e6cd472420ccd01706d97a61cb6c82502bd7"
       ],
+      "graph_recipe_sha256": "aeba9eb9e849684f1a2958273aa7e6fb9b270a7923d258f6b2081bb606efc315",
       "source_url": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n-cls.pt",
       "source_license": "AGPL-3.0",
       "source_note": "Prospective export of the pinned official YOLO11n classification checkpoint, SHA-256 c62d41bf9625777760018bf914d2e6cd472420ccd01706d97a61cb6c82502bd7, using Ultralytics 8.4.146, CPU FP32, batch 1, opset 17 and no simplifier. Output output0 is [1,1000]; this profile adds no mean/std or extra softmax. Original model terms and exporter source accompany the source pack; the own helper's MIT notice does not replace upstream terms."
@@ -89,8 +91,10 @@
       "nms_threshold": 0.45,
       "accepted_source_sha256": [
         "7951f527c60cee719f9b40bb71071a3f08dc1214061dcd13639d4e4920b8d2b0",
-        "d8c8a19fd65ca76d702dd4b756a1922682d7ef9546d163dcd1bbda4522fdfcb2"
+        "d8c8a19fd65ca76d702dd4b756a1922682d7ef9546d163dcd1bbda4522fdfcb2",
+        "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1"
       ],
+      "graph_recipe_sha256": "867d40f677e1244f124108ff1383f4e9fc2e1d212aba79a9fdeb704bb66edaa0",
       "source_url": "https://huggingface.co/Ultralytics/YOLO11/tree/5599de6f3b0ef95f98f37530ed0f3bf149c10b37",
       "source_license": "AGPL-3.0",
       "source_note": "Prospective export of official yolo11n.pt, SHA-256 0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1, using Ultralytics 8.4.146, CPU FP32, batch 1, opset 17, no simplifier and no exported NMS. Output output0 is [1,84,8400], a dense 4+80 head. Preserve the upstream model licence and accompanying exporter source. Use the source pack's fixed-slice ONNX for new conversions."
@@ -108,8 +112,11 @@
       "score_threshold": 0.3,
       "nms_threshold": 0.45,
       "accepted_source_sha256": [
-        "4750cf32e9e7e3ef5d8dea600377246ce4c408dec5f418d103d41c39edc01c17"
+        "4750cf32e9e7e3ef5d8dea600377246ce4c408dec5f418d103d41c39edc01c17",
+        "fe87a5a30f5daf298d10794c7682a63b6107986f97d6a770ba948d89e4340093"
       ],
+      "graph_recipe_sha256": "1c007787eddb20f0bedd6319a391bfa57f31e106435fb56e0f35b4a510da0c9b",
+      "graph_bindings_sha256": "6e941305c6fcde12e46abb9061ddb2a9b059c67f92471e1fc170d581d1153b26",
       "source_url": "https://huggingface.co/PekingU/rtdetr_r18vd/tree/ac77a11ff0170a41b771c03264987f8ce2b0d753",
       "source_license": "Apache-2.0",
       "source_note": "Prospective export of PekingU/rtdetr_r18vd at the recorded revision; model.safetensors SHA-256 fe87a5a30f5daf298d10794c7682a63b6107986f97d6a770ba948d89e4340093. Transformers 4.45.2, CPU FP32, batch 1 and opset 17 produce logits [1,300,80] and normalized pred_boxes [1,300,4]. Best class per query, sigmoid once, threshold 0.3. This adapter does not apply NMS; the numeric nms_threshold is an unused catalogue field."
