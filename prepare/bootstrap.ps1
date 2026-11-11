@@ -4,6 +4,7 @@ param(
     [string]$Release = '',
     [string]$InstallRoot = '',
     [string]$Cache = '',
+    [ValidateSet('Auto', 'CPU', 'CUDA')][string]$Device = 'Auto',
     [switch]$All
 )
 
@@ -449,11 +450,135 @@ function Copy-PreparedFile([string]$Source, [string]$Destination) {
     [IO.File]::Copy($Source, $Destination, $false)
 }
 
-function Install-Example($Row, $Document) {
+function Get-PrepareCudaDevice {
+    if (-not ('CrossPascal.PrepareCuda' -as [type])) {
+        Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+
+namespace CrossPascal {
+    public static class PrepareCuda {
+        private const string Driver = "nvcuda.dll";
+
+        [DllImport(Driver), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern int cuInit(uint flags);
+        [DllImport(Driver), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern int cuDriverGetVersion(out int version);
+        [DllImport(Driver), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern int cuDeviceGet(out int device, int ordinal);
+        [DllImport(Driver), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern int cuDeviceGetAttribute(out int value, int attribute, int device);
+        [DllImport(Driver), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern int cuDevicePrimaryCtxRetain(out IntPtr context, int device);
+        [DllImport(Driver), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern int cuDevicePrimaryCtxRelease_v2(int device);
+        [DllImport(Driver), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern int cuCtxPushCurrent_v2(IntPtr context);
+        [DllImport(Driver), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern int cuCtxPopCurrent_v2(out IntPtr context);
+        [DllImport(Driver), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern int cuMemGetInfo_v2(out UIntPtr freeBytes, out UIntPtr totalBytes);
+
+        private static void Check(int status, string operation) {
+            if (status != 0) throw new InvalidOperationException(operation + " returned CUDA status " + status);
+        }
+
+        public static void Probe(out string architecture, out long freeMiB, out int driverVersion) {
+            Check(cuInit(0), "Initializing NVIDIA CUDA");
+            Check(cuDriverGetVersion(out driverVersion), "Reading the CUDA driver version");
+            int device, major, minor;
+            Check(cuDeviceGet(out device, 0), "Selecting CUDA device 0");
+            Check(cuDeviceGetAttribute(out major, 75, device), "Reading compute capability");
+            Check(cuDeviceGetAttribute(out minor, 76, device), "Reading compute capability");
+            architecture = "sm_" + major + minor;
+            IntPtr context;
+            Check(cuDevicePrimaryCtxRetain(out context, device), "Opening the CUDA context");
+            try {
+                Check(cuCtxPushCurrent_v2(context), "Entering the CUDA context");
+                try {
+                    UIntPtr free, total;
+                    Check(cuMemGetInfo_v2(out free, out total), "Reading free CUDA memory");
+                    freeMiB = (long)(free.ToUInt64() / (1024 * 1024));
+                } finally {
+                    cuCtxPopCurrent_v2(out context);
+                }
+            } finally {
+                cuDevicePrimaryCtxRelease_v2(device);
+            }
+        }
+    }
+}
+'@
+    }
+    $arch = ''
+    $free = 0L
+    $driver = 0
+    try {
+        [CrossPascal.PrepareCuda]::Probe([ref]$arch, [ref]$free, [ref]$driver)
+        return @{arch = $arch; free_mib = $free; driver = $driver}
+    } catch {
+        return @{reason = $_.Exception.GetBaseException().Message}
+    }
+}
+
+function Select-ExampleDevice($Row, $Document, $CudaDevice) {
+    $plan = @{row = $Row; packages = [ordered]@{}; device = ''; arch = ''; message = ''}
+    foreach ($key in $Row.packages) { $plan.packages[$key] = $key }
+    if (-not $Row.cuda) { return $plan }
+    $plan.device = 'CPU'
+    if ($Device -eq 'CPU') {
+        $plan.message = 'Selected the CPU bundle.'
+        return $plan
+    }
+    $variant = $null
+    if ($CudaDevice.arch) { $variant = $Row.cuda.packages.PSObject.Properties[$CudaDevice.arch] }
+    $reason = $CudaDevice.reason
+    if (-not $reason) {
+        if (-not $variant) {
+            $reason = "No CUDA package for $($CudaDevice.arch)."
+        } elseif ($CudaDevice.driver -lt [int]$Document.cuda_driver_api) {
+            $reason = 'Update the NVIDIA driver to one that supports CUDA 12.8.'
+        } elseif ($CudaDevice.free_mib -lt [int]$Row.cuda.min_free_mib) {
+            $reason = "$($Row.title) needs $($Row.cuda.min_free_mib) MiB of free GPU memory. Available: $($CudaDevice.free_mib) MiB."
+        }
+    }
+    if ($reason) {
+        if ($Device -eq 'CUDA') { throw "Cannot prepare $($Row.title) for CUDA. $reason" }
+        $plan.message = "Selected the CPU bundle. $reason"
+        return $plan
+    }
+    $key = [string]$Row.cuda.replace
+    if (-not $plan.packages.Contains($key) -or -not $Document.packages.PSObject.Properties[$variant.Value]) {
+        throw 'The CUDA package does not match the preparation manifest.'
+    }
+    $plan.packages[$key] = [string]$variant.Value
+    $plan.device = 'CUDA'
+    $plan.arch = $CudaDevice.arch
+    $plan.message = "Selected the $($plan.arch) CUDA bundle. Free GPU memory: $($CudaDevice.free_mib) MiB."
+    $plan
+}
+
+function Write-PreparedDefaults([string]$Path, [string[]]$Lines) {
+    $receipt = "$Path.prepare.sha256"
+    if (Test-Path -LiteralPath $Path -PathType Leaf) {
+        if (-not (Test-Path -LiteralPath $receipt -PathType Leaf) -or
+            (Get-Content -LiteralPath $receipt -Raw).Trim() -cne (Get-PrepareHash $Path)) {
+            Write-Host "Preserved local settings: $Path"
+            return
+        }
+    }
+    [IO.File]::WriteAllLines("$Path.partial", $Lines, $utf8)
+    [IO.File]::WriteAllText("$receipt.partial", (Get-PrepareHash "$Path.partial"), $utf8)
+    Move-Item -LiteralPath "$Path.partial" -Destination $Path -Force
+    Move-Item -LiteralPath "$receipt.partial" -Destination $receipt -Force
+}
+
+function Install-Example($Plan, $Document) {
+    $Row = $Plan.row
     $needed = 0L
     $extract = 0L
     $split = $false
-    foreach ($key in $Row.packages) {
+    foreach ($key in $Plan.packages.Values) {
         $pkg = $Document.packages.PSObject.Properties[$key].Value
         if (-not (Test-Path -LiteralPath (Get-PreparePath $InstallRoot $pkg.directory))) {
             $extract += [long]$pkg.extracted_bytes
@@ -472,17 +597,20 @@ function Install-Example($Row, $Document) {
     }
     Write-Host ''
     Write-Host "Preparing $($Row.title)"
+    if ($Plan.message) { Write-Host $Plan.message }
     Write-Host ('Download size for missing files: {0:0.00} GiB' -f ($needed / 1GB))
-    if ($Row.requirements) { Write-Host $Row.requirements }
+    if ($Plan.device -eq 'CUDA' -and $Row.cuda.requirements) { Write-Host $Row.cuda.requirements }
+    elseif ($Row.requirements) { Write-Host $Row.requirements }
     $sevenZip = ''
     if ($split) { $sevenZip = Get-PrepareAsset $Document.sevenzip }
     $paths = [ordered]@{}
-    foreach ($key in $Row.packages) {
-        $paths[$key] = Get-Package $Document.packages.PSObject.Properties[$key].Value $Document.assets $sevenZip
+    foreach ($key in $Plan.packages.Keys) {
+        $package = $Document.packages.PSObject.Properties[$Plan.packages[$key]].Value
+        $paths[$key] = Get-Package $package $Document.assets $sevenZip
     }
     $sdk = $paths['sdk']
-    foreach ($key in $Row.packages) {
-        foreach ($relative in $Document.packages.PSObject.Properties[$key].Value.overlay) {
+    foreach ($key in $Plan.packages.Keys) {
+        foreach ($relative in $Document.packages.PSObject.Properties[$Plan.packages[$key]].Value.overlay) {
             Copy-PreparedFile (Get-PreparePath $paths[$key] $relative) (Get-PreparePath $sdk $relative)
         }
     }
@@ -517,7 +645,7 @@ function Install-Example($Row, $Document) {
         }
         [void][IO.Directory]::CreateDirectory($folder)
         $ini = Join-Path $folder ((Split-Path -Leaf $project) + '.prepared.ini')
-        if (-not (Test-Path -LiteralPath $ini)) { [IO.File]::WriteAllLines($ini, [string[]]$lines, $utf8) }
+        Write-PreparedDefaults $ini $lines
         $files += $ini
         foreach ($relative in $Row.app_local) {
             $from = Get-PreparePath $sdk $relative
@@ -530,7 +658,8 @@ function Install-Example($Row, $Document) {
     Write-Host "Delphi: open $delphiFile"
     Write-Host "Lazarus: open $lazarusFile"
     Write-Host "Build for Windows 64-bit, then Run. $($Row.next)"
-    @{example = $Row.id; project = $project; defaults = $files; status = 'READY'}
+    @{example = $Row.id; project = $project; defaults = $files; status = 'READY';
+      device = $Plan.device; cuda_arch = $Plan.arch}
 }
 
 try {
@@ -595,8 +724,13 @@ try {
         $selected = @($document.examples | Where-Object id -CEQ $Example)
         if ($selected.Count -ne 1) { throw 'Choose a listed example.' }
     }
-    foreach ($row in $selected) {
-        foreach ($key in $row.packages) {
+    $cudaDevice = @{}
+    if ($Device -ne 'CPU' -and ($selected | Where-Object cuda)) {
+        $cudaDevice = Get-PrepareCudaDevice
+    }
+    $plans = @($selected | ForEach-Object { Select-ExampleDevice $_ $document $cudaDevice })
+    foreach ($plan in $plans) {
+        foreach ($key in $plan.packages.Values) {
             $package = $document.packages.PSObject.Properties[$key].Value
             if ($package.license_notice) {
                 Write-Host "$($package.title): $($package.license_notice)"
@@ -610,7 +744,7 @@ try {
         if ($lock.Length -eq 0) { $lock.WriteByte(0); $lock.Flush() }
         try { $lock.Lock(0, 1) }
         catch { throw 'Another preparation is using this cache. Wait for it to finish and try again.' }
-        $results = @($selected | ForEach-Object { Install-Example $_ $document })
+        $results = @($plans | ForEach-Object { Install-Example $_ $document })
         if ($bootstrap.local_preview) {
             $sdk = Get-PreparePath $InstallRoot $document.packages.sdk.directory
             $locationFile = Get-PreparePath $sdk 'crosspascal/prepare/prepare-location.json'

@@ -46,7 +46,7 @@ var
   Profile: TCpuVisionProfile;
   Image: IMat;
   Value: TCpuVisionResult;
-  CatalogPath, RuntimePath, ImageHash, ReportPath: string;
+  CatalogPath, RuntimePath, ImageHash, ReportPath, AuditDirectory: string;
   Found: Boolean;
 begin
   ReportPath := OptionValue('--report');
@@ -68,8 +68,13 @@ begin
   Image := nil;
   try
     Image := DecodeVisionImage(OptionValue('--image'), ImageHash);
-    Value := RunCpuVision(Profile, OptionValue('--bundle'), RuntimePath,
-      OptionValue('--image'), ImageHash, Image, nil, OptionValue('--audit-directory'));
+    AuditDirectory := OptionValue('--audit-directory');
+    if AuditDirectory = '' then
+      Value := RunVision(Profile, OptionValue('--bundle'), RuntimePath,
+        OptionValue('--image'), ImageHash, Image)
+    else
+      Value := RunCpuVision(Profile, OptionValue('--bundle'), RuntimePath,
+        OptionValue('--image'), ImageHash, Image, nil, AuditDirectory);
     Result := Value.JSONText;
   finally
     Image := nil;
@@ -99,7 +104,7 @@ begin
       else begin
         Application.Initialize;
         {$IFNDEF FPC}Application.MainFormOnTaskbar := True;{$ENDIF}
-        Application.Title := 'CrossPascal CPU Vision Models';
+        Application.Title := 'CrossPascal Vision Models';
         MainWindow := nil;
         try
           Application.CreateForm(TVisionModelsForm, MainWindow);

@@ -2,7 +2,7 @@
 
 ## Prepare and Run
 
-Download [Prepare-VisionModels-ea018.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-018/Prepare-VisionModels-ea018.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
+Download [Prepare-VisionModels-ea019.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-VisionModels-ea019.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
 
 
 Open `VisionModels.dproj` in Delphi or `VisionModels.lpi` in Lazarus to build a small image-classification and object-detection application for Windows x64. The form lets you select a model profile, choose a converted bundle, open a picture, run on CPU, and save a JSON result. It uses the supplied Pascal TVM adapters and OpenCV image types.
@@ -84,7 +84,16 @@ The input shape must be `[1,3,224,224]` for classifiers or `[1,3,640,640]` for d
 
 The TVM runtime field defaults to `crosspascal-tvm/runtime/windows-x64-cuda`. This CPU example loads only the pinned `tvm_ffi.dll`, `tvm_runtime.dll` and `tvm_runtime_extra.dll` from that folder; it does not load the CUDA runtime or select a GPU. A different runtime family requires a separate compatibility update.
 
-Click **Open image**, select a photograph stored on your PC, and confirm the file dialog with **Open**. Click **Run on CPU** and wait for the worker to finish. The input file is read and hashed from the same bytes used for decoding. If that file changes before inference, the application asks you to open it again. Input images are limited to 64 MiB and 40 megapixels. The model DLL must be at most 512 MiB, and at least 1 GiB of free physical memory must be available before it is loaded.
+Click **Open image**, select a photograph, then click **Run inference**. The
+bundle determines whether TVM runs on CPU or CUDA. The result shows the selected
+device and, for CUDA, the GPU name and compute target. Run
+`Prepare.cmd -Device CPU` or `Prepare.cmd -Device CUDA` to prepare a specific
+variant. You can also select a compatible bundle with **Browse**.
+
+The application hashes the bytes it decodes. If the file changes before
+inference, open it again. Input images are limited to 64 MiB and 40 megapixels.
+The model DLL must be at most 512 MiB, and at least 1 GiB of free system memory
+must be available before it is loaded.
 
 The form stays responsive while its worker runs. Wait for the worker to finish before closing. Each run releases its model and input tensors. **Save result** creates a new JSON file and refuses to replace an existing file. Recorded results include the input, model, manifest, profile-catalog and runtime hashes. They describe the completed inference; they do not mark the release accepted.
 

@@ -12,7 +12,7 @@ program QwenChat;
 uses
   {$IFDEF FPC}Interfaces, Windows, SysUtils, Forms, {$ELSE}
   Winapi.Windows, System.SysUtils, Vcl.Forms, {$ENDIF}
-  CrossPascal.Json, QwenCuda, LanguageChat.Form, QwenChat.Main in 'QwenChat.Main.pas';
+  CrossPascal.Json, QwenCuda, LanguageModel, LanguageChat.Form, QwenChat.Main in 'QwenChat.Main.pas';
 
 function RecordedMode: Boolean;
 var
@@ -39,8 +39,11 @@ end;
 procedure RunRecorded;
 var
   ResultValue: TQwenCudaResult;
+  Model: TLanguageModel;
+  Info: TLanguageCapabilities;
+  Options: TLanguageOptions;
   MaxTokens: Int64;
-  ReportPath, Value: string;
+  ReportPath, Value, Bundle, Runtime, Prompt, Image: string;
 begin
   ReportPath := OptionValue('--report');
   if ReportPath = '' then
@@ -52,9 +55,32 @@ begin
     MaxTokens := QwenDefaultMaxNewTokens
   else if not TryStrToInt64(Value, MaxTokens) then
       raise Exception.Create('Invalid --max-new-tokens value.');
-  ResultValue := RunQwenCuda(OptionValue('--bundle'), OptionValue('--runtime'),
-    OptionValue('--prompt'), MaxTokens);
-  WriteNewReport(ReportPath, QwenResultJSON(ResultValue));
+  Bundle := OptionValue('--bundle');
+  Runtime := OptionValue('--runtime');
+  Prompt := OptionValue('--prompt');
+  Image := OptionValue('--image');
+  Info := TLanguageModel.Inspect(Bundle);
+  if (Info.Architecture = 'qwen2') and (Info.Schema <> 'crosspascal.qwen2.text.v1') and (Image = '') then
+  begin
+    ResultValue := RunQwenCuda(Bundle, Runtime, Prompt, MaxTokens);
+    WriteNewReport(ReportPath, QwenResultJSON(ResultValue));
+    Exit;
+  end;
+  if (MaxTokens < 0) or (MaxTokens > High(Integer)) then
+    raise Exception.Create('Invalid --max-new-tokens value.');
+  Options := DefaultLanguageOptions;
+  Options.MaxNewTokens := MaxTokens;
+  Model := TLanguageModel.Create;
+  try
+    Model.Load(Bundle, Runtime);
+    if Image = '' then
+      Value := Model.Generate(Prompt, Options, [])
+    else
+      Value := Model.Generate(Prompt, Options, [Image]);
+    WriteNewReport(ReportPath, Value);
+  finally
+    Model.Free;
+  end;
 end;
 
 procedure RecordFailure(const Error: Exception);

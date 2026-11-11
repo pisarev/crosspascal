@@ -17,7 +17,9 @@ uses
 
 type
   TConverterProfile = (cpGemma3nCPU, cpGemma3nCUDA, cpGemma3nVision, cpGemma2, cpQwen2, cpQwenVL,
-    cpYoloDetection, cpYoloClassification, cpRtDetr, cpSqueezeNet, cpResNet);
+    cpYoloDetection, cpYoloClassification, cpRtDetr, cpSqueezeNet, cpResNet,
+    cpGemma2CUDA, cpQwenVLCUDA, cpYoloDetectionCUDA, cpYoloClassificationCUDA, cpRtDetrCUDA,
+    cpSqueezeNetCUDA, cpResNetCUDA);
 
   TConversionCommand = record
     Executable: string;
@@ -30,7 +32,8 @@ type
 const
   ProfileIDs: array[TConverterProfile] of string = (
     'gemma3n-cpu', 'gemma3n-cuda', 'gemma3n-add-vision', 'gemma2-cpu', 'qwen2-cuda', 'qwen-vl-cpu',
-    'yolo11n', 'yolo11n-cls', 'rtdetr-r18vd', 'squeezenet', 'resnet50');
+    'yolo11n', 'yolo11n-cls', 'rtdetr-r18vd', 'squeezenet', 'resnet50', 'gemma2-cuda', 'qwen-vl-cuda',
+    'yolo11n-cuda', 'yolo11n-cls-cuda', 'rtdetr-r18vd-cuda', 'squeezenet-cuda', 'resnet50-cuda');
   ProfileTitles: array[TConverterProfile] of string = (
     'Gemma 3n E4B | CPU',
     'Gemma 3n E4B | CUDA',
@@ -42,10 +45,18 @@ const
     'YOLO11n classification | CPU',
     'RT-DETR R18vd | CPU',
     'SqueezeNet 1.1 | CPU',
-    'ResNet50 v1 | CPU');
+    'ResNet50 v1 | CPU',
+    'Gemma 2 | CUDA',
+    'Qwen2.5-VL 3B | CUDA',
+    'YOLO11n detection | CUDA',
+    'YOLO11n classification | CUDA',
+    'RT-DETR R18vd | CUDA',
+    'SqueezeNet 1.1 | CUDA',
+    'ResNet50 v1 | CUDA');
 
 function ExecutableFolder: string;
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
+function SourceProfile(const Profile: TConverterProfile): TConverterProfile;
 function NeedsProjector(const Profile: TConverterProfile): Boolean;
 function PrepareConversion(const Root, Source, Projector, Destination, Architecture: string;
   const Profile: TConverterProfile; const Context, Chunk: Integer): TConversionCommand;
@@ -67,7 +78,22 @@ end;
 
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
 begin
-  Result := Profile in [cpGemma3nCUDA, cpQwen2];
+  Result := Profile in [cpGemma3nCUDA, cpQwen2, cpGemma2CUDA..cpResNetCUDA];
+end;
+
+function SourceProfile(const Profile: TConverterProfile): TConverterProfile;
+begin
+  case Profile of
+    cpGemma2CUDA: Result := cpGemma2;
+    cpQwenVLCUDA: Result := cpQwenVL;
+    cpYoloDetectionCUDA: Result := cpYoloDetection;
+    cpYoloClassificationCUDA: Result := cpYoloClassification;
+    cpRtDetrCUDA: Result := cpRtDetr;
+    cpSqueezeNetCUDA: Result := cpSqueezeNet;
+    cpResNetCUDA: Result := cpResNet;
+  else
+    Result := Profile;
+  end;
 end;
 
 function NeedsProjector(const Profile: TConverterProfile): Boolean;
@@ -206,6 +232,15 @@ begin
   if Result = '' then raise Exception.Create('The selected source directory has no ONNX model.');
 end;
 
+function DefaultNvrtc: string;
+var
+  CudaRoot: string;
+begin
+  CudaRoot := GetEnvironmentVariable('CUDA_PATH_V12_8');
+  if CudaRoot = '' then CudaRoot := GetEnvironmentVariable('CUDA_PATH');
+  Result := IncludeTrailingPathDelimiter(CudaRoot) + 'bin\nvrtc64_120_0.dll';
+end;
+
 function PrepareConversion(const Root, Source, Projector, Destination, Architecture: string;
   const Profile: TConverterProfile; const Context, Chunk: Integer): TConversionCommand;
 const
@@ -214,6 +249,7 @@ var
   Kit, Tool, InputPath, Output, CUDA, Arch, VisionFile, Recipe, Ggml, SentencePiece: string;
   Args, LinkArgs: TArray<string>;
   I: Integer;
+  Kind: TConverterProfile;
 begin
   if (Unquoted(Source) = '') or (Unquoted(Destination) = '') then
     raise Exception.Create('Enter the original model path and a new output folder.');
@@ -235,12 +271,13 @@ begin
       ReadToolPath(
         Kit,
         'NVRTC',
-        IncludeTrailingPathDelimiter(GetEnvironmentVariable('CUDA_PATH')) + 'bin\nvrtc64_120_0.dll'
+        DefaultNvrtc
       ),
       'NVIDIA NVRTC'
     );
   end;
-  case Profile of
+  Kind := SourceProfile(Profile);
+  case Kind of
     cpGemma3nCPU, cpGemma3nCUDA, cpGemma3nVision:
       begin
         Tool := 'ConvertGemma3n.exe';
@@ -260,7 +297,7 @@ begin
           if VisionFile = '-' then raise Exception.Create('Select the projector GGUF.');
           Args := ['--attach-vision', InputPath, VisionFile, Recipe, Output, Ggml, SentencePiece] +
             LinkArgs;
-          CUDA := ReadToolPath(Kit, 'NVRTC', IncludeTrailingPathDelimiter(GetEnvironmentVariable('CUDA_PATH')) + 'bin\nvrtc64_120_0.dll');
+          CUDA := ReadToolPath(Kit, 'NVRTC', DefaultNvrtc);
           if FileExists(CUDA) then Args := Args + [CUDA];
         end
         else begin
@@ -281,8 +318,11 @@ begin
         if (Context < 2) or (Chunk < 2) or (Chunk > Context) then
           raise Exception.Create('Enter a prefill size from 2 to the requested context size.');
         Args := [InputPath, Output, IntToStr(Context), IntToStr(Chunk)] + LinkArgs;
-        if Profile = cpGemma2 then
-          Tool := 'ConvertGemma2.exe'
+        if Kind = cpGemma2 then
+        begin
+          Tool := 'ConvertGemma2.exe';
+          if UsesCUDA(Profile) then Args := Args + ['--cuda', CUDA, Arch];
+        end
         else begin
           Tool := 'ConvertQwen2.exe';
           Args := Args + [CUDA, Arch];
@@ -295,27 +335,29 @@ begin
         Recipe := ReadToolPath(Kit, 'QWEN_VL_PROFILE', 'profiles\qwen-vl');
         RequireFile(IncludeTrailingPathDelimiter(Recipe) + 'model.json', 'The Qwen2.5-VL recipe');
         Args := [InputPath, Recipe, Output] + LinkArgs;
+        if UsesCUDA(Profile) then Args := Args + ['--cuda', CUDA, Arch];
       end;
   else begin
       Tool := 'ConvertVisionOnnx.exe';
-      if (Profile = cpRtDetr) and DirectoryExists(InputPath) and
+      if (Kind = cpRtDetr) and DirectoryExists(InputPath) and
         FileExists(IncludeTrailingPathDelimiter(InputPath) + 'model.safetensors') then
           InputPath := IncludeTrailingPathDelimiter(InputPath) + 'model.safetensors'
       else
         InputPath := SelectOnnx(InputPath);
       Recipe := RequireFile(IncludeTrailingPathDelimiter(Root) +
         'crosspascal\examples\vision-models\models.json', 'The vision profile catalog');
-      Args := [InputPath, Recipe, VisionIDs[Profile], Output] + LinkArgs;
+      Args := [InputPath, Recipe, VisionIDs[Kind], Output] + LinkArgs;
       if SameText(ExtractFileExt(InputPath), '.pt') and
-        (Profile in [cpYoloDetection, cpYoloClassification]) then
-          Args := Args + [RequireFile(Kit + 'profiles\' + VisionIDs[Profile] + '\model.onnx',
+        (Kind in [cpYoloDetection, cpYoloClassification]) then
+          Args := Args + [RequireFile(Kit + 'profiles\' + VisionIDs[Kind] + '\model.onnx',
             'The YOLO graph recipe')];
-      if SameText(ExtractFileExt(InputPath), '.safetensors') and (Profile = cpRtDetr) then
+      if SameText(ExtractFileExt(InputPath), '.safetensors') and (Kind = cpRtDetr) then
       begin
         Recipe := Kit + 'profiles\rtdetr-r18vd\';
         RequireFile(Recipe + 'bindings.json', 'The RT-DETR weight bindings');
         Args := Args + [RequireFile(Recipe + 'model.onnx', 'The RT-DETR graph recipe')];
       end;
+      if UsesCUDA(Profile) then Args := Args + ['--cuda', CUDA, Arch];
     end;
   end;
   Result.Executable := RequireFile(Kit + Tool, 'The conversion executable');

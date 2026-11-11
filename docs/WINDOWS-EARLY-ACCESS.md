@@ -32,11 +32,14 @@ Open the `.dproj` in Delphi and select Windows 64-bit. Open the corresponding `.
 | `crosspascal-opencv/examples/LoadResizeSave` | A 640 × 480 PNG saved from the chosen photograph |
 | `crosspascal-leptonica/examples/LeptonicaHello` | A 256 × 96 grayscale gradient PNG |
 | `crosspascal/examples/marker-lite/MarkerLite` | Grayscale, Sauvola, or Canny processing with PNG output |
-| `crosspascal/examples/vision-models/VisionModels` | A CPU classifier's top five classes or a detector's boxes |
-| `crosspascal/examples/qwen-chat/QwenChat` | A streamed answer from a dense Qwen CUDA or Qwen2.5-VL CPU bundle; compatible vision bundles accept an attached picture |
+| `crosspascal/examples/vision-models/VisionModels` | A classifier's top five classes or a detector's boxes, on CPU or CUDA |
+| `crosspascal/examples/qwen-chat/QwenChat` | A streamed answer from a dense Qwen CUDA bundle or a Qwen2.5-VL CPU or CUDA bundle with optional image input |
 | `crosspascal/examples/gemma-chat/GemmaChat` | A streamed answer from a converted Gemma CPU or CUDA bundle; compatible Gemma 3n vision bundles accept an attached picture |
 
-For the two model applications, open `CrossPascalConvert.exe` at the SDK root. Choose the profile and its pinned source in the converter, convert it, and select the generated bundle in the application. The CPU profiles cover SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n detection, and RT-DETR R18vd. Both Qwen2.5-Instruct profiles (0.5B and 1.5B) use the CUDA architecture detected by the converter or explicitly entered for the destination machine.
+The model applications can use ready bundles downloaded by Prepare. To build
+from an original checkpoint, open `CrossPascalConvert.exe` at the SDK root,
+choose the profile and source, then select the generated bundle in the application.
+For CUDA, choose the compute capability of the destination GPU.
 
 Read the per-profile and component limitations in the release notes. Keep the original upstream notices with the corresponding dependencies and source assets.
 

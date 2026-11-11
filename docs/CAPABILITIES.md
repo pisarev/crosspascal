@@ -11,9 +11,9 @@ The early access SDK supports Delphi 13.2 and Lazarus 4.8 with FPC 3.2.2. Keep t
 | Interactive image processing | MarkerLite | The GUI opened a PNG and saved identical grayscale outputs in both compilers. The example also exposes Sauvola and Canny |
 | Video I/O | Native OpenCV bridge | The FFmpeg backend wrote and read a test video |
 | CUDA language generation | Converter and QwenChat | Convert a pinned Qwen2.5-Instruct model or a compatible local dense Qwen checkpoint for the detected or selected CUDA architecture. QwenChat supports configurable sampling, Auto answer budgets, a manual token limit, and Stop |
-| CPU vision | Converter and VisionModels | Five pinned application profiles produced finite classifications or detections in both compilers |
+| CPU and CUDA vision | Converter and VisionModels | Five pinned profiles support classification or detection using the same example |
 | Experimental Gemma 3n text and images | Converter and both chat forms | Architecture-derived GGUF conversion to TVM CPU FP32 or CUDA W8A32, with a matching vision projector; streaming, persistent weights, automatic output and Stop |
-| Experimental Qwen2.5-VL text and images | Converter, both chat forms and console examples | Architecture-derived checkpoint conversion to TVM CPU FP32; original vision weights, image preprocessing, block prefill and local inference |
+| Experimental Qwen2.5-VL text and images | Converter, both chat forms and console examples | TVM CPU FP32 or CUDA with INT8 text projections and FP32 vision; image preprocessing, block prefill and local inference |
 
 ## Model profiles
 

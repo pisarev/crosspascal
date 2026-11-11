@@ -1,5 +1,18 @@
 # Release notes
 
+## EA019 ready CUDA model bundles
+
+The same chat, console and VisionModels examples can open CPU and CUDA bundles.
+Prepare selects a compatible package using CUDA device 0, the installed driver
+and available GPU memory. Use `Prepare.cmd -Device CPU` or `-Device CUDA` to
+choose explicitly.
+
+The prepared CUDA models include Gemma 3n E4B with image support, Gemma 2 2B,
+Qwen2.5-VL 3B, YOLO11n detection and classification, RT-DETR R18vd, SqueezeNet
+1.1 and ResNet50 v1. The compiled targets are `sm_61`, `sm_75`, `sm_86`,
+`sm_89` and `sm_120`. The converter can also build those CUDA profiles from
+the supported original checkpoints. Inference and conversion run without Python.
+
 ## EA018 native TVM release
 
 EA018 packages the verified native Windows x64 SDK as a separate pre-release.

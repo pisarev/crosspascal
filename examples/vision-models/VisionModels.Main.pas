@@ -187,8 +187,11 @@ end;
 procedure TVisionWorker.Execute;
 begin
   try
-    FResult := RunCpuVision(FProfile, FBundle, FRuntime, FImagePath, FImageSHA256, FImage,
-      nil, FAuditDirectory);
+    if FAuditDirectory = '' then
+      FResult := RunVision(FProfile, FBundle, FRuntime, FImagePath, FImageSHA256, FImage)
+    else
+      FResult := RunCpuVision(FProfile, FBundle, FRuntime, FImagePath, FImageSHA256, FImage,
+        nil, FAuditDirectory);
   except
     on E: Exception do FErrorText := E.ClassName + ': ' + E.Message;
   end;
@@ -312,7 +315,7 @@ begin
   Row.DisableAlign;
   Row.BorderWidth := 2;
   FSave := ButtonOn(Row, 'Save result...', 124, SaveClick);
-  FRun := ButtonOn(Row, 'Run on CPU', 124, RunClick);
+  FRun := ButtonOn(Row, 'Run inference', 124, RunClick);
   FOpen := ButtonOn(Row, 'Open image...', 124, OpenImage);
   ProfileField := Panel(Row, alClient, 0);
   FProfile := TComboBox.Create(Self);
@@ -411,7 +414,7 @@ var
   Directory: string;
 begin
   Directory := FBundle.Text;
-  if ChooseBundleDirectory('Select a converted CPU model bundle', Directory, Self) then
+  if ChooseBundleDirectory('Select a converted CPU or CUDA model bundle', Directory, Self) then
     FBundle.Text := Directory;
 end;
 
@@ -430,7 +433,7 @@ var
 begin
   Dialog := TOpenDialog.Create(Self);
   try
-    Dialog.Title := 'Open an image for CPU inference';
+    Dialog.Title := 'Open an image for inference';
     Dialog.Filter := 'Images|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.webp|All files|*.*';
     Dialog.Options := [ofFileMustExist, ofPathMustExist, ofEnableSizing];
     if not Dialog.Execute then Exit;
@@ -452,7 +455,7 @@ begin
   FLastJSON := '';
   FOutput.Clear;
   ShowImage(nil);
-  FStatus.Caption := Format('%s: %d x %d. Select a matching bundle and click Run on CPU.',
+  FStatus.Caption := Format('%s: %d x %d. Select a matching bundle and click Run inference.',
     [ExtractFileName(FImagePath), FImage.Width, FImage.Height]);
   SetRunning(False);
 end;
@@ -493,7 +496,7 @@ begin
     ExpandFileName(FBundle.Text), ExpandFileName(FRuntime.Text), FImagePath, FImageSHA256,
     FImage, FAuditDirectory);
   SetRunning(True);
-  FStatus.Caption := 'Checking inputs and running on CPU. Close is available after the worker exits.';
+  FStatus.Caption := 'Checking inputs and running inference. Wait for the run to finish before closing.';
   FTimer.Enabled := True;
   FWorker.Start;
 end;
@@ -511,7 +514,7 @@ begin
     begin
       FLastJSON := FWorker.FResult.JSONText;
       ShowResult(FWorker.FResult);
-      FStatus.Caption := 'CPU inference completed; model resources were released. Save the result if needed.';
+      FStatus.Caption := 'Inference completed on ' + UpperCase(FWorker.FResult.Device) + '.';
     end
     else begin
       FOutput.Lines.Text := ErrorText;
@@ -527,7 +530,7 @@ procedure TVisionModelsForm.CheckClose(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := FWorker = nil;
   if not CanClose then
-    MessageDlg('The CPU worker is still running. Wait for it to finish before closing.',
+    MessageDlg('Inference is still running. Wait for it to finish before closing.',
       mtInformation, [mbOK], 0);
 end;
 
@@ -605,8 +608,10 @@ begin
   FOutput.Lines.BeginUpdate;
   try
     FOutput.Lines.Clear;
-    FOutput.Lines.Add(Format('%s | CPU | %d ms | image %d x %d',
-      [Value.ProfileID, Value.ElapsedMilliseconds, Value.Width, Value.Height]));
+    FOutput.Lines.Add(Format('%s | %s | %d ms | image %d x %d',
+      [Value.ProfileID, UpperCase(Value.Device), Value.ElapsedMilliseconds, Value.Width, Value.Height]));
+    if Value.Device = 'cuda' then
+      FOutput.Lines.Add(Value.DeviceName + ' (' + Value.CudaArchitecture + ')');
     if Length(Value.Classifications) > 0 then
     begin
       FOutput.Lines.Add('Top five class IDs and unmodified model scores:');
@@ -636,10 +641,10 @@ begin
   if FLastJSON = '' then Exit;
   Dialog := TSaveDialog.Create(Self);
   try
-    Dialog.Title := 'Save a new CPU inference result';
+    Dialog.Title := 'Save an inference result';
     Dialog.Filter := 'JSON files|*.json';
     Dialog.DefaultExt := 'json';
-    Dialog.FileName := 'cpu-vision-result.json';
+    Dialog.FileName := 'vision-result.json';
     Dialog.Options := [ofPathMustExist, ofEnableSizing];
     if Dialog.Execute then
     begin

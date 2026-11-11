@@ -5,10 +5,10 @@ A family name alone does not establish image support. The converted bundle needs
 | Architecture | Implemented input | Examples |
 | --- | --- | --- |
 | Dense Qwen2/Qwen2.5, including Instruct and Coder | Text on CUDA | QwenChat and console examples |
-| Gemma 2 | Experimental CPU text with its retained numerical restrictions | GemmaChat and console examples |
+| Gemma 2 | Experimental text on CPU or CUDA with the profile's numerical restrictions | GemmaChat and console examples |
 | Gemma 3n text bundle | Text on CPU or CUDA | GemmaChat and console examples |
 | Gemma 3n CPU or CUDA with a converted gemma3nv projector | Text and images | Both chat forms and all generation console examples |
-| Qwen2.5-VL | Text and images on CPU through its separate architecture adapter | Both chat forms and all generation console examples |
+| Qwen2.5-VL | Text and images on CPU or CUDA | Both chat forms and all generation console examples |
 | Other vision architectures | No implicit compatibility claim | Unsupported inputs are explicitly rejected |
 
 Both chat forms have Attach image, a thumbnail and Remove image. A text-only bundle displays an explanation and blocks the image request before inference. Remove the image or select a compatible image bundle. No external captioning, OCR substitution or silent omission is used.

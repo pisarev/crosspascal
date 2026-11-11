@@ -2,7 +2,7 @@
 
 ## Prepare and Run
 
-Download [Prepare-QwenChat-ea018.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-018/Prepare-QwenChat-ea018.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
+Download [Prepare-QwenChat-ea019.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-QwenChat-ea019.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
 
 
 Both chat demos use the same controls and `TLanguageModel` API. Choose a

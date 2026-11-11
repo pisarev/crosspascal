@@ -225,7 +225,7 @@ procedure TConverterForm.ProfileChanged(Sender: TObject);
 var
   Profile: TConverterProfile;
 begin
-  Profile := Selected;
+  Profile := SourceProfile(Selected);
   if Profile = cpGemma3nVision then
     FSourceLabel.Caption := 'Existing Gemma 3n text bundle'
   else if NeedsProjector(Profile) then
@@ -240,7 +240,7 @@ begin
             FSourceLabel.Caption := 'Original ONNX file or source-pack folder';
   FProjector.Enabled := NeedsProjector(Profile);
   FProjectorBrowse.Enabled := FProjector.Enabled;
-  FArchitecture.Enabled := UsesCUDA(Profile);
+  FArchitecture.Enabled := UsesCUDA(Selected);
   FContext.Enabled := Profile in [cpGemma3nCPU, cpGemma3nCUDA, cpGemma2, cpQwen2];
   FChunk.Enabled := Profile in [cpGemma3nCPU, cpGemma2, cpQwen2];
   if Profile in [cpGemma3nCPU, cpGemma3nCUDA] then
@@ -252,28 +252,30 @@ end;
 procedure TConverterForm.BrowseSource(Sender: TObject);
 var
   Path: string;
+  Profile: TConverterProfile;
 begin
   Path := EditText(FSource);
-  if Selected = cpGemma3nVision then
+  Profile := SourceProfile(Selected);
+  if Profile = cpGemma3nVision then
   begin
     if not SelectFolder('Select the Gemma 3n text bundle', Path) then Exit;
   end
-  else if NeedsProjector(Selected) then
+  else if NeedsProjector(Profile) then
     begin
       if not SelectFile('Select the original GGUF checkpoint', 'GGUF models (*.gguf)|*.gguf', Path) then
         Exit;
     end
-    else if Selected in [cpGemma2, cpQwen2, cpQwenVL] then
+    else if Profile in [cpGemma2, cpQwen2, cpQwenVL] then
       begin
         if not SelectFolder('Select the original Safetensors folder', Path) then Exit;
       end
-      else if Selected in [cpYoloDetection, cpYoloClassification] then
+      else if Profile in [cpYoloDetection, cpYoloClassification] then
         begin
           if not SelectFile('Select the original YOLO checkpoint',
             'YOLO models (*.pt;*.onnx)|*.pt;*.onnx', Path) then
               Exit;
         end
-        else if Selected = cpRtDetr then
+        else if Profile = cpRtDetr then
           begin
             if not SelectFile('Select the original RT-DETR checkpoint',
               'RT-DETR models (*.safetensors;*.onnx)|*.safetensors;*.onnx', Path) then Exit;
