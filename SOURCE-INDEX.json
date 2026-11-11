@@ -47,8 +47,8 @@
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 6176,
-      "sha256": "653bfd39e9051abfba76c19c880cf62be411315e1996f1efdb438fff9613bce1"
+      "bytes": 6386,
+      "sha256": "3101a41d993487a4de67f5fbba659916e0a3932b37258f12048c80605f1b0f02"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
@@ -372,8 +372,8 @@
     },
     {
       "path": "prepare/bootstrap.ps1",
-      "bytes": 37618,
-      "sha256": "447514cc52c5beab8dcfebe2486fd0722aa83718c632bb4c9b30eec08dca8a9b"
+      "bytes": 38442,
+      "sha256": "48dde4cd8be8a72d06cac395b5a333b43e4f4e1e6c0c0ba00a62cabb98c7cf27"
     },
     {
       "path": "prepare/prepare-bootstrap.json",
@@ -382,8 +382,8 @@
     },
     {
       "path": "prepare/vision-downloads.json",
-      "bytes": 19330,
-      "sha256": "cc0652eb31fb0753d317acfaf49f6b2a57494730e71923ee277264fecf908c6e"
+      "bytes": 19383,
+      "sha256": "bb8e3f64aa89c043e806fac1ebb696f862b85cabb41f60584aaa73efbeed1177"
     },
     {
       "path": "prepare/vision/resnet50/Prepare-CPU.cmd",
@@ -402,8 +402,8 @@
     },
     {
       "path": "prepare/vision/resnet50/prepare-manifest.json",
-      "bytes": 23372,
-      "sha256": "1ad543b12e1b251febdda46a001254186d0807304f2117b2dab5b3c488912a1b"
+      "bytes": 25567,
+      "sha256": "6f541f758c3f688cc1e2a09488f784ba00dd241acb5346180dfb29938ce96b54"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare-CPU.cmd",
@@ -422,8 +422,8 @@
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/prepare-manifest.json",
-      "bytes": 23580,
-      "sha256": "16c0c5d4b7c6f210ae3e8d3ccd03ae053ac7c7ef37957050cfc5ca5b11d18757"
+      "bytes": 25775,
+      "sha256": "6b15d970c7411adf0b938b69d7b3b3482e8273012b162df1890098487b7ee650"
     },
     {
       "path": "prepare/vision/squeezenet/Prepare-CPU.cmd",
@@ -442,8 +442,8 @@
     },
     {
       "path": "prepare/vision/squeezenet/prepare-manifest.json",
-      "bytes": 23474,
-      "sha256": "f73f85606151ea19d9a381712b0b188d3229c4f558e851dfe598957e3a2cea2f"
+      "bytes": 25669,
+      "sha256": "eed4b1dadc49a33352756f9aa8a92b763e32b7b9fa4c125ad4f84bfc1481bd58"
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare-CPU.cmd",
@@ -462,8 +462,8 @@
     },
     {
       "path": "prepare/vision/yolo11n-cls/prepare-manifest.json",
-      "bytes": 23448,
-      "sha256": "cb93b75fe404947a7beb18ae5958be9d7772647c1df7f666bac32b9df8a1ae3f"
+      "bytes": 25643,
+      "sha256": "f0f7029b7e5fe73a56c54ae1a9da236f499e660d4e7d2ce760698b432b7a0a12"
     },
     {
       "path": "prepare/vision/yolo11n/Prepare-CPU.cmd",
@@ -482,8 +482,8 @@
     },
     {
       "path": "prepare/vision/yolo11n/prepare-manifest.json",
-      "bytes": 23216,
-      "sha256": "167f9b7e6651ca25e613d9e05395ae43b5b5a57f44377fc1ae7459d2d20c24f3"
+      "bytes": 25411,
+      "sha256": "e43bded1f4101bf844215b9c6851ebbdc445b7d72a5c036b22332562ff271132"
     },
     {
       "path": "rtl-algorithms/LICENSE",

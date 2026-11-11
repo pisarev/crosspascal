@@ -67,14 +67,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-SqueezeNet-CPU-ea019.zip",
-          "bytes": 15527,
-          "sha256": "07afd22b6f0b261857443947863129c930650bceb32967c486f461fcfc6c6689",
+          "bytes": 16186,
+          "sha256": "b8f182eb9fea43b4caedf588e65d6507084f075dede0d15e60ec8e9b3574d4ea",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-SqueezeNet-CPU-ea019.zip"
         },
         "gpu": {
           "name": "Prepare-SqueezeNet-GPU-ea019.zip",
-          "bytes": 15530,
-          "sha256": "94116eff7801c127a94baf7675a4d26b77d46a4176ba9c303614a5e514e6057e",
+          "bytes": 16191,
+          "sha256": "d8f5d2b6903d92b49baa00c21c860b5a59b9e9425bc8c6a7b6639ee473600b62",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-SqueezeNet-GPU-ea019.zip"
         }
       },
@@ -144,14 +144,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-ResNet50-CPU-ea019.zip",
-          "bytes": 15512,
-          "sha256": "e8223321546df3de2f756b6974f3ba998206e83de213d32fff5f6c12d2b62e0c",
+          "bytes": 16167,
+          "sha256": "3b9c577d44b3dd56c244c58dd284bce8a331448b8812d6d4c4478e0dc01506b9",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-ResNet50-CPU-ea019.zip"
         },
         "gpu": {
           "name": "Prepare-ResNet50-GPU-ea019.zip",
-          "bytes": 15517,
-          "sha256": "61319baffa9bebc51f23349c3543a276eddf3398baaf572dd287054b53523f68",
+          "bytes": 16170,
+          "sha256": "ba7cc5950c03ebfa364c427f3b3e89fe59db68fd96dfef7b90e5464e8bf1e7dc",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-ResNet50-GPU-ea019.zip"
         }
       },
@@ -221,14 +221,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-YOLO11n-Classification-CPU-ea019.zip",
-          "bytes": 15673,
-          "sha256": "5df0c407e9a83fd9300696e149b7d1cc6b5ef04d09408d742d6d18d487a1ba2c",
+          "bytes": 16329,
+          "sha256": "de500628210e5e92fc1d35ee713dcde616ac42d377dad148f53fa35b96b463a6",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-YOLO11n-Classification-CPU-ea019.zip"
         },
         "gpu": {
           "name": "Prepare-YOLO11n-Classification-GPU-ea019.zip",
-          "bytes": 15677,
-          "sha256": "672de7c6dc0765a24e478865ee11a87934a21b931c7ed0fc30ae286ab165c813",
+          "bytes": 16333,
+          "sha256": "831da7c5b1dc4929b4010b5e306c66f20fe4354f702e39ccfc7cfe6c29c352ce",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-YOLO11n-Classification-GPU-ea019.zip"
         }
       },
@@ -298,14 +298,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-YOLO11n-Detection-CPU-ea019.zip",
-          "bytes": 15622,
-          "sha256": "1c46edf419a317991d3106b2a3a7689037de76eb39532fd0b59057f1e241931b",
+          "bytes": 16270,
+          "sha256": "6b4f4898b1f942a5aae89e88bc501a1937054154375334d4fd76f00182e3d6e4",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-YOLO11n-Detection-CPU-ea019.zip"
         },
         "gpu": {
           "name": "Prepare-YOLO11n-Detection-GPU-ea019.zip",
-          "bytes": 15626,
-          "sha256": "73716c828118da1c2a4427ec559368c18eb40eae68b99454d29560b2fbd7a39b",
+          "bytes": 16274,
+          "sha256": "087b457ab292671ba300cdf80c490ed6f6aa48beade76a798b1da86c029dd092",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-YOLO11n-Detection-GPU-ea019.zip"
         }
       },
@@ -375,14 +375,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-RT-DETR-R18vd-CPU-ea019.zip",
-          "bytes": 15575,
-          "sha256": "6c59954488456168dc3bcb9018198e392dbf5a8578d48c81dfd18df3b1172112",
+          "bytes": 16231,
+          "sha256": "899324ee39e4f74b78725771647b1a21358f800abfd811516a4e89322a22a4e6",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-RT-DETR-R18vd-CPU-ea019.zip"
         },
         "gpu": {
           "name": "Prepare-RT-DETR-R18vd-GPU-ea019.zip",
-          "bytes": 15580,
-          "sha256": "d3478c3e5b4e03ac7075575d426713aa2c4087894d71599794631934d551e63f",
+          "bytes": 16235,
+          "sha256": "ede8ebb0f558c47665bcfd43bf0d8a056d453776b9cf83734fdd817bcc8d7d97",
           "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-RT-DETR-R18vd-GPU-ea019.zip"
         }
       },
@@ -407,5 +407,6 @@
     "sm_61",
     "sm_86",
     "sm_120"
-  ]
+  ],
+  "preparation_revision": "ea019-prepare-rebuild-1"
 }

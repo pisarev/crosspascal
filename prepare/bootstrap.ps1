@@ -355,6 +355,15 @@ function Test-PackageIdentity($Recorded, $Expected) {
     $true
 }
 
+function Test-LocalBuildOutput($Package, [string]$Member) {
+    if ($Package.id -cne 'sdk') { return $false }
+    # These example outputs are replaced by ordinary Delphi/Lazarus builds.
+    # Runtime libraries and model files remain subject to their receipt hashes.
+    $example = '^(crosspascal/examples/[^/]+|crosspascal-(opencv|leptonica)/examples)/bin/'
+    ($Member -cmatch ($example + '(lazarus-win64|Win64/Release)/[^/]+\.exe$')) -or
+        ($Member -cmatch ($example + 'lazarus-win64/units/[^/]+\.(a|o|ppu|or)$'))
+}
+
 function Get-Package($Package, $Assets, [string]$SevenZip) {
     $destination = Get-PreparePath $InstallRoot $Package.directory
     if ($verifiedPackages.ContainsKey($destination)) { return $destination }
@@ -371,11 +380,15 @@ function Get-Package($Package, $Assets, [string]$SevenZip) {
             foreach ($pin in $receipt.files.PSObject.Properties) {
                 $file = Get-PreparePath $destination $pin.Name
                 if (Test-AssetFile $file $pin.Value) { continue }
-                if (($Package.editable -ccontains $pin.Name) -and (Test-Path -LiteralPath $file -PathType Leaf)) {
+                if ((($Package.editable -ccontains $pin.Name) -or (Test-LocalBuildOutput $Package $pin.Name)) -and
+                    (Test-Path -LiteralPath $file -PathType Leaf)) {
                     Write-Host "Preserved local changes: $($pin.Name)"
                     continue
                 }
-                throw "Prepared files have changed. Preserve your work and choose a new installation folder: $destination"
+                if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
+                    throw "A prepared file is missing: $file. Preserve your work and choose a new installation folder."
+                }
+                throw "A prepared file differs from the installed package: $file. Preserve your work and choose a new installation folder."
             }
             $verifiedPackages[$destination] = $true
             return $destination

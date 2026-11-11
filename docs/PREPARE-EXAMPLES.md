@@ -26,8 +26,11 @@ Lazarus; Delphi builds verify source compatibility.
 The default installation is %LOCALAPPDATA%/CrossPascal/early-access-019. Set
 CROSSPASCAL_PREPARE_HOME before running Prepare.cmd to choose another drive.
 Downloads use a sibling downloads folder. Repeating preparation preserves your
-editable source and settings changes. A changed fixed dependency requires a new
-installation folder. Prepare checks disk space before extraction.
+source, project and package settings, and locally rebuilt example executables.
+Runtime libraries, converters and models are still checked against their recorded
+SHA-256 values. A missing SDK file or changed fixed dependency is reported with
+its exact path; preserve your work and use a new installation folder. Prepare
+checks disk space before extraction.
 
 ## Download one vision model
 
