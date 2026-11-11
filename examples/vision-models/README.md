@@ -1,11 +1,13 @@
-# CPU vision models
+# CPU and CUDA vision models
 
 ## Prepare and Run
+
+[Choose a model and its separate CPU or GPU starter](../../docs/VISION-DOWNLOADS.md). Each ZIP contains one enclosing folder; open it and run `Prepare.cmd`. Only the selected model is downloaded. The complete five-model starter below remains optional.
 
 Download [Prepare-VisionModels-ea019.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-VisionModels-ea019.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
 
 
-Open `VisionModels.dproj` in Delphi or `VisionModels.lpi` in Lazarus to build a small image-classification and object-detection application for Windows x64. The form lets you select a model profile, choose a converted bundle, open a picture, run on CPU, and save a JSON result. It uses the supplied Pascal TVM adapters and OpenCV image types.
+Open `VisionModels.dproj` in Delphi or `VisionModels.lpi` in Lazarus to build a small image-classification and object-detection application for Windows x64. The form lets you select a model profile, choose a converted bundle, open a picture, run on CPU or CUDA, and save a JSON result. It uses the supplied Pascal TVM adapters and OpenCV image types.
 
 The source project has five explicit profiles. Model weights and compiled model libraries are external inputs. A profile name or a completed build does not establish model quality, successful inference, or release acceptance.
 
@@ -80,9 +82,9 @@ Choose the matching profile, for example **ResNet50 v1 (ONNX Model Zoo)**. Brows
 
 Keep the accompanying runtime, recipe/report, and `model-source` metadata/licence directory with the bundle. The consumer validates the actual generated DLL against its own manifest; it does not require a fixed old DLL hash or a particular output-folder name.
 
-The input shape must be `[1,3,224,224]` for classifiers or `[1,3,640,640]` for detectors. The bundle must declare CPU, float32, batch one, the `main` entry, and the converter's shared-library format `so`. The consumer checks the selected profile against this metadata and checks the actual library bytes before loading it.
+The input shape must be `[1,3,224,224]` for classifiers or `[1,3,640,640]` for detectors. The bundle must declare CPU or CUDA, float32, batch one, the `main` entry, and the converter's shared-library format `so`. The consumer checks the selected profile against this metadata and checks the actual library bytes before loading it.
 
-The TVM runtime field defaults to `crosspascal-tvm/runtime/windows-x64-cuda`. This CPU example loads only the pinned `tvm_ffi.dll`, `tvm_runtime.dll` and `tvm_runtime_extra.dll` from that folder; it does not load the CUDA runtime or select a GPU. A different runtime family requires a separate compatibility update.
+The TVM runtime field defaults to `crosspascal-tvm/runtime/windows-x64-cuda`. The example loads the pinned TVM libraries from that folder. The selected bundle determines CPU or CUDA execution; CUDA also requires a matching compute target and NVIDIA driver.
 
 Click **Open image**, select a photograph, then click **Run inference**. The
 bundle determines whether TVM runs on CPU or CUDA. The result shows the selected

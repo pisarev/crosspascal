@@ -29,6 +29,12 @@ Downloads use a sibling downloads folder. Repeating preparation preserves your
 editable source and settings changes. A changed fixed dependency requires a new
 installation folder. Prepare checks disk space before extraction.
 
+## Download one vision model
+
+SqueezeNet 1.1, ResNet50 v1, YOLO11n classification, YOLO11n detection and RT-DETR R18vd each have separate CPU and GPU preparation ZIPs. [Choose a model and device](VISION-DOWNLOADS.md). These kits download only the selected model plus shared dependencies; the original all-five-model kit remains available.
+
+Each ZIP contains an enclosing folder. Extract it, open that folder and run `Prepare.cmd`. The dedicated CPU/GPU kit already sets its device. The generic kits below retain `-Device` and Auto selection.
+
 ## CPU or CUDA
 
 Prepare checks CUDA device 0, the NVIDIA driver and free GPU memory before

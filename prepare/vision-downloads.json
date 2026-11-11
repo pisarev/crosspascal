@@ -1,0 +1,411 @@
+{
+  "schema": "crosspascal.vision-downloads.v1",
+  "release": "early-access-019",
+  "delivery_revision": "ea019-per-model-1",
+  "models": [
+    {
+      "profile": "squeezenet",
+      "title": "SqueezeNet 1.1",
+      "task": "classification",
+      "license_notice": "Apache-2.0 as declared in the accompanying pinned source pack.",
+      "models": {
+        "cpu": {
+          "name": "vision-squeezenet-cpu-ea019.zip",
+          "bytes": 9316662,
+          "sha256": "c133dc60eb1453e4bbed0b00c42e54d3c494e380304ee0445bde0dd92a8804d1",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-squeezenet-cpu-ea019.zip",
+          "extracted_bytes": 10267372
+        },
+        "sm_61": {
+          "name": "vision-squeezenet-cuda-sm_61-ea019.zip",
+          "bytes": 9468202,
+          "sha256": "0f6e7b15c919308bdc38f648da493625efa63272561eeea59cd6941255ebe41e",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-squeezenet-cuda-sm_61-ea019.zip",
+          "extracted_bytes": 11016435
+        },
+        "sm_75": {
+          "name": "vision-squeezenet-cuda-sm_75-ea019.zip",
+          "bytes": 9468067,
+          "sha256": "fc1a2f74b09bf64c85630a9366445a24168d3c4a6499be21edc89fc9b7322a69",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-squeezenet-cuda-sm_75-ea019.zip",
+          "extracted_bytes": 11051763
+        },
+        "sm_86": {
+          "name": "vision-squeezenet-cuda-sm_86-ea019.zip",
+          "bytes": 9468755,
+          "sha256": "cd4a87e0d4a2a2d644294aa3ebf6c906e50f1759a87097552d266aa9a3099ec0",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-squeezenet-cuda-sm_86-ea019.zip",
+          "extracted_bytes": 11069171
+        },
+        "sm_89": {
+          "name": "vision-squeezenet-cuda-sm_89-ea019.zip",
+          "bytes": 9468625,
+          "sha256": "f9bb0301bf60f59ccdd4b312d4e0e149e3b27ef1a1a251c7840d2a95d076448b",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-squeezenet-cuda-sm_89-ea019.zip",
+          "extracted_bytes": 11069683
+        },
+        "sm_120": {
+          "name": "vision-squeezenet-cuda-sm_120-ea019.zip",
+          "bytes": 9480748,
+          "sha256": "67ddb939211ccb1965c4f5147f7ee45510fd16329c775186d9db12fa2eb115b6",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-squeezenet-cuda-sm_120-ea019.zip",
+          "extracted_bytes": 11229941
+        }
+      },
+      "prepare": {
+        "cpu": {
+          "name": "Prepare-SqueezeNet-CPU-ea019.zip",
+          "bytes": 15527,
+          "sha256": "07afd22b6f0b261857443947863129c930650bceb32967c486f461fcfc6c6689",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-SqueezeNet-CPU-ea019.zip"
+        },
+        "gpu": {
+          "name": "Prepare-SqueezeNet-GPU-ea019.zip",
+          "bytes": 15530,
+          "sha256": "94116eff7801c127a94baf7675a4d26b77d46a4176ba9c303614a5e514e6057e",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-SqueezeNet-GPU-ea019.zip"
+        }
+      },
+      "shared_download_bytes": 418108432
+    },
+    {
+      "profile": "resnet50",
+      "title": "ResNet50 v1",
+      "task": "classification",
+      "license_notice": "Apache-2.0 as declared in the accompanying pinned source pack.",
+      "models": {
+        "cpu": {
+          "name": "vision-resnet50-cpu-ea019.zip",
+          "bytes": 190160085,
+          "sha256": "6684472589ec8afd753d67942e72a7a852d416ebd42827b9a46b0d85aca1d601",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-resnet50-cpu-ea019.zip",
+          "extracted_bytes": 205616639
+        },
+        "sm_61": {
+          "name": "vision-resnet50-cuda-sm_61-ea019.zip",
+          "bytes": 190343751,
+          "sha256": "bf20a98070db3c3576f8b1b820625e3b7b20448de2a8f5fb58ff80fec1d1db08",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-resnet50-cuda-sm_61-ea019.zip",
+          "extracted_bytes": 207291562
+        },
+        "sm_75": {
+          "name": "vision-resnet50-cuda-sm_75-ea019.zip",
+          "bytes": 190346239,
+          "sha256": "90d264a9717bb6503717c04b837a6d95c35f6306d3a446f8a145780a28024c0c",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-resnet50-cuda-sm_75-ea019.zip",
+          "extracted_bytes": 207375530
+        },
+        "sm_86": {
+          "name": "vision-resnet50-cuda-sm_86-ea019.zip",
+          "bytes": 190347401,
+          "sha256": "ca47f61d4dff3161f98750e40115ea5e72e0a8598a0975de7d21d6b87f9b4aa8",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-resnet50-cuda-sm_86-ea019.zip",
+          "extracted_bytes": 207407786
+        },
+        "sm_89": {
+          "name": "vision-resnet50-cuda-sm_89-ea019.zip",
+          "bytes": 190347512,
+          "sha256": "0e1edc9254ce78551542b76ff90a222c595d916886b58ee615e7a22890eaa2ce",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-resnet50-cuda-sm_89-ea019.zip",
+          "extracted_bytes": 207407274
+        },
+        "sm_120": {
+          "name": "vision-resnet50-cuda-sm_120-ea019.zip",
+          "bytes": 190363208,
+          "sha256": "2795b21ab3e11ea1fa3b591d44792c3be1413682f4b0c7c82fedc7f1cd0136d2",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-resnet50-cuda-sm_120-ea019.zip",
+          "extracted_bytes": 207707820
+        }
+      },
+      "prepare": {
+        "cpu": {
+          "name": "Prepare-ResNet50-CPU-ea019.zip",
+          "bytes": 15512,
+          "sha256": "e8223321546df3de2f756b6974f3ba998206e83de213d32fff5f6c12d2b62e0c",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-ResNet50-CPU-ea019.zip"
+        },
+        "gpu": {
+          "name": "Prepare-ResNet50-GPU-ea019.zip",
+          "bytes": 15517,
+          "sha256": "61319baffa9bebc51f23349c3543a276eddf3398baaf572dd287054b53523f68",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-ResNet50-GPU-ea019.zip"
+        }
+      },
+      "shared_download_bytes": 418108432
+    },
+    {
+      "profile": "yolo11n-cls",
+      "title": "YOLO11n classification",
+      "task": "classification",
+      "license_notice": "AGPL-3.0; preserve the accompanying model and exporter sources and terms.",
+      "models": {
+        "cpu": {
+          "name": "vision-yolo11n-cls-cpu-ea019.zip",
+          "bytes": 23960291,
+          "sha256": "bd077d9cf07f9bdb3b6edcf04966df04502eccd357424fe23508283c787c7b7c",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cls-cpu-ea019.zip",
+          "extracted_bytes": 30370517
+        },
+        "sm_61": {
+          "name": "vision-yolo11n-cls-cuda-sm_61-ea019.zip",
+          "bytes": 24280963,
+          "sha256": "14bc9ad43a39062dbe31df470faf0180eead961ae197ff99fb32064653aa7e3d",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cls-cuda-sm_61-ea019.zip",
+          "extracted_bytes": 31978456
+        },
+        "sm_75": {
+          "name": "vision-yolo11n-cls-cuda-sm_75-ea019.zip",
+          "bytes": 24279161,
+          "sha256": "d15f5d5cc54669fb50fa825e08aeee173c9ee212af7d330a0519701553871ada",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cls-cuda-sm_75-ea019.zip",
+          "extracted_bytes": 32066008
+        },
+        "sm_86": {
+          "name": "vision-yolo11n-cls-cuda-sm_86-ea019.zip",
+          "bytes": 24280893,
+          "sha256": "0d49047151bd0dc13075a9bcb6e7f8e32f3602a2b6ce853305d697a5c032400a",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cls-cuda-sm_86-ea019.zip",
+          "extracted_bytes": 32098264
+        },
+        "sm_89": {
+          "name": "vision-yolo11n-cls-cuda-sm_89-ea019.zip",
+          "bytes": 24283363,
+          "sha256": "49e9b254847adc978ee89ee200ad1172924bf40f628231d38e46991354432700",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cls-cuda-sm_89-ea019.zip",
+          "extracted_bytes": 32099800
+        },
+        "sm_120": {
+          "name": "vision-yolo11n-cls-cuda-sm_120-ea019.zip",
+          "bytes": 24301296,
+          "sha256": "ea6636d11fae34d41df95bdbf9e82051cdba930d073267e0e8e11c15e3c6e7c0",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cls-cuda-sm_120-ea019.zip",
+          "extracted_bytes": 32418778
+        }
+      },
+      "prepare": {
+        "cpu": {
+          "name": "Prepare-YOLO11n-Classification-CPU-ea019.zip",
+          "bytes": 15673,
+          "sha256": "5df0c407e9a83fd9300696e149b7d1cc6b5ef04d09408d742d6d18d487a1ba2c",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-YOLO11n-Classification-CPU-ea019.zip"
+        },
+        "gpu": {
+          "name": "Prepare-YOLO11n-Classification-GPU-ea019.zip",
+          "bytes": 15677,
+          "sha256": "672de7c6dc0765a24e478865ee11a87934a21b931c7ed0fc30ae286ab165c813",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-YOLO11n-Classification-GPU-ea019.zip"
+        }
+      },
+      "shared_download_bytes": 418108432
+    },
+    {
+      "profile": "yolo11n",
+      "title": "YOLO11n detection",
+      "task": "detection",
+      "license_notice": "AGPL-3.0; preserve the accompanying model and exporter sources and terms.",
+      "models": {
+        "cpu": {
+          "name": "vision-yolo11n-cpu-ea019.zip",
+          "bytes": 34632032,
+          "sha256": "668b61f7034306daf439ece32f4864aa06a39f7feae2695188f927bb7ad9f730",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cpu-ea019.zip",
+          "extracted_bytes": 40507358
+        },
+        "sm_61": {
+          "name": "vision-yolo11n-cuda-sm_61-ea019.zip",
+          "bytes": 35272575,
+          "sha256": "986360784fb04f0f34e9861700604fccef1d8a528b6f93f780d02cca28a17486",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cuda-sm_61-ea019.zip",
+          "extracted_bytes": 43756270
+        },
+        "sm_75": {
+          "name": "vision-yolo11n-cuda-sm_75-ea019.zip",
+          "bytes": 35276845,
+          "sha256": "a6420586af59a05b8838224530faccc666b4adfbbd4bc0cc304f9e2bd61db676",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cuda-sm_75-ea019.zip",
+          "extracted_bytes": 43924718
+        },
+        "sm_86": {
+          "name": "vision-yolo11n-cuda-sm_86-ea019.zip",
+          "bytes": 35273272,
+          "sha256": "2aa3f1caa80fa07afbc32a700721ed62a9f66a510b40189a4c5447849ee8b4ea",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cuda-sm_86-ea019.zip",
+          "extracted_bytes": 43994350
+        },
+        "sm_89": {
+          "name": "vision-yolo11n-cuda-sm_89-ea019.zip",
+          "bytes": 35273240,
+          "sha256": "43cc9f50d9c2e1bc1ade426377b95579f3f8fb1ebb6af2372b902f3e9de05ddf",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cuda-sm_89-ea019.zip",
+          "extracted_bytes": 43991790
+        },
+        "sm_120": {
+          "name": "vision-yolo11n-cuda-sm_120-ea019.zip",
+          "bytes": 35304009,
+          "sha256": "8d6b295746d1a21103114d3b236b075c8e77a646e056ba7df02817e70e461172",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-yolo11n-cuda-sm_120-ea019.zip",
+          "extracted_bytes": 44703984
+        }
+      },
+      "prepare": {
+        "cpu": {
+          "name": "Prepare-YOLO11n-Detection-CPU-ea019.zip",
+          "bytes": 15622,
+          "sha256": "1c46edf419a317991d3106b2a3a7689037de76eb39532fd0b59057f1e241931b",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-YOLO11n-Detection-CPU-ea019.zip"
+        },
+        "gpu": {
+          "name": "Prepare-YOLO11n-Detection-GPU-ea019.zip",
+          "bytes": 15626,
+          "sha256": "73716c828118da1c2a4427ec559368c18eb40eae68b99454d29560b2fbd7a39b",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-YOLO11n-Detection-GPU-ea019.zip"
+        }
+      },
+      "shared_download_bytes": 418108432
+    },
+    {
+      "profile": "rtdetr-r18vd",
+      "title": "RT-DETR R18vd",
+      "task": "detection",
+      "license_notice": "Apache-2.0 as declared in the accompanying pinned source pack.",
+      "models": {
+        "cpu": {
+          "name": "vision-rtdetr-r18vd-cpu-ea019.zip",
+          "bytes": 163344547,
+          "sha256": "0dc542c91090a4078a52c572512f5592d435814000d3bddbf2d6070cc8d52704",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cpu-ea019.zip",
+          "extracted_bytes": 177859020
+        },
+        "sm_61": {
+          "name": "vision-rtdetr-r18vd-cuda-sm_61-ea019.zip",
+          "bytes": 164655993,
+          "sha256": "b8e41375099bcf9918105879d3021a7123139a2fc318bfe98d1acca3015480fd",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cuda-sm_61-ea019.zip",
+          "extracted_bytes": 184491779
+        },
+        "sm_75": {
+          "name": "vision-rtdetr-r18vd-cuda-sm_75-ea019.zip",
+          "bytes": 164649551,
+          "sha256": "d6053dd4e73c184227d804bc5a6f292132d924c70e2aabd6a1db791defabc840",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cuda-sm_75-ea019.zip",
+          "extracted_bytes": 184780547
+        },
+        "sm_86": {
+          "name": "vision-rtdetr-r18vd-cuda-sm_86-ea019.zip",
+          "bytes": 164651877,
+          "sha256": "5df8cc13fec278443f362677d7a8779f145900d3109733e6651367b98f3faf60",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cuda-sm_86-ea019.zip",
+          "extracted_bytes": 184915203
+        },
+        "sm_89": {
+          "name": "vision-rtdetr-r18vd-cuda-sm_89-ea019.zip",
+          "bytes": 164653850,
+          "sha256": "62f01faec37e5e9b5f7832fd4da32dfbfe0241f726ffe161f824c71012de588b",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cuda-sm_89-ea019.zip",
+          "extracted_bytes": 184913667
+        },
+        "sm_120": {
+          "name": "vision-rtdetr-r18vd-cuda-sm_120-ea019.zip",
+          "bytes": 164700065,
+          "sha256": "c2a44310cca087a9ffaca332e49eeab298b1b778271c894045c3604bac86a236",
+          "repository": "pisarev/crosspascal",
+          "release": "early-access-019",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cuda-sm_120-ea019.zip",
+          "extracted_bytes": 186091269
+        }
+      },
+      "prepare": {
+        "cpu": {
+          "name": "Prepare-RT-DETR-R18vd-CPU-ea019.zip",
+          "bytes": 15575,
+          "sha256": "6c59954488456168dc3bcb9018198e392dbf5a8578d48c81dfd18df3b1172112",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-RT-DETR-R18vd-CPU-ea019.zip"
+        },
+        "gpu": {
+          "name": "Prepare-RT-DETR-R18vd-GPU-ea019.zip",
+          "bytes": 15580,
+          "sha256": "d3478c3e5b4e03ac7075575d426713aa2c4087894d71599794631934d551e63f",
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-RT-DETR-R18vd-GPU-ea019.zip"
+        }
+      },
+      "shared_download_bytes": 418108432
+    }
+  ],
+  "unchanged_sdk": {
+    "name": "crosspascal-windows-x64-ea019.zip",
+    "bytes": 141544980,
+    "sha256": "1dd82bfcc9c7aef238918b4de6d97ce8c233a693dde58da88c2bc58ccfe4ee91",
+    "repository": "pisarev/crosspascal",
+    "release": "early-access-019"
+  },
+  "minimum_free_system_memory_mib": 1024,
+  "minimum_free_gpu_memory_mib": 1024,
+  "cuda_driver_api": 12080,
+  "hardware_run_coverage": [
+    "sm_75",
+    "sm_89"
+  ],
+  "build_only_targets": [
+    "sm_61",
+    "sm_86",
+    "sm_120"
+  ]
+}

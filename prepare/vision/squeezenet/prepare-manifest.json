@@ -1,0 +1,491 @@
+{
+  "schema": "crosspascal.prepare.v1",
+  "release": "early-access-019",
+  "assets": {
+    "vision-squeezenet-cpu-ea019.zip": {
+      "name": "vision-squeezenet-cpu-ea019.zip",
+      "bytes": 9316662,
+      "sha256": "c133dc60eb1453e4bbed0b00c42e54d3c494e380304ee0445bde0dd92a8804d1",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-019"
+    },
+    "vision-squeezenet-cuda-sm_61-ea019.zip": {
+      "name": "vision-squeezenet-cuda-sm_61-ea019.zip",
+      "bytes": 9468202,
+      "sha256": "0f6e7b15c919308bdc38f648da493625efa63272561eeea59cd6941255ebe41e",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-019"
+    },
+    "vision-squeezenet-cuda-sm_75-ea019.zip": {
+      "name": "vision-squeezenet-cuda-sm_75-ea019.zip",
+      "bytes": 9468067,
+      "sha256": "fc1a2f74b09bf64c85630a9366445a24168d3c4a6499be21edc89fc9b7322a69",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-019"
+    },
+    "vision-squeezenet-cuda-sm_86-ea019.zip": {
+      "name": "vision-squeezenet-cuda-sm_86-ea019.zip",
+      "bytes": 9468755,
+      "sha256": "cd4a87e0d4a2a2d644294aa3ebf6c906e50f1759a87097552d266aa9a3099ec0",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-019"
+    },
+    "vision-squeezenet-cuda-sm_89-ea019.zip": {
+      "name": "vision-squeezenet-cuda-sm_89-ea019.zip",
+      "bytes": 9468625,
+      "sha256": "f9bb0301bf60f59ccdd4b312d4e0e149e3b27ef1a1a251c7840d2a95d076448b",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-019"
+    },
+    "vision-squeezenet-cuda-sm_120-ea019.zip": {
+      "name": "vision-squeezenet-cuda-sm_120-ea019.zip",
+      "bytes": 9480748,
+      "sha256": "67ddb939211ccb1965c4f5147f7ee45510fd16329c775186d9db12fa2eb115b6",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-019"
+    },
+    "crosspascal-windows-x64-ea019.zip": {
+      "name": "crosspascal-windows-x64-ea019.zip",
+      "bytes": 141544980,
+      "sha256": "1dd82bfcc9c7aef238918b4de6d97ce8c233a693dde58da88c2bc58ccfe4ee91",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-019"
+    },
+    "crosspascal-opencv-runtime-windows-x64-ea016.zip": {
+      "name": "crosspascal-opencv-runtime-windows-x64-ea016.zip",
+      "bytes": 273483741,
+      "sha256": "7966f85a43543cd6eba2699d0bda78115ff562c7b7f6ad06a9599291a35bbd5c",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-016"
+    },
+    "crosspascal-example-inputs-ea016.zip": {
+      "name": "crosspascal-example-inputs-ea016.zip",
+      "bytes": 150169,
+      "sha256": "9e25f7c65f3ec789ed4a9c096c970c59aa82bf2932a40bbd81575bfd5b4082e7",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-016"
+    },
+    "crosspascal-tvm-runtime-windows-x64-ea016.zip": {
+      "name": "crosspascal-tvm-runtime-windows-x64-ea016.zip",
+      "bytes": 2929542,
+      "sha256": "8e5b39ddf8060d72c20f49a778694967f17aeabbe7e2cefb4ccb04a7af4bbb1f",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-016"
+    }
+  },
+  "packages": {
+    "sdk": {
+      "id": "sdk",
+      "title": "CrossPascal Windows x64 SDK and Lazarus applications",
+      "directory": "crosspascal-windows-x64",
+      "assets": [
+        "crosspascal-windows-x64-ea019.zip"
+      ],
+      "archive_root": "crosspascal-windows-x64",
+      "extracted_bytes": 469545957,
+      "editable": [
+        "crosspascal-convert/native/ConvertGemma2.dpr",
+        "crosspascal-convert/native/ConvertGemma3n.dpr",
+        "crosspascal-convert/native/ConvertQwen2.dpr",
+        "crosspascal-convert/native/ConvertQwenVLProfile.dpr",
+        "crosspascal-convert/native/ConvertVisionOnnx.dpr",
+        "crosspascal-convert/native/CrossPascal.GGUF.pas",
+        "crosspascal-convert/native/CrossPascal.Gemma2Bundle.pas",
+        "crosspascal-convert/native/CrossPascal.Gemma2Graph.pas",
+        "crosspascal-convert/native/CrossPascal.Gemma3nBundle.pas",
+        "crosspascal-convert/native/CrossPascal.Gemma3nGraph.pas",
+        "crosspascal-convert/native/CrossPascal.Gemma3nSource.pas",
+        "crosspascal-convert/native/CrossPascal.Gemma3nVisionSource.pas",
+        "crosspascal-convert/native/CrossPascal.ModelGraph.pas",
+        "crosspascal-convert/native/CrossPascal.NativeBundle.pas",
+        "crosspascal-convert/native/CrossPascal.Nvrtc.pas",
+        "crosspascal-convert/native/CrossPascal.Onnx.pas",
+        "crosspascal-convert/native/CrossPascal.Qwen2Graph.pas",
+        "crosspascal-convert/native/CrossPascal.RowQuantization.pas",
+        "crosspascal-convert/native/CrossPascal.RtDetrSource.pas",
+        "crosspascal-convert/native/CrossPascal.SafeTensors.pas",
+        "crosspascal-convert/native/CrossPascal.TVMCompiler.pas",
+        "crosspascal-convert/native/CrossPascal.TVMOnnx.pas",
+        "crosspascal-convert/native/CrossPascal.TokenizerSource.pas",
+        "crosspascal-convert/native/CrossPascal.TorchCheckpoint.pas",
+        "crosspascal-convert/native/CrossPascal.UnicodeJson.pas",
+        "crosspascal-convert/native/CrossPascal.VisionBundle.pas",
+        "crosspascal-convert/native/CrossPascal.YoloSource.pas",
+        "crosspascal-leptonica/examples/LeptonicaHello.dpr",
+        "crosspascal-leptonica/examples/LeptonicaHello.dproj",
+        "crosspascal-leptonica/examples/LeptonicaHello.lpi",
+        "crosspascal-leptonica/pascal/CrossVision.Box.pas",
+        "crosspascal-leptonica/pascal/CrossVision.Colormap.pas",
+        "crosspascal-leptonica/pascal/CrossVision.FPix.pas",
+        "crosspascal-leptonica/pascal/CrossVision.Numa.pas",
+        "crosspascal-leptonica/pascal/CrossVision.Pix.pas",
+        "crosspascal-leptonica/pascal/CrossVision.Pixa.pas",
+        "crosspascal-leptonica/pascal/CrossVision.Pta.pas",
+        "crosspascal-leptonica/pascal/CrossVision.Sel.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Analysis.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Binarize.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Blend.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Box.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Color.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Colormap.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Dewarp.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Dna.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Enhance.pas",
+        "crosspascal-leptonica/pascal/Leptonica.FPix.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Filter.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Graphics.pas",
+        "crosspascal-leptonica/pascal/Leptonica.IO.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Jbig.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Kernel.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Morph.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Numa.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Pageseg.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Pix.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Pixa.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Pta.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Recog.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Rop.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Sarray.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Sel.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Transform.pas",
+        "crosspascal-leptonica/pascal/Leptonica.Watershed.pas",
+        "crosspascal-leptonica/pascal/Leptonica.pas",
+        "crosspascal-leptonica/pascal/LeptonicaTypes.pas",
+        "crosspascal-opencv/examples/CrossCVHello.dpr",
+        "crosspascal-opencv/examples/CrossCVHello.dproj",
+        "crosspascal-opencv/examples/CrossCVHello.lpi",
+        "crosspascal-opencv/examples/LoadResizeSave.dpr",
+        "crosspascal-opencv/examples/LoadResizeSave.dproj",
+        "crosspascal-opencv/examples/LoadResizeSave.lpi",
+        "crosspascal-opencv/pascal/CrossVision.Mat.pas",
+        "crosspascal-opencv/pascal/OpenCV.Aruco.pas",
+        "crosspascal-opencv/pascal/OpenCV.Bioinspired.pas",
+        "crosspascal-opencv/pascal/OpenCV.Calib3D.pas",
+        "crosspascal-opencv/pascal/OpenCV.Core.pas",
+        "crosspascal-opencv/pascal/OpenCV.Custom.pas",
+        "crosspascal-opencv/pascal/OpenCV.Dnn.pas",
+        "crosspascal-opencv/pascal/OpenCV.Face.pas",
+        "crosspascal-opencv/pascal/OpenCV.Features2D.pas",
+        "crosspascal-opencv/pascal/OpenCV.HighGui.pas",
+        "crosspascal-opencv/pascal/OpenCV.ImgCodecs.pas",
+        "crosspascal-opencv/pascal/OpenCV.ImgProc.pas",
+        "crosspascal-opencv/pascal/OpenCV.Ml.pas",
+        "crosspascal-opencv/pascal/OpenCV.ObjDetect.pas",
+        "crosspascal-opencv/pascal/OpenCV.Optflow.pas",
+        "crosspascal-opencv/pascal/OpenCV.Photo.pas",
+        "crosspascal-opencv/pascal/OpenCV.Stitching.pas",
+        "crosspascal-opencv/pascal/OpenCV.Tracking.pas",
+        "crosspascal-opencv/pascal/OpenCV.Video.pas",
+        "crosspascal-opencv/pascal/OpenCV.VideoIO.pas",
+        "crosspascal-opencv/pascal/OpenCV.XFeatures2D.pas",
+        "crosspascal-opencv/pascal/OpenCV.XImgProc.pas",
+        "crosspascal-opencv/pascal/OpenCV.XPhoto.pas",
+        "crosspascal-opencv/pascal/OpenCV.pas",
+        "crosspascal-opencv/pascal/OpenCVConsts.pas",
+        "crosspascal-opencv/pascal/OpenCVTypes.pas",
+        "crosspascal-tvm/pascal/BPETokenizer.pas",
+        "crosspascal-tvm/pascal/CrossPascal.Json.pas",
+        "crosspascal-tvm/pascal/CrossPascal.SHA256.pas",
+        "crosspascal-tvm/pascal/CrossPascal.SentencePiece.pas",
+        "crosspascal-tvm/pascal/CrossPascal.WinMemory.pas",
+        "crosspascal-tvm/pascal/CrossVision.Float16.pas",
+        "crosspascal-tvm/pascal/CrossVision.ML.CpuVision.pas",
+        "crosspascal-tvm/pascal/CrossVision.ML.pas",
+        "crosspascal-tvm/pascal/DLPack.pas",
+        "crosspascal-tvm/pascal/Gemma2Cpu.pas",
+        "crosspascal-tvm/pascal/Gemma3nNative.pas",
+        "crosspascal-tvm/pascal/Gemma3nVision.pas",
+        "crosspascal-tvm/pascal/GemmaTokenizer.pas",
+        "crosspascal-tvm/pascal/LanguageModel.pas",
+        "crosspascal-tvm/pascal/Qwen2Native.pas",
+        "crosspascal-tvm/pascal/QwenCuda.pas",
+        "crosspascal-tvm/pascal/QwenModel.pas",
+        "crosspascal-tvm/pascal/QwenTokenizer.pas",
+        "crosspascal-tvm/pascal/QwenVLCpu.pas",
+        "crosspascal-tvm/pascal/TVM.CpuGraph.pas",
+        "crosspascal-tvm/pascal/TVM.CudaExecution.pas",
+        "crosspascal-tvm/pascal/TVM.ImageInput.pas",
+        "crosspascal-tvm/pascal/TVM.RtDetr.pas",
+        "crosspascal-tvm/pascal/TVM.TokenGraph.pas",
+        "crosspascal-tvm/pascal/TVM.Yolo11.pas",
+        "crosspascal-tvm/pascal/TVM.pas",
+        "crosspascal/examples/gemma-chat/GemmaChat.Main.pas",
+        "crosspascal/examples/gemma-chat/GemmaChat.dpr",
+        "crosspascal/examples/gemma-chat/GemmaChat.dproj",
+        "crosspascal/examples/gemma-chat/GemmaChat.lpi",
+        "crosspascal/examples/language-models/ExampleSupport.pas",
+        "crosspascal/examples/language-models/GenerateText.dpr",
+        "crosspascal/examples/language-models/GenerateText.dproj",
+        "crosspascal/examples/language-models/GenerateText.lpi",
+        "crosspascal/examples/language-models/GenerationSettings.dpr",
+        "crosspascal/examples/language-models/GenerationSettings.dproj",
+        "crosspascal/examples/language-models/GenerationSettings.lpi",
+        "crosspascal/examples/language-models/ImagePrompt.dpr",
+        "crosspascal/examples/language-models/ImagePrompt.dproj",
+        "crosspascal/examples/language-models/ImagePrompt.lpi",
+        "crosspascal/examples/language-models/LoadUnload.dpr",
+        "crosspascal/examples/language-models/LoadUnload.dproj",
+        "crosspascal/examples/language-models/LoadUnload.lpi",
+        "crosspascal/examples/language-models/RepeatedRequests.dpr",
+        "crosspascal/examples/language-models/RepeatedRequests.dproj",
+        "crosspascal/examples/language-models/RepeatedRequests.lpi",
+        "crosspascal/examples/language-models/StreamAndStop.dpr",
+        "crosspascal/examples/language-models/StreamAndStop.dproj",
+        "crosspascal/examples/language-models/StreamAndStop.lpi",
+        "crosspascal/examples/language-shared/LanguageChat.Form.pas",
+        "crosspascal/examples/marker-lite/MarkerLite.dpr",
+        "crosspascal/examples/marker-lite/MarkerLite.dproj",
+        "crosspascal/examples/marker-lite/MarkerLite.lpi",
+        "crosspascal/examples/marker-lite/MarkerLiteForm.pas",
+        "crosspascal/examples/qwen-chat/QwenChat.Main.pas",
+        "crosspascal/examples/qwen-chat/QwenChat.dpr",
+        "crosspascal/examples/qwen-chat/QwenChat.dproj",
+        "crosspascal/examples/qwen-chat/QwenChat.lpi",
+        "crosspascal/examples/vision-models/VisionModels.Main.pas",
+        "crosspascal/examples/vision-models/VisionModels.dpr",
+        "crosspascal/examples/vision-models/VisionModels.dproj",
+        "crosspascal/examples/vision-models/VisionModels.lpi",
+        "crosspascal/launcher/CrossPascalConvert.Form.pas",
+        "crosspascal/launcher/CrossPascalConvert.Native.pas",
+        "crosspascal/launcher/CrossPascalConvert.dpr",
+        "crosspascal/launcher/CrossPascalConvert.dproj",
+        "crosspascal/launcher/CrossPascalConvert.lpi",
+        "crosspascal/prepare/ExampleDefaults.pas",
+        "crosspascal/rtl-algorithms/src/CrossVision.Binarize.pas",
+        "crosspascal/rtl-algorithms/src/CrossVision.Contour.pas",
+        "crosspascal/rtl-algorithms/src/CrossVision.Curve.pas",
+        "crosspascal/rtl-algorithms/src/CrossVision.DisjointSet.pas",
+        "crosspascal/rtl-algorithms/src/CrossVision.Geometry.Types.pas",
+        "crosspascal/rtl-algorithms/src/CrossVision.Geometry.pas",
+        "crosspascal/rtl-algorithms/src/CrossVision.Image.pas",
+        "crosspascal/rtl-algorithms/src/CrossVision.Morphology.pas",
+        "crosspascal/rtl-algorithms/tests/TestDisjointSet.dpr",
+        "crosspascal/rtl-algorithms/tests/TestDisjointSet.dproj",
+        "crosspascal/rtl-algorithms/tests/TestDisjointSet.lpi",
+        "crosspascal/rtl-algorithms/tests/TestGeometry.dpr",
+        "crosspascal/rtl-algorithms/tests/TestGeometry.dproj",
+        "crosspascal/rtl-algorithms/tests/TestGeometry.lpi",
+        "crosspascal/vision/CrossVision.Image.Leptonica.pas",
+        "crosspascal/vision/CrossVision.Image.OpenCV.pas",
+        "crosspascal/vision/CrossVision.MatPix.pas"
+      ],
+      "required": [
+        "CrossPascalConvert.exe",
+        "crosspascal/prepare/ExampleDefaults.pas",
+        "runtime/gemma-native/crosscv.dll",
+        "runtime/converter/ConvertVisionOnnx.exe"
+      ]
+    },
+    "opencv": {
+      "id": "opencv",
+      "title": "opencv native runtime and notices",
+      "directory": "dependencies/opencv",
+      "assets": [
+        "crosspascal-opencv-runtime-windows-x64-ea016.zip"
+      ],
+      "archive_root": "crosspascal-windows-x64",
+      "extracted_bytes": 304823159,
+      "overlay": [
+        "crosspascal-opencv/bin/crosscv.dll",
+        "runtime/NATIVE-RUNTIME-README.txt",
+        "runtime/native-notices/opencv-windows-x64/RELINKING.md",
+        "runtime/native-notices/opencv-windows-x64/THIRD-PARTY-NOTICES.md",
+        "runtime/native-notices/opencv-windows-x64/licenses/ffmpeg/LICENSE.md",
+        "runtime/native-notices/opencv-windows-x64/licenses/opencv/3rdparty/flatbuffers/LICENSE.txt",
+        "runtime/native-notices/opencv-windows-x64/licenses/opencv/3rdparty/include/opencl/LICENSE.txt",
+        "runtime/native-notices/opencv-windows-x64/licenses/opencv/3rdparty/libjpeg-turbo/LICENSE.md",
+        "runtime/native-notices/opencv-windows-x64/licenses/opencv/3rdparty/zlib-ng/LICENSE.md",
+        "runtime/native-notices/opencv-windows-x64/licenses/opencv/doc/LICENSE_BSD.txt",
+        "runtime/native-notices/opencv-windows-x64/licenses/opencv/doc/LICENSE_CHANGE_NOTICE.txt",
+        "runtime/native-notices/opencv-windows-x64/licenses/opencv/modules/gapi/src/3rdparty/vasot/LICENSE.txt",
+        "runtime/native-notices/opencv-windows-x64/licenses/opencv_contrib/modules/rgbd/LICENSE_KinectFusion.md",
+        "runtime/native-notices/opencv-windows-x64/licenses/opencv_contrib/modules/rgbd/LICENSE_WillowGarage.md",
+        "runtime/native-sources/crosspascal-opencv-native-sources-windows-x64-ea008.zip"
+      ],
+      "license_notice": "OpenCV and codec licenses apply, including LGPL FFmpeg. Matching sources and full-source relinking instructions are included.",
+      "license_url": "https://github.com/pisarev/crosspascal/blob/early-access-019/docs/LICENSE-SCOPE.md"
+    },
+    "sample": {
+      "id": "sample",
+      "title": "Sample bus photograph and upstream notices",
+      "directory": "sample-inputs",
+      "assets": [
+        "crosspascal-example-inputs-ea016.zip"
+      ],
+      "archive_root": "sample-inputs",
+      "extracted_bytes": 172899,
+      "required": [
+        "bus.jpg",
+        "UPSTREAM-LICENSE.txt",
+        "SOURCE.json"
+      ]
+    },
+    "tvm": {
+      "id": "tvm",
+      "title": "tvm native runtime and notices",
+      "directory": "dependencies/tvm",
+      "assets": [
+        "crosspascal-tvm-runtime-windows-x64-ea016.zip"
+      ],
+      "archive_root": "crosspascal-windows-x64",
+      "extracted_bytes": 8261470,
+      "overlay": [
+        "crosspascal-tvm/runtime/windows-x64-cuda/tvm_ffi.dll",
+        "crosspascal-tvm/runtime/windows-x64-cuda/tvm_runtime.dll",
+        "crosspascal-tvm/runtime/windows-x64-cuda/tvm_runtime_cuda.dll",
+        "crosspascal-tvm/runtime/windows-x64-cuda/tvm_runtime_extra.dll",
+        "crosspascal-tvm/runtime/windows-x64-cuda/msvcp140.dll",
+        "crosspascal-tvm/runtime/windows-x64-cuda/vcruntime140.dll",
+        "crosspascal-tvm/runtime/windows-x64-cuda/vcruntime140_1.dll",
+        "runtime/tvm-notices/LICENSE"
+      ]
+    },
+    "vision": {
+      "id": "vision-squeezenet-cpu",
+      "title": "SqueezeNet 1.1 (CPU)",
+      "directory": "models/vision-squeezenet-cpu",
+      "archive_root": "vision-squeezenet-cpu",
+      "assets": [
+        "vision-squeezenet-cpu-ea019.zip"
+      ],
+      "extracted_bytes": 10267372,
+      "required": [
+        "manifest.json",
+        "model.cpu.dll"
+      ],
+      "license_notice": "Apache-2.0 as declared in the accompanying pinned source pack.",
+      "license_url": "https://github.com/pisarev/crosspascal/blob/main/docs/LICENSE-SCOPE.md"
+    },
+    "vision-squeezenet-cuda-sm_61": {
+      "id": "vision-squeezenet-cuda-sm_61",
+      "title": "SqueezeNet 1.1 (CUDA sm_61)",
+      "directory": "models/vision-squeezenet-cuda-sm_61",
+      "archive_root": "vision-squeezenet-cuda-sm_61",
+      "assets": [
+        "vision-squeezenet-cuda-sm_61-ea019.zip"
+      ],
+      "extracted_bytes": 11016435,
+      "required": [
+        "manifest.json",
+        "model.cuda.dll"
+      ],
+      "license_notice": "Apache-2.0 as declared in the accompanying pinned source pack.",
+      "license_url": "https://github.com/pisarev/crosspascal/blob/main/docs/LICENSE-SCOPE.md"
+    },
+    "vision-squeezenet-cuda-sm_75": {
+      "id": "vision-squeezenet-cuda-sm_75",
+      "title": "SqueezeNet 1.1 (CUDA sm_75)",
+      "directory": "models/vision-squeezenet-cuda-sm_75",
+      "archive_root": "vision-squeezenet-cuda-sm_75",
+      "assets": [
+        "vision-squeezenet-cuda-sm_75-ea019.zip"
+      ],
+      "extracted_bytes": 11051763,
+      "required": [
+        "manifest.json",
+        "model.cuda.dll"
+      ],
+      "license_notice": "Apache-2.0 as declared in the accompanying pinned source pack.",
+      "license_url": "https://github.com/pisarev/crosspascal/blob/main/docs/LICENSE-SCOPE.md"
+    },
+    "vision-squeezenet-cuda-sm_86": {
+      "id": "vision-squeezenet-cuda-sm_86",
+      "title": "SqueezeNet 1.1 (CUDA sm_86)",
+      "directory": "models/vision-squeezenet-cuda-sm_86",
+      "archive_root": "vision-squeezenet-cuda-sm_86",
+      "assets": [
+        "vision-squeezenet-cuda-sm_86-ea019.zip"
+      ],
+      "extracted_bytes": 11069171,
+      "required": [
+        "manifest.json",
+        "model.cuda.dll"
+      ],
+      "license_notice": "Apache-2.0 as declared in the accompanying pinned source pack.",
+      "license_url": "https://github.com/pisarev/crosspascal/blob/main/docs/LICENSE-SCOPE.md"
+    },
+    "vision-squeezenet-cuda-sm_89": {
+      "id": "vision-squeezenet-cuda-sm_89",
+      "title": "SqueezeNet 1.1 (CUDA sm_89)",
+      "directory": "models/vision-squeezenet-cuda-sm_89",
+      "archive_root": "vision-squeezenet-cuda-sm_89",
+      "assets": [
+        "vision-squeezenet-cuda-sm_89-ea019.zip"
+      ],
+      "extracted_bytes": 11069683,
+      "required": [
+        "manifest.json",
+        "model.cuda.dll"
+      ],
+      "license_notice": "Apache-2.0 as declared in the accompanying pinned source pack.",
+      "license_url": "https://github.com/pisarev/crosspascal/blob/main/docs/LICENSE-SCOPE.md"
+    },
+    "vision-squeezenet-cuda-sm_120": {
+      "id": "vision-squeezenet-cuda-sm_120",
+      "title": "SqueezeNet 1.1 (CUDA sm_120)",
+      "directory": "models/vision-squeezenet-cuda-sm_120",
+      "archive_root": "vision-squeezenet-cuda-sm_120",
+      "assets": [
+        "vision-squeezenet-cuda-sm_120-ea019.zip"
+      ],
+      "extracted_bytes": 11229941,
+      "required": [
+        "manifest.json",
+        "model.cuda.dll"
+      ],
+      "license_notice": "Apache-2.0 as declared in the accompanying pinned source pack.",
+      "license_url": "https://github.com/pisarev/crosspascal/blob/main/docs/LICENSE-SCOPE.md"
+    }
+  },
+  "examples": [
+    {
+      "id": "VisionModels",
+      "title": "VisionModels - SqueezeNet 1.1",
+      "project": "crosspascal/examples/vision-models/VisionModels",
+      "packages": [
+        "sdk",
+        "opencv",
+        "sample",
+        "tvm",
+        "vision"
+      ],
+      "defaults": {
+        "opencv": "{sdk}/crosspascal-opencv/bin/crosscv.dll",
+        "image": "{sample}/bus.jpg",
+        "profile": "squeezenet",
+        "model_squeezenet": "{vision}"
+      },
+      "next": "SqueezeNet 1.1 and the sample image are selected. Click Run inference.",
+      "app_local": [
+        "crosspascal-tvm/runtime/windows-x64-cuda/msvcp140.dll",
+        "crosspascal-tvm/runtime/windows-x64-cuda/vcruntime140.dll",
+        "crosspascal-tvm/runtime/windows-x64-cuda/vcruntime140_1.dll"
+      ],
+      "cuda": {
+        "replace": "vision",
+        "min_free_mib": 1024,
+        "packages": {
+          "sm_61": "vision-squeezenet-cuda-sm_61",
+          "sm_75": "vision-squeezenet-cuda-sm_75",
+          "sm_86": "vision-squeezenet-cuda-sm_86",
+          "sm_89": "vision-squeezenet-cuda-sm_89",
+          "sm_120": "vision-squeezenet-cuda-sm_120"
+        },
+        "requirements": "Windows x64. At least 1 GiB free system RAM before model loading, plus memory for Windows and the IDE. NVIDIA GPU: at least 1 GiB free VRAM and a driver supporting CUDA 12.8."
+      },
+      "requirements": "Windows x64. At least 1 GiB free system RAM before model loading, plus memory for Windows and the IDE."
+    }
+  ],
+  "sevenzip": {
+    "name": "7zr.exe",
+    "bytes": 602624,
+    "sha256": "256feca8e274e5da655e2a284fabafd9f554365eb164862089dacd4e8276d282",
+    "copyright": "Igor Pavlov : Public domain",
+    "version": "26.04",
+    "upstream_url": "https://www.7-zip.org/a/7zr.exe",
+    "repository": "pisarev/crosspascal",
+    "release": "early-access-016"
+  },
+  "documentation_revision": "ea019-per-model-1",
+  "cuda_driver_api": 12080
+}
