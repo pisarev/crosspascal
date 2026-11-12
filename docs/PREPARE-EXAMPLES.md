@@ -23,7 +23,7 @@ Model, library and image paths are already in the generated *.prepared.ini files
 Keep the prepared folder together. Distributed Pascal executables are built with
 Lazarus; Delphi builds verify source compatibility.
 
-The default installation is %LOCALAPPDATA%/CrossPascal/early-access-020. Set
+The default installation for the revised EA020 launchers is %LOCALAPPDATA%/CrossPascal/early-access-020-r2. Set
 CROSSPASCAL_PREPARE_HOME before running Prepare.cmd to choose another drive.
 Downloads use a sibling downloads folder. Repeating preparation preserves your
 source, project and package settings, and locally rebuilt example executables.
