@@ -21,7 +21,7 @@ The source project has five explicit profiles. Model weights and compiled model 
 
 ## Download the coordinated Windows SDK and source models
 
-This manual example uses `C:\CrossPascal` as the installation directory. Choose another writable local folder if needed and substitute it throughout. First install the compiler/runtime prerequisites described in the [converter installation guide](../../../crosspascal-convert/INSTALL.md); the SDK includes the native TVM compiler.
+This manual example uses `C:\CrossPascal` as the installation directory. Choose another writable local folder if needed and substitute it throughout. First install the compiler/runtime prerequisites described in the [converter installation guide](https://github.com/pisarev/crosspascal-convert/blob/main/INSTALL.md); the SDK includes the native TVM compiler.
 
 1. In your browser, open [CrossPascal Releases](https://github.com/pisarev/crosspascal/releases). The source repositories and releases are public; no GitHub sign-in is required for downloads.
 2. Download the Windows x64 SDK and its matching CPU model source asset listed in the release notes.
@@ -134,3 +134,5 @@ Each source pack retains the exact public origin, file pins and applicable licen
 The YOLO11n detection pack uses the fixed-slice ONNX at the top level. It preserves the original traced ONNX and a reproducible transformation under its reproduction directory. The revised ONNX produced byte-identical results to the original ONNX on the retained input. The resulting CPU DLL passed the same-image Delphi detector contract in the example's recorded mode. Use the steps above to run the model in either IDE.
 
 The source project adds no OCR, segmentation, OmDet or GPU-vision acceptance claim. Those routes have their own scope and evidence.
+
+In the unpacked SDK, the converter guide is `crosspascal-convert/INSTALL.md`.

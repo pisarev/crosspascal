@@ -133,6 +133,9 @@ var
   I: Integer;
   Edits: array[0..2] of TEdit;
 const Labels: array[0..2] of string = ('Text detector folder', 'Text recognizer folder', 'TVM runtime folder');
+  ActionWidth = 120;
+  ActionHeight = 32;
+  ActionCellWidth = ActionWidth + 8;
 
   function Panel(const Parent: TWinControl; const Align: TAlign; const Size: Integer): TPanel;
   begin
@@ -150,11 +153,11 @@ const Labels: array[0..2] of string = ('Text detector folder', 'Text recognizer 
   var
     Cell: TPanel;
   begin
-    Cell := Panel(Toolbar, alLeft, 136);
+    Cell := Panel(Toolbar, alLeft, ActionCellWidth);
     Cell.Left := 30000;
     Result := TButton.Create(Self);
     Result.Parent := Cell;
-    Result.SetBounds(0, 4, 128, 32);
+    Result.SetBounds(0, 4, ActionWidth, ActionHeight);
     Result.Caption := UI(Text);
     Result.OnClick := Handler;
   end;
@@ -187,9 +190,9 @@ begin
   FStop := Button('Stop', StopReading);
   FSave := Button('Save result...', SaveResult);
   FOpen.Parent.Left := 0;
-  FRead.Parent.Left := 136;
-  FStop.Parent.Left := 272;
-  FSave.Parent.Left := 408;
+  FRead.Parent.Left := ActionCellWidth;
+  FStop.Parent.Left := 2 * ActionCellWidth;
+  FSave.Parent.Left := 3 * ActionCellWidth;
   Toolbar.EnableAlign;
   for I := 0 to 2 do
   begin
@@ -206,7 +209,7 @@ begin
     Field := Panel(Row, alRight, 128);
     FBrowse[I] := TButton.Create(Self);
     FBrowse[I].Parent := Field;
-    FBrowse[I].SetBounds(4, 5, 120, 32);
+    FBrowse[I].SetBounds(4, 5, ActionWidth, ActionHeight);
     FBrowse[I].Caption := 'Browse...';
     FBrowse[I].Tag := I;
     FBrowse[I].OnClick := Browse;

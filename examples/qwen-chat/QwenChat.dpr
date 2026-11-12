@@ -60,12 +60,13 @@ begin
   Prompt := OptionValue('--prompt');
   Image := OptionValue('--image');
   Info := TLanguageModel.Inspect(Bundle);
-  if (Info.Architecture = 'qwen2') and (Info.Schema <> 'crosspascal.qwen2.text.v1') and (Image = '') then
-  begin
-    ResultValue := RunQwenCuda(Bundle, Runtime, Prompt, MaxTokens);
-    WriteNewReport(ReportPath, QwenResultJSON(ResultValue));
-    Exit;
-  end;
+  if (Info.Architecture = 'qwen2') and (Info.Schema <> 'crosspascal.qwen2.text.v1') and
+    (Image = '') then
+    begin
+      ResultValue := RunQwenCuda(Bundle, Runtime, Prompt, MaxTokens);
+      WriteNewReport(ReportPath, QwenResultJSON(ResultValue));
+      Exit;
+    end;
   if (MaxTokens < 0) or (MaxTokens > High(Integer)) then
     raise Exception.Create('Invalid --max-new-tokens value.');
   Options := DefaultLanguageOptions;

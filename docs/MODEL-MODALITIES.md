@@ -21,4 +21,6 @@ Qwen2.5-VL has a separate checkpoint-folder conversion section. Its default 224-
 
 New CPU image profiles use block prefill before token-by-token decoding. A previously encoded, unchanged image can reuse its features while the model stays loaded. Exact timings depend on the model, processor, available memory and storage. Numerical and bounded semantic checks do not establish accuracy for every image or checkpoint.
 
-The [console examples](../examples/language-models/README.md) show how to check SupportsImages before submitting an image. [Gemma conversion](../../crosspascal-convert/docs/GEMMA3N.md) and [Qwen2.5-VL conversion](../../crosspascal-convert/docs/QWEN2.5-VL.md) describe setup and manual steps. LoadUnload is a lifecycle example and does not perform inference; all generation examples accept an image when the selected bundle supports it.
+The [console examples](../examples/language-models/README.md) show how to check SupportsImages before submitting an image. [Gemma conversion](https://github.com/pisarev/crosspascal-convert/blob/main/docs/GEMMA3N.md) and [Qwen2.5-VL conversion](https://github.com/pisarev/crosspascal-convert/blob/main/docs/QWEN2.5-VL.md) describe setup and manual steps. LoadUnload is a lifecycle example and does not perform inference; all generation examples accept an image when the selected bundle supports it.
+
+In the unpacked SDK, the same guides are in `crosspascal-convert/docs/`.

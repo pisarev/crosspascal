@@ -29,6 +29,7 @@ The Leptonica asset includes its original source archives, codec sources, build 
 | Gemma 2 and Gemma 3n | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) and [Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy). Copies, NOTICE, modification records and use/redistribution conditions accompany each supplied bundle. |
 | YOLO11n detection and classification | AGPL-3.0 as declared in the source packs. Review [Ultralytics licensing](https://www.ultralytics.com/license) for proprietary deployments. |
 | SqueezeNet 1.1, ResNet50 and RT-DETR R18vd | Apache-2.0 as declared by the pinned source packs; keep all additional notices. |
+| PP-OCRv5 Server detector and recognizer, used by PaddleOCR | Apache-2.0. The PaddleOCR example also uses Clipper 6.4.2 under the Boost Software License. [Model sources and notices](https://github.com/pisarev/crosspascal/tree/main/examples/paddle-ocr#licenses). |
 
 Gemma use restrictions apply to these model derivatives and must remain enforceable
 in onward distribution agreements. Keep all supplied licenses and notices, and mark
