@@ -27,13 +27,13 @@
     },
     {
       "path": "docs/CAPABILITIES.md",
-      "bytes": 4034,
-      "sha256": "115dcb4c26755af20107469108560e65cc3c1e874a9faf4cdec5d14d206920d1"
+      "bytes": 4249,
+      "sha256": "7bd8ff5683f78c87dff6a5246e937e5f9661faf1a3d7e08ded79bf0b730f9ba5"
     },
     {
       "path": "docs/KNOWN-LIMITATIONS.md",
-      "bytes": 3040,
-      "sha256": "afab48204869eac4a4fb6943ad1789667fe1b91cef27f46fb3a9f4bd0191bf0c"
+      "bytes": 3294,
+      "sha256": "2b03b191517af8269b7c85fc141ffa5747e89f3587659f5e30e6d64e9a9e09ca"
     },
     {
       "path": "docs/LICENSE-SCOPE.md",
@@ -57,8 +57,8 @@
     },
     {
       "path": "docs/ROADMAP.md",
-      "bytes": 2010,
-      "sha256": "aecb131a6216a6a1a95d7d4d7de355f35c6e8f0883b8d3b976e86b3b3798bcbb"
+      "bytes": 2139,
+      "sha256": "d3709ebad52c5e12e04ca98ae420825193f25cb8a07ee5d56340e20a751fabf3"
     },
     {
       "path": "docs/VISION-DOWNLOADS.md",

@@ -10,7 +10,7 @@ Linux support is a separate goal for the native runtime, converter, and examples
 
 ## Image processing and model inference
 
-Develop the common interfaces for detection, segmentation, classification, and OCR. Extend the TVM and OpenCV DNN backends and add tested model profiles. Candidate families include additional YOLO variants, RT-DETR, PaddleOCR, OmDet, BiRefNet, and Grounded-SAM.
+The SDK includes the first [PaddleOCR example](../examples/paddle-ocr/README.md) for CPU and NVIDIA CUDA. Develop the common interfaces for detection, segmentation, classification, and OCR. Extend the TVM and OpenCV DNN backends with tested model profiles. BiRefNet is the next model family, followed by OmDet. Additional candidates include YOLO variants, RT-DETR profiles and Grounded-SAM.
 
 Continue MarkerLite from basic image processing toward a single application for loading, detection, segmentation, and OCR. Separate the core tensor interface from image adapters so text-only applications can use a smaller source set.
 

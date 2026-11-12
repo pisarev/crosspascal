@@ -26,7 +26,9 @@ supported profiles. See [model input capabilities](MODEL-MODALITIES.md).
 
 The five CPU vision checks cover the pinned model, preprocessing, and application result. They do not measure dataset accuracy or performance. Select the corresponding model source pack before conversion.
 
-The OmDet result covers two recorded Windows CPU fixtures and includes a known difference in the raw numerical comparison. It is outside the supported profiles in the Windows SDK. PaddleOCR and BiRefNet are also outside those SDK profiles. The older Gemma 2 download retains its documented numerical limitations. The native converter builds both Gemma 2 soft-capping operations from the original checkpoint.
+The [EA020 PaddleOCR example](../examples/paddle-ocr/README.md) uses fixed PP-OCRv5 Server detector and recognizer inputs. Reference checks cover two photos on Windows CPU and CUDA `sm_89`. Wide text crops are constrained by the recognizer width. The remaining CUDA targets have checked builds.
+
+The OmDet result covers two recorded Windows CPU fixtures and includes a known difference in the raw numerical comparison. OmDet and BiRefNet are outside the supported profiles in this Windows SDK. The older Gemma 2 download retains its documented numerical limitations. The native converter builds both Gemma 2 soft-capping operations from the original checkpoint.
 
 ## Native components
 
