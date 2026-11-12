@@ -1,10 +1,19 @@
-{ Copyright © 2026 Yuriy Pisarev. MIT license; see LICENSE. }
 unit PaddleOcr.Run;
-{$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
+
+{$IFDEF FPC}
+  {$MODE DELPHIUNICODE}
+{$ENDIF}
+
 interface
+
 uses
-  {$IFDEF FPC}SysUtils{$ELSE}System.SysUtils{$ENDIF}, TVM.PaddleOcr, TVM.CpuGraph,
-  CrossVision.Mat;
+  {$IFDEF FPC}
+  SysUtils,
+  {$ELSE}
+  System.SysUtils,
+  {$ENDIF}
+  TVM.PaddleOcr, TVM.CpuGraph, CrossVision.Mat;
+
 type
   TPaddleResult = record
     Lines: TPaddleTextLines;
@@ -13,14 +22,21 @@ type
     Device: string;
     Milliseconds: UInt64;
   end;
+
 function ReadPaddleImage(const FileName, CVLibrary: string; out Digest: string): IMat;
 function RunPaddle(const DetectionFolder, RecognitionFolder, RuntimeFolder, ClipperLibrary, ImageDigest: string;
   const Image: IMat; const ShouldStop: TCpuGraphStop = nil): TPaddleResult;
 procedure SavePaddleText(const FileName, Text: string);
 function FindPaddlePath(const RelativePath: string; const Directory: Boolean): string;
+
 implementation
+
 uses
-  {$IFDEF FPC}Windows, Classes{$ELSE}Winapi.Windows, System.Classes{$ENDIF},
+  {$IFDEF FPC}
+  Windows, Classes,
+  {$ELSE}
+  Winapi.Windows, System.Classes,
+  {$ENDIF}
   CrossPascal.Json, CrossPascal.SHA256, TVM.ImageInput;
 
 function ReadPaddleImage(const FileName, CVLibrary: string; out Digest: string): IMat;
@@ -92,7 +108,10 @@ begin
     end;
     Result.JSON := Root.ToJSON;
   finally
-    Root.Free; Postprocess.Free; Recognizer.Free; Detector.Free;
+    Root.Free;
+    Postprocess.Free;
+    Recognizer.Free;
+    Detector.Free;
   end;
 end;
 
@@ -128,4 +147,5 @@ begin
     Current := Parent;
   end;
 end;
+
 end.

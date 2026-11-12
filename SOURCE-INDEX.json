@@ -272,18 +272,18 @@
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.Main.pas",
-      "bytes": 14220,
-      "sha256": "13f8d27849d3e4518830dff57db7e6b11622eaa2b5f2aa652da2c30f2b2817f7"
+      "bytes": 14279,
+      "sha256": "b1f8ff59e372c2582176cd4909e88dcc7afe5ca61fd1b7c8d606d8bf70455dee"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.Run.pas",
-      "bytes": 4681,
-      "sha256": "370982b256a234d5a9de46bcd0f01df722d8af8b96e600f972b5bf61d2541cfe"
+      "bytes": 4668,
+      "sha256": "56d85ceb6f40337ea025972fe97360c4caccb26dedbb0ee0a242a2e338b25123"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.dpr",
-      "bytes": 3938,
-      "sha256": "db26090efe0cb0abec1dbb7df5d8c0c09093e4ac5e840487833e2919ebde591c"
+      "bytes": 3984,
+      "sha256": "207535df3c7171b9e7e0f67961eae77b269c1c1d6783309228f6019ad1e5ea30"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.dproj",
@@ -383,7 +383,7 @@
     {
       "path": "launcher/CrossPascalConvert.Native.pas",
       "bytes": 18345,
-      "sha256": "05c5684301706b7fdc9e0c98bd74d35f66523f247e5608d6366f49f8690094b6"
+      "sha256": "dc4b1c923c6f69caea1ec278459be561e1cf33c6a337e7d9ed1286d17be23c09"
     },
     {
       "path": "launcher/CrossPascalConvert.dpr",
@@ -417,8 +417,8 @@
     },
     {
       "path": "prepare/prepare-bootstrap.json",
-      "bytes": 86,
-      "sha256": "3666849c5b2de3d8e1e2377ebcdd1974c6dde4dad373017cd56aef06ac3774ab"
+      "bytes": 82,
+      "sha256": "e57cec2aff529959b8f1a863a397f9d1bbb8fb44ce24915639a44b34c47fe79b"
     },
     {
       "path": "prepare/vision-downloads.json",

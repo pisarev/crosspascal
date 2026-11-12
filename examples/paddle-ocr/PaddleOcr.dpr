@@ -1,12 +1,19 @@
 program PaddleOcr;
-{$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
+
+{$IFDEF FPC}
+  {$MODE DELPHIUNICODE}
+{$ENDIF}
 {$APPTYPE GUI}
 {$IFNDEF TVM_LAZY_INIT}
   {$MESSAGE ERROR 'Open the PaddleOcr project; TVM_LAZY_INIT must be a project-wide define'}
 {$ENDIF}
+
 uses
-  {$IFDEF FPC}Interfaces, Windows, SysUtils, Forms, {$ELSE}
-  Winapi.Windows, System.SysUtils, Vcl.Forms, {$ENDIF}
+  {$IFDEF FPC}
+  Interfaces, Windows, SysUtils, Forms,
+  {$ELSE}
+  Winapi.Windows, System.SysUtils, Vcl.Forms,
+  {$ENDIF}
   CrossPascal.Json, CrossVision.Mat, OpenCV, ExampleDefaults, PaddleOcr.Run in 'PaddleOcr.Run.pas',
   PaddleOcr.Main in 'PaddleOcr.Main.pas';
 
@@ -65,7 +72,9 @@ begin
     end
     else begin
       Application.Initialize;
-      {$IFNDEF FPC}Application.MainFormOnTaskbar := True;{$ENDIF}
+      {$IFNDEF FPC}
+      Application.MainFormOnTaskbar := True;
+      {$ENDIF}
       Application.Title := 'CrossPascal PaddleOCR';
       MainWindow := nil;
       try
@@ -112,13 +121,16 @@ begin
         OutputDebugStringW(PWideChar(E.Message));
         try
           Failure(E);
-          except
-            on ReportError: Exception do OutputDebugStringW(PWideChar(ReportError.Message));
-          end;
+        except
+          on ReportError: Exception do OutputDebugStringW(PWideChar(ReportError.Message));
+        end;
       end
       else
-        {$IFDEF FPC}Application.ShowException(E);{$ELSE}
-        Application.MessageBox(PChar(E.Message), 'PaddleOCR', MB_OK or MB_ICONERROR);{$ENDIF}
+        {$IFDEF FPC}
+        Application.ShowException(E);
+        {$ELSE}
+        Application.MessageBox(PChar(E.Message), 'PaddleOCR', MB_OK or MB_ICONERROR);
+        {$ENDIF}
     end;
-    end;
+  end;
 end.

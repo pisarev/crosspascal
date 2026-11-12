@@ -1,12 +1,20 @@
-{ Copyright © 2026 Yuriy Pisarev. MIT license; see LICENSE. }
 unit PaddleOcr.Main;
-{$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
+
+{$IFDEF FPC}
+  {$MODE DELPHIUNICODE}
+{$ENDIF}
+
 interface
+
 uses
-  {$IFDEF FPC}Windows, Classes, SysUtils, Controls, Forms, Graphics, StdCtrls, ExtCtrls, {$ELSE}
+  {$IFDEF FPC}
+  Windows, Classes, SysUtils, Controls, Forms, Graphics, StdCtrls, ExtCtrls,
+  {$ELSE}
   Winapi.Windows, System.Classes, System.SysUtils, System.UITypes, Vcl.Controls,
-  Vcl.Forms, Vcl.Graphics, Vcl.StdCtrls, Vcl.ExtCtrls, {$ENDIF}
+  Vcl.Forms, Vcl.Graphics, Vcl.StdCtrls, Vcl.ExtCtrls,
+  {$ENDIF}
   CrossVision.Mat, TVM.PaddleOcr, PaddleOcr.Run;
+
 type
   TPaddleWorker = class(TThread)
   private
@@ -60,22 +68,33 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   end;
+
 implementation
+
 uses
-  {$IFDEF FPC}Math, Types, Dialogs, IntfGraphics, FPImage, {$ELSE}
-  System.Math, System.Types, Vcl.Dialogs, Vcl.FileCtrl, {$ENDIF}
+  {$IFDEF FPC}
+  Math, Types, Dialogs, IntfGraphics, FPImage,
+  {$ELSE}
+  System.Math, System.Types, Vcl.Dialogs, Vcl.FileCtrl,
+  {$ENDIF}
   ExampleDefaults, TVM.CpuGraph;
 
 function UI(const Value: string): {$IFDEF FPC}UTF8String{$ELSE}string{$ENDIF};
 begin
-  {$IFDEF FPC}Result := UTF8Encode(Value);
-  {$ELSE}Result := Value;{$ENDIF}
+  {$IFDEF FPC}
+  Result := UTF8Encode(Value);
+  {$ELSE}
+  Result := Value;
+  {$ENDIF}
 end;
 
 function EditValue(const Edit: TEdit): string;
 begin
-  {$IFDEF FPC}Result := UTF8Decode(Edit.Text);
-  {$ELSE}Result := Edit.Text;{$ENDIF}
+  {$IFDEF FPC}
+  Result := UTF8Decode(Edit.Text);
+  {$ELSE}
+  Result := Edit.Text;
+  {$ENDIF}
 end;
 
 constructor TPaddleWorker.Create(const Detector, Recognizer, Runtime, Clipper, Digest: string;
@@ -156,10 +175,13 @@ begin
   FClipper := PreparedPath('clipper',
     FindPaddlePath('crosspascal-tvm\runtime\paddleocr\ppocr_db_jt_round.dll', False));
   Content := Panel(Self, alClient, 0);
-  Content.BorderWidth := 12; Content.DisableAlign;
-  Header := Panel(Content, alTop, 178); Header.DisableAlign;
+  Content.BorderWidth := 12;
+  Content.DisableAlign;
+  Header := Panel(Content, alTop, 178);
+  Header.DisableAlign;
   Toolbar := Panel(Header, alTop, 44);
-  Toolbar.Top := 0; Toolbar.DisableAlign;
+  Toolbar.Top := 0;
+  Toolbar.DisableAlign;
   FOpen := Button('Open image...', OpenImage);
   FRead := Button('Read text', ReadImage);
   FStop := Button('Stop', StopReading);
@@ -172,7 +194,8 @@ begin
   for I := 0 to 2 do
   begin
     Row := Panel(Header, alTop, 42);
-    Row.Top := 44 + I * 42; Row.DisableAlign;
+    Row.Top := 44 + I * 42;
+    Row.DisableAlign;
     LabelControl := TLabel.Create(Self);
     LabelControl.Parent := Row;
     LabelControl.AutoSize := False;
@@ -246,9 +269,12 @@ destructor TPaddleOcrForm.Destroy;
 begin
   if FWorker <> nil then
   begin
-    FWorker.Terminate; FWorker.WaitFor; FreeAndNil(FWorker);
+    FWorker.Terminate;
+    FWorker.WaitFor;
+    FreeAndNil(FWorker);
   end;
-  FImage := nil; inherited;
+  FImage := nil;
+  inherited;
 end;
 
 procedure TPaddleOcrForm.FitOnScreen(Sender: TObject);
@@ -269,13 +295,15 @@ var
   Edit: TEdit;
   Path: string;
   {$IFDEF FPC}
-  Dialog: TSelectDirectoryDialog;{$ENDIF}
+  Dialog: TSelectDirectoryDialog;
+  {$ENDIF}
 begin
-  case TButton(Sender).Tag of 0: Edit := FDetector;
-  1: Edit := FRecognizer;
+  case TButton(Sender).Tag of
+    0: Edit := FDetector;
+    1: Edit := FRecognizer;
   else
     Edit := FRuntime;
-end;
+  end;
   Path := EditValue(Edit);
   {$IFDEF FPC}
   Dialog := TSelectDirectoryDialog.Create(Self);
@@ -285,14 +313,19 @@ end;
   finally
     Dialog.Free;
   end;
-  {$ELSE}if not SelectDirectory('Select a model or runtime folder', '', Path, [sdNewUI, sdNewFolder], Self) then Exit;{$ENDIF}
+  {$ELSE}
+  if not SelectDirectory('Select a model or runtime folder', '', Path, [sdNewUI, sdNewFolder], Self) then
+    Exit;
+  {$ENDIF}
   Edit.Text := UI(Path);
 end;
 
 procedure TPaddleOcrForm.LoadImage(const FileName: string);
 begin
   FImage := ReadPaddleImage(FileName, FCVLibrary, FDigest);
-  FJSON := ''; FText.Clear; DrawImage(nil);
+  FJSON := '';
+  FText.Clear;
+  DrawImage(nil);
   FStatus.Caption := UI(Format('%s  |  %d × %d', [ExtractFileName(FileName), FImage.Width, FImage.Height]));
   SetRunning(False);
 end;
@@ -330,12 +363,15 @@ begin
   if (FWorker <> nil) or (FImage = nil) then Exit;
   RequireCpu(DirectoryExists(EditValue(FDetector)) and DirectoryExists(EditValue(FRecognizer)),
     'Select the converted detector and recognizer folders.');
-  FJSON := ''; FText.Clear; DrawImage(nil);
+  FJSON := '';
+  FText.Clear;
+  DrawImage(nil);
   FWorker := TPaddleWorker.Create(EditValue(FDetector), EditValue(FRecognizer), EditValue(FRuntime),
     FClipper, FDigest, FImage);
   SetRunning(True);
   FStatus.Caption := 'Reading text. CPU inference can take a few minutes.';
-  FTimer.Enabled := True; FWorker.Start;
+  FTimer.Enabled := True;
+  FWorker.Start;
 end;
 
 procedure TPaddleOcrForm.StopReading(Sender: TObject);
@@ -349,7 +385,8 @@ end;
 procedure TPaddleOcrForm.Tick(Sender: TObject);
 begin
   if (FWorker = nil) or (WaitForSingleObject(FWorker.Handle, 0) <> WAIT_OBJECT_0) then Exit;
-  FTimer.Enabled := False; FWorker.WaitFor;
+  FTimer.Enabled := False;
+  FWorker.WaitFor;
   try
     if FWorker.ErrorText = '' then
     begin
@@ -364,7 +401,8 @@ begin
       FStatus.Caption := 'Reading did not complete.';
     end;
   finally
-    FreeAndNil(FWorker); SetRunning(False);
+    FreeAndNil(FWorker);
+    SetRunning(False);
   end;
 end;
 
@@ -409,13 +447,16 @@ var
   Points: array[0..4] of TPoint;
   {$IFDEF FPC}
   Surface: TLazIntfImage;
-  Pixel: TFPColor;{$ELSE}
-  Destination: PByte;{$ENDIF}
+  Pixel: TFPColor;
+  {$ELSE}
+  Destination: PByte;
+  {$ENDIF}
 begin
   if FImage = nil then Exit;
   Bitmap := TBitmap.Create;
   try
-    Bitmap.PixelFormat := pf24bit; Bitmap.SetSize(FImage.Width, FImage.Height);
+    Bitmap.PixelFormat := pf24bit;
+    Bitmap.SetSize(FImage.Width, FImage.Height);
     {$IFDEF FPC}
     Surface := Bitmap.CreateIntfImage;
     try
@@ -442,7 +483,8 @@ begin
     for Y := 0 to FImage.Height - 1 do
     begin
       Source := PByte(NativeUInt(FImage.DataPtr) + NativeUInt(Y) * NativeUInt(FImage.Step));
-      Destination := Bitmap.ScanLine[Y]; Move(Source^, Destination^, FImage.Width * 3);
+      Destination := Bitmap.ScanLine[Y];
+      Move(Source^, Destination^, FImage.Width * 3);
     end;
     {$ENDIF}
     Bitmap.Canvas.Pen.Color := clLime;
@@ -452,11 +494,13 @@ begin
     begin
       for J := 0 to 3 do
         Points[J] := Point(Round(Lines[I].Detection.Quad[J].X), Round(Lines[I].Detection.Quad[J].Y));
-      Points[4] := Points[0]; Bitmap.Canvas.Polyline(Points);
+      Points[4] := Points[0];
+      Bitmap.Canvas.Polyline(Points);
     end;
     FPreview.Picture.Assign(Bitmap);
   finally
     Bitmap.Free;
   end;
 end;
+
 end.
