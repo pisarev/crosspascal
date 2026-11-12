@@ -1,7 +1,7 @@
 # Prepare and run an example
 
-Download **crosspascal-examples-prepare-ea019.zip** from the
-[EA019 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-019)
+Download **crosspascal-examples-prepare-ea020.zip** from the
+[EA020 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-020)
 and extract it to a writable folder. Open your example's folder and run
 **Prepare.cmd**. Shared example folders offer a menu.
 
@@ -23,7 +23,7 @@ Model, library and image paths are already in the generated *.prepared.ini files
 Keep the prepared folder together. Distributed Pascal executables are built with
 Lazarus; Delphi builds verify source compatibility.
 
-The default installation is %LOCALAPPDATA%/CrossPascal/early-access-019. Set
+The default installation is %LOCALAPPDATA%/CrossPascal/early-access-020. Set
 CROSSPASCAL_PREPARE_HOME before running Prepare.cmd to choose another drive.
 Downloads use a sibling downloads folder. Repeating preparation preserves your
 source, project and package settings, and locally rebuilt example executables.
@@ -37,6 +37,8 @@ checks disk space before extraction.
 SqueezeNet 1.1, ResNet50 v1, YOLO11n classification, YOLO11n detection and RT-DETR R18vd each have separate CPU and GPU preparation ZIPs. [Choose a model and device](VISION-DOWNLOADS.md). These kits download only the selected model plus shared dependencies; the original all-five-model kit remains available.
 
 Each ZIP contains an enclosing folder. Extract it, open that folder and run `Prepare.cmd`. The dedicated CPU/GPU kit already sets its device. The generic kits below retain `-Device` and Auto selection.
+
+For text detection and recognition, the [PaddleOCR example](../examples/paddle-ocr/README.md) prepares both PP-OCRv5 Server models for the same device. The EA020 release also provides each model as a separate download.
 
 ## CPU or CUDA
 
@@ -59,6 +61,7 @@ The prepared GPU examples use compiled kernels and the supplied TVM runtime.
 | Examples | Free GPU memory checked by Prepare |
 | --- | ---: |
 | VisionModels | 1,024 MiB |
+| PaddleOCR | 2,048 MiB |
 | QwenChat and ImagePrompt | 5,120 MiB |
 | GemmaChat and the Gemma 2 text examples | 5,500 MiB |
 

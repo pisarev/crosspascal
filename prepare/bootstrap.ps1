@@ -417,7 +417,10 @@ function Get-Package($Package, $Assets, [string]$SevenZip) {
     if ($Package.format -eq 'file') {
         Copy-Item -LiteralPath $paths[0] -Destination (Get-PreparePath $workspace (Split-Path -Leaf $paths[0]))
     } elseif ([IO.Path]::GetExtension($paths[0]) -ieq '.zip') {
-        Expand-PrepareZip $paths[0] $workspace
+        foreach ($archive in $paths) {
+            if ([IO.Path]::GetExtension($archive) -ine '.zip') { throw 'A ZIP package can contain only ZIP archives.' }
+            Expand-PrepareZip $archive $workspace
+        }
     } else {
         Expand-PrepareSevenZip $SevenZip $paths[0] $workspace
     }

@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-019",
+  "release_id": "early-access-020",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -22,8 +22,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 3777,
-      "sha256": "9c39c974ed7b9f90836b079cf39eb8fe7032927da842f5dfc6188b21070e3834"
+      "bytes": 4027,
+      "sha256": "a0d7bc3d4a387c454831e4e2b3def4477cac287d2f6d8e0dabe11d45bc5a1690"
     },
     {
       "path": "docs/CAPABILITIES.md",
@@ -47,13 +47,13 @@
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 6386,
-      "sha256": "3101a41d993487a4de67f5fbba659916e0a3932b37258f12048c80605f1b0f02"
+      "bytes": 6632,
+      "sha256": "141dfebf59bacc30018ef5cfed26b26a123dbbde99b0249f7834d8bcfd7718a1"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
-      "bytes": 3094,
-      "sha256": "f7e9949f3d9aac8f047329f655f2e8893be1a3e649a89e2e00f0b9191223fa78"
+      "bytes": 3666,
+      "sha256": "c2baf6d7ec9ca882845cb141977de1c8d922e3ea93cfadcc6b0d61c74c22b909"
     },
     {
       "path": "docs/ROADMAP.md",
@@ -271,6 +271,46 @@
       "sha256": "783eec5e07332db63f71685954dc617d5ede1cccd3164dbb44298e5622c6399a"
     },
     {
+      "path": "examples/paddle-ocr/PaddleOcr.Main.pas",
+      "bytes": 14220,
+      "sha256": "13f8d27849d3e4518830dff57db7e6b11622eaa2b5f2aa652da2c30f2b2817f7"
+    },
+    {
+      "path": "examples/paddle-ocr/PaddleOcr.Run.pas",
+      "bytes": 4681,
+      "sha256": "370982b256a234d5a9de46bcd0f01df722d8af8b96e600f972b5bf61d2541cfe"
+    },
+    {
+      "path": "examples/paddle-ocr/PaddleOcr.dpr",
+      "bytes": 3938,
+      "sha256": "db26090efe0cb0abec1dbb7df5d8c0c09093e4ac5e840487833e2919ebde591c"
+    },
+    {
+      "path": "examples/paddle-ocr/PaddleOcr.dproj",
+      "bytes": 3890,
+      "sha256": "dc6f65f5d1f7d4bb96290d2ee0a18cd6dcf3fe738596914fcb8b7e310452bd7f"
+    },
+    {
+      "path": "examples/paddle-ocr/PaddleOcr.lpi",
+      "bytes": 1652,
+      "sha256": "143dac11d525d1f5ee030ec55f887a36454fe5801b3f1184de5b901c03860490"
+    },
+    {
+      "path": "examples/paddle-ocr/Prepare.cmd",
+      "bytes": 204,
+      "sha256": "1e024283f034210a8f2aca4a7a177600e3205128abb45b2cd5c55b91998553f0"
+    },
+    {
+      "path": "examples/paddle-ocr/README.md",
+      "bytes": 2934,
+      "sha256": "362c6a5038e81cd7d0602ac36002505c35e3e92eddd4ba0da3f898360e869575"
+    },
+    {
+      "path": "examples/paddle-ocr/models.json",
+      "bytes": 1816,
+      "sha256": "e4a03f2a11ef9da41b98fab1aa3a6503853c943fdd0ef2aa041a71126cc96292"
+    },
+    {
       "path": "examples/qwen-chat/Prepare.cmd",
       "bytes": 314,
       "sha256": "0941827931d4be48bd14541fd9b5d3f737f7be26505abaa8a16ceecf099a168c"
@@ -342,8 +382,8 @@
     },
     {
       "path": "launcher/CrossPascalConvert.Native.pas",
-      "bytes": 17187,
-      "sha256": "ed670249d68b836f46b042797639b32b70fdcd7fb805b4b99bfb9834fe56222d"
+      "bytes": 18345,
+      "sha256": "05c5684301706b7fdc9e0c98bd74d35f66523f247e5608d6366f49f8690094b6"
     },
     {
       "path": "launcher/CrossPascalConvert.dpr",
@@ -372,13 +412,13 @@
     },
     {
       "path": "prepare/bootstrap.ps1",
-      "bytes": 38442,
-      "sha256": "48dde4cd8be8a72d06cac395b5a333b43e4f4e1e6c0c0ba00a62cabb98c7cf27"
+      "bytes": 38614,
+      "sha256": "50822ce3e61953738f4fc5efc078ccd24070436be5ac4e0ee4f65953798e85c5"
     },
     {
       "path": "prepare/prepare-bootstrap.json",
       "bytes": 83,
-      "sha256": "79504cb6d4c8b5e0f729ff422ac5ce9bab5c487d97b9ae728d96d965dbdd86ab"
+      "sha256": "48c8a109bf3bec66dd8ef463dd0e4c84015d2e26bc26f7f32f4eafcc4d8f1253"
     },
     {
       "path": "prepare/vision-downloads.json",

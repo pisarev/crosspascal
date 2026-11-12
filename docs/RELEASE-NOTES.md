@@ -1,5 +1,11 @@
 # Release notes
 
+## EA020 PaddleOCR
+
+[PaddleOCR](../examples/paddle-ocr/README.md) reads text in photos, displays detected regions and exports plain text or JSON. The PP-OCRv5 Server detector and recognizer are available as separate CPU and NVIDIA CUDA downloads. Prepare sets up both models for the selected device.
+
+The native converter accepts the pinned PaddleOCR ONNX exports. The Pascal example builds in Delphi and Lazarus. Windows x64 CPU and CUDA `sm_89` inference were checked against the original ONNX models on two photos. Additional CUDA targets have compiled bundles.
+
 ## EA019 ready CUDA model bundles
 
 The same chat, console and VisionModels examples can open CPU and CUDA bundles.

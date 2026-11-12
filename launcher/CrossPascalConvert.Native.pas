@@ -19,7 +19,8 @@ type
   TConverterProfile = (cpGemma3nCPU, cpGemma3nCUDA, cpGemma3nVision, cpGemma2, cpQwen2, cpQwenVL,
     cpYoloDetection, cpYoloClassification, cpRtDetr, cpSqueezeNet, cpResNet,
     cpGemma2CUDA, cpQwenVLCUDA, cpYoloDetectionCUDA, cpYoloClassificationCUDA, cpRtDetrCUDA,
-    cpSqueezeNetCUDA, cpResNetCUDA);
+    cpSqueezeNetCUDA, cpResNetCUDA, cpPaddleDetection, cpPaddleRecognition,
+    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA);
 
   TConversionCommand = record
     Executable: string;
@@ -33,7 +34,8 @@ const
   ProfileIDs: array[TConverterProfile] of string = (
     'gemma3n-cpu', 'gemma3n-cuda', 'gemma3n-add-vision', 'gemma2-cpu', 'qwen2-cuda', 'qwen-vl-cpu',
     'yolo11n', 'yolo11n-cls', 'rtdetr-r18vd', 'squeezenet', 'resnet50', 'gemma2-cuda', 'qwen-vl-cuda',
-    'yolo11n-cuda', 'yolo11n-cls-cuda', 'rtdetr-r18vd-cuda', 'squeezenet-cuda', 'resnet50-cuda');
+    'yolo11n-cuda', 'yolo11n-cls-cuda', 'rtdetr-r18vd-cuda', 'squeezenet-cuda', 'resnet50-cuda',
+    'ppocrv5-server-det', 'ppocrv5-server-rec', 'ppocrv5-server-det-cuda', 'ppocrv5-server-rec-cuda');
   ProfileTitles: array[TConverterProfile] of string = (
     'Gemma 3n E4B | CPU',
     'Gemma 3n E4B | CUDA',
@@ -52,7 +54,11 @@ const
     'YOLO11n classification | CUDA',
     'RT-DETR R18vd | CUDA',
     'SqueezeNet 1.1 | CUDA',
-    'ResNet50 v1 | CUDA');
+    'ResNet50 v1 | CUDA',
+    'PP-OCRv5 Server detection | CPU',
+    'PP-OCRv5 Server recognition | CPU',
+    'PP-OCRv5 Server detection | CUDA',
+    'PP-OCRv5 Server recognition | CUDA');
 
 function ExecutableFolder: string;
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
@@ -78,7 +84,8 @@ end;
 
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
 begin
-  Result := Profile in [cpGemma3nCUDA, cpQwen2, cpGemma2CUDA..cpResNetCUDA];
+  Result := Profile in [cpGemma3nCUDA, cpQwen2, cpGemma2CUDA..cpResNetCUDA,
+    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA];
 end;
 
 function SourceProfile(const Profile: TConverterProfile): TConverterProfile;
@@ -91,6 +98,8 @@ begin
     cpRtDetrCUDA: Result := cpRtDetr;
     cpSqueezeNetCUDA: Result := cpSqueezeNet;
     cpResNetCUDA: Result := cpResNet;
+    cpPaddleDetectionCUDA: Result := cpPaddleDetection;
+    cpPaddleRecognitionCUDA: Result := cpPaddleRecognition;
   else
     Result := Profile;
   end;
@@ -335,6 +344,18 @@ begin
         Recipe := ReadToolPath(Kit, 'QWEN_VL_PROFILE', 'profiles\qwen-vl');
         RequireFile(IncludeTrailingPathDelimiter(Recipe) + 'model.json', 'The Qwen2.5-VL recipe');
         Args := [InputPath, Recipe, Output] + LinkArgs;
+        if UsesCUDA(Profile) then Args := Args + ['--cuda', CUDA, Arch];
+      end;
+    cpPaddleDetection, cpPaddleRecognition:
+      begin
+        Tool := 'ConvertVisionOnnx.exe';
+        InputPath := SelectOnnx(InputPath);
+        Recipe := RequireFile(IncludeTrailingPathDelimiter(Root) +
+          'crosspascal\examples\paddle-ocr\models.json', 'The PaddleOCR profile catalog');
+        if Kind = cpPaddleRecognition then
+          RequireFile(ExtractFilePath(InputPath) + 'ppocrv5_dict.txt',
+            'The PaddleOCR dictionary beside the ONNX model');
+        Args := [InputPath, Recipe, ProfileIDs[Kind], Output] + LinkArgs;
         if UsesCUDA(Profile) then Args := Args + ['--cuda', CUDA, Arch];
       end;
   else begin
