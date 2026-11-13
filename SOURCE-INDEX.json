@@ -42,13 +42,13 @@
     },
     {
       "path": "docs/MODEL-MODALITIES.md",
-      "bytes": 3132,
-      "sha256": "d53fa4af4dfc7254b11b5e79df80d9fcb88229b9990cf7f1e1d40e1f121aa9e0"
+      "bytes": 3162,
+      "sha256": "00be42c6cc3470d46d2cbb2ffe88bfb06a58945fab6e16dd01c06cbe5a5cc781"
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 7225,
-      "sha256": "282a6f8b7379e3e17c9d1587eeaf0b937c4c8ce93a96dddcba48f5778bbf6a9b"
+      "bytes": 7698,
+      "sha256": "8aab6607a2d1c4bbc698e5323f86b00d37e502c524c286a4e190e8bf980ffcb6"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
@@ -303,7 +303,7 @@
     {
       "path": "examples/paddle-ocr/README.md",
       "bytes": 2940,
-      "sha256": "2a825e5846bc4ab1bfd089e66e4a111b3ea424c74bc535c51267afed311a27d6"
+      "sha256": "549c4c29f25889d657ca607b6f383252f2c6c05876209416d7010212608c28f4"
     },
     {
       "path": "examples/paddle-ocr/models.json",
@@ -418,7 +418,7 @@
     {
       "path": "prepare/prepare-bootstrap.json",
       "bytes": 136,
-      "sha256": "4c5fa55cf0c4542150c8d511b7592c17fcd73bc8365b597925207b01f2230cb2"
+      "sha256": "d6d317ab9fc1876741e45d45e9abb96751e32f9b8f7b08becdc49f6bced054ce"
     },
     {
       "path": "prepare/vision-downloads.json",

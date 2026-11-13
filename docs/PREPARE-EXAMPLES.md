@@ -1,6 +1,6 @@
 # Prepare and run an example
 
-Download **crosspascal-examples-prepare-ea020-r5.zip** from the
+Download **crosspascal-examples-prepare-ea020-r6.zip** from the
 [EA020 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-020)
 and extract it to a writable folder. Open your example's folder and run
 **Prepare.cmd**. Shared example folders offer a menu.
@@ -104,3 +104,9 @@ perform small native-library checks.
 CrossPascalConvert.exe can build native bundles from supported original
 checkpoints. Select the CUDA entry for the model and enter the target architecture.
 Conversion uses the native TVM compiler and NVRTC for CUDA kernels.
+
+## File inventories
+
+The SDK includes a `SOURCE-INDEX.json` for each component. Each index describes that component as shipped, including its binaries. Check these indexes before running Prepare, building an example or editing files. Prepare records installed packages separately in its receipts.
+
+The source archive and Git repositories have full source inventories. Their indexes describe the source distribution, which contains files omitted from the ready-to-run SDK.
