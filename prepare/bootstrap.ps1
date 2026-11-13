@@ -700,7 +700,9 @@ try {
     if (Test-Path -LiteralPath $Manifest -PathType Leaf) {
         $document = Get-Content -LiteralPath $Manifest -Raw -Encoding UTF8 | ConvertFrom-Json
     } else {
-        $asset = Find-ReleaseAsset 'pisarev/crosspascal' $Release 'PREPARE-MANIFEST.json'
+        $manifestName = 'PREPARE-MANIFEST.json'
+        if ($bootstrap.manifest_asset) { $manifestName = [string]$bootstrap.manifest_asset }
+        $asset = Find-ReleaseAsset 'pisarev/crosspascal' $Release $manifestName
         if ($asset.size -gt 2097152) { throw 'The release preparation manifest is too large.' }
         $address = $asset.url
         $accept = 'application/octet-stream'

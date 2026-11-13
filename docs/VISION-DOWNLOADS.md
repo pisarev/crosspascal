@@ -19,7 +19,7 @@ Each row downloads one model and the shared EA019 Windows x64 SDK/runtime. The o
 
 Both variants require Windows x64 and at least 1 GiB of free system RAM before loading the model, in addition to memory used by Windows and the IDE. GPU preparation also requires at least 1,024 MiB free VRAM, a driver supporting CUDA 12.8 and compute capability 6.1, 7.5, 8.6, 8.9 or 12.0. It checks CUDA device 0 and rejects an incompatible GPU instead of silently changing the selected device.
 
-The first preparation also downloads 398.7 MiB of shared SDK/runtime/sample files. They are reused on later runs. Allow room for both downloaded ZIPs and extracted files; Prepare checks disk space.
+The first preparation also downloads 407.2 MiB of shared SDK/runtime/sample files. They are reused on later runs. Allow room for both downloaded ZIPs and extracted files; Prepare checks disk space.
 
 Preparation uses Windows PowerShell and requires neither Python nor a GitHub account. The archive has its manifest and all helper files inside its enclosing folder. Keep them together.
 

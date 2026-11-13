@@ -207,6 +207,7 @@ begin
     LabelControl.Layout := tlCenter;
     LabelControl.Caption := UI(Labels[I]);
     Field := Panel(Row, alRight, 128);
+    Field.TabOrder := 1;
     FBrowse[I] := TButton.Create(Self);
     FBrowse[I].Parent := Field;
     FBrowse[I].SetBounds(4, 5, ActionWidth, ActionHeight);
@@ -214,6 +215,7 @@ begin
     FBrowse[I].Tag := I;
     FBrowse[I].OnClick := Browse;
     Field := Panel(Row, alClient, 0);
+    Field.TabOrder := 0;
     Field.BorderWidth := 5;
     Edits[I] := TEdit.Create(Self);
     Edits[I].Parent := Field;
@@ -329,7 +331,7 @@ begin
   FJSON := '';
   FText.Clear;
   DrawImage(nil);
-  FStatus.Caption := UI(Format('%s  |  %d × %d', [ExtractFileName(FileName), FImage.Width, FImage.Height]));
+  FStatus.Caption := UI(Format('%s  |  %d x %d', [ExtractFileName(FileName), FImage.Width, FImage.Height]));
   SetRunning(False);
 end;
 

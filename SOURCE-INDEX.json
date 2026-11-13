@@ -47,8 +47,8 @@
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 7222,
-      "sha256": "5489a50f204c20e3f7253091197f49147352b7ee286b16ccb31445315338866a"
+      "bytes": 7225,
+      "sha256": "282a6f8b7379e3e17c9d1587eeaf0b937c4c8ce93a96dddcba48f5778bbf6a9b"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
@@ -63,7 +63,7 @@
     {
       "path": "docs/VISION-DOWNLOADS.md",
       "bytes": 10007,
-      "sha256": "05e7cbbc23c623e4602148538466f5164eb9884beed5d4373010ef475a8c0bc2"
+      "sha256": "06d5e499fea16e06f374e9b0d06f502c4ddc63fd22f6ad47cc5b1dd089626864"
     },
     {
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
@@ -272,8 +272,8 @@
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.Main.pas",
-      "bytes": 14450,
-      "sha256": "338894e5a7ef89012632de94b4473c7e7ba3a85a29e6e8846f4864b412a2d79e"
+      "bytes": 14499,
+      "sha256": "ecf73310b9e2ff67a5bbf7a8764a6fb7650527b8c8d89a96856648af3fa694e8"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.Run.pas",
@@ -302,8 +302,8 @@
     },
     {
       "path": "examples/paddle-ocr/README.md",
-      "bytes": 2934,
-      "sha256": "362c6a5038e81cd7d0602ac36002505c35e3e92eddd4ba0da3f898360e869575"
+      "bytes": 2940,
+      "sha256": "2a825e5846bc4ab1bfd089e66e4a111b3ea424c74bc535c51267afed311a27d6"
     },
     {
       "path": "examples/paddle-ocr/models.json",
@@ -412,13 +412,13 @@
     },
     {
       "path": "prepare/bootstrap.ps1",
-      "bytes": 38614,
-      "sha256": "50822ce3e61953738f4fc5efc078ccd24070436be5ac4e0ee4f65953798e85c5"
+      "bytes": 38745,
+      "sha256": "7196a9a0b3ee9df539e9513735e2a5bded6e0200e055a794c7aca81094c3fa75"
     },
     {
       "path": "prepare/prepare-bootstrap.json",
-      "bytes": 82,
-      "sha256": "13e4aa5bfe22ecaa60f790f3733937ddb5353a5d11d7258f5fdd97cee060fa20"
+      "bytes": 136,
+      "sha256": "4c5fa55cf0c4542150c8d511b7592c17fcd73bc8365b597925207b01f2230cb2"
     },
     {
       "path": "prepare/vision-downloads.json",
@@ -442,8 +442,8 @@
     },
     {
       "path": "prepare/vision/resnet50/prepare-manifest.json",
-      "bytes": 25567,
-      "sha256": "6f541f758c3f688cc1e2a09488f784ba00dd241acb5346180dfb29938ce96b54"
+      "bytes": 25575,
+      "sha256": "1148863ed2bc7ea9e053165330bdba7c8dcdc1644e2039413e329a47298b98c6"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare-CPU.cmd",
@@ -462,8 +462,8 @@
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/prepare-manifest.json",
-      "bytes": 25775,
-      "sha256": "6b15d970c7411adf0b938b69d7b3b3482e8273012b162df1890098487b7ee650"
+      "bytes": 25783,
+      "sha256": "057f99f7da7e148930d024cf667fba3b3271c4850670e7ce25ccb15ccda0e76b"
     },
     {
       "path": "prepare/vision/squeezenet/Prepare-CPU.cmd",
@@ -482,8 +482,8 @@
     },
     {
       "path": "prepare/vision/squeezenet/prepare-manifest.json",
-      "bytes": 25669,
-      "sha256": "eed4b1dadc49a33352756f9aa8a92b763e32b7b9fa4c125ad4f84bfc1481bd58"
+      "bytes": 25677,
+      "sha256": "ad269fe33cb8b214ab04cfead71b103faa4408e23de27295bd627af3cae65a10"
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare-CPU.cmd",
@@ -502,8 +502,8 @@
     },
     {
       "path": "prepare/vision/yolo11n-cls/prepare-manifest.json",
-      "bytes": 25643,
-      "sha256": "f0f7029b7e5fe73a56c54ae1a9da236f499e660d4e7d2ce760698b432b7a0a12"
+      "bytes": 25651,
+      "sha256": "e5733331f45e5bf9b6c862af2a0f7a9aa93eda4d516790d0848d8401b2d37ef0"
     },
     {
       "path": "prepare/vision/yolo11n/Prepare-CPU.cmd",
@@ -522,8 +522,8 @@
     },
     {
       "path": "prepare/vision/yolo11n/prepare-manifest.json",
-      "bytes": 25411,
-      "sha256": "e43bded1f4101bf844215b9c6851ebbdc445b7d72a5c036b22332562ff271132"
+      "bytes": 25419,
+      "sha256": "c2ae7e0fbc8ec975c4731deaf0524b68de7f2b529a098385fa3ba58960b8af30"
     },
     {
       "path": "rtl-algorithms/LICENSE",

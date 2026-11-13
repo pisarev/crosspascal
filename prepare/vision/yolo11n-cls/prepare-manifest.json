@@ -44,13 +44,6 @@
       "repository": "pisarev/crosspascal",
       "release": "early-access-019"
     },
-    "crosspascal-windows-x64-ea019.zip": {
-      "name": "crosspascal-windows-x64-ea019.zip",
-      "bytes": 141544980,
-      "sha256": "1dd82bfcc9c7aef238918b4de6d97ce8c233a693dde58da88c2bc58ccfe4ee91",
-      "repository": "pisarev/crosspascal",
-      "release": "early-access-019"
-    },
     "crosspascal-opencv-runtime-windows-x64-ea016.zip": {
       "name": "crosspascal-opencv-runtime-windows-x64-ea016.zip",
       "bytes": 273483741,
@@ -71,6 +64,13 @@
       "sha256": "8e5b39ddf8060d72c20f49a778694967f17aeabbe7e2cefb4ccb04a7af4bbb1f",
       "repository": "pisarev/crosspascal",
       "release": "early-access-016"
+    },
+    "crosspascal-windows-x64-ea019-r2.zip": {
+      "name": "crosspascal-windows-x64-ea019-r2.zip",
+      "bytes": 150400400,
+      "sha256": "94acbcd874ea795d58fec4da1385e78614696bfb18ea83f5ea1ce9fe74da9348",
+      "repository": "pisarev/crosspascal",
+      "release": "early-access-019"
     }
   },
   "packages": {
@@ -79,7 +79,7 @@
       "title": "CrossPascal Windows x64 SDK and Lazarus applications",
       "directory": "crosspascal-windows-x64",
       "assets": [
-        "crosspascal-windows-x64-ea019.zip"
+        "crosspascal-windows-x64-ea019-r2.zip"
       ],
       "archive_root": "crosspascal-windows-x64",
       "extracted_bytes": 469545957,
@@ -513,6 +513,6 @@
     "repository": "pisarev/crosspascal",
     "release": "early-access-016"
   },
-  "documentation_revision": "ea019-prepare-rebuild-1",
+  "documentation_revision": "ea019-r2-published-sdk",
   "cuda_driver_api": 12080
 }

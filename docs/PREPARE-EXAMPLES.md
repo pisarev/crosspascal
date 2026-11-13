@@ -1,6 +1,6 @@
 # Prepare and run an example
 
-Download **crosspascal-examples-prepare-ea020.zip** from the
+Download **crosspascal-examples-prepare-ea020-r5.zip** from the
 [EA020 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-020)
 and extract it to a writable folder. Open your example's folder and run
 **Prepare.cmd**. Shared example folders offer a menu.
@@ -23,7 +23,7 @@ Model, library and image paths are already in the generated *.prepared.ini files
 Keep the prepared folder together. Distributed Pascal executables are built with
 Lazarus; Delphi builds verify source compatibility.
 
-The default installation for the revised EA020 launchers is %LOCALAPPDATA%/CrossPascal/early-access-020-r4. Set
+The default installation for the revised EA020 launchers is %LOCALAPPDATA%/CrossPascal/early-access-020-r5. Set
 CROSSPASCAL_PREPARE_HOME before running Prepare.cmd to choose another drive.
 Downloads use a sibling downloads folder. Repeating preparation preserves your
 source, project and package settings, and locally rebuilt example executables.
