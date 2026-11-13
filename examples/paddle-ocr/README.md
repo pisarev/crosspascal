@@ -4,7 +4,7 @@ Open a photo, choose **Read text**, then select **Save result** to keep the reco
 
 ## Prepare and run
 
-1. Download [Prepare PaddleOCR for CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-020/Prepare-PaddleOCR-CPU-ea020-r6.zip) or [Prepare PaddleOCR for NVIDIA GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-020/Prepare-PaddleOCR-GPU-ea020-r6.zip).
+1. Download [Prepare PaddleOCR for CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-020/Prepare-PaddleOCR-CPU-ea020-r7.zip) or [Prepare PaddleOCR for NVIDIA GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-020/Prepare-PaddleOCR-GPU-ea020-r7.zip).
 2. Extract the ZIP and run `Prepare.cmd` in the extracted folder. It installs the SDK, runtime, sample photo, detector and recognizer, then writes their paths into the example settings.
 3. Open `PaddleOcr.dproj` in Delphi 13.2 or `PaddleOcr.lpi` in Lazarus 4.8 and build for Windows x64. A Lazarus-built executable is included in `bin/lazarus-win64` inside the installed example folder.
 4. Choose **Read text** to try the prepared photo, or choose **Open image** to use a different one. **Stop** takes effect after the current native operation returns.
