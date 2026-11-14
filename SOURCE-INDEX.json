@@ -72,8 +72,8 @@
     },
     {
       "path": "examples/birefnet/BiRefNet.Main.pas",
-      "bytes": 20400,
-      "sha256": "03949156410cc421c0b1abbce2469d5609eeea5d0e8d6c599633f264bb716fa7"
+      "bytes": 21216,
+      "sha256": "dc40385a582b714b5aab89c9442ee9241a38c02bc05c0daac8068670970859dc"
     },
     {
       "path": "examples/birefnet/BiRefNet.Run.pas",

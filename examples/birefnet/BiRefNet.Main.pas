@@ -68,6 +68,7 @@ type
     function PrepareResult(const Value: TBiRefResult): TPicture;
     procedure PublishPictures(const Source, Value: TPicture; const ReplaceSource: Boolean);
     procedure InvalidateDisplay;
+    procedure ReportError(const Operation, Detail: string);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -355,7 +356,11 @@ begin
   try
     Dialog.Filter := 'Images|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.webp|All files|*.*';
     Dialog.Options := [ofFileMustExist, ofPathMustExist, ofEnableSizing];
-    if Dialog.Execute then LoadImage({$IFDEF FPC}UTF8Decode{$ENDIF}(Dialog.FileName));
+    try
+      if Dialog.Execute then LoadImage({$IFDEF FPC}UTF8Decode{$ENDIF}(Dialog.FileName));
+    except
+      on E: Exception do ReportError('Could not open image', E.Message);
+    end;
   finally
     Dialog.Free;
   end;
@@ -385,19 +390,30 @@ end;
 
 procedure TBiRefNetForm.RemoveBackground(Sender: TObject);
 begin
-  RequireCpu(not FRequiresRestart and not BiRefNetRequiresProcessRestart,
-    'Restart the application before running another model.');
-  RequireCpu(FDisplayValid, 'Open an image again to restore the preview before running.');
-  if (FWorker <> nil) or (FImage = nil) then Exit;
-  RequireCpu(FolderExists(EditValue(FBundle)), 'Select the converted BiRefNet model folder.');
-  RequireCpu(FolderExists(EditValue(FRuntime)), 'Select the TVM runtime folder.');
-  PublishPictures(nil, nil, False);
-  FValue := Default(TBiRefResult);
-  FWorker := TBiRefWorker.Create(EditValue(FBundle), EditValue(FRuntime), FDigest, FImage);
-  SetRunning(True);
-  FStatus.Caption := 'Removing the background. Full CPU inference can take a minute or more.';
-  FTimer.Enabled := True;
-  FWorker.Start;
+  try
+    RequireCpu(not FRequiresRestart and not BiRefNetRequiresProcessRestart,
+      'Restart the application before running another model.');
+    RequireCpu(FDisplayValid, 'Open an image again to restore the preview before running.');
+    if (FWorker <> nil) or (FImage = nil) then Exit;
+    RequireCpu(FolderExists(EditValue(FBundle)), 'Select the converted BiRefNet model folder.');
+    RequireCpu(FolderExists(EditValue(FRuntime)), 'Select the TVM runtime folder.');
+    PublishPictures(nil, nil, False);
+    FValue := Default(TBiRefResult);
+    FWorker := TBiRefWorker.Create(EditValue(FBundle), EditValue(FRuntime), FDigest, FImage);
+    try
+      SetRunning(True);
+      FStatus.Caption := 'Removing the background. Full CPU inference can take a minute or more.';
+      FTimer.Enabled := True;
+      FWorker.Start;
+    except
+      FTimer.Enabled := False;
+      FreeAndNil(FWorker);
+      SetRunning(False);
+      raise;
+    end;
+  except
+    on E: Exception do ReportError('Could not remove background', E.Message);
+  end;
 end;
 
 procedure TBiRefNetForm.StopWork(Sender: TObject);
@@ -506,34 +522,38 @@ var
   Path: string;
   Image: IMat;
 begin
-  RequireCpu(FDisplayValid, 'Open an image again to restore the preview before saving.');
-  if (FWorker <> nil) or (FValue.Cutout = nil) then Exit;
-  Dialog := TSaveDialog.Create(Self);
   try
-    Dialog.Filter := 'Transparent cutout PNG|*.png|Grayscale mask PNG|*.png|Result report JSON|*.json';
-    Dialog.DefaultExt := 'png';
-    Dialog.FileName := 'cutout.png';
-    Dialog.Options := [ofPathMustExist, ofEnableSizing];
-    if Dialog.Execute then
-    begin
-      Path := {$IFDEF FPC}UTF8Decode{$ENDIF}(Dialog.FileName);
-      if Dialog.FilterIndex = 3 then
-        Path := ChangeFileExt(Path, '.json')
-      else
-        Path := ChangeFileExt(Path, '.png');
-      if Dialog.FilterIndex = 3 then
-        SaveBiRefReport(Path, FValue.JSON)
-      else begin
-        if Dialog.FilterIndex = 2 then
-          Image := FValue.Mask.ConvertTo(CV_MAKETYPE(CV_8U, 1), 255, 0)
+    RequireCpu(FDisplayValid, 'Open an image again to restore the preview before saving.');
+    if (FWorker <> nil) or (FValue.Cutout = nil) then Exit;
+    Dialog := TSaveDialog.Create(Self);
+    try
+      Dialog.Filter := 'Transparent cutout PNG|*.png|Grayscale mask PNG|*.png|Result report JSON|*.json';
+      Dialog.DefaultExt := 'png';
+      Dialog.FileName := 'cutout.png';
+      Dialog.Options := [ofPathMustExist, ofEnableSizing];
+      if Dialog.Execute then
+      begin
+        Path := {$IFDEF FPC}UTF8Decode{$ENDIF}(Dialog.FileName);
+        if Dialog.FilterIndex = 3 then
+          Path := ChangeFileExt(Path, '.json')
         else
-          Image := FValue.Cutout;
-        SaveBiRefPNG(Path, Image);
+          Path := ChangeFileExt(Path, '.png');
+        if Dialog.FilterIndex = 3 then
+          SaveBiRefReport(Path, FValue.JSON)
+        else begin
+          if Dialog.FilterIndex = 2 then
+            Image := FValue.Mask.ConvertTo(CV_MAKETYPE(CV_8U, 1), 255, 0)
+          else
+            Image := FValue.Cutout;
+          SaveBiRefPNG(Path, Image);
+        end;
+        FStatus.Caption := UI('Saved ' + Path);
       end;
-      FStatus.Caption := UI('Saved ' + Path);
+    finally
+      Dialog.Free;
     end;
-  finally
-    Dialog.Free;
+  except
+    on E: Exception do ReportError('Could not save result', E.Message);
   end;
 end;
 
@@ -596,6 +616,15 @@ begin
   else
     Image := Value.Cutout;
   Result := PrepareImage(Image);
+end;
+
+procedure TBiRefNetForm.ReportError(const Operation, Detail: string);
+var
+  Text: string;
+begin
+  Text := Operation + ': ' + Detail;
+  FStatus.Caption := UI(Text);
+  MessageDlg(UI(Text), mtError, [mbOK], 0);
 end;
 
 procedure TBiRefNetForm.InvalidateDisplay;
