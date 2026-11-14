@@ -20,6 +20,8 @@ For CPU vision, run the VisionModels preparation script to download the ready mo
 
 For text in photos, try [PaddleOCR](examples/paddle-ocr/README.md). The example detects text regions, reads each crop and saves UTF-8 text or JSON with region coordinates and confidence scores. Windows x64 CPU and NVIDIA CUDA bundles are available.
 
+For background removal, try [BiRefNet](examples/birefnet/README.md). It displays the original image beside a transparent preview or mask and saves an original-size PNG. The full SwinL HR800 model runs on CPU or NVIDIA CUDA `sm_89`.
+
 For Gemma 3n, run the GemmaChat preparation script for the ready CPU model. The GGUF-to-TVM converter remains available for custom CPU or CUDA bundles. See [GemmaChat](examples/gemma-chat/README.md). GemmaChat streams text and retains loaded weights between requests, as QwenChat now does. Both demos expose explicit loading and unloading, generation settings, streaming, Stop, and image attachment. Compatible Gemma 3n CPU and CUDA image bundles accept pictures. The separate Qwen2.5-VL adapter converts compatible checkpoints for CPU text-and-image inference. Dense Qwen text bundles explain that an image cannot be used. See [model input capabilities](docs/MODEL-MODALITIES.md).
 
 For short console programs, start with [Language models in a few Pascal calls](examples/language-models/README.md): load, configure, generate, stream, reuse, attach an image, and unload.

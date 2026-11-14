@@ -15,7 +15,7 @@ Both chat forms have Attach image, a thumbnail and Remove image. A text-only bun
 
 Use **Add images to a Gemma 3n bundle** in the converter. Supply a CPU or CUDA text bundle with host embeddings and its matching projector GGUF. It creates a separate bundle with vision.json, an encoder DLL, parameters and artifact hashes. Older CPU text bundles may require reconversion. The architecture comes from the text bundle, not a graphics-card name. Original model terms and access conditions still apply.
 
-The verified image profile resizes RGB input to 768 by 768 with bilinear interpolation and produces 256 image tokens. These tokens, the question and the answer share the converted context. TVM executes vision encoding and text decoding; The Pascal application uses OpenCV to decode image files. Audio and video input are not implemented.
+The verified image profile resizes RGB input to 768 by 768 with bilinear interpolation and produces 256 image tokens. These tokens, the question and the answer share the converted context. TVM executes vision encoding and text decoding; the Pascal application uses OpenCV to decode image files. Audio and video input are not implemented.
 
 Qwen2.5-VL has a separate checkpoint-folder conversion section. Its default 224-pixel profile preserves image aspect ratio, pads the image and contributes 64 image tokens. It uses the original vision weights and multimodal rotary positions. It is not the dense Qwen2.5 text adapter with an image filename added.
 

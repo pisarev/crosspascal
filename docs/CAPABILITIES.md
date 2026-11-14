@@ -13,6 +13,7 @@ The early access SDK supports Delphi 13.2 and Lazarus 4.8 with FPC 3.2.2. Keep t
 | CUDA language generation | Converter and QwenChat | Convert a pinned Qwen2.5-Instruct model or a compatible local dense Qwen checkpoint for the detected or selected CUDA architecture. QwenChat supports configurable sampling, Auto answer budgets, a manual token limit, and Stop |
 | CPU and CUDA vision | Converter and VisionModels | Five pinned profiles support classification or detection using the same example |
 | CPU and CUDA OCR | Converter and [PaddleOCR](../examples/paddle-ocr/README.md) | PP-OCRv5 Server finds and reads text regions. The Windows CPU and CUDA `sm_89` results matched the reference text on two photos. |
+| CPU and CUDA background removal | Converter and [BiRefNet](../examples/birefnet/README.md) | The full SwinL HR800 model returns an original-size mask and transparent PNG. Native CPU and CUDA `sm_89` tensor checks passed on three photos against the pinned ONNX reference. |
 | Experimental Gemma 3n text and images | Converter and both chat forms | Architecture-derived GGUF conversion to TVM CPU FP32 or CUDA W8A32, with a matching vision projector; streaming, persistent weights, automatic output and Stop |
 | Experimental Qwen2.5-VL text and images | Converter, both chat forms and console examples | TVM CPU FP32 or CUDA with INT8 text projections and FP32 vision; image preprocessing, block prefill and local inference |
 

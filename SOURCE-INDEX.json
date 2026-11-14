@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-020",
+  "release_id": "early-access-021",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -22,18 +22,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 4027,
-      "sha256": "a0d7bc3d4a387c454831e4e2b3def4477cac287d2f6d8e0dabe11d45bc5a1690"
+      "bytes": 4260,
+      "sha256": "b0c9bcabc7d11056f53eea0e005a0e4cb1af7e2f5e1d48ef03e2187a8af8c020"
     },
     {
       "path": "docs/CAPABILITIES.md",
-      "bytes": 4249,
-      "sha256": "7bd8ff5683f78c87dff6a5246e937e5f9661faf1a3d7e08ded79bf0b730f9ba5"
+      "bytes": 4525,
+      "sha256": "6cff05cf3a2aa0d89c17be8be6a11343e00736e19505b4854f76039856e5ebbc"
     },
     {
       "path": "docs/KNOWN-LIMITATIONS.md",
-      "bytes": 3294,
-      "sha256": "2b03b191517af8269b7c85fc141ffa5747e89f3587659f5e30e6d64e9a9e09ca"
+      "bytes": 3766,
+      "sha256": "0f452e54b9715ae41c4a9e8bc79473a0a6ab79be3b83886d56382f6bb8acd51f"
     },
     {
       "path": "docs/LICENSE-SCOPE.md",
@@ -43,12 +43,12 @@
     {
       "path": "docs/MODEL-MODALITIES.md",
       "bytes": 3162,
-      "sha256": "00be42c6cc3470d46d2cbb2ffe88bfb06a58945fab6e16dd01c06cbe5a5cc781"
+      "sha256": "c293ddfa76077ec11859efa0978e4bc51e886251ca36542a974f412fb21e40b0"
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 7698,
-      "sha256": "ccd35e9f3dce183c43807ecb23be61d88ebd259b2ebceb57c40e56026ca689d8"
+      "bytes": 8231,
+      "sha256": "22e637dd4af20b0b3446d24dcc8042feffcddc93819d61aa47d052aa6208b65d"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
@@ -69,6 +69,46 @@
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
       "bytes": 3930,
       "sha256": "e907bb5aa08da8e1de09e87fe1039d3f7a01b4326495e539888370723b791c4f"
+    },
+    {
+      "path": "examples/birefnet/BiRefNet.Main.pas",
+      "bytes": 14872,
+      "sha256": "41782af78fdd45235e8b71ae3399ead896c350cba9a8973c92973da550457fd5"
+    },
+    {
+      "path": "examples/birefnet/BiRefNet.Run.pas",
+      "bytes": 5816,
+      "sha256": "83e03b12feba0a265df9a281b9e409e4a3a70a685cf18b0f712584c31dd23c4d"
+    },
+    {
+      "path": "examples/birefnet/BiRefNet.dpr",
+      "bytes": 4633,
+      "sha256": "04f580722eeb313c6580172eb096f25e7167e6b7f3bd562d2dd0298e9f0723e5"
+    },
+    {
+      "path": "examples/birefnet/BiRefNet.dproj",
+      "bytes": 3793,
+      "sha256": "556dbb3e8313141f1bfe345bfa31c00887b5bd019b6ce36ab1f9c8331a592609"
+    },
+    {
+      "path": "examples/birefnet/BiRefNet.lpi",
+      "bytes": 1591,
+      "sha256": "d23fcff90286f56d0abb89a24b9f460e7718cae3c487b7519fcf18ddbb010cbc"
+    },
+    {
+      "path": "examples/birefnet/Prepare.cmd",
+      "bytes": 301,
+      "sha256": "4299383bb318c445d40cea6c431b8a34687786256e0f6056c4ee8660151c46df"
+    },
+    {
+      "path": "examples/birefnet/README.md",
+      "bytes": 3703,
+      "sha256": "6d035e5783eb392cba79dd8facae3e00dd4fc056a31f4f95e3b73afc69edd12b"
+    },
+    {
+      "path": "examples/birefnet/models.json",
+      "bytes": 1223,
+      "sha256": "7daab0a29dd6aa9e009bf52e5f1efbf0481899edb983a930a3001ebb783f8caa"
     },
     {
       "path": "examples/gemma-chat/GemmaChat.Main.pas",
@@ -382,8 +422,8 @@
     },
     {
       "path": "launcher/CrossPascalConvert.Native.pas",
-      "bytes": 18345,
-      "sha256": "dc4b1c923c6f69caea1ec278459be561e1cf33c6a337e7d9ed1286d17be23c09"
+      "bytes": 19244,
+      "sha256": "e521e37b85131f7833a78b3ff9cc78e9bb232a7f417f9f6b96aca68ff6a7463c"
     },
     {
       "path": "launcher/CrossPascalConvert.dpr",
@@ -397,8 +437,8 @@
     },
     {
       "path": "launcher/CrossPascalConvert.lpi",
-      "bytes": 1263,
-      "sha256": "c721d3d02b95962a592ee4790ff55e5dbdbe0788e5c15299d6b0a3be4ca88bc9"
+      "bytes": 1403,
+      "sha256": "0d342348d5d68ae8e9f9e7d5814ab81b6eb9cba4095e74b5edf69dd5cd444974"
     },
     {
       "path": "packages/lazarus/crosspascal_cvcore.lpk",
@@ -417,8 +457,8 @@
     },
     {
       "path": "prepare/prepare-bootstrap.json",
-      "bytes": 136,
-      "sha256": "5f6e51638c7f6b47ddc5988b1f648c7963cc608e8a69deced7b3439e5f37a539"
+      "bytes": 130,
+      "sha256": "8cb3d0d12aa0cd9b3a9e4ce41283cd968dcde2e575c8f0a16ac93cebeb41c909"
     },
     {
       "path": "prepare/vision-downloads.json",

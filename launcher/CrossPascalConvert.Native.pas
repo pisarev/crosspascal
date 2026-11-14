@@ -1,4 +1,4 @@
-{ ************************************************************************** }
+﻿{ ************************************************************************** }
 {                                                                            }
 { CrossPascalConvert.Native                                                  }
 {                                                                            }
@@ -20,7 +20,7 @@ type
     cpYoloDetection, cpYoloClassification, cpRtDetr, cpSqueezeNet, cpResNet,
     cpGemma2CUDA, cpQwenVLCUDA, cpYoloDetectionCUDA, cpYoloClassificationCUDA, cpRtDetrCUDA,
     cpSqueezeNetCUDA, cpResNetCUDA, cpPaddleDetection, cpPaddleRecognition,
-    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA);
+    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA, cpBiRefNet, cpBiRefNetCUDA);
 
   TConversionCommand = record
     Executable: string;
@@ -35,7 +35,8 @@ const
     'gemma3n-cpu', 'gemma3n-cuda', 'gemma3n-add-vision', 'gemma2-cpu', 'qwen2-cuda', 'qwen-vl-cpu',
     'yolo11n', 'yolo11n-cls', 'rtdetr-r18vd', 'squeezenet', 'resnet50', 'gemma2-cuda', 'qwen-vl-cuda',
     'yolo11n-cuda', 'yolo11n-cls-cuda', 'rtdetr-r18vd-cuda', 'squeezenet-cuda', 'resnet50-cuda',
-    'ppocrv5-server-det', 'ppocrv5-server-rec', 'ppocrv5-server-det-cuda', 'ppocrv5-server-rec-cuda');
+    'ppocrv5-server-det', 'ppocrv5-server-rec', 'ppocrv5-server-det-cuda', 'ppocrv5-server-rec-cuda',
+    'birefnet-hr800', 'birefnet-hr800-cuda');
   ProfileTitles: array[TConverterProfile] of string = (
     'Gemma 3n E4B | CPU',
     'Gemma 3n E4B | CUDA',
@@ -58,7 +59,9 @@ const
     'PP-OCRv5 Server detection | CPU',
     'PP-OCRv5 Server recognition | CPU',
     'PP-OCRv5 Server detection | CUDA',
-    'PP-OCRv5 Server recognition | CUDA');
+    'PP-OCRv5 Server recognition | CUDA',
+    'BiRefNet HR800 background removal | CPU',
+    'BiRefNet HR800 background removal | CUDA');
 
 function ExecutableFolder: string;
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
@@ -85,7 +88,7 @@ end;
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
 begin
   Result := Profile in [cpGemma3nCUDA, cpQwen2, cpGemma2CUDA..cpResNetCUDA,
-    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA];
+    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA, cpBiRefNetCUDA];
 end;
 
 function SourceProfile(const Profile: TConverterProfile): TConverterProfile;
@@ -100,6 +103,7 @@ begin
     cpResNetCUDA: Result := cpResNet;
     cpPaddleDetectionCUDA: Result := cpPaddleDetection;
     cpPaddleRecognitionCUDA: Result := cpPaddleRecognition;
+    cpBiRefNetCUDA: Result := cpBiRefNet;
   else
     Result := Profile;
   end;
@@ -346,12 +350,16 @@ begin
         Args := [InputPath, Recipe, Output] + LinkArgs;
         if UsesCUDA(Profile) then Args := Args + ['--cuda', CUDA, Arch];
       end;
-    cpPaddleDetection, cpPaddleRecognition:
+    cpPaddleDetection, cpPaddleRecognition, cpBiRefNet:
       begin
         Tool := 'ConvertVisionOnnx.exe';
         InputPath := SelectOnnx(InputPath);
-        Recipe := RequireFile(IncludeTrailingPathDelimiter(Root) +
-          'crosspascal\examples\paddle-ocr\models.json', 'The PaddleOCR profile catalog');
+        if Kind = cpBiRefNet then
+          Recipe := RequireFile(IncludeTrailingPathDelimiter(Root) +
+            'crosspascal\examples\birefnet\models.json', 'The BiRefNet profile catalog')
+        else
+          Recipe := RequireFile(IncludeTrailingPathDelimiter(Root) +
+            'crosspascal\examples\paddle-ocr\models.json', 'The PaddleOCR profile catalog');
         if Kind = cpPaddleRecognition then
           RequireFile(ExtractFilePath(InputPath) + 'ppocrv5_dict.txt',
             'The PaddleOCR dictionary beside the ONNX model');
