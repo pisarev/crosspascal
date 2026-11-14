@@ -71,6 +71,7 @@ begin
     Result.Cutout := BiRefNetCutout(Image, Result.Mask);
     Result.Device := Model.DeviceName;
     ModelDigest := Model.ModelSHA256;
+    Model.Close;
     FreeAndNil(Model);
     Result.Milliseconds := GetTickCount64 - Started;
     Root := TJSONObject.Create;

@@ -24,6 +24,8 @@ type
   public
     Value: TBiRefResult;
     ErrorText: string;
+    RequiresProcessRestart: Boolean;
+    CleanupDetail: string;
     constructor Create(const Bundle, Runtime, Digest: string; const Image: IMat);
   end;
 
@@ -49,6 +51,8 @@ type
     FDisplayValid: Boolean;
     FDisplayedView: Integer;
     FChangingView: Boolean;
+    FRequiresRestart: Boolean;
+    FRestartDetail: string;
     procedure Browse(Sender: TObject);
     procedure OpenImage(Sender: TObject);
     procedure LoadImage(const FileName: string);
@@ -74,7 +78,7 @@ implementation
 uses
   {$IFDEF FPC}Math, Dialogs, FPReadPNG, {$ELSE}System.Math, Vcl.Dialogs, Vcl.FileCtrl,
   Vcl.Imaging.pngimage, {$ENDIF}
-  ExampleDefaults, TVM.CpuGraph, OpenCV, OpenCVTypes, OpenCVConsts;
+  ExampleDefaults, TVM.CpuGraph, TVM.BiRefNet, OpenCV, OpenCVTypes, OpenCVConsts;
 
 function UI(const Text: string): {$IFDEF FPC}UTF8String{$ELSE}string{$ENDIF};
 begin
@@ -86,6 +90,12 @@ function EditValue(const Edit: TEdit): string;
 begin
   {$IFDEF FPC}Result := UTF8Decode(Edit.Text);
   {$ELSE}Result := Edit.Text;{$ENDIF}
+end;
+
+function FolderExists(const Path: string): Boolean;
+begin
+  {$IFDEF FPC}Result := SysUtils.DirectoryExists(Path);
+  {$ELSE}Result := System.SysUtils.DirectoryExists(Path);{$ENDIF}
 end;
 
 constructor TBiRefWorker.Create(const Bundle, Runtime, Digest: string; const Image: IMat);
@@ -106,11 +116,16 @@ end;
 procedure TBiRefWorker.Execute;
 begin
   try
-    Value := RunBiRef(FBundle, FRuntime, FDigest, FImage, Stopping);
-  except
-    on E: Exception do ErrorText := E.ClassName + ': ' + E.Message;
+    try
+      Value := RunBiRef(FBundle, FRuntime, FDigest, FImage, Stopping);
+    except
+      on E: Exception do ErrorText := E.ClassName + ': ' + E.Message;
+    end;
+  finally
+    RequiresProcessRestart := BiRefNetRequiresProcessRestart;
+    CleanupDetail := BiRefNetCleanupDiagnostic;
+    FImage := nil;
   end;
-  FImage := nil;
 end;
 
 constructor TBiRefNetForm.Create(AOwner: TComponent);
@@ -350,23 +365,32 @@ procedure TBiRefNetForm.SetRunning(const Running: Boolean);
 var
   I: Integer;
 begin
+  if BiRefNetRequiresProcessRestart then
+  begin
+    FRequiresRestart := True;
+    if FRestartDetail = '' then FRestartDetail := BiRefNetCleanupDiagnostic;
+  end;
   FOpen.Enabled := not Running;
-  FRemove.Enabled := not Running and FDisplayValid and (FImage <> nil);
+  FRemove.Enabled := not Running and not FRequiresRestart and
+    not BiRefNetRequiresProcessRestart and FDisplayValid and (FImage <> nil);
   FStop.Enabled := Running;
   FSave.Enabled := not Running and FDisplayValid and (FValue.Cutout <> nil);
   FBundle.Enabled := not Running;
   FRuntime.Enabled := not Running;
   FView.Enabled := not Running and FDisplayValid and (FValue.Cutout <> nil);
   for I := 0 to 1 do FBrowse[I].Enabled := not Running;
+  if not Running and FRequiresRestart then
+    FStatus.Caption := UI('Restart the application before running another model. ' + FRestartDetail);
 end;
 
 procedure TBiRefNetForm.RemoveBackground(Sender: TObject);
 begin
+  RequireCpu(not FRequiresRestart and not BiRefNetRequiresProcessRestart,
+    'Restart the application before running another model.');
   RequireCpu(FDisplayValid, 'Open an image again to restore the preview before running.');
   if (FWorker <> nil) or (FImage = nil) then Exit;
-  RequireCpu(SysUtils.DirectoryExists(EditValue(FBundle)),
-    'Select the converted BiRefNet model folder.');
-  RequireCpu(SysUtils.DirectoryExists(EditValue(FRuntime)), 'Select the TVM runtime folder.');
+  RequireCpu(FolderExists(EditValue(FBundle)), 'Select the converted BiRefNet model folder.');
+  RequireCpu(FolderExists(EditValue(FRuntime)), 'Select the TVM runtime folder.');
   PublishPictures(nil, nil, False);
   FValue := Default(TBiRefResult);
   FWorker := TBiRefWorker.Create(EditValue(FBundle), EditValue(FRuntime), FDigest, FImage);
@@ -394,23 +418,30 @@ begin
   FTimer.Enabled := False;
   try
     FWorker.WaitFor;
+    if FWorker.RequiresProcessRestart then
+    begin
+      FRequiresRestart := True;
+      FRestartDetail := FWorker.ErrorText + ' ' + FWorker.CleanupDetail;
+    end;
     try
-      if FWorker.ErrorText <> '' then
-        FStatus.Caption := UI(FWorker.ErrorText)
-      else begin
-        Candidate := FWorker.Value;
-        Status := Format('%s  |  %.2f s  |  Save the cutout or mask as PNG.',
-          [Candidate.Device, Candidate.Milliseconds / 1000]);
-        Picture := PrepareResult(Candidate);
-        try
-          PublishPictures(nil, Picture, False);
-          FValue := Candidate;
-          FDisplayedView := FView.ItemIndex;
-          FStatus.Caption := UI(Status);
-        finally
-          Picture.Free;
+      if FRequiresRestart then
+        FValue := Default(TBiRefResult)
+      else if FWorker.ErrorText <> '' then
+          FStatus.Caption := UI(FWorker.ErrorText)
+        else begin
+          Candidate := FWorker.Value;
+          Status := Format('%s  |  %.2f s  |  Save the cutout or mask as PNG.',
+            [Candidate.Device, Candidate.Milliseconds / 1000]);
+          Picture := PrepareResult(Candidate);
+          try
+            PublishPictures(nil, Picture, False);
+            FValue := Candidate;
+            FDisplayedView := FView.ItemIndex;
+            FStatus.Caption := UI(Status);
+          finally
+            Picture.Free;
+          end;
         end;
-      end;
     except
       on E: Exception do
       begin

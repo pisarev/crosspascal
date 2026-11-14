@@ -15,6 +15,8 @@ The CPU model requires AVX2 and FMA. The GPU bundle targets NVIDIA `sm_89` and r
 
 The checkerboard appears in the preview. The saved cutout has a real alpha channel and preserves the original RGB pixels. Input images are decoded as RGB; any input alpha is discarded. The saved alpha comes from the predicted mask. Choose a new output filename; the example refuses to overwrite an existing file.
 
+If CUDA context entry or restoration fails, restart the application before another operation. The example blocks further inference in that process. Its cleanup preserves the original operation error and retains unsafe native resources until process termination. It does not attempt to reset the GPU or recover from driver loss.
+
 ## Model and image processing
 
 The profile uses the full SwinL [BiRefNet_HR checkpoint](https://huggingface.co/ZhengPeng7/BiRefNet_HR/tree/a7a562f6fd16021180f2f4348f4de003a2d3d1e1). It resizes the image to `800 x 800` RGB pixels using Pillow-compatible bicubic interpolation, then applies ImageNet normalization. The native model returns FP32 mask logits. One sigmoid and bilinear probability resizing produce the mask at the original image dimensions.
@@ -31,7 +33,7 @@ The executable can also save a result without opening the window:
 BiRefNet.exe --recorded --bundle="model-folder" --runtime="runtime-folder" --opencv="crosscv.dll" --image="photo.png" --report="result.json"
 ```
 
-All paths can be absolute. Choose a new report filename. The default outputs are `result.cutout.png` and `result.mask.png`; `--cutout` and `--mask` can set separate new PNG filenames. A successful run writes `status: PASS` after releasing the model and image resources, then exits with code 0. A failed run exits with code 1 and writes a failure report when possible. The report's elapsed time covers model loading, preprocessing, inference, postprocessing, and model release. It excludes reading the image and saving the output files.
+All paths can be absolute. Choose a new report filename. The default outputs are `result.cutout.png` and `result.mask.png`; `--cutout` and `--mask` can set separate new PNG filenames. A successful run writes `status: PASS` after the model's explicit close succeeds, then exits with code 0. Context management errors prevent a successful close. This does not check every internal TVM or CUDA deallocation status. A failed run exits with code 1 and writes a failure report when possible. The report's elapsed time covers model loading, preprocessing, inference, postprocessing, and model close. It excludes reading the image and saving the output files.
 
 ## Licenses
 
