@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ ImagePrompt                                                                }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-program ImagePrompt;
+﻿program ImagePrompt;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 {$APPTYPE CONSOLE}

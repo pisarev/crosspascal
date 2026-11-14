@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ TestDisjointSet                                                            }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-program TestDisjointSet;
+﻿program TestDisjointSet;
 
 {$APPTYPE CONSOLE}
 

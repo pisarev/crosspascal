@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ TestGeometry                                                               }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-program TestGeometry;
+﻿program TestGeometry;
 
 {$APPTYPE CONSOLE}
 

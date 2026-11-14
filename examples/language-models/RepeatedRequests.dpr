@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ RepeatedRequests                                                           }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-program RepeatedRequests;
+﻿program RepeatedRequests;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 {$APPTYPE CONSOLE}

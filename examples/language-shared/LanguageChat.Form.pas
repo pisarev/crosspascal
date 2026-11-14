@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ LanguageChat.Form                                                          }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-unit LanguageChat.Form;
+﻿unit LanguageChat.Form;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 

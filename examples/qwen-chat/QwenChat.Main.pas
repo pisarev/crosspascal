@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ QwenChat.Main                                                              }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-unit QwenChat.Main;
+﻿unit QwenChat.Main;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 

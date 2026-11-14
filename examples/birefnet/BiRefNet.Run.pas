@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ BiRefNet.Run                                                               }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-unit BiRefNet.Run;
+﻿unit BiRefNet.Run;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 

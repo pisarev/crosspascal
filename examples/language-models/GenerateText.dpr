@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ GenerateText                                                               }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-program GenerateText;
+﻿program GenerateText;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 {$APPTYPE CONSOLE}

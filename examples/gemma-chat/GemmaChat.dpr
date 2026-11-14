@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ GemmaChat                                                                  }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-program GemmaChat;
+﻿program GemmaChat;
 
 {$IFDEF FPC}
 {$MODE DELPHIUNICODE}

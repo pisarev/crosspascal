@@ -72,18 +72,18 @@
     },
     {
       "path": "examples/birefnet/BiRefNet.Main.pas",
-      "bytes": 22039,
-      "sha256": "5c42894fa52821454b551e8db96212068a3d7e1ca7434c8fa2f3f0f199969699"
+      "bytes": 21476,
+      "sha256": "4d1000f161d680c86e0c70b0868d9c328b80a7a4a4ddd0c4c8dde05922bc7d95"
     },
     {
       "path": "examples/birefnet/BiRefNet.Run.pas",
-      "bytes": 8148,
-      "sha256": "2e27ac6c9498158f1ae98509fb7007f61e5865fc5e9dec4087b8771f693c3181"
+      "bytes": 7585,
+      "sha256": "3cbc52d0d4b93e633d0950a76ec37538fc0f9e6c7af47b6427bbcd7a6372d937"
     },
     {
       "path": "examples/birefnet/BiRefNet.dpr",
-      "bytes": 5239,
-      "sha256": "df518d696b27bf8847d89a9eb557034dc83bb3238d4def24f7afbf473c1d5e36"
+      "bytes": 4676,
+      "sha256": "3354083982bc902bc64d42ad62e7043ab35ee61f1eb7f4129c202a08adf787ec"
     },
     {
       "path": "examples/birefnet/BiRefNet.dproj",
@@ -112,13 +112,13 @@
     },
     {
       "path": "examples/gemma-chat/GemmaChat.Main.pas",
-      "bytes": 1047,
-      "sha256": "94be3343518a677fdeaadb095d59282bc9cc5c46496d88c5aaf3e884a1be02ed"
+      "bytes": 484,
+      "sha256": "8b49afff8b8bc79e3d2c8462122163d360193176f8a68a0ac9ec6563aa98155d"
     },
     {
       "path": "examples/gemma-chat/GemmaChat.dpr",
-      "bytes": 943,
-      "sha256": "9d83d99455ab2b48cb870e93200a54a2627475b887569f74c6119f7528a44614"
+      "bytes": 380,
+      "sha256": "d759fee86c55285ba186ab82eacbaab934868c60fce82e5a5abc65b0b0a61179"
     },
     {
       "path": "examples/gemma-chat/GemmaChat.dproj",
@@ -142,13 +142,13 @@
     },
     {
       "path": "examples/language-models/ExampleSupport.pas",
-      "bytes": 4944,
-      "sha256": "5cfedbfa90cb9d2c00b13769d8fb13750f8592be6f549d7418c3344deafee820"
+      "bytes": 4381,
+      "sha256": "1f32ae83abd8aa5da52ce700cba34aaf419193e692d7073da59c1a5f934b590e"
     },
     {
       "path": "examples/language-models/GenerateText.dpr",
-      "bytes": 1560,
-      "sha256": "23cad00ef101d64e5a38fa2e44f398d8bdf97c99959fa7e46a799f29e81dfb3e"
+      "bytes": 997,
+      "sha256": "35d09ba7fc7e0376f05f33cb66684329c553376dc854ecc6469e31c55efe0835"
     },
     {
       "path": "examples/language-models/GenerateText.dproj",
@@ -162,8 +162,8 @@
     },
     {
       "path": "examples/language-models/GenerationSettings.dpr",
-      "bytes": 1943,
-      "sha256": "4b8d9db8bc828b22f06f3d8390343acbf58773b52111ce974bfe728d79dd99f0"
+      "bytes": 1380,
+      "sha256": "7bb7ff108d77b43aaea426e9491a6a5f43fa1cb39d96405dcc4eb09dd4af4336"
     },
     {
       "path": "examples/language-models/GenerationSettings.dproj",
@@ -177,8 +177,8 @@
     },
     {
       "path": "examples/language-models/ImagePrompt.dpr",
-      "bytes": 1873,
-      "sha256": "f2f38ae5a15e6f423ca2a862235c942c297d74793c7730c1350fdf215177486a"
+      "bytes": 1310,
+      "sha256": "b2e70fec9ae2fd9195bec76fc427d1953fd940d119a2b06ef0b8b2bf85931d8e"
     },
     {
       "path": "examples/language-models/ImagePrompt.dproj",
@@ -192,8 +192,8 @@
     },
     {
       "path": "examples/language-models/LoadUnload.dpr",
-      "bytes": 1824,
-      "sha256": "9643e68f7fd06bdc98cb23fce31e6b7ab55a47f139fcd582b0e0e5011143d877"
+      "bytes": 1261,
+      "sha256": "2864dfc7e2ce18a313ef7be7ea96841040997d5ff5adfa4a0847b8ca8e8c3213"
     },
     {
       "path": "examples/language-models/LoadUnload.dproj",
@@ -247,8 +247,8 @@
     },
     {
       "path": "examples/language-models/RepeatedRequests.dpr",
-      "bytes": 1684,
-      "sha256": "df60d9d156c7724ea424b8a91f69e21c5e4c4ca1c3f3d015fd6542fc67f17117"
+      "bytes": 1121,
+      "sha256": "32a4e7abbbdf3570c8b8d67e0c169a664056ff4a0f3f1bf821f745e542bb1042"
     },
     {
       "path": "examples/language-models/RepeatedRequests.dproj",
@@ -262,8 +262,8 @@
     },
     {
       "path": "examples/language-models/StreamAndStop.dpr",
-      "bytes": 1735,
-      "sha256": "4e50e78a51340cfc4ba0b3748f91ab3ded4ba9cb7de67d17cc166821412d79dd"
+      "bytes": 1172,
+      "sha256": "45c41c1a657fa0ead687d4ddd99302b091747b654012c7443314b9f67ffc5055"
     },
     {
       "path": "examples/language-models/StreamAndStop.dproj",
@@ -277,13 +277,13 @@
     },
     {
       "path": "examples/language-shared/LanguageChat.Form.pas",
-      "bytes": 25930,
-      "sha256": "ed9e5fa8f797f3c3e2ea47f0eb91085de20401c1481909b4088729458e3ca803"
+      "bytes": 25367,
+      "sha256": "a71bd8fe2571b0cb6ec1fbd5100df0b5a81937ebdc5e761ef9b0b2142774ec18"
     },
     {
       "path": "examples/marker-lite/MarkerLite.dpr",
-      "bytes": 2488,
-      "sha256": "88c14100842dd0dce8af50a2b42262cdda160fcf24885402131112fa66d9094d"
+      "bytes": 1925,
+      "sha256": "f4549de080b22161ed48807f82c22b945a8aee6fba17b607cd55ede0a6173def"
     },
     {
       "path": "examples/marker-lite/MarkerLite.dproj",
@@ -297,8 +297,8 @@
     },
     {
       "path": "examples/marker-lite/MarkerLiteForm.pas",
-      "bytes": 10429,
-      "sha256": "f9e48d61bc0bc6b43558b808fd310748c2c8d6478e4c3b2a42e3ca0616975b98"
+      "bytes": 9866,
+      "sha256": "1ddcbee79551dd29df625f3622efe302f57cd23681266049ee3ae95f1ee7251c"
     },
     {
       "path": "examples/marker-lite/Prepare.cmd",
@@ -312,18 +312,18 @@
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.Main.pas",
-      "bytes": 15743,
-      "sha256": "d12d2a54204f2c704766a01cc351216f82438ce47be3d39596c2551b105a87b6"
+      "bytes": 15180,
+      "sha256": "d939077b60219f7d5ccba508024cc9721b0332df9bca69ad2223b152a137a44d"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.Run.pas",
-      "bytes": 5385,
-      "sha256": "22a8cf0d2e53718fd68dad425b18c014f8d48c2cc4920960e66830f86db443a3"
+      "bytes": 4822,
+      "sha256": "f0296a99e4fc37a9e48555f0b3f16502dfb0d920aa0347e21ae7eb5af162e4ef"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.dpr",
-      "bytes": 4686,
-      "sha256": "76f81cef9c8f7c47206297ba42a08bfb9708db7cbd4c164e0b98207fcb646693"
+      "bytes": 4123,
+      "sha256": "be775bf1534de6e6ec360d9e228f664abef7bf427bb2b3ff0dc92eb53c6ef9f1"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.dproj",
@@ -357,13 +357,13 @@
     },
     {
       "path": "examples/qwen-chat/QwenChat.Main.pas",
-      "bytes": 1041,
-      "sha256": "4a5518d488bf76b9a746ab4337b08beba548ff4a4b8d1d82d175f23ccaf162f3"
+      "bytes": 478,
+      "sha256": "8e12e3762eebdfdac24a017c363bbe9a8e4d8980597efc63f9f57cf1b505e7e5"
     },
     {
       "path": "examples/qwen-chat/QwenChat.dpr",
-      "bytes": 4521,
-      "sha256": "7330de9aa5b00661c2c94eb267c0d1c9a376b28e851102a1e7184c29b6c901a0"
+      "bytes": 3958,
+      "sha256": "69b904856cd3c07f4daf47c68f97dc3714e8c6e376d7e58227d34991c791888e"
     },
     {
       "path": "examples/qwen-chat/QwenChat.dproj",
@@ -392,13 +392,13 @@
     },
     {
       "path": "examples/vision-models/VisionModels.Main.pas",
-      "bytes": 22258,
-      "sha256": "44865d03492ee698c31270f72144a410cac941a06f92599db6ad50e646ecff68"
+      "bytes": 21695,
+      "sha256": "eea7f9c6def3f1964f43ff6136f0d353c4203b29fafb5b3fdb26ddca6bff0dfc"
     },
     {
       "path": "examples/vision-models/VisionModels.dpr",
-      "bytes": 6063,
-      "sha256": "ea12bd2cd4d1888e7402363733bf6c405e83a458ac90f2c39279e564fccca508"
+      "bytes": 5500,
+      "sha256": "935bf786e39d61a4283487a6bc4b11e9979b6b8e0db1039a85eb3573c47449e7"
     },
     {
       "path": "examples/vision-models/VisionModels.dproj",
@@ -447,8 +447,8 @@
     },
     {
       "path": "prepare/ExampleDefaults.pas",
-      "bytes": 2796,
-      "sha256": "52aff8cc8a1e639f81233ac1da67649aa686c0a039a1ac8be2e900aa848530d9"
+      "bytes": 2233,
+      "sha256": "42ffdda1f2daee4f247e53ed8627e40cf006524664b7c32fabf53c6509c12d1b"
     },
     {
       "path": "prepare/bootstrap.ps1",
@@ -627,8 +627,8 @@
     },
     {
       "path": "rtl-algorithms/tests/TestDisjointSet.dpr",
-      "bytes": 1734,
-      "sha256": "48a9e9c69e1cf824b83f8ada6422b9ceed672dbf223479403fe8258a95682770"
+      "bytes": 1179,
+      "sha256": "70444861236d32f8319a8950d52d3a32fa4bf753726132bda6fae83280ba7bdb"
     },
     {
       "path": "rtl-algorithms/tests/TestDisjointSet.dproj",
@@ -642,8 +642,8 @@
     },
     {
       "path": "rtl-algorithms/tests/TestGeometry.dpr",
-      "bytes": 77079,
-      "sha256": "cbb391ddef4a5b90115908a355167a034e52b369d4a723da2a35bf0c4e0774a5"
+      "bytes": 76524,
+      "sha256": "ab9f97838b577ace29103da7bd63bc9dbb0be9f9a94d3794c0d0c6ef86a34d2d"
     },
     {
       "path": "rtl-algorithms/tests/TestGeometry.dproj",

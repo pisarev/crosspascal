@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ ExampleSupport                                                             }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-unit ExampleSupport;
+﻿unit ExampleSupport;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 

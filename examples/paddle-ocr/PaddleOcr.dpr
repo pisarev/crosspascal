@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ PaddleOcr                                                                  }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-program PaddleOcr;
+﻿program PaddleOcr;
 
 {$IFDEF FPC}
   {$MODE DELPHIUNICODE}

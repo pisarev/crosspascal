@@ -1,12 +1,4 @@
-﻿{ ************************************************************************** }
-{                                                                            }
-{ VisionModels                                                               }
-{                                                                            }
-{ Copyright © 2026 Yuriy Pisarev                                             }
-{                                                                            }
-{ ************************************************************************** }
-
-program VisionModels;
+﻿program VisionModels;
 
 {$IFDEF FPC}
 {$MODE DELPHIUNICODE}
