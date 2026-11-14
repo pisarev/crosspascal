@@ -1,3 +1,11 @@
+﻿{ ************************************************************************** }
+{                                                                            }
+{ LanguageChat.Form                                                          }
+{                                                                            }
+{ Copyright © 2026 Yuriy Pisarev                                             }
+{                                                                            }
+{ ************************************************************************** }
+
 unit LanguageChat.Form;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
@@ -107,6 +115,7 @@ procedure WriteNewReport(const Path, JSONText: string);
 implementation
 
 uses
+  TVM.Threads,
   {$IFDEF FPC}FPImage, IntfGraphics{$ELSE}Vcl.FileCtrl, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage{$ENDIF},
   CrossPascal.Json;
 
@@ -255,9 +264,13 @@ begin
       on E: Exception do FError := E.ClassName + ': ' + E.Message;
     end;
   finally
-    FForm.FModel.OnStatus := nil;
-    FForm.FModel.OnText := nil;
-    FForm.FModel.ShouldStop := nil;
+    try
+      FForm.FModel.OnStatus := nil;
+      FForm.FModel.OnText := nil;
+      FForm.FModel.ShouldStop := nil;
+    finally
+      if not FinishTVMThread(FError) then FReport := '';
+    end;
   end;
 end;
 

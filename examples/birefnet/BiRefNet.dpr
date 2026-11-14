@@ -1,4 +1,12 @@
-﻿program BiRefNet;
+﻿{ ************************************************************************** }
+{                                                                            }
+{ BiRefNet                                                                   }
+{                                                                            }
+{ Copyright © 2026 Yuriy Pisarev                                             }
+{                                                                            }
+{ ************************************************************************** }
+
+program BiRefNet;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 {$APPTYPE GUI}

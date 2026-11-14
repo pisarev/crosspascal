@@ -1,3 +1,11 @@
+﻿{ ************************************************************************** }
+{                                                                            }
+{ VisionModels.Main                                                          }
+{                                                                            }
+{ Copyright © 2026 Yuriy Pisarev                                             }
+{                                                                            }
+{ ************************************************************************** }
+
 unit VisionModels.Main;
 
 {$IFDEF FPC}
@@ -80,6 +88,7 @@ function DecodeVisionImage(const Path: string; out SHA256: string): IMat;
 implementation
 
 uses
+  TVM.Threads,
   {$IFDEF FPC}Math, Types, Dialogs, IntfGraphics, FPImage, {$ELSE}
   System.Math, System.Types, Vcl.Dialogs, Vcl.FileCtrl, {$ENDIF} CrossPascal.SHA256,
   OpenCVTypes, OpenCVConsts, OpenCV, ExampleDefaults;
@@ -187,15 +196,22 @@ end;
 procedure TVisionWorker.Execute;
 begin
   try
-    if FAuditDirectory = '' then
-      FResult := RunVision(FProfile, FBundle, FRuntime, FImagePath, FImageSHA256, FImage)
-    else
-      FResult := RunCpuVision(FProfile, FBundle, FRuntime, FImagePath, FImageSHA256, FImage,
-        nil, FAuditDirectory);
-  except
-    on E: Exception do FErrorText := E.ClassName + ': ' + E.Message;
+    try
+      if FAuditDirectory = '' then
+        FResult := RunVision(FProfile, FBundle, FRuntime, FImagePath, FImageSHA256, FImage)
+      else
+        FResult := RunCpuVision(FProfile, FBundle, FRuntime, FImagePath, FImageSHA256, FImage,
+          nil, FAuditDirectory);
+    except
+      on E: Exception do FErrorText := E.ClassName + ': ' + E.Message;
+    end;
+  finally
+    try
+      FImage := nil;
+    finally
+      if not FinishTVMThread(FErrorText) then FResult := Default(TCpuVisionResult);
+    end;
   end;
-  FImage := nil;
 end;
 
 procedure TVisionModelsForm.FitOnScreen(Sender: TObject);

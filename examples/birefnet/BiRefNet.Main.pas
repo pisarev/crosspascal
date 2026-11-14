@@ -1,4 +1,12 @@
-﻿unit BiRefNet.Main;
+﻿{ ************************************************************************** }
+{                                                                            }
+{ BiRefNet.Main                                                              }
+{                                                                            }
+{ Copyright © 2026 Yuriy Pisarev                                             }
+{                                                                            }
+{ ************************************************************************** }
+
+unit BiRefNet.Main;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 {$POINTERMATH ON}
@@ -77,6 +85,7 @@ type
 implementation
 
 uses
+  TVM.Threads,
   {$IFDEF FPC}Math, Dialogs, FPReadPNG, {$ELSE}System.Math, Vcl.Dialogs, Vcl.FileCtrl,
   Vcl.Imaging.pngimage, {$ENDIF}
   ExampleDefaults, TVM.CpuGraph, TVM.BiRefNet, OpenCV, OpenCVTypes, OpenCVConsts;
@@ -115,6 +124,8 @@ begin
 end;
 
 procedure TBiRefWorker.Execute;
+var
+  ThreadCleanupSucceeded: Boolean;
 begin
   try
     try
@@ -123,9 +134,14 @@ begin
       on E: Exception do ErrorText := E.ClassName + ': ' + E.Message;
     end;
   finally
-    RequiresProcessRestart := BiRefNetRequiresProcessRestart;
-    CleanupDetail := BiRefNetCleanupDiagnostic;
-    FImage := nil;
+    try
+      FImage := nil;
+    finally
+      ThreadCleanupSucceeded := FinishTVMThread(ErrorText);
+      RequiresProcessRestart := BiRefNetRequiresProcessRestart or not ThreadCleanupSucceeded;
+      CleanupDetail := BiRefNetCleanupDiagnostic;
+      if not ThreadCleanupSucceeded then Value := Default(TBiRefResult);
+    end;
   end;
 end;
 

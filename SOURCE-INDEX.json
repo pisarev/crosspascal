@@ -72,18 +72,18 @@
     },
     {
       "path": "examples/birefnet/BiRefNet.Main.pas",
-      "bytes": 21216,
-      "sha256": "dc40385a582b714b5aab89c9442ee9241a38c02bc05c0daac8068670970859dc"
+      "bytes": 22039,
+      "sha256": "5c42894fa52821454b551e8db96212068a3d7e1ca7434c8fa2f3f0f199969699"
     },
     {
       "path": "examples/birefnet/BiRefNet.Run.pas",
-      "bytes": 7585,
-      "sha256": "3cbc52d0d4b93e633d0950a76ec37538fc0f9e6c7af47b6427bbcd7a6372d937"
+      "bytes": 8148,
+      "sha256": "2e27ac6c9498158f1ae98509fb7007f61e5865fc5e9dec4087b8771f693c3181"
     },
     {
       "path": "examples/birefnet/BiRefNet.dpr",
-      "bytes": 4676,
-      "sha256": "3354083982bc902bc64d42ad62e7043ab35ee61f1eb7f4129c202a08adf787ec"
+      "bytes": 5239,
+      "sha256": "df518d696b27bf8847d89a9eb557034dc83bb3238d4def24f7afbf473c1d5e36"
     },
     {
       "path": "examples/birefnet/BiRefNet.dproj",
@@ -112,13 +112,13 @@
     },
     {
       "path": "examples/gemma-chat/GemmaChat.Main.pas",
-      "bytes": 454,
-      "sha256": "eb564f0b1704194681ba9be30118ca83f1d415082c2c9c89c90de7731bca3740"
+      "bytes": 1047,
+      "sha256": "94be3343518a677fdeaadb095d59282bc9cc5c46496d88c5aaf3e884a1be02ed"
     },
     {
       "path": "examples/gemma-chat/GemmaChat.dpr",
-      "bytes": 360,
-      "sha256": "c7997986c294342dd5043ebc40f13e677d5335ba7a437a53c3f9dcd9d263735a"
+      "bytes": 943,
+      "sha256": "9d83d99455ab2b48cb870e93200a54a2627475b887569f74c6119f7528a44614"
     },
     {
       "path": "examples/gemma-chat/GemmaChat.dproj",
@@ -142,13 +142,13 @@
     },
     {
       "path": "examples/language-models/ExampleSupport.pas",
-      "bytes": 4227,
-      "sha256": "116e4b1f177cdde488bfe6a9fa120bd208e2e5c52c44d392f6fd53b0c7c3de6f"
+      "bytes": 4944,
+      "sha256": "5cfedbfa90cb9d2c00b13769d8fb13750f8592be6f549d7418c3344deafee820"
     },
     {
       "path": "examples/language-models/GenerateText.dpr",
-      "bytes": 950,
-      "sha256": "747176d9e1b1d58d9e36f7db04b90eb14d28acb3de4fd7b62812cb91a191e524"
+      "bytes": 1560,
+      "sha256": "23cad00ef101d64e5a38fa2e44f398d8bdf97c99959fa7e46a799f29e81dfb3e"
     },
     {
       "path": "examples/language-models/GenerateText.dproj",
@@ -162,8 +162,8 @@
     },
     {
       "path": "examples/language-models/GenerationSettings.dpr",
-      "bytes": 1323,
-      "sha256": "7ae20b605196eb6823f9964baec47bbb188c5486f949acde5b1351c8ba0eff7f"
+      "bytes": 1943,
+      "sha256": "4b8d9db8bc828b22f06f3d8390343acbf58773b52111ce974bfe728d79dd99f0"
     },
     {
       "path": "examples/language-models/GenerationSettings.dproj",
@@ -177,8 +177,8 @@
     },
     {
       "path": "examples/language-models/ImagePrompt.dpr",
-      "bytes": 1257,
-      "sha256": "6a7c8455ee4d039d110e78bdfe5ed1536ad770c02b5c3e2767d4faa76d63fd84"
+      "bytes": 1873,
+      "sha256": "f2f38ae5a15e6f423ca2a862235c942c297d74793c7730c1350fdf215177486a"
     },
     {
       "path": "examples/language-models/ImagePrompt.dproj",
@@ -192,8 +192,8 @@
     },
     {
       "path": "examples/language-models/LoadUnload.dpr",
-      "bytes": 1212,
-      "sha256": "c68dddbbc1dfca5692b36aa338b2ff356be992eec8fa74719a6608262f2cc0e5"
+      "bytes": 1824,
+      "sha256": "9643e68f7fd06bdc98cb23fce31e6b7ab55a47f139fcd582b0e0e5011143d877"
     },
     {
       "path": "examples/language-models/LoadUnload.dproj",
@@ -247,8 +247,8 @@
     },
     {
       "path": "examples/language-models/RepeatedRequests.dpr",
-      "bytes": 1073,
-      "sha256": "3cfdc1d8c773958f2db1aff403f7f6a67c678c35bfb680f438f901ec6e57eb16"
+      "bytes": 1684,
+      "sha256": "df60d9d156c7724ea424b8a91f69e21c5e4c4ca1c3f3d015fd6542fc67f17117"
     },
     {
       "path": "examples/language-models/RepeatedRequests.dproj",
@@ -262,8 +262,8 @@
     },
     {
       "path": "examples/language-models/StreamAndStop.dpr",
-      "bytes": 1121,
-      "sha256": "bcbfda1c39229c4330eec34c9359604f9799c9cb5acd9e407a057dd3cfdd5fae"
+      "bytes": 1735,
+      "sha256": "4e50e78a51340cfc4ba0b3748f91ab3ded4ba9cb7de67d17cc166821412d79dd"
     },
     {
       "path": "examples/language-models/StreamAndStop.dproj",
@@ -277,13 +277,13 @@
     },
     {
       "path": "examples/language-shared/LanguageChat.Form.pas",
-      "bytes": 25252,
-      "sha256": "b59e88c236581d966b3ff6228eeb23601d8d5f2ab19a65c10378d8691464027d"
+      "bytes": 25930,
+      "sha256": "ed9e5fa8f797f3c3e2ea47f0eb91085de20401c1481909b4088729458e3ca803"
     },
     {
       "path": "examples/marker-lite/MarkerLite.dpr",
-      "bytes": 1859,
-      "sha256": "6fa904134b7bb0bfed3220c6e9c78f8a25e52f5bc2dcf005b3e9b412fccbc200"
+      "bytes": 2488,
+      "sha256": "88c14100842dd0dce8af50a2b42262cdda160fcf24885402131112fa66d9094d"
     },
     {
       "path": "examples/marker-lite/MarkerLite.dproj",
@@ -297,8 +297,8 @@
     },
     {
       "path": "examples/marker-lite/MarkerLiteForm.pas",
-      "bytes": 9863,
-      "sha256": "655b62662c0dbaf09de809cb33a9dc163d6a26b2cb0d145bcc775ad6169436f4"
+      "bytes": 10429,
+      "sha256": "f9e48d61bc0bc6b43558b808fd310748c2c8d6478e4c3b2a42e3ca0616975b98"
     },
     {
       "path": "examples/marker-lite/Prepare.cmd",
@@ -312,18 +312,18 @@
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.Main.pas",
-      "bytes": 14499,
-      "sha256": "ecf73310b9e2ff67a5bbf7a8764a6fb7650527b8c8d89a96856648af3fa694e8"
+      "bytes": 15743,
+      "sha256": "d12d2a54204f2c704766a01cc351216f82438ce47be3d39596c2551b105a87b6"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.Run.pas",
-      "bytes": 4668,
-      "sha256": "56d85ceb6f40337ea025972fe97360c4caccb26dedbb0ee0a242a2e338b25123"
+      "bytes": 5385,
+      "sha256": "22a8cf0d2e53718fd68dad425b18c014f8d48c2cc4920960e66830f86db443a3"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.dpr",
-      "bytes": 3984,
-      "sha256": "207535df3c7171b9e7e0f67961eae77b269c1c1d6783309228f6019ad1e5ea30"
+      "bytes": 4686,
+      "sha256": "76f81cef9c8f7c47206297ba42a08bfb9708db7cbd4c164e0b98207fcb646693"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.dproj",
@@ -357,13 +357,13 @@
     },
     {
       "path": "examples/qwen-chat/QwenChat.Main.pas",
-      "bytes": 448,
-      "sha256": "a201c0c4fa4195ee2304ee97663a85fbd0ea3d2837b72a0f9ae00eb1f9af4e9f"
+      "bytes": 1041,
+      "sha256": "4a5518d488bf76b9a746ab4337b08beba548ff4a4b8d1d82d175f23ccaf162f3"
     },
     {
       "path": "examples/qwen-chat/QwenChat.dpr",
-      "bytes": 3819,
-      "sha256": "5e516a071a5771b8621fa8ae30a9628c79c940172589a8d440363b6bbaf4066d"
+      "bytes": 4521,
+      "sha256": "7330de9aa5b00661c2c94eb267c0d1c9a376b28e851102a1e7184c29b6c901a0"
     },
     {
       "path": "examples/qwen-chat/QwenChat.dproj",
@@ -392,13 +392,13 @@
     },
     {
       "path": "examples/vision-models/VisionModels.Main.pas",
-      "bytes": 21511,
-      "sha256": "5d56423d4e7518355566d13fdd70f6dabfdf6f6d380d5bfccd99fd4c81dbe3d5"
+      "bytes": 22258,
+      "sha256": "44865d03492ee698c31270f72144a410cac941a06f92599db6ad50e646ecff68"
     },
     {
       "path": "examples/vision-models/VisionModels.dpr",
-      "bytes": 5327,
-      "sha256": "9c92437cd810fd48b6ad3f4fd8c7da09c44be3896e5d0b8a0c111175676f5f0a"
+      "bytes": 6063,
+      "sha256": "ea12bd2cd4d1888e7402363733bf6c405e83a458ac90f2c39279e564fccca508"
     },
     {
       "path": "examples/vision-models/VisionModels.dproj",
@@ -417,8 +417,8 @@
     },
     {
       "path": "launcher/CrossPascalConvert.Form.pas",
-      "bytes": 13453,
-      "sha256": "be07e9ad84fe5fc02e20918cfd43737a6fe9e5ceb7005288fce6f1c57de4a670"
+      "bytes": 13456,
+      "sha256": "c654543da7325fc51770d438688824bc2505703adab4cb38fb7d7aa8e3f8a302"
     },
     {
       "path": "launcher/CrossPascalConvert.Native.pas",
@@ -427,8 +427,8 @@
     },
     {
       "path": "launcher/CrossPascalConvert.dpr",
-      "bytes": 2547,
-      "sha256": "0d42d99e1fbb568c8e3a0b77486493fc3bfc8e50d0738c03f66bd5dc1fee34c0"
+      "bytes": 2550,
+      "sha256": "ac670be008f8630ec4f5e163299ab7854e62ec5f9f576e70a654e31973c4aaab"
     },
     {
       "path": "launcher/CrossPascalConvert.dproj",
@@ -447,8 +447,8 @@
     },
     {
       "path": "prepare/ExampleDefaults.pas",
-      "bytes": 2793,
-      "sha256": "a1d1a2b3d46d52e083729904c73a8837daf856b60ae84ec092eec22fdb5a5344"
+      "bytes": 2796,
+      "sha256": "52aff8cc8a1e639f81233ac1da67649aa686c0a039a1ac8be2e900aa848530d9"
     },
     {
       "path": "prepare/bootstrap.ps1",
@@ -587,48 +587,48 @@
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Binarize.pas",
-      "bytes": 10480,
-      "sha256": "2a97479d1175ee87333ff8883d2c7347e3bd3429597f22ab13bcd9eb9cba4ad6"
+      "bytes": 10483,
+      "sha256": "ba0fabf8e720a79734be5baa5748eac61fd846c72c394b3a7dc3e49ae0cb2040"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Contour.pas",
-      "bytes": 6127,
-      "sha256": "7eeb49fc8e32fdbffca8b2f4a5d22fb830d2c939b96384a045eed6db298f475c"
+      "bytes": 6130,
+      "sha256": "842242832869c5b1b654698ef01b8f8cb41b3c1747c1d6c826b035fb76507b99"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Curve.pas",
-      "bytes": 53024,
-      "sha256": "5688bda42cf35dda69f1d437562efa0d1ab9803b9f68578aab6fb90816d79eee"
+      "bytes": 53027,
+      "sha256": "ac324989784d054df0a2747083626d3ee5eb5fc2bc7c9eddc5e7d9dccb1f49e4"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.DisjointSet.pas",
-      "bytes": 2176,
-      "sha256": "a5d4477c45840e3c766df212d6cbb244efceeff986638bd4cc8aed8092297412"
+      "bytes": 2179,
+      "sha256": "0e7fed16f0521c2be8b7f7e6bafa9e95533a184ff9b14df43159719a0c512ee9"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Geometry.Types.pas",
-      "bytes": 3113,
-      "sha256": "4ff86e1ea04163c14ad8c7703bf7ef024758fbcf730fc4c144d7ec7fba00fe0c"
+      "bytes": 3116,
+      "sha256": "2f64f00e5ef3f5abc8c88c69e62354adb4c02a6d3af5e370ee518c618c374e6c"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Geometry.pas",
-      "bytes": 62801,
-      "sha256": "29e470b54857a470aa48f073eb4d6f480a7e996695e8642a1f2669e1de195868"
+      "bytes": 62804,
+      "sha256": "82ad87bbbb939430a0f7204d5121beffe4e4969c7335818509ed66a819400604"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Image.pas",
-      "bytes": 2735,
-      "sha256": "e516c10f80ecf8e33d6e4a40a702e6173a504508e0947bb2d99fc9d7b2475823"
+      "bytes": 2738,
+      "sha256": "6a465e9a07e00cde06a15407d0e4d9bcddd889ba715c0e69722d84533cb0a2ce"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Morphology.pas",
-      "bytes": 7376,
-      "sha256": "2b509f933fa60fdab75f09339b690286f14e9470e1cf04a8590e911f00bb2a5b"
+      "bytes": 7379,
+      "sha256": "544b9737382c38433e8c78b25e9beff387e9f3d4fb95b1c440895d85918ebb7a"
     },
     {
       "path": "rtl-algorithms/tests/TestDisjointSet.dpr",
-      "bytes": 1176,
-      "sha256": "c7cbdff445c9790fe1031ee3d89fbe30cef711eef16eef2c3aead6a44f17da04"
+      "bytes": 1734,
+      "sha256": "48a9e9c69e1cf824b83f8ada6422b9ceed672dbf223479403fe8258a95682770"
     },
     {
       "path": "rtl-algorithms/tests/TestDisjointSet.dproj",
@@ -642,8 +642,8 @@
     },
     {
       "path": "rtl-algorithms/tests/TestGeometry.dpr",
-      "bytes": 76521,
-      "sha256": "a96bb4700195bde8a07d292e0da2130a7eec196a15181c52a125ab5b7d69cec6"
+      "bytes": 77079,
+      "sha256": "cbb391ddef4a5b90115908a355167a034e52b369d4a723da2a35bf0c4e0774a5"
     },
     {
       "path": "rtl-algorithms/tests/TestGeometry.dproj",
@@ -667,18 +667,18 @@
     },
     {
       "path": "vision/CrossVision.Image.Leptonica.pas",
-      "bytes": 2311,
-      "sha256": "c3849caf30b85c9cbcba5b29b3c0f82bbe23c8e96bca5a5c17a4869a50b97116"
+      "bytes": 2314,
+      "sha256": "6939bdb71247c90c8007878d2b6a3262015bc823da239a17a52bfab415c1a53d"
     },
     {
       "path": "vision/CrossVision.Image.OpenCV.pas",
-      "bytes": 2476,
-      "sha256": "50c77d4b6bad0c8daf5e6843be108b90c83f860b198c486bda5f6561832bf1d7"
+      "bytes": 2479,
+      "sha256": "a7d7b018c08592b2906fa54a4143120b8f5290f10f71ab7a57bfcf331e37314d"
     },
     {
       "path": "vision/CrossVision.MatPix.pas",
-      "bytes": 5626,
-      "sha256": "3b4bd39e6ccc0f4ea4a2cebc89bb7d533a627678612f31d204a0758e42668985"
+      "bytes": 5629,
+      "sha256": "72db39a77e3a2a5e4c769a2b77b2bf393d2d5db519baac6001cf0d4edd9845d9"
     },
     {
       "path": "vision/README.md",

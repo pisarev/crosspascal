@@ -1,3 +1,11 @@
+﻿{ ************************************************************************** }
+{                                                                            }
+{ PaddleOcr.Main                                                             }
+{                                                                            }
+{ Copyright © 2026 Yuriy Pisarev                                             }
+{                                                                            }
+{ ************************************************************************** }
+
 unit PaddleOcr.Main;
 
 {$IFDEF FPC}
@@ -72,6 +80,7 @@ type
 implementation
 
 uses
+  TVM.Threads,
   {$IFDEF FPC}
   Math, Types, Dialogs, IntfGraphics, FPImage,
   {$ELSE}
@@ -118,11 +127,18 @@ end;
 procedure TPaddleWorker.Execute;
 begin
   try
-    Value := RunPaddle(FDetector, FRecognizer, FRuntime, FClipper, FDigest, FImage, Stopping);
-  except
-    on E: Exception do ErrorText := E.ClassName + ': ' + E.Message;
+    try
+      Value := RunPaddle(FDetector, FRecognizer, FRuntime, FClipper, FDigest, FImage, Stopping);
+    except
+      on E: Exception do ErrorText := E.ClassName + ': ' + E.Message;
+    end;
+  finally
+    try
+      FImage := nil;
+    finally
+      if not FinishTVMThread(ErrorText) then Value := Default(TPaddleResult);
+    end;
   end;
-  FImage := nil;
 end;
 
 constructor TPaddleOcrForm.Create(AOwner: TComponent);
