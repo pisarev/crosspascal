@@ -46,6 +46,9 @@ type
     FValue: TBiRefResult;
     FDigest: string;
     FCVLibrary: string;
+    FDisplayValid: Boolean;
+    FDisplayedView: Integer;
+    FChangingView: Boolean;
     procedure Browse(Sender: TObject);
     procedure OpenImage(Sender: TObject);
     procedure LoadImage(const FileName: string);
@@ -57,7 +60,10 @@ type
     procedure CheckClose(Sender: TObject; var CanClose: Boolean);
     procedure FitOnScreen(Sender: TObject);
     procedure SetRunning(const Running: Boolean);
-    procedure ShowImage(const Target: TImage; const Image: IMat);
+    function PrepareImage(const Image: IMat): TPicture;
+    function PrepareResult(const Value: TBiRefResult): TPicture;
+    procedure PublishPictures(const Source, Value: TPicture; const ReplaceSource: Boolean);
+    procedure InvalidateDisplay;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -302,13 +308,28 @@ begin
 end;
 
 procedure TBiRefNetForm.LoadImage(const FileName: string);
+var
+  CandidateImage: IMat;
+  CandidateDigest, CandidateStatus: string;
+  Picture: TPicture;
 begin
-  FImage := ReadBiRefImage(FileName, FCVLibrary, FDigest);
-  FValue := Default(TBiRefResult);
-  FResult.Picture.Assign(nil);
-  ShowImage(FOriginal, FImage);
-  FStatus.Caption := UI(Format('%s  |  %d x %d', [ExtractFileName(FileName), FImage.Width, FImage.Height]));
-  SetRunning(False);
+  RequireCpu(FWorker = nil, 'Wait for the current operation to finish.');
+  CandidateImage := ReadBiRefImage(FileName, FCVLibrary, CandidateDigest);
+  CandidateStatus := Format('%s  |  %d x %d',
+    [ExtractFileName(FileName), CandidateImage.Width, CandidateImage.Height]);
+  Picture := PrepareImage(CandidateImage);
+  try
+    PublishPictures(Picture, nil, True);
+    FImage := CandidateImage;
+    FDigest := CandidateDigest;
+    FValue := Default(TBiRefResult);
+    FDisplayedView := FView.ItemIndex;
+    FDisplayValid := True;
+    FStatus.Caption := UI(CandidateStatus);
+    SetRunning(False);
+  finally
+    Picture.Free;
+  end;
 end;
 
 procedure TBiRefNetForm.OpenImage(Sender: TObject);
@@ -330,23 +351,24 @@ var
   I: Integer;
 begin
   FOpen.Enabled := not Running;
-  FRemove.Enabled := not Running and (FImage <> nil);
+  FRemove.Enabled := not Running and FDisplayValid and (FImage <> nil);
   FStop.Enabled := Running;
-  FSave.Enabled := not Running and (FValue.Cutout <> nil);
+  FSave.Enabled := not Running and FDisplayValid and (FValue.Cutout <> nil);
   FBundle.Enabled := not Running;
   FRuntime.Enabled := not Running;
-  FView.Enabled := not Running and (FValue.Cutout <> nil);
+  FView.Enabled := not Running and FDisplayValid and (FValue.Cutout <> nil);
   for I := 0 to 1 do FBrowse[I].Enabled := not Running;
 end;
 
 procedure TBiRefNetForm.RemoveBackground(Sender: TObject);
 begin
+  RequireCpu(FDisplayValid, 'Open an image again to restore the preview before running.');
   if (FWorker <> nil) or (FImage = nil) then Exit;
   RequireCpu(SysUtils.DirectoryExists(EditValue(FBundle)),
     'Select the converted BiRefNet model folder.');
   RequireCpu(SysUtils.DirectoryExists(EditValue(FRuntime)), 'Select the TVM runtime folder.');
+  PublishPictures(nil, nil, False);
   FValue := Default(TBiRefResult);
-  FResult.Picture.Assign(nil);
   FWorker := TBiRefWorker.Create(EditValue(FBundle), EditValue(FRuntime), FDigest, FImage);
   SetRunning(True);
   FStatus.Caption := 'Removing the background. Full CPU inference can take a minute or more.';
@@ -363,20 +385,39 @@ begin
 end;
 
 procedure TBiRefNetForm.Tick(Sender: TObject);
+var
+  Candidate: TBiRefResult;
+  Picture: TPicture;
+  Status: string;
 begin
   if (FWorker = nil) or (WaitForSingleObject(FWorker.Handle, 0) <> WAIT_OBJECT_0) then Exit;
   FTimer.Enabled := False;
-  FWorker.WaitFor;
   try
-    if FWorker.ErrorText = '' then
-    begin
-      FValue := FWorker.Value;
-      ChangeView(nil);
-      FStatus.Caption := UI(Format('%s  |  %.2f s  |  Save the cutout or mask as PNG.',
-        [FValue.Device, FValue.Milliseconds / 1000]));
-    end
-    else
-      FStatus.Caption := UI(FWorker.ErrorText);
+    FWorker.WaitFor;
+    try
+      if FWorker.ErrorText <> '' then
+        FStatus.Caption := UI(FWorker.ErrorText)
+      else begin
+        Candidate := FWorker.Value;
+        Status := Format('%s  |  %.2f s  |  Save the cutout or mask as PNG.',
+          [Candidate.Device, Candidate.Milliseconds / 1000]);
+        Picture := PrepareResult(Candidate);
+        try
+          PublishPictures(nil, Picture, False);
+          FValue := Candidate;
+          FDisplayedView := FView.ItemIndex;
+          FStatus.Caption := UI(Status);
+        finally
+          Picture.Free;
+        end;
+      end;
+    except
+      on E: Exception do
+      begin
+        FValue := Default(TBiRefResult);
+        FStatus.Caption := UI('Result preview failed: ' + E.Message);
+      end;
+    end;
   finally
     FreeAndNil(FWorker);
     SetRunning(False);
@@ -391,14 +432,41 @@ end;
 
 procedure TBiRefNetForm.ChangeView(Sender: TObject);
 var
-  Image: IMat;
+  Picture: TPicture;
+  ErrorText: string;
 begin
-  if FValue.Cutout = nil then Exit;
-  if FView.ItemIndex = 1 then
-    Image := FValue.Mask.ConvertTo(CV_MAKETYPE(CV_8U, 1), 255, 0)
-  else
-    Image := FValue.Cutout;
-  ShowImage(FResult, Image);
+  if FChangingView or (FValue.Cutout = nil) then Exit;
+  RequireCpu(FDisplayValid, 'Open an image again to restore the preview.');
+  try
+    Picture := PrepareResult(FValue);
+    try
+      PublishPictures(nil, Picture, False);
+      FDisplayedView := FView.ItemIndex;
+    finally
+      Picture.Free;
+    end;
+  except
+    on E: Exception do
+    begin
+      ErrorText := E.Message;
+      FChangingView := True;
+      try
+        try
+          FView.ItemIndex := FDisplayedView;
+        except
+          on RestoreError: Exception do
+          begin
+            ErrorText := ErrorText + ' View selection could not be restored: ' +
+              RestoreError.Message;
+            InvalidateDisplay;
+          end;
+        end;
+      finally
+        FChangingView := False;
+      end;
+      FStatus.Caption := UI('Preview change failed: ' + ErrorText);
+    end;
+  end;
 end;
 
 procedure TBiRefNetForm.SaveResult(Sender: TObject);
@@ -407,7 +475,8 @@ var
   Path: string;
   Image: IMat;
 begin
-  if FValue.Cutout = nil then Exit;
+  RequireCpu(FDisplayValid, 'Open an image again to restore the preview before saving.');
+  if (FWorker <> nil) or (FValue.Cutout = nil) then Exit;
   Dialog := TSaveDialog.Create(Self);
   try
     Dialog.Filter := 'Transparent cutout PNG|*.png|Grayscale mask PNG|*.png|Result report JSON|*.json';
@@ -437,7 +506,7 @@ begin
   end;
 end;
 
-procedure TBiRefNetForm.ShowImage(const Target: TImage; const Image: IMat);
+function TBiRefNetForm.PrepareImage(const Image: IMat): TPicture;
 var
   Composite: IMat;
   Source, Destination: PByte;
@@ -445,7 +514,7 @@ var
   Stream: TMemoryStream;
   Size, X, Y, C, Alpha, Gray: Integer;
 begin
-  if Image = nil then Exit;
+  RequireCpu(Image <> nil, 'No image is available for preview.');
   Composite := Image;
   if Image.Channels = 4 then
   begin
@@ -468,16 +537,91 @@ begin
   end;
   Data := nil;
   Size := 0;
-  Stream := TMemoryStream.Create;
+  Result := TPicture.Create;
   try
-    RequireCpu(CV.ImgCodecs.ImEncode('.png', Composite.Raw, @Data, @Size, 1) and
-      (Data <> nil) and (Size > 0), 'Preview encoding failed');
-    Stream.WriteBuffer(Data^, Size);
-    Stream.Position := 0;
-    Target.Picture.LoadFromStream(Stream);
+    Stream := TMemoryStream.Create;
+    try
+      RequireCpu(CV.ImgCodecs.ImEncode('.png', Composite.Raw, @Data, @Size, 1) and
+        (Data <> nil) and (Size > 0), 'Preview encoding failed');
+      Stream.WriteBuffer(Data^, Size);
+      Stream.Position := 0;
+      Result.LoadFromStream(Stream);
+    finally
+      Stream.Free;
+      if Data <> nil then RequireCpu(CV.ImgCodecs.FreeBuf(Data), 'Preview buffer release failed');
+    end;
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TBiRefNetForm.PrepareResult(const Value: TBiRefResult): TPicture;
+var
+  Image: IMat;
+begin
+  if FView.ItemIndex = 1 then
+    Image := Value.Mask.ConvertTo(CV_MAKETYPE(CV_8U, 1), 255, 0)
+  else
+    Image := Value.Cutout;
+  Result := PrepareImage(Image);
+end;
+
+procedure TBiRefNetForm.InvalidateDisplay;
+begin
+  FDisplayValid := False;
+  SetRunning(FWorker <> nil);
+end;
+
+procedure TBiRefNetForm.PublishPictures(const Source, Value: TPicture;
+  const ReplaceSource: Boolean);
+var
+  OldSource, OldResult: TPicture;
+  ErrorText, RestoreText: string;
+begin
+  OldSource := nil;
+  OldResult := TPicture.Create;
+  try
+    OldResult.Assign(FResult.Picture);
+    if ReplaceSource then
+    begin
+      OldSource := TPicture.Create;
+      OldSource.Assign(FOriginal.Picture);
+    end;
+    try
+      if ReplaceSource then FOriginal.Picture.Assign(Source);
+      FResult.Picture.Assign(Value);
+    except
+      on E: Exception do
+      begin
+        ErrorText := E.ClassName + ': ' + E.Message;
+        RestoreText := '';
+        if ReplaceSource then
+        begin
+          try
+            FOriginal.Picture.Assign(OldSource);
+          except
+            on RestoreError: Exception do RestoreText := ' Original: ' + RestoreError.Message;
+          end;
+        end;
+        try
+          FResult.Picture.Assign(OldResult);
+        except
+          on RestoreError:
+            Exception do RestoreText := RestoreText + ' Result: ' + RestoreError.Message;
+        end;
+        if RestoreText <> '' then
+        begin
+          InvalidateDisplay;
+          ErrorText := ErrorText + ' Preview could not be restored.' + RestoreText +
+            ' Open an image again before running or saving.';
+        end;
+        raise ECpuGraph.Create(ErrorText);
+      end;
+    end;
   finally
-    Stream.Free;
-    if Data <> nil then RequireCpu(CV.ImgCodecs.FreeBuf(Data), 'Preview buffer release failed');
+    OldSource.Free;
+    OldResult.Free;
   end;
 end;
 

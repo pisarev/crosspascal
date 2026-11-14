@@ -95,27 +95,64 @@ end;
 procedure WriteNewBiRefFile(const FileName: string; const Data: Pointer; const Size: Integer);
 var
   Handle: THandle;
-  Stream: THandleStream;
-  Code: DWORD;
+  Code, Written: DWORD;
+  Identifier: TGUID;
+  Destination, Temporary, ErrorText: string;
+  OwnTemporary: Boolean;
+
+  procedure WindowsFailure(const Operation: string; const ErrorCode: DWORD);
+  begin
+    raise ECpuGraph.Create(Operation + ' Windows error ' + IntToStr(ErrorCode) + '.');
+  end;
+
 begin
   RequireCpu((FileName <> '') and (Pos(#0, FileName) = 0) and (Data <> nil) and (Size > 0),
     'Choose a new output file.');
-  Handle := CreateFileW(PWideChar(FileName), GENERIC_WRITE, FILE_SHARE_READ, nil,
+  Destination := ExpandFileName(FileName);
+  RequireCpu(CreateGUID(Identifier) = 0, 'A temporary output name could not be generated.');
+  Temporary := ExtractFilePath(Destination) + '.crosspascal-' + GUIDToString(Identifier) + '.tmp';
+  Handle := CreateFileW(PWideChar(Temporary), GENERIC_WRITE, 0, nil,
     CREATE_NEW, FILE_ATTRIBUTE_NORMAL, 0);
   if Handle = INVALID_HANDLE_VALUE then
-  begin
-    Code := GetLastError;
-    if Code in [ERROR_FILE_EXISTS, ERROR_ALREADY_EXISTS] then
-      raise ECpuGraph.Create('Choose a new output file.');
-    raise ECpuGraph.Create('The output file could not be created. Choose a writable folder. Windows error ' + IntToStr(Code));
-  end;
-  Stream := nil;
+    WindowsFailure('The temporary output file could not be created. Choose a writable folder.', GetLastError);
+  OwnTemporary := True;
   try
-    Stream := THandleStream.Create(Handle);
-    Stream.WriteBuffer(Data^, Size);
-  finally
-    Stream.Free;
-    CloseHandle(Handle);
+    Written := 0;
+    if not WriteFile(Handle, Data^, DWORD(Size), Written, nil) then
+      WindowsFailure('The output file could not be written.', GetLastError);
+    RequireCpu(Written = DWORD(Size), 'The output file was not written completely.');
+    if not FlushFileBuffers(Handle) then
+      WindowsFailure('The output file could not be flushed.', GetLastError);
+    if not CloseHandle(Handle) then
+    begin
+      Code := GetLastError;
+      WindowsFailure('The output file could not be closed.', Code);
+    end;
+    Handle := INVALID_HANDLE_VALUE;
+    if not MoveFileExW(PWideChar(Temporary), PWideChar(Destination), 0) then
+    begin
+      Code := GetLastError;
+      if Code in [ERROR_FILE_EXISTS, ERROR_ALREADY_EXISTS] then
+        raise ECpuGraph.Create('Choose a new output file.');
+      WindowsFailure('The completed output file could not be published.', Code);
+    end;
+    OwnTemporary := False;
+  except
+    on E: Exception do
+    begin
+      ErrorText := E.ClassName + ': ' + E.Message;
+      if Handle <> INVALID_HANDLE_VALUE then
+      begin
+        if not CloseHandle(Handle) then
+          ErrorText := ErrorText + ' Temporary file close failed: Windows error ' +
+            IntToStr(GetLastError) + '.';
+        Handle := INVALID_HANDLE_VALUE;
+      end;
+      if OwnTemporary and not DeleteFileW(PWideChar(Temporary)) then
+        ErrorText := ErrorText + ' Temporary file cleanup failed: ' + Temporary +
+          '. Windows error ' + IntToStr(GetLastError) + '.';
+      raise ECpuGraph.Create(ErrorText);
+    end;
   end;
 end;
 

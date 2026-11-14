@@ -13,7 +13,7 @@ The CPU model requires AVX2 and FMA. The GPU bundle targets NVIDIA `sm_89` and r
 
 **Stop** waits for the current native operation to return. On the CPU, a full inference can take a minute or more. After stopping, you can start again or open another image. When closing during inference, wait for the operation to finish, then close the window again.
 
-The checkerboard appears in the preview. The saved cutout has a real alpha channel and preserves the original RGB pixels. Choose a new output filename; the example refuses to overwrite an existing file.
+The checkerboard appears in the preview. The saved cutout has a real alpha channel and preserves the original RGB pixels. Input images are decoded as RGB; any input alpha is discarded. The saved alpha comes from the predicted mask. Choose a new output filename; the example refuses to overwrite an existing file.
 
 ## Model and image processing
 

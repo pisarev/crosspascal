@@ -126,11 +126,12 @@ begin
       ExitCode := 1;
       if Recorded then
       begin
-        OutputDebugStringW(PWideChar(E.Message));
+        OutputDebugStringW(PWideChar(UnicodeString(E.Message)));
         try
           Failure(E);
         except
-          on ReportError: Exception do OutputDebugStringW(PWideChar(ReportError.Message));
+          on ReportError:
+            Exception do OutputDebugStringW(PWideChar(UnicodeString(ReportError.Message)));
         end;
       end
       else

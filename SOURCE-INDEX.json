@@ -72,18 +72,18 @@
     },
     {
       "path": "examples/birefnet/BiRefNet.Main.pas",
-      "bytes": 14872,
-      "sha256": "41782af78fdd45235e8b71ae3399ead896c350cba9a8973c92973da550457fd5"
+      "bytes": 19144,
+      "sha256": "383c199e4f9a84ccf8d73cf7d0d52dfc732a082a90a8c02f94ee30a4e2242f8c"
     },
     {
       "path": "examples/birefnet/BiRefNet.Run.pas",
-      "bytes": 5816,
-      "sha256": "83e03b12feba0a265df9a281b9e409e4a3a70a685cf18b0f712584c31dd23c4d"
+      "bytes": 7567,
+      "sha256": "ae1be6fe847b09c65e6d9d3e6ace35c2f4055fd77ac2b5e0e53279295f8ac86c"
     },
     {
       "path": "examples/birefnet/BiRefNet.dpr",
-      "bytes": 4633,
-      "sha256": "04f580722eeb313c6580172eb096f25e7167e6b7f3bd562d2dd0298e9f0723e5"
+      "bytes": 4676,
+      "sha256": "3354083982bc902bc64d42ad62e7043ab35ee61f1eb7f4129c202a08adf787ec"
     },
     {
       "path": "examples/birefnet/BiRefNet.dproj",
@@ -102,8 +102,8 @@
     },
     {
       "path": "examples/birefnet/README.md",
-      "bytes": 3703,
-      "sha256": "6d035e5783eb392cba79dd8facae3e00dd4fc056a31f4f95e3b73afc69edd12b"
+      "bytes": 3813,
+      "sha256": "c8226b042a384cd90f1be903f8f82601b899ef0414b87c57bfea774570758a4e"
     },
     {
       "path": "examples/birefnet/models.json",
