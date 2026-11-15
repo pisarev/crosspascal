@@ -1,12 +1,12 @@
 param(
     [string]$Example = '',
     [string]$Manifest = (Join-Path $PSScriptRoot 'prepare-manifest.json'),
-    [string]$BootstrapConfig = (Join-Path $PSScriptRoot 'prepare-bootstrap.json'),
     [string]$Release = '',
     [string]$InstallRoot = '',
     [string]$Cache = '',
     [ValidateSet('Auto', 'CPU', 'CUDA')][string]$Device = 'Auto',
-    [switch]$All
+    [switch]$All,
+    [string]$BootstrapConfig = (Join-Path $PSScriptRoot 'prepare-bootstrap.json')
 )
 
 $ErrorActionPreference = 'Stop'

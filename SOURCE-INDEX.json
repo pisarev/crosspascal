@@ -452,8 +452,8 @@
     },
     {
       "path": "prepare/bootstrap.ps1",
-      "bytes": 38795,
-      "sha256": "538335ca210a62074798aca9995a3a658a8dd35b3fc62f711d5ae64c185316f7"
+      "bytes": 38794,
+      "sha256": "d14b2bca50ef1e710ab552f2df5e8e0c54c0c4ab1cb1e719e72e2f57826b30a3"
     },
     {
       "path": "prepare/prepare-bootstrap.json",
