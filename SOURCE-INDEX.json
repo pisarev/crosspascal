@@ -62,8 +62,8 @@
     },
     {
       "path": "docs/VISION-DOWNLOADS.md",
-      "bytes": 10007,
-      "sha256": "06d5e499fea16e06f374e9b0d06f502c4ddc63fd22f6ad47cc5b1dd089626864"
+      "bytes": 10104,
+      "sha256": "cccdbec548062aba885c673876a8f8b9c1703fcdf27d4a7c533ce734d489f968"
     },
     {
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
@@ -452,8 +452,8 @@
     },
     {
       "path": "prepare/bootstrap.ps1",
-      "bytes": 38745,
-      "sha256": "7196a9a0b3ee9df539e9513735e2a5bded6e0200e055a794c7aca81094c3fa75"
+      "bytes": 38795,
+      "sha256": "538335ca210a62074798aca9995a3a658a8dd35b3fc62f711d5ae64c185316f7"
     },
     {
       "path": "prepare/prepare-bootstrap.json",
@@ -467,18 +467,23 @@
     },
     {
       "path": "prepare/vision/resnet50/Prepare-CPU.cmd",
-      "bytes": 364,
-      "sha256": "ff8c3e5c1ff8d45e4ac42997401032f4fcf31d6b29a9c2fca9f8923e353b9972"
+      "bytes": 411,
+      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
     },
     {
       "path": "prepare/vision/resnet50/Prepare-GPU.cmd",
-      "bytes": 365,
-      "sha256": "25dfcf4d9811838a2cb8722e9380b1d609a9ca43d79eba76976f4e30d08cf980"
+      "bytes": 412,
+      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
     },
     {
       "path": "prepare/vision/resnet50/Prepare.cmd",
-      "bytes": 365,
-      "sha256": "9c7e986479fd489dd7e2d4c5e26b7268affa3723a8a9deee2fb2a8e22d00aeda"
+      "bytes": 412,
+      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+    },
+    {
+      "path": "prepare/vision/resnet50/prepare-bootstrap.json",
+      "bytes": 79,
+      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
     },
     {
       "path": "prepare/vision/resnet50/prepare-manifest.json",
@@ -487,18 +492,23 @@
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare-CPU.cmd",
-      "bytes": 364,
-      "sha256": "ff8c3e5c1ff8d45e4ac42997401032f4fcf31d6b29a9c2fca9f8923e353b9972"
+      "bytes": 411,
+      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare-GPU.cmd",
-      "bytes": 365,
-      "sha256": "25dfcf4d9811838a2cb8722e9380b1d609a9ca43d79eba76976f4e30d08cf980"
+      "bytes": 412,
+      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare.cmd",
-      "bytes": 365,
-      "sha256": "9c7e986479fd489dd7e2d4c5e26b7268affa3723a8a9deee2fb2a8e22d00aeda"
+      "bytes": 412,
+      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+    },
+    {
+      "path": "prepare/vision/rtdetr-r18vd/prepare-bootstrap.json",
+      "bytes": 79,
+      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/prepare-manifest.json",
@@ -507,18 +517,23 @@
     },
     {
       "path": "prepare/vision/squeezenet/Prepare-CPU.cmd",
-      "bytes": 364,
-      "sha256": "ff8c3e5c1ff8d45e4ac42997401032f4fcf31d6b29a9c2fca9f8923e353b9972"
+      "bytes": 411,
+      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
     },
     {
       "path": "prepare/vision/squeezenet/Prepare-GPU.cmd",
-      "bytes": 365,
-      "sha256": "25dfcf4d9811838a2cb8722e9380b1d609a9ca43d79eba76976f4e30d08cf980"
+      "bytes": 412,
+      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
     },
     {
       "path": "prepare/vision/squeezenet/Prepare.cmd",
-      "bytes": 365,
-      "sha256": "9c7e986479fd489dd7e2d4c5e26b7268affa3723a8a9deee2fb2a8e22d00aeda"
+      "bytes": 412,
+      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+    },
+    {
+      "path": "prepare/vision/squeezenet/prepare-bootstrap.json",
+      "bytes": 79,
+      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
     },
     {
       "path": "prepare/vision/squeezenet/prepare-manifest.json",
@@ -527,18 +542,23 @@
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare-CPU.cmd",
-      "bytes": 364,
-      "sha256": "ff8c3e5c1ff8d45e4ac42997401032f4fcf31d6b29a9c2fca9f8923e353b9972"
+      "bytes": 411,
+      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare-GPU.cmd",
-      "bytes": 365,
-      "sha256": "25dfcf4d9811838a2cb8722e9380b1d609a9ca43d79eba76976f4e30d08cf980"
+      "bytes": 412,
+      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare.cmd",
-      "bytes": 365,
-      "sha256": "9c7e986479fd489dd7e2d4c5e26b7268affa3723a8a9deee2fb2a8e22d00aeda"
+      "bytes": 412,
+      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+    },
+    {
+      "path": "prepare/vision/yolo11n-cls/prepare-bootstrap.json",
+      "bytes": 79,
+      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
     },
     {
       "path": "prepare/vision/yolo11n-cls/prepare-manifest.json",
@@ -547,18 +567,23 @@
     },
     {
       "path": "prepare/vision/yolo11n/Prepare-CPU.cmd",
-      "bytes": 364,
-      "sha256": "ff8c3e5c1ff8d45e4ac42997401032f4fcf31d6b29a9c2fca9f8923e353b9972"
+      "bytes": 411,
+      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
     },
     {
       "path": "prepare/vision/yolo11n/Prepare-GPU.cmd",
-      "bytes": 365,
-      "sha256": "25dfcf4d9811838a2cb8722e9380b1d609a9ca43d79eba76976f4e30d08cf980"
+      "bytes": 412,
+      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
     },
     {
       "path": "prepare/vision/yolo11n/Prepare.cmd",
-      "bytes": 365,
-      "sha256": "9c7e986479fd489dd7e2d4c5e26b7268affa3723a8a9deee2fb2a8e22d00aeda"
+      "bytes": 412,
+      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+    },
+    {
+      "path": "prepare/vision/yolo11n/prepare-bootstrap.json",
+      "bytes": 79,
+      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
     },
     {
       "path": "prepare/vision/yolo11n/prepare-manifest.json",

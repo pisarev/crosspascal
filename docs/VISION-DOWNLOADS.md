@@ -1,6 +1,6 @@
 # Separate CPU and GPU downloads for vision models
 
-Each row downloads one model and the shared EA019 Windows x64 SDK/runtime. The other four models are not downloaded. GPU means NVIDIA CUDA.
+These retained EA019 starters each download one model and the matching EA019 Windows x64 SDK/runtime. The other four models are not downloaded. Their default installation uses a separate `early-access-019` folder. GPU means NVIDIA CUDA.
 
 | Model | CPU preparation | GPU preparation | CPU model ZIP | GPU model ZIP range |
 | --- | --- | --- | ---: | ---: |

@@ -1,6 +1,7 @@
 param(
     [string]$Example = '',
     [string]$Manifest = (Join-Path $PSScriptRoot 'prepare-manifest.json'),
+    [string]$BootstrapConfig = (Join-Path $PSScriptRoot 'prepare-bootstrap.json'),
     [string]$Release = '',
     [string]$InstallRoot = '',
     [string]$Cache = '',
@@ -679,7 +680,7 @@ function Install-Example($Plan, $Document) {
 }
 
 try {
-    $bootstrap = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'prepare-bootstrap.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+    $bootstrap = Get-Content -LiteralPath $BootstrapConfig -Raw -Encoding UTF8 | ConvertFrom-Json
     if (-not $Release) { $Release = $bootstrap.release }
     if ($bootstrap.local_preview -and -not $PSBoundParameters.ContainsKey('Manifest') -and
         -not (Test-Path -LiteralPath $Manifest -PathType Leaf)) {
