@@ -37,8 +37,8 @@
     },
     {
       "path": "docs/MODEL-MODALITIES.md",
-      "bytes": 3162,
-      "sha256": "c293ddfa76077ec11859efa0978e4bc51e886251ca36542a974f412fb21e40b0"
+      "bytes": 3107,
+      "sha256": "808cb899bf7baef779541ca7f8c1a7afedda805672d9109585405679ddec8055"
     },
     {
       "path": "docs/MODEL-PROFILES.md",
@@ -102,8 +102,8 @@
     },
     {
       "path": "examples/birefnet/README.md",
-      "bytes": 4329,
-      "sha256": "841b19c2b431452235c1ab7a4b6b995abba8859778ae807c25f45761fb44b63c"
+      "bytes": 3632,
+      "sha256": "d629e97d8d3ddfc25e9a399bd2ff03b69e81de4f76934dbff5d5898174b57957"
     },
     {
       "path": "examples/birefnet/models.json",

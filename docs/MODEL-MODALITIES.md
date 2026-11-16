@@ -5,7 +5,7 @@ A family name alone does not establish image support. The converted bundle needs
 | Architecture | Implemented input | Examples |
 | --- | --- | --- |
 | Dense Qwen2/Qwen2.5, including Instruct and Coder | Text on CUDA | QwenChat and console examples |
-| Gemma 2 | Experimental text on CPU or CUDA with the profile's numerical restrictions | GemmaChat and console examples |
+| Gemma 2 | Text on CPU or CUDA | GemmaChat and console examples |
 | Gemma 3n text bundle | Text on CPU or CUDA | GemmaChat and console examples |
 | Gemma 3n CPU or CUDA with a converted gemma3nv projector | Text and images | Both chat forms and all generation console examples |
 | Qwen2.5-VL | Text and images on CPU or CUDA | Both chat forms and all generation console examples |

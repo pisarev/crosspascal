@@ -11,17 +11,13 @@ Open a photo and choose **Remove background**. The example displays the original
 
 The CPU model requires AVX2 and FMA. The GPU bundles cover NVIDIA `sm_75`, `sm_86`, `sm_89`, and `sm_120`. CUDA execution requires at least 4 GiB of free GPU memory. The loader checks the architecture and free memory before inference. Choose the model and runtime for the same device. CPU inference works without CUDA.
 
-**Stop** waits for the current native operation to return. On the CPU, a full inference can take a minute or more. After stopping, you can start again or open another image. When closing during inference, wait for the operation to finish, then close the window again.
+**Stop** waits for the current native operation to return. On the CPU, a full inference can take a minute or more. After stopping, you can start again or open another image. Wait for the current operation to finish before closing the window.
 
 The checkerboard appears in the preview. The saved cutout has a real alpha channel and preserves the original RGB pixels. Input images are decoded as RGB; any input alpha is discarded. The saved alpha comes from the predicted mask. Choose a new output filename; the example refuses to overwrite an existing file.
-
-If CUDA context entry or restoration fails, restart the application before another operation. The example blocks further inference in that process. Its cleanup preserves the original operation error and retains unsafe native resources until process termination. It does not attempt to reset the GPU or recover from driver loss.
 
 ## Model and image processing
 
 The profile uses the full SwinL [BiRefNet_HR checkpoint](https://huggingface.co/ZhengPeng7/BiRefNet_HR/tree/a7a562f6fd16021180f2f4348f4de003a2d3d1e1). It resizes the image to `800 x 800` RGB pixels using Pillow-compatible bicubic interpolation, then applies ImageNet normalization. The native model returns FP32 mask logits. One sigmoid and bilinear probability resizing produce the mask at the original image dimensions.
-
-This fixed HR800 profile differs from the upstream 2048-pixel workflow. Its output does not establish the upstream benchmark scores. Inspect fine hair, transparent objects, and low-contrast edges before using a cutout.
 
 To convert the supplied ONNX source pack, open `CrossPascalConvert.exe`, select **BiRefNet HR800 background removal | CPU** or **CUDA**, and choose the ONNX file. Select a new output folder. CUDA conversion also needs the matching native compiler tools and a target architecture. See the [converter installation guide](https://github.com/pisarev/crosspascal-convert/blob/main/INSTALL.md).
 
@@ -33,7 +29,7 @@ The executable can also save a result without opening the window:
 BiRefNet.exe --recorded --bundle="model-folder" --runtime="runtime-folder" --opencv="crosscv.dll" --image="photo.png" --report="result.json"
 ```
 
-All paths can be absolute. Choose a new report filename. The default outputs are `result.cutout.png` and `result.mask.png`; `--cutout` and `--mask` can set separate new PNG filenames. A successful run writes `status: PASS` after the model's explicit close succeeds, then exits with code 0. Context management errors prevent a successful close. This does not check every internal TVM or CUDA deallocation status. A failed run exits with code 1 and writes a failure report when possible. The report's elapsed time covers model loading, preprocessing, inference, postprocessing, and model close. It excludes reading the image and saving the output files.
+All paths can be absolute. Choose a new report filename. The default outputs are `result.cutout.png` and `result.mask.png`; `--cutout` and `--mask` can set separate new PNG filenames. A successful run writes `status: PASS` after the model's explicit close succeeds, then exits with code 0. A failed run exits with code 1 and writes a failure report when possible. The report's elapsed time covers model loading, preprocessing, inference, postprocessing, and model close. It excludes reading the image and saving the output files.
 
 ## Licenses
 
