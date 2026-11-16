@@ -53,8 +53,10 @@ downloading a model. It selects a ready CUDA bundle when it finds a match
 and prints its decision and the remaining download size. Otherwise it uses
 the CPU bundle and explains why.
 
-From Command Prompt, use `Prepare.cmd -Device CPU` to select CPU or
-`Prepare.cmd -Device CUDA` to require CUDA. In CUDA mode an incompatible card,
+From Command Prompt in an example's combined-kit folder, use
+`Prepare.cmd -Device CPU` to select CPU or `Prepare.cmd -Device CUDA` to
+require CUDA. Dedicated CPU/GPU ZIPs already set the device; run their
+`Prepare.cmd` without adding another `-Device`. In CUDA mode an incompatible card,
 older driver or insufficient free GPU memory is reported before downloading
 the model. Repeating Prepare updates its generated defaults if you have kept
 them as supplied.

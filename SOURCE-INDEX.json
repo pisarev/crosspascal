@@ -47,8 +47,8 @@
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 8748,
-      "sha256": "23f5c959bca2c9df8ca4ae47689dc1d285a4f8a3c33696495f67ae0dbd3c5343"
+      "bytes": 8889,
+      "sha256": "257e1e2b2a6331bddca9b3abf3a798bf1ef1607fbcf15fe15d2f7878df782019"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
@@ -352,8 +352,8 @@
     },
     {
       "path": "examples/omdet-turbo/README.md",
-      "bytes": 5794,
-      "sha256": "fe466c629f967e4b61675dcec911a1b7d7498d97930e1a7a886e93b7abac0993"
+      "bytes": 5852,
+      "sha256": "8457da62e0aba4211f77fb97601435b9675577db390c75914237f7472ee364ef"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.Main.pas",

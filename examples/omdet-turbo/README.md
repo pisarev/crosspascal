@@ -11,7 +11,7 @@ Find objects by describing the classes you want. Enter up to 16 class names, one
 
 Both devices need a Windows x64 computer with AVX2 and FMA. The CUDA bundles cover `sm_75`, `sm_86`, `sm_89`, and `sm_120`. CUDA execution needs a driver that supports CUDA 12.8 and at least 2 GiB of free GPU memory. Prepare reads the installed device's compute capability and selects its bundle. Each model's memory requirement still applies.
 
-Use `Prepare.cmd -Device CPU` to choose CPU execution. Use `-Device CUDA` to require CUDA; preparation stops with an explanation if the card, driver, or free memory is unsuitable. The default `Auto` mode falls back to CPU in that case.
+The dedicated CPU and GPU kits already select their device. From the combined kit's `omdetturbo` folder or the source example, use `Prepare.cmd -Device CPU` to select CPU or `Prepare.cmd -Device CUDA` to require CUDA. With no device argument, `Auto` selects a matching CUDA bundle or uses CPU.
 
 ## Describe the objects
 
