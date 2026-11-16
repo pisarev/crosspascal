@@ -14,8 +14,11 @@ The early access SDK supports Delphi 13.2 and Lazarus 4.8 with FPC 3.2.2. Keep t
 | CPU and CUDA vision | Converter and VisionModels | Five pinned profiles support classification or detection using the same example |
 | CPU and CUDA OCR | Converter and [PaddleOCR](../examples/paddle-ocr/README.md) | PP-OCRv5 Server finds and reads text regions. The Windows CPU and CUDA `sm_89` results matched the reference text on two photos. |
 | CPU and CUDA background removal | Converter and [BiRefNet](../examples/birefnet/README.md) | The full SwinL HR800 model returns an original-size mask and transparent PNG. Native CPU and CUDA `sm_89` tensor checks passed on three photos against the pinned ONNX reference. |
+| CPU and CUDA text-guided detection | Converter and [OmDet-Turbo](../examples/omdet-turbo/README.md) | Editable class names and a task instruction produce boxes and scores from a native CLIP encoder and trained Swin-Tiny detector. The example saves an annotated PNG or JSON. |
 | Experimental Gemma 3n text and images | Converter and both chat forms | Architecture-derived GGUF conversion to TVM CPU FP32 or CUDA W8A32, with a matching vision projector; streaming, persistent weights, automatic output and Stop |
 | Experimental Qwen2.5-VL text and images | Converter, both chat forms and console examples | TVM CPU FP32 or CUDA with INT8 text projections and FP32 vision; image preprocessing, block prefill and local inference |
+
+Ready CUDA bundles cover `sm_75`, `sm_86`, `sm_89`, and `sm_120`, spanning GTX 1650 and RTX 20 through RTX 50 families. Prepare selects by compute capability and the selected model's free-memory requirement.
 
 ## Model profiles
 
@@ -27,4 +30,4 @@ CPU profiles include SqueezeNet 1.1, ResNet50, YOLO11n classification, YOLO11n d
 
 The compatible local Qwen2 profile derives its topology from the checkpoint and uses a 2,048-token context. QwenChat retains loaded weights across requests and streams decoded text. Gemma 3n uses a separate architecture adapter and runtime, with contexts up to 1,024 tokens. Its CUDA profile uses int8 projection weights and FP32 arithmetic. Both demos use the same lifecycle and settings API as the six console examples. Compatible Gemma 3n CPU and CUDA bundles with a converted vision projector also accept images. Qwen2.5-VL CPU bundles contain their own vision graph. CPU image profiles use block prefill and reuse unchanged image features while loaded; cold loading and CPU generation can still take substantial time. Text-only bundles explicitly reject image requests. The [modality matrix](MODEL-MODALITIES.md) lists the implemented profiles and limits.
 
-The SDK installer builds OpenCV and Leptonica from their companion source assets. The ordinary online setup fetched the pinned native build inputs in a clean Windows SDK installation. The TVM installer uses the official Apache TVM 0.26.0 and Apache TVM FFI 0.1.14 Windows wheels. See [known limitations](KNOWN-LIMITATIONS.md) for the scope of these checks.
+The SDK installer builds OpenCV and Leptonica from their companion source assets. The ordinary online setup fetched the pinned native build inputs in a clean Windows SDK installation. The TVM installer uses the official Apache TVM 0.26.0 and Apache TVM FFI 0.1.14 Windows wheels. See [model profiles and requirements](MODEL-PROFILES.md) for the scope of these checks.

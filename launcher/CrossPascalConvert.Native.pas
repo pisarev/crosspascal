@@ -20,7 +20,8 @@ type
     cpYoloDetection, cpYoloClassification, cpRtDetr, cpSqueezeNet, cpResNet,
     cpGemma2CUDA, cpQwenVLCUDA, cpYoloDetectionCUDA, cpYoloClassificationCUDA, cpRtDetrCUDA,
     cpSqueezeNetCUDA, cpResNetCUDA, cpPaddleDetection, cpPaddleRecognition,
-    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA, cpBiRefNet, cpBiRefNetCUDA);
+    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA, cpBiRefNet, cpBiRefNetCUDA,
+    cpOmDet, cpOmDetCUDA);
 
   TConversionCommand = record
     Executable: string;
@@ -36,7 +37,7 @@ const
     'yolo11n', 'yolo11n-cls', 'rtdetr-r18vd', 'squeezenet', 'resnet50', 'gemma2-cuda', 'qwen-vl-cuda',
     'yolo11n-cuda', 'yolo11n-cls-cuda', 'rtdetr-r18vd-cuda', 'squeezenet-cuda', 'resnet50-cuda',
     'ppocrv5-server-det', 'ppocrv5-server-rec', 'ppocrv5-server-det-cuda', 'ppocrv5-server-rec-cuda',
-    'birefnet-hr800', 'birefnet-hr800-cuda');
+    'birefnet-hr800', 'birefnet-hr800-cuda', 'omdet-turbo-tiny16', 'omdet-turbo-tiny16-cuda');
   ProfileTitles: array[TConverterProfile] of string = (
     'Gemma 3n E4B | CPU',
     'Gemma 3n E4B | CUDA',
@@ -61,9 +62,12 @@ const
     'PP-OCRv5 Server detection | CUDA',
     'PP-OCRv5 Server recognition | CUDA',
     'BiRefNet HR800 background removal | CPU',
-    'BiRefNet HR800 background removal | CUDA');
+    'BiRefNet HR800 background removal | CUDA',
+    'OmDet-Turbo text-guided detection | CPU',
+    'OmDet-Turbo text-guided detection | CUDA');
 
 function ExecutableFolder: string;
+function DefaultCUDAArchitecture: string;
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
 function SourceProfile(const Profile: TConverterProfile): TConverterProfile;
 function NeedsProjector(const Profile: TConverterProfile): Boolean;
@@ -88,7 +92,39 @@ end;
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
 begin
   Result := Profile in [cpGemma3nCUDA, cpQwen2, cpGemma2CUDA..cpResNetCUDA,
-    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA, cpBiRefNetCUDA];
+    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA, cpBiRefNetCUDA, cpOmDetCUDA];
+end;
+
+function DefaultCUDAArchitecture: string;
+const
+  System32Libraries = $00000800;
+type
+  TInit = function(Flags: Cardinal): Integer; stdcall;
+  TDeviceGet = function(out Device: Integer; Ordinal: Integer): Integer; stdcall;
+  TDeviceAttribute = function(out Value: Integer; Attribute, Device: Integer): Integer; stdcall;
+var
+  LibraryHandle: HMODULE;
+  Initialize: TInit;
+  DeviceGet: TDeviceGet;
+  DeviceAttribute: TDeviceAttribute;
+  Device, Major, Minor: Integer;
+begin
+  Result := '';
+  LibraryHandle := LoadLibraryExW('nvcuda.dll', 0, System32Libraries);
+  if LibraryHandle = 0 then Exit;
+  try
+    Initialize := TInit(GetProcAddress(LibraryHandle, 'cuInit'));
+    DeviceGet := TDeviceGet(GetProcAddress(LibraryHandle, 'cuDeviceGet'));
+    DeviceAttribute := TDeviceAttribute(GetProcAddress(LibraryHandle, 'cuDeviceGetAttribute'));
+    if not (Assigned(Initialize) and Assigned(DeviceGet) and Assigned(DeviceAttribute)) then Exit;
+    if Initialize(0) <> 0 then Exit;
+    if DeviceGet(Device, 0) <> 0 then Exit;
+    if DeviceAttribute(Major, 75, Device) <> 0 then Exit;
+    if DeviceAttribute(Minor, 76, Device) <> 0 then Exit;
+    if (Major > 0) and (Minor >= 0) then Result := Format('sm_%d%d', [Major, Minor]);
+  finally
+    FreeLibrary(LibraryHandle);
+  end;
 end;
 
 function SourceProfile(const Profile: TConverterProfile): TConverterProfile;
@@ -104,6 +140,7 @@ begin
     cpPaddleDetectionCUDA: Result := cpPaddleDetection;
     cpPaddleRecognitionCUDA: Result := cpPaddleRecognition;
     cpBiRefNetCUDA: Result := cpBiRefNet;
+    cpOmDetCUDA: Result := cpOmDet;
   else
     Result := Profile;
   end;
@@ -258,6 +295,7 @@ function PrepareConversion(const Root, Source, Projector, Destination, Architect
   const Profile: TConverterProfile; const Context, Chunk: Integer): TConversionCommand;
 const
   VisionIDs: array[cpYoloDetection..cpResNet] of string = ('yolo11n', 'yolo11n-cls', 'rtdetr-r18vd', 'squeezenet', 'resnet50');
+  OmDetFiles: array[0..4] of string = ('text.onnx', 'detector.onnx', 'class-projection.f32', 'vocab.json', 'merges.txt');
 var
   Kit, Tool, InputPath, Output, CUDA, Arch, VisionFile, Recipe, Ggml, SentencePiece: string;
   Args, LinkArgs: TArray<string>;
@@ -348,6 +386,16 @@ begin
         Recipe := ReadToolPath(Kit, 'QWEN_VL_PROFILE', 'profiles\qwen-vl');
         RequireFile(IncludeTrailingPathDelimiter(Recipe) + 'model.json', 'The Qwen2.5-VL recipe');
         Args := [InputPath, Recipe, Output] + LinkArgs;
+        if UsesCUDA(Profile) then Args := Args + ['--cuda', CUDA, Arch];
+      end;
+    cpOmDet:
+      begin
+        Tool := 'ConvertOmDetOnnx.exe';
+        if not DirectoryExists(InputPath) then
+          raise Exception.Create('Select the OmDet ONNX source-pack folder.');
+        for Recipe in OmDetFiles do
+          RequireFile(IncludeTrailingPathDelimiter(InputPath) + Recipe, 'The OmDet source-pack file');
+        Args := [InputPath, Output] + LinkArgs;
         if UsesCUDA(Profile) then Args := Args + ['--cuda', CUDA, Arch];
       end;
     cpPaddleDetection, cpPaddleRecognition, cpBiRefNet:

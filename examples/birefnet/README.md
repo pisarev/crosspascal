@@ -4,12 +4,12 @@ Open a photo and choose **Remove background**. The example displays the original
 
 ## Prepare and run
 
-1. Download the BiRefNet CPU or NVIDIA GPU preparation kit from the [EA021 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-021).
+1. Download the BiRefNet CPU or NVIDIA GPU preparation kit from the [EA022 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-022).
 2. Extract the ZIP and run `Prepare.cmd`. It downloads the SDK, TVM runtime, model, and sample image, then writes their paths into the example settings.
 3. Open `BiRefNet.dproj` in Delphi 13.2 or `BiRefNet.lpi` in Lazarus 4.8. Build for Windows x64 and run. The installed example also includes a Lazarus-built executable in `bin/lazarus-win64`.
 4. Choose **Remove background** to try the prepared image. Choose **Open image** for another PNG, JPEG, BMP, TIFF, or WebP image, up to 4096 pixels per side.
 
-The CPU model requires AVX2 and FMA. The GPU bundle targets NVIDIA `sm_89` and requires at least 4 GiB of free GPU memory. The loader checks both before inference. Choose the model and runtime for the same device. CPU inference works without CUDA.
+The CPU model requires AVX2 and FMA. The GPU bundles cover NVIDIA `sm_75`, `sm_86`, `sm_89`, and `sm_120`. CUDA execution requires at least 4 GiB of free GPU memory. The loader checks the architecture and free memory before inference. Choose the model and runtime for the same device. CPU inference works without CUDA.
 
 **Stop** waits for the current native operation to return. On the CPU, a full inference can take a minute or more. After stopping, you can start again or open another image. When closing during inference, wait for the operation to finish, then close the window again.
 

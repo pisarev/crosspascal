@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-021",
+  "release_id": "early-access-022",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -22,18 +22,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 4260,
-      "sha256": "b0c9bcabc7d11056f53eea0e005a0e4cb1af7e2f5e1d48ef03e2187a8af8c020"
+      "bytes": 4822,
+      "sha256": "10bb04470f7ed84ffed9cfaf170d442f1d7de1977a2a5d8b7acd1b85df51a8fd"
     },
     {
       "path": "docs/CAPABILITIES.md",
-      "bytes": 4525,
-      "sha256": "6cff05cf3a2aa0d89c17be8be6a11343e00736e19505b4854f76039856e5ebbc"
-    },
-    {
-      "path": "docs/KNOWN-LIMITATIONS.md",
-      "bytes": 3766,
-      "sha256": "0f452e54b9715ae41c4a9e8bc79473a0a6ab79be3b83886d56382f6bb8acd51f"
+      "bytes": 5026,
+      "sha256": "532c8d56ce3727cec63a5faed1b71a587162102ce680485d5719eef197c63808"
     },
     {
       "path": "docs/LICENSE-SCOPE.md",
@@ -46,9 +41,14 @@
       "sha256": "c293ddfa76077ec11859efa0978e4bc51e886251ca36542a974f412fb21e40b0"
     },
     {
+      "path": "docs/MODEL-PROFILES.md",
+      "bytes": 2403,
+      "sha256": "dfda1257d3f19d7e67949dc118f84019f41367ed6a62c8d12f5b9b8686fab750"
+    },
+    {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 8231,
-      "sha256": "22e637dd4af20b0b3446d24dcc8042feffcddc93819d61aa47d052aa6208b65d"
+      "bytes": 8748,
+      "sha256": "23f5c959bca2c9df8ca4ae47689dc1d285a4f8a3c33696495f67ae0dbd3c5343"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
@@ -57,18 +57,18 @@
     },
     {
       "path": "docs/ROADMAP.md",
-      "bytes": 2139,
-      "sha256": "d3709ebad52c5e12e04ca98ae420825193f25cb8a07ee5d56340e20a751fabf3"
+      "bytes": 2227,
+      "sha256": "01c847a8275b6039a927414368321865c1021297011e539d79914ab7b0c3334c"
     },
     {
       "path": "docs/VISION-DOWNLOADS.md",
-      "bytes": 10104,
-      "sha256": "cccdbec548062aba885c673876a8f8b9c1703fcdf27d4a7c533ce734d489f968"
+      "bytes": 9690,
+      "sha256": "f95a538fda140187e095bb6a52ac266364143c35366e2f480bc877d3d3aa6643"
     },
     {
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
-      "bytes": 3930,
-      "sha256": "e907bb5aa08da8e1de09e87fe1039d3f7a01b4326495e539888370723b791c4f"
+      "bytes": 4284,
+      "sha256": "39e58d39a9255154de29773ecf30f694d5bf9c484d772d9a364864c06e93cf58"
     },
     {
       "path": "examples/birefnet/BiRefNet.Main.pas",
@@ -102,8 +102,8 @@
     },
     {
       "path": "examples/birefnet/README.md",
-      "bytes": 4258,
-      "sha256": "712c9373691660c211e88ccaa3a612e4eada2d25d968e8a5716c282b6f45edae"
+      "bytes": 4329,
+      "sha256": "841b19c2b431452235c1ab7a4b6b995abba8859778ae807c25f45761fb44b63c"
     },
     {
       "path": "examples/birefnet/models.json",
@@ -311,6 +311,51 @@
       "sha256": "783eec5e07332db63f71685954dc617d5ede1cccd3164dbb44298e5622c6399a"
     },
     {
+      "path": "examples/omdet-turbo/OmDetTurbo.Main.pas",
+      "bytes": 20968,
+      "sha256": "7bc3d675ffd6c4c66b623a2c0282a037f72f8220efc44d560bb0a8b46b71df01"
+    },
+    {
+      "path": "examples/omdet-turbo/OmDetTurbo.Render.pas",
+      "bytes": 6121,
+      "sha256": "f60bfc84e41e4acc2110f092fd2ce6e351aa8a6a497aac15f60d195064201439"
+    },
+    {
+      "path": "examples/omdet-turbo/OmDetTurbo.Run.pas",
+      "bytes": 10801,
+      "sha256": "610ab43009e432b1b3272c293cf0641b58de15d6b140850344e91c6399f4d73d"
+    },
+    {
+      "path": "examples/omdet-turbo/OmDetTurbo.Worker.pas",
+      "bytes": 6985,
+      "sha256": "bb49eb4100a0b3db7a2de017e464f24c674f6bb8d9cc493462dd9065947442c1"
+    },
+    {
+      "path": "examples/omdet-turbo/OmDetTurbo.dpr",
+      "bytes": 7735,
+      "sha256": "7f5c5044329681999ebd0e514917773e33b9146612f5b0ffdb1e76ecf33df2c7"
+    },
+    {
+      "path": "examples/omdet-turbo/OmDetTurbo.dproj",
+      "bytes": 4003,
+      "sha256": "122f5d3c4955162f2c02c42f6135e7115c8fed413afe40553ae1b517e2a73655"
+    },
+    {
+      "path": "examples/omdet-turbo/OmDetTurbo.lpi",
+      "bytes": 1655,
+      "sha256": "1358d0a426a9caa5e0e006f5b8bd9ac6e2ac6a6f4bb38faca3333b8e823d5d9f"
+    },
+    {
+      "path": "examples/omdet-turbo/Prepare.cmd",
+      "bytes": 303,
+      "sha256": "dfba6b562cf79136495e3b143ad8ccef670d525dbc5f2a7bf8d15b84c0e3714e"
+    },
+    {
+      "path": "examples/omdet-turbo/README.md",
+      "bytes": 5794,
+      "sha256": "fe466c629f967e4b61675dcec911a1b7d7498d97930e1a7a886e93b7abac0993"
+    },
+    {
       "path": "examples/paddle-ocr/PaddleOcr.Main.pas",
       "bytes": 15180,
       "sha256": "d939077b60219f7d5ccba508024cc9721b0332df9bca69ad2223b152a137a44d"
@@ -417,13 +462,13 @@
     },
     {
       "path": "launcher/CrossPascalConvert.Form.pas",
-      "bytes": 13456,
-      "sha256": "c654543da7325fc51770d438688824bc2505703adab4cb38fb7d7aa8e3f8a302"
+      "bytes": 14345,
+      "sha256": "f5292b313c6671a8274aaa8f967af0d85266fb02b00acc5c9b1703e1c70d1154"
     },
     {
       "path": "launcher/CrossPascalConvert.Native.pas",
-      "bytes": 19244,
-      "sha256": "e521e37b85131f7833a78b3ff9cc78e9bb232a7f417f9f6b96aca68ff6a7463c"
+      "bytes": 21410,
+      "sha256": "668c434008cd1433948276feba4748ff2a517689e0dd924f37ed7ebf93414153"
     },
     {
       "path": "launcher/CrossPascalConvert.dpr",
@@ -458,137 +503,112 @@
     {
       "path": "prepare/prepare-bootstrap.json",
       "bytes": 130,
-      "sha256": "8cb3d0d12aa0cd9b3a9e4ce41283cd968dcde2e575c8f0a16ac93cebeb41c909"
+      "sha256": "e5f9a95f0dc8248583a9b71ddea0c65bc7b6c7c66525ad9667561399f8584212"
     },
     {
       "path": "prepare/vision-downloads.json",
-      "bytes": 19383,
-      "sha256": "bb8e3f64aa89c043e806fac1ebb696f862b85cabb41f60584aaa73efbeed1177"
+      "bytes": 18400,
+      "sha256": "1d54e180e3ac487da47184fc9559bbf51d0fc03386bb8869e2f3b835fdf40e25"
     },
     {
       "path": "prepare/vision/resnet50/Prepare-CPU.cmd",
-      "bytes": 411,
-      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
+      "bytes": 372,
+      "sha256": "615cc6be7e9aabe3815cedce2e3b075d20cc939bae77094a07fd54b98da382ef"
     },
     {
       "path": "prepare/vision/resnet50/Prepare-GPU.cmd",
-      "bytes": 412,
-      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
+      "bytes": 373,
+      "sha256": "21897a34ae50952137bb199990b06447e9fd9465f4b0129c0941341378927368"
     },
     {
       "path": "prepare/vision/resnet50/Prepare.cmd",
-      "bytes": 412,
-      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+      "bytes": 373,
+      "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
       "path": "prepare/vision/resnet50/prepare-bootstrap.json",
-      "bytes": 79,
-      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
-    },
-    {
-      "path": "prepare/vision/resnet50/prepare-manifest.json",
-      "bytes": 25575,
-      "sha256": "1148863ed2bc7ea9e053165330bdba7c8dcdc1644e2039413e329a47298b98c6"
+      "bytes": 139,
+      "sha256": "8265021f2d554f542a8bb584a39028c41ef071f0c3778b047c5ec9a2937d3516"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare-CPU.cmd",
-      "bytes": 411,
-      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
+      "bytes": 372,
+      "sha256": "615cc6be7e9aabe3815cedce2e3b075d20cc939bae77094a07fd54b98da382ef"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare-GPU.cmd",
-      "bytes": 412,
-      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
+      "bytes": 373,
+      "sha256": "21897a34ae50952137bb199990b06447e9fd9465f4b0129c0941341378927368"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare.cmd",
-      "bytes": 412,
-      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+      "bytes": 373,
+      "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/prepare-bootstrap.json",
-      "bytes": 79,
-      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
-    },
-    {
-      "path": "prepare/vision/rtdetr-r18vd/prepare-manifest.json",
-      "bytes": 25783,
-      "sha256": "057f99f7da7e148930d024cf667fba3b3271c4850670e7ce25ccb15ccda0e76b"
+      "bytes": 143,
+      "sha256": "1d47d3e67cafb418764dfc29add4df1bcaad450281952bfb74fdbb9cf5476b01"
     },
     {
       "path": "prepare/vision/squeezenet/Prepare-CPU.cmd",
-      "bytes": 411,
-      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
+      "bytes": 372,
+      "sha256": "615cc6be7e9aabe3815cedce2e3b075d20cc939bae77094a07fd54b98da382ef"
     },
     {
       "path": "prepare/vision/squeezenet/Prepare-GPU.cmd",
-      "bytes": 412,
-      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
+      "bytes": 373,
+      "sha256": "21897a34ae50952137bb199990b06447e9fd9465f4b0129c0941341378927368"
     },
     {
       "path": "prepare/vision/squeezenet/Prepare.cmd",
-      "bytes": 412,
-      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+      "bytes": 373,
+      "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
       "path": "prepare/vision/squeezenet/prepare-bootstrap.json",
-      "bytes": 79,
-      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
-    },
-    {
-      "path": "prepare/vision/squeezenet/prepare-manifest.json",
-      "bytes": 25677,
-      "sha256": "ad269fe33cb8b214ab04cfead71b103faa4408e23de27295bd627af3cae65a10"
+      "bytes": 141,
+      "sha256": "81ddd7e70f7c6d45185437832e4b1217b5f17f5239a6d0501927d9735b13b275"
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare-CPU.cmd",
-      "bytes": 411,
-      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
+      "bytes": 372,
+      "sha256": "615cc6be7e9aabe3815cedce2e3b075d20cc939bae77094a07fd54b98da382ef"
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare-GPU.cmd",
-      "bytes": 412,
-      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
+      "bytes": 373,
+      "sha256": "21897a34ae50952137bb199990b06447e9fd9465f4b0129c0941341378927368"
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare.cmd",
-      "bytes": 412,
-      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+      "bytes": 373,
+      "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
       "path": "prepare/vision/yolo11n-cls/prepare-bootstrap.json",
-      "bytes": 79,
-      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
-    },
-    {
-      "path": "prepare/vision/yolo11n-cls/prepare-manifest.json",
-      "bytes": 25651,
-      "sha256": "e5733331f45e5bf9b6c862af2a0f7a9aa93eda4d516790d0848d8401b2d37ef0"
+      "bytes": 142,
+      "sha256": "06619b45a50855fd113353c09ad826c8c0e778f9adde30ffb787f9fed1b7800f"
     },
     {
       "path": "prepare/vision/yolo11n/Prepare-CPU.cmd",
-      "bytes": 411,
-      "sha256": "4eeed7b810011a14de115cd9063f51f5516ee3a100b8510188f750474ab960dd"
+      "bytes": 372,
+      "sha256": "615cc6be7e9aabe3815cedce2e3b075d20cc939bae77094a07fd54b98da382ef"
     },
     {
       "path": "prepare/vision/yolo11n/Prepare-GPU.cmd",
-      "bytes": 412,
-      "sha256": "92120a69da55bf48ab5017c4ffb42db74cc31c5b70bd523a3ea88828f4a5673b"
+      "bytes": 373,
+      "sha256": "21897a34ae50952137bb199990b06447e9fd9465f4b0129c0941341378927368"
     },
     {
       "path": "prepare/vision/yolo11n/Prepare.cmd",
-      "bytes": 412,
-      "sha256": "6641c9ea89aadf2b9bd8313d0c7fc1342fe5fa54141ecbc63fe3b71bb4c23c0e"
+      "bytes": 373,
+      "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
       "path": "prepare/vision/yolo11n/prepare-bootstrap.json",
-      "bytes": 79,
-      "sha256": "fe526173840495e6b132f485929b28c2288e90b5a88d079bc29fa18d80095f18"
-    },
-    {
-      "path": "prepare/vision/yolo11n/prepare-manifest.json",
-      "bytes": 25419,
-      "sha256": "c2ae7e0fbc8ec975c4731deaf0524b68de7f2b529a098385fa3ba58960b8af30"
+      "bytes": 138,
+      "sha256": "e03dfcd7fe82aa63b0089d5c8ea34439ddc731f096a9764fe258696ad0dbdf92"
     },
     {
       "path": "rtl-algorithms/LICENSE",

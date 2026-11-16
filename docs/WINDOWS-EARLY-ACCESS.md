@@ -35,12 +35,15 @@ Open the `.dproj` in Delphi and select Windows 64-bit. Open the corresponding `.
 | `crosspascal/examples/vision-models/VisionModels` | A classifier's top five classes or a detector's boxes, on CPU or CUDA |
 | `crosspascal/examples/qwen-chat/QwenChat` | A streamed answer from a dense Qwen CUDA bundle or a Qwen2.5-VL CPU or CUDA bundle with optional image input |
 | `crosspascal/examples/gemma-chat/GemmaChat` | A streamed answer from a converted Gemma CPU or CUDA bundle; compatible Gemma 3n vision bundles accept an attached picture |
+| `crosspascal/examples/paddle-ocr/PaddleOCR` | Text regions and recognized text, saved as UTF-8 text or JSON |
+| `crosspascal/examples/birefnet/BiRefNet` | An original-size mask and transparent PNG cutout |
+| `crosspascal/examples/omdet-turbo/OmDetTurbo` | Boxes and scores for editable class names, saved as an annotated PNG or JSON |
 
 The model applications can use ready bundles downloaded by Prepare. To build
 from an original checkpoint, open `CrossPascalConvert.exe` at the SDK root,
 choose the profile and source, then select the generated bundle in the application.
 For CUDA, choose the compute capability of the destination GPU.
 
-Read the per-profile and component limitations in the release notes. Keep the original upstream notices with the corresponding dependencies and source assets.
+See the [model profiles and requirements](MODEL-PROFILES.md) for the prepared models. Keep the original upstream notices with the corresponding dependencies and source assets.
 
 The SDK supplies the native libraries for language inference. Gemma 3n image conversion uses the original GGUF and its matching projector. Qwen2.5-VL uses its supported Safetensors checkpoint. See the [model input matrix](MODEL-MODALITIES.md).

@@ -1,7 +1,7 @@
 # Prepare and run an example
 
-Download **crosspascal-examples-prepare-ea021.zip** from the
-[EA021 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-021)
+Download **crosspascal-examples-prepare-ea022.zip** from the
+[EA022 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-022)
 and extract it to a writable folder. Open your example's folder and run
 **Prepare.cmd**. Shared example folders offer a menu.
 
@@ -23,7 +23,7 @@ Model, library and image paths are already in the generated *.prepared.ini files
 Keep the prepared folder together. Distributed Pascal executables are built with
 Lazarus; Delphi builds verify source compatibility.
 
-The default installation for EA021 launchers is %LOCALAPPDATA%/CrossPascal/early-access-021. Set
+The default installation for EA022 launchers is %LOCALAPPDATA%/CrossPascal/early-access-022. Set
 CROSSPASCAL_PREPARE_HOME before running Prepare.cmd to choose another drive.
 Downloads use a sibling downloads folder. Repeating preparation preserves your
 source, project and package settings, and locally rebuilt example executables.
@@ -38,11 +38,13 @@ SqueezeNet 1.1, ResNet50 v1, YOLO11n classification, YOLO11n detection and RT-DE
 
 Each ZIP contains an enclosing folder. Extract it, open that folder and run `Prepare.cmd`. The dedicated CPU/GPU kit already sets its device. The generic kits below retain `-Device` and Auto selection.
 
-The six [console examples](../examples/language-models/README.md) have separate CPU and CUDA launchers in the [EA021 downloads](https://github.com/pisarev/crosspascal/releases/tag/early-access-021). From the combined ZIP, you can also run an example's Prepare.cmd with `-Device CPU` or `-Device CUDA`.
+The six [console examples](../examples/language-models/README.md) have separate CPU and CUDA launchers in the [EA022 downloads](https://github.com/pisarev/crosspascal/releases/tag/early-access-022). From the combined ZIP, you can also run an example's Prepare.cmd with `-Device CPU` or `-Device CUDA`.
 
 For text detection and recognition, the [PaddleOCR example](../examples/paddle-ocr/README.md) prepares both PP-OCRv5 Server models for the same device. The EA020 release also provides each model as a separate download.
 
-For background removal, the [BiRefNet example](../examples/birefnet/README.md) has separate CPU and GPU preparation kits in EA021. It uses the full SwinL model with a fixed 800-pixel input. The ready GPU pack targets `sm_89` and requires at least 4 GiB of free GPU memory. Other cards can use the CPU kit.
+For background removal, the [BiRefNet example](../examples/birefnet/README.md) has separate CPU and GPU preparation kits in EA022. It uses the full SwinL model with a fixed 800-pixel input. The GPU kits select a bundle for `sm_75`, `sm_86`, `sm_89`, or `sm_120` and require at least 4 GiB of free GPU memory.
+
+For text-guided detection, the [OmDet-Turbo example](../examples/omdet-turbo/README.md) has separate CPU and GPU preparation kits. Enter class names for the objects you want to find. The example runs the text encoder and detector locally, then saves an annotated PNG or JSON.
 
 ## CPU or CUDA
 
@@ -61,13 +63,14 @@ CUDA inference requires an NVIDIA driver supporting CUDA 12.8 and a matching
 bundle for compute capability 6.1, 7.5, 8.6, 8.9 or 12.0. The desktop examples
 use CUDA device 0. The CUDA Toolkit is needed for CUDA conversion with NVRTC.
 The prepared GPU examples use compiled kernels and the supplied TVM runtime.
-Available architectures depend on the model; the ready BiRefNet GPU pack supports only 8.9.
+All CUDA-enabled examples provide bundles for compute capabilities 7.5, 8.6, 8.9, and 12.0: GTX 1650 and the RTX 20, 30, 40, and 50 families. Some earlier profiles also provide 6.1.
 
 | Examples | Free GPU memory checked by Prepare |
 | --- | ---: |
 | VisionModels | 1,024 MiB |
 | PaddleOCR | 2,048 MiB |
-| BiRefNet (`sm_89`) | 4,096 MiB |
+| BiRefNet | 4,096 MiB |
+| OmDetTurbo | 2,048 MiB |
 | QwenChat and ImagePrompt | 5,120 MiB |
 | GemmaChat and the Gemma 2 text examples | 5,500 MiB |
 
@@ -85,6 +88,7 @@ third-party libraries. Review the relevant terms before use or redistribution.
 | Examples / models | Terms | Suggested system RAM |
 | --- | --- | --- |
 | BiRefNet HR800: full SwinL | MIT as declared in the pinned upstream model card; included notices apply. | 16 GiB |
+| OmDet-Turbo Swin-Tiny and CLIP | Apache-2.0 for OmDet and the checkpoint; the CLIP tokenizer MIT notice is included. | 16 GiB |
 | QwenChat and ImagePrompt: Qwen2.5-VL 3B | [Qwen Research License](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct/blob/66285546d2b821cf421d4f5eb2576359d3770cd3/LICENSE): non-commercial research and evaluation only; commercial use needs a separate license from Alibaba Cloud. Built with Qwen. | 24 GiB |
 | GemmaChat: Gemma 3n E4B | [Gemma Terms](https://ai.google.dev/gemma/terms) and [Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy). | 32 GiB |
 | Five text console examples: experimental Gemma 2 2B | Same Gemma terms; limited short-context completion profile. | 16 GiB |

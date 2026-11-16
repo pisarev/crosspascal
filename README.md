@@ -20,7 +20,11 @@ For CPU vision, run the VisionModels preparation script to download the ready mo
 
 For text in photos, try [PaddleOCR](examples/paddle-ocr/README.md). The example detects text regions, reads each crop and saves UTF-8 text or JSON with region coordinates and confidence scores. Windows x64 CPU and NVIDIA CUDA bundles are available.
 
-For background removal, try [BiRefNet](examples/birefnet/README.md). It displays the original image beside a transparent preview or mask and saves an original-size PNG. The full SwinL HR800 model runs on CPU or NVIDIA CUDA `sm_89`.
+For background removal, try [BiRefNet](examples/birefnet/README.md). It displays the original image beside a transparent preview or mask and saves an original-size PNG. The full SwinL HR800 model runs on CPU or NVIDIA CUDA.
+
+For detection from your own class names, try [OmDet-Turbo](examples/omdet-turbo/README.md). Enter the objects you want to find, open an image, and save an annotated PNG or JSON report. The CLIP text encoder and Swin-Tiny detector run natively on CPU or CUDA.
+
+The ready CUDA bundles cover compute capabilities `sm_75`, `sm_86`, `sm_89`, and `sm_120`, spanning GTX 1650 and RTX 20, 30, 40, and 50 families. Prepare reads the installed device and selects a matching bundle. See [Prepare and run](docs/PREPARE-EXAMPLES.md) for each model's memory requirements.
 
 For Gemma 3n, run the GemmaChat preparation script for the ready CPU model. The GGUF-to-TVM converter remains available for custom CPU or CUDA bundles. See [GemmaChat](examples/gemma-chat/README.md). GemmaChat streams text and retains loaded weights between requests, as QwenChat now does. Both demos expose explicit loading and unloading, generation settings, streaming, Stop, and image attachment. Compatible Gemma 3n CPU and CUDA image bundles accept pictures. The separate Qwen2.5-VL adapter converts compatible checkpoints for CPU text-and-image inference. Dense Qwen text bundles explain that an image cannot be used. See [model input capabilities](docs/MODEL-MODALITIES.md).
 
@@ -36,7 +40,7 @@ For short console programs, start with [Language models in a few Pascal calls](e
 | [CrossPascal OpenCV](https://github.com/pisarev/crosspascal-opencv) | Pascal bindings, a native bridge, image processing, and video I/O |
 | [CrossPascal Leptonica](https://github.com/pisarev/crosspascal-leptonica) | Pascal bindings and helpers for scans and document images |
 
-See [capabilities](docs/CAPABILITIES.md), [known limitations](docs/KNOWN-LIMITATIONS.md), and the [roadmap](docs/ROADMAP.md).
+See [capabilities](docs/CAPABILITIES.md), [model profiles and requirements](docs/MODEL-PROFILES.md), and the [roadmap](docs/ROADMAP.md).
 
 ## License
 

@@ -1,4 +1,5 @@
 {
-  "release": "early-access-019",
-  "install_directory": "early-access-019"
+  "release": "early-access-022",
+  "install_directory": "early-access-022",
+  "manifest_asset": "PREPARE-MANIFEST-rtdetr-r18vd-ea022.json"
 }

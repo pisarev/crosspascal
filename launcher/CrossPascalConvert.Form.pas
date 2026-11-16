@@ -185,7 +185,9 @@ begin
   AddButton('Choose parent...', RightButton, 216, BrowseOutput, True);
   AddLabel('CUDA target', Margin, 258);
   FArchitecture := AddEdit(Margin, 278, ButtonWidth, False);
-  FArchitecture.Text := 'sm_89';
+  FArchitecture.Text := UIString(DefaultCUDAArchitecture);
+  FArchitecture.Hint := 'Detected CUDA device 0. Edit the target to build for another card: sm_75, sm_86, sm_89 or sm_120.';
+  FArchitecture.ShowHint := True;
   AddLabel('Context tokens', Margin + 128, 258);
   FContext := AddEdit(Margin + 128, 278, ButtonWidth, False);
   FContext.Text := '2048';
@@ -234,10 +236,12 @@ begin
         FSourceLabel.Caption := 'Original Safetensors folder'
       else if Profile in [cpYoloDetection, cpYoloClassification] then
           FSourceLabel.Caption := 'Original YOLO checkpoint or ONNX file'
-        else if Profile = cpRtDetr then
-            FSourceLabel.Caption := 'Original RT-DETR Safetensors or ONNX file'
-          else
-            FSourceLabel.Caption := 'Original ONNX file or source-pack folder';
+        else if Profile = cpOmDet then
+            FSourceLabel.Caption := 'OmDet ONNX source-pack folder'
+          else if Profile = cpRtDetr then
+              FSourceLabel.Caption := 'Original RT-DETR Safetensors or ONNX file'
+            else
+              FSourceLabel.Caption := 'Original ONNX file or source-pack folder';
   FProjector.Enabled := NeedsProjector(Profile);
   FProjectorBrowse.Enabled := FProjector.Enabled;
   FArchitecture.Enabled := UsesCUDA(Selected);
@@ -265,23 +269,27 @@ begin
       if not SelectFile('Select the original GGUF checkpoint', 'GGUF models (*.gguf)|*.gguf', Path) then
         Exit;
     end
-    else if Profile in [cpGemma2, cpQwen2, cpQwenVL] then
+    else if Profile = cpOmDet then
       begin
-        if not SelectFolder('Select the original Safetensors folder', Path) then Exit;
+        if not SelectFolder('Select the OmDet ONNX source pack', Path) then Exit;
       end
-      else if Profile in [cpYoloDetection, cpYoloClassification] then
+      else if Profile in [cpGemma2, cpQwen2, cpQwenVL] then
         begin
-          if not SelectFile('Select the original YOLO checkpoint',
-            'YOLO models (*.pt;*.onnx)|*.pt;*.onnx', Path) then
-              Exit;
+          if not SelectFolder('Select the original Safetensors folder', Path) then Exit;
         end
-        else if Profile = cpRtDetr then
+        else if Profile in [cpYoloDetection, cpYoloClassification] then
           begin
-            if not SelectFile('Select the original RT-DETR checkpoint',
-              'RT-DETR models (*.safetensors;*.onnx)|*.safetensors;*.onnx', Path) then Exit;
+            if not SelectFile('Select the original YOLO checkpoint',
+              'YOLO models (*.pt;*.onnx)|*.pt;*.onnx', Path) then
+                Exit;
           end
-          else if not SelectFile('Select the original ONNX file', 'ONNX models (*.onnx)|*.onnx', Path) then
-              Exit;
+          else if Profile = cpRtDetr then
+            begin
+              if not SelectFile('Select the original RT-DETR checkpoint',
+                'RT-DETR models (*.safetensors;*.onnx)|*.safetensors;*.onnx', Path) then Exit;
+            end
+            else if not SelectFile('Select the original ONNX file', 'ONNX models (*.onnx)|*.onnx', Path) then
+                Exit;
   FSource.Text := UIString(Path);
 end;
 
