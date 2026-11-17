@@ -11,7 +11,10 @@ Ready CUDA bundles cover compute capabilities `sm_75`, `sm_86`, `sm_89`, and `sm
 | BiRefNet | Full SwinL HR800 background removal, mask, and transparent cutout | 4 GiB |
 | OmDetTurbo | CLIP text encoding and Swin-Tiny detection from editable class names | 2 GiB |
 | QwenChat and ImagePrompt | Qwen2.5-VL 3B text and image input | 5 GiB |
-| GemmaChat | Gemma 3n E4B text and image input | 5,500 MiB |
+| GemmaChat | Gemma 3n E4B text and image input | 5,312 MiB |
+| HuihuiGemmaChat | Huihui Gemma 3n E4B abliterated text and image input | 5,984 MiB |
+| Qwen38Q4Chat | Qwen3.8-27B UD-Q4_K_M text and image input | 3,873 MiB |
+| Qwen38BF16Chat | Qwen3.8-27B original BF16 text and image input | 3,083 MiB |
 | Gemma 2 console examples | Text generation and model lifecycle | 5,500 MiB |
 
 The CPU routes use AVX2 and FMA. Model weights, decoded data, and the operating system also need system memory and disk space. Prepare reports its checks and the remaining download size before installation. See each example's guide for its setup.

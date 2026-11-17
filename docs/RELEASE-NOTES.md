@@ -1,5 +1,28 @@
 # Release notes
 
+## EA023 language models and image input
+
+The ready language bundles add Huihui Gemma 3n E4B abliterated on CPU and
+CUDA, Qwen3.8-27B original UD-Q4_K_M on CPU and CUDA, and original BF16
+Qwen3.8-27B with CUDA layer streaming. Each accepts text and one image.
+The matching native converter profiles can include the required vision
+weights. Existing text-only architectures remain text-only.
+
+Gemma 3n and the new Qwen3.8 bundles use a 4,096-token context. Automatic
+output uses the remaining context, and generation reports its actual stop
+reason and token counts. The chat examples align Answer and Message and
+use a compact folder button beside the Installed SDK folder field.
+
+The shared API, chats and console examples build in Delphi 13.2 and
+Lazarus 4.8 / FPC 3.2.2. Windows image and text checks covered the supplied
+CPU and CUDA language routes. The new CUDA bundles include targets
+sm_75, sm_86, sm_89 and sm_120; inference checks used sm_89.
+
+The combined Prepare menu retains the previous 16 choices and adds three
+language model entries. Five dedicated CPU/GPU kits select the new models.
+Prepare fills the model and SDK paths and skips an unavailable CUDA-only
+entry when preparing all supported examples.
+
 ## EA020 PaddleOCR
 
 [PaddleOCR](../examples/paddle-ocr/README.md) reads text in photos, displays detected regions and exports plain text or JSON. The PP-OCRv5 Server detector and recognizer are available as separate CPU and NVIDIA CUDA downloads. Prepare sets up both models for the selected device.

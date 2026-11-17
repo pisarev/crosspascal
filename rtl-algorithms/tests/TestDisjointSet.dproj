@@ -31,7 +31,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Base)'!=''">
     <DCC_Namespace>System;Winapi;$(DCC_Namespace)</DCC_Namespace>
-    <DCC_UnitSearchPath>..\src;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+    <DCC_UnitSearchPath>..\src;$(DCC_UnitSearchPath);..\..\..\1-bindings\tvm\pascal;..\..\..\1-bindings\opencv\pascal;..\..\..\1-bindings\leptonica\pascal;..\..\..\4-ml\pascal;..\..\..\2-vision\core\pascal;..\..\..\2-vision\pascal;..\..\..\3-algorithms\pascal;..;..\..\..\tools\prepare;..\..\..\examples\language-shared;..\..\..\examples\language-models;..\..\..\examples\vision-models</DCC_UnitSearchPath>
     <DCC_ExeOutput>..\build\$(Platform)\$(Config)</DCC_ExeOutput>
     <DCC_DcuOutput>..\build\$(Platform)\$(Config)\dcu\TestDisjointSet</DCC_DcuOutput>
     <DCC_ObjOutput>..\build\$(Platform)\$(Config)\obj\TestDisjointSet</DCC_ObjOutput>

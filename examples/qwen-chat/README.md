@@ -2,13 +2,14 @@
 
 ## Prepare and Run
 
-Download [Prepare-QwenChat-ea019.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-019/Prepare-QwenChat-ea019.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
+Download [Prepare-QwenChat-ea023.zip](https://github.com/pisarev/crosspascal/releases/download/early-access-023/Prepare-QwenChat-ea023.zip), extract it, and double-click **Prepare.cmd**. It downloads the matched dependencies and sample data, then opens the prepared project folder. Open the **.dproj** in Delphi 13.2 or the **.lpi** in Lazarus 4.8, and press **Run**. See the [complete preparation guide](https://github.com/pisarev/crosspascal/blob/main/docs/PREPARE-EXAMPLES.md) for public downloads and optional GitHub request-limit recovery, model sizes and the other examples.
 
 
 Both chat demos use the same controls and `TLanguageModel` API. Choose a
 converted model by its `model.json`, not by its filename or a graphics-card name.
-Dense Qwen2.5 and Gemma 2 are text-only architectures. Qwen2.5-VL and a Gemma 3n
-bundle containing its converted vision encoder accept a picture and a question.
+Dense Qwen2.5 and Gemma 2 are text-only architectures. Qwen2.5-VL accepts
+pictures. Gemma 3n and Qwen3.8 bundles with a vision encoder also accept
+pictures and questions.
 
 ## Open and build
 
@@ -71,9 +72,11 @@ timings. A previously encoded, unchanged image can reuse its cached features.
 
 Temperature, Top P, Top K, repetition penalty and seed affect sampling. Greedy
 chooses the highest score. Answer budget is an output allowance, not a separate
-reasoning mode. Automatic output ends at an end-of-answer token, Stop, or the
-bundle's actual context capacity. Prompt, image tokens and answer share that
-capacity; `0` cannot make a fixed-size cache infinite.
+reasoning mode. With **New tokens** `0`, the answer budget is set automatically
+within the remaining compiled context. Prompt, image tokens and answer share that
+capacity; `0` cannot make a fixed-size cache infinite. The status reports whether
+generation ended at an end-of-answer token, the manual limit, the answer budget,
+the context limit or Stop, with token counts.
 
 ## Attach a picture
 
@@ -91,10 +94,14 @@ preserves aspect ratio and pads an image to the selected size. A 224-pixel
 profile uses 64 image tokens; larger supported image sizes use more memory and
 context. This is a different architecture from dense Qwen2.5.
 
-For **Gemma 3n**, use **Add images to a Gemma 3n bundle** in the converter.
-Select a CPU or CUDA text bundle with host embeddings and its matching
-`gemma3nv` projector GGUF. Inspect, then build a new image bundle. Older CPU
-text bundles may need reconversion. The 768-pixel profile uses 256 image tokens.
+For **Qwen3.8**, add the `vision_*` fields for the original vision shard and
+configuration to the converter's source identity JSON; see the
+[Qwen3.8 guide](https://github.com/pisarev/crosspascal-convert/blob/main/docs/QWEN35.md).
+Images are letterboxed to 512 × 512 pixels with bicubic interpolation.
+
+For **Gemma 3n**, including Huihui, select its CPU or CUDA profile in the
+converter with the original GGUF and the matching `gemma3nv` projector GGUF,
+then click **Preview** and **Build**. The 768-pixel profile uses 256 image tokens.
 A text GGUF alone does not contain the necessary vision weights. Audio and
 video inputs are not implemented.
 

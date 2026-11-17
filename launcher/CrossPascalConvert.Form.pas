@@ -24,6 +24,7 @@ type
     FSourceLabel: TLabel;
     FSource: TEdit;
     FProjector: TEdit;
+    FProjectorLabel: TLabel;
     FOutput: TEdit;
     FArchitecture: TEdit;
     FContext: TEdit;
@@ -38,6 +39,7 @@ type
     FLogFile: string;
     FLogSize: Int64;
     FDestination: string;
+    FInspecting: Boolean;
     function Selected: TConverterProfile;
     function AddLabel(const CaptionText: string; const Left, Top: Integer): TLabel;
     function AddEdit(const Left, Top, Width: Integer; const Stretch: Boolean): TEdit;
@@ -177,7 +179,7 @@ begin
   FSourceLabel := AddLabel('Original checkpoint', Margin, 72);
   FSource := AddEdit(Margin, 92, FieldWidth, True);
   AddButton('Browse...', RightButton, 92, BrowseSource, True);
-  AddLabel('Image projector (optional)', Margin, 134);
+  FProjectorLabel := AddLabel('Image projector (optional)', Margin, 134);
   FProjector := AddEdit(Margin, 154, FieldWidth, True);
   FProjectorBrowse := AddButton('Browse...', RightButton, 154, BrowseProjector, True);
   AddLabel('New output folder', Margin, 196);
@@ -186,7 +188,9 @@ begin
   AddLabel('CUDA target', Margin, 258);
   FArchitecture := AddEdit(Margin, 278, ButtonWidth, False);
   FArchitecture.Text := UIString(DefaultCUDAArchitecture);
-  FArchitecture.Hint := 'Detected CUDA device 0. Edit the target to build for another card: sm_75, sm_86, sm_89 or sm_120.';
+  FArchitecture.TextHint := 'sm_XX';
+  FArchitecture.Hint := 'Detected CUDA device 0. Edit the target to build for another card: ' +
+    'sm_75, sm_86, sm_89 or sm_120.';
   FArchitecture.ShowHint := True;
   AddLabel('Context tokens', Margin + 128, 258);
   FContext := AddEdit(Margin + 128, 278, ButtonWidth, False);
@@ -230,9 +234,9 @@ begin
   Profile := SourceProfile(Selected);
   if Profile = cpGemma3nVision then
     FSourceLabel.Caption := 'Existing Gemma 3n text bundle'
-  else if NeedsProjector(Profile) then
+  else if NeedsProjector(Profile) or IsHuihuiGemma(Profile) or (Profile = cpQwen35GGUFCPU) then
     FSourceLabel.Caption := 'Original GGUF checkpoint'
-  else if Profile in [cpGemma2, cpQwen2, cpQwenVL] then
+  else if Profile in [cpGemma2, cpQwen2, cpQwenVL, cpQwen35BF16CUDA] then
     FSourceLabel.Caption := 'Original Safetensors folder'
   else if Profile in [cpYoloDetection, cpYoloClassification] then
     FSourceLabel.Caption := 'Original YOLO checkpoint or ONNX file'
@@ -242,13 +246,18 @@ begin
     FSourceLabel.Caption := 'Original RT-DETR Safetensors or ONNX file'
   else
     FSourceLabel.Caption := 'Original ONNX file or source-pack folder';
-  FProjector.Enabled := NeedsProjector(Profile);
+  if IsQwen35(Profile) then
+    FProjectorLabel.Caption := 'Source identity JSON (repository, revision and license)'
+  else
+    FProjectorLabel.Caption := 'Image projector (optional)';
+  FProjector.Enabled := NeedsProjector(Profile) or IsQwen35(Profile);
   FProjectorBrowse.Enabled := FProjector.Enabled;
   FArchitecture.Enabled := UsesCUDA(Selected);
-  FContext.Enabled := Profile in [cpGemma3nCPU, cpGemma3nCUDA, cpGemma2, cpQwen2];
-  FChunk.Enabled := Profile in [cpGemma3nCPU, cpGemma2, cpQwen2];
-  if Profile in [cpGemma3nCPU, cpGemma3nCUDA] then
-    FContext.Text := '1024'
+  FContext.Enabled := Profile in [cpGemma3nCPU, cpGemma3nCUDA, cpGemma2, cpQwen2,
+    cpQwen35GGUFCPU, cpQwen35BF16CUDA, cpHuihuiGemma3nCPU, cpHuihuiGemma3nCUDA];
+  FChunk.Enabled := Profile in [cpGemma3nCPU, cpGemma2, cpQwen2, cpHuihuiGemma3nCPU];
+  if (Profile in [cpGemma3nCPU, cpGemma3nCUDA]) or IsQwen35(Profile) or IsHuihuiGemma(Profile) then
+    FContext.Text := '4096'
   else if FContext.Enabled then
     FContext.Text := '2048';
 end;
@@ -264,7 +273,7 @@ begin
   begin
     if not SelectFolder('Select the Gemma 3n text bundle', Path) then Exit;
   end
-  else if NeedsProjector(Profile) then
+  else if NeedsProjector(Profile) or IsHuihuiGemma(Profile) or (Profile = cpQwen35GGUFCPU) then
   begin
     if not SelectFile('Select the original GGUF checkpoint', 'GGUF models (*.gguf)|*.gguf', Path) then
       Exit;
@@ -273,7 +282,7 @@ begin
   begin
     if not SelectFolder('Select the OmDet ONNX source pack', Path) then Exit;
   end
-  else if Profile in [cpGemma2, cpQwen2, cpQwenVL] then
+  else if Profile in [cpGemma2, cpQwen2, cpQwenVL, cpQwen35BF16CUDA] then
   begin
     if not SelectFolder('Select the original Safetensors folder', Path) then Exit;
   end
@@ -298,6 +307,12 @@ var
   Path: string;
 begin
   Path := EditText(FProjector);
+  if IsQwen35(Selected) then
+  begin
+    if SelectFile('Select the Qwen source identity', 'JSON source identity (*.json)|*.json', Path) then
+      FProjector.Text := UIString(Path);
+    Exit;
+  end;
   if SelectFile('Select the image projector GGUF', 'GGUF models (*.gguf)|*.gguf', Path) then
     FProjector.Text := UIString(Path);
 end;
@@ -335,8 +350,23 @@ procedure TConverterForm.Preview(Sender: TObject);
 var
   Command: TConversionCommand;
 begin
+  if FProcess <> 0 then Exit;
   try
     Command := Request;
+    if IsQwen35(Command.Profile) then
+    begin
+      Command.Arguments[0] := '--launcher-inspect';
+      FProcess := StartConversion(Command, FLogFile);
+      FInspecting := True;
+      FDestination := '';
+      FLogSize := -1;
+      FBuild.Enabled := False;
+      FPreview.Enabled := False;
+      FOpenOutput.Enabled := False;
+      FReport.Text := UIString('Inspecting source architecture and tensor shapes...');
+      FTimer.Enabled := True;
+      Exit;
+    end;
     FReport.Text := UIString(ProfileTitles[Command.Profile] + sLineBreak + sLineBreak +
       'Source  ' + Command.Source + sLineBreak + 'Output  ' + Command.Destination + sLineBreak +
       'Compiler  ' + ExtractFileName(Command.Executable));
@@ -352,6 +382,7 @@ begin
   if FProcess <> 0 then Exit;
   try
     Command := Request;
+    FInspecting := False;
     FProcess := StartConversion(Command, FLogFile);
     FDestination := Command.Destination;
     FLogSize := -1;
@@ -400,8 +431,10 @@ begin
   FTimer.Enabled := False;
   FBuild.Enabled := True;
   FPreview.Enabled := True;
-  FOpenOutput.Enabled := (Status = 0) and DirectoryExists(FDestination);
-  if FOpenOutput.Enabled then
+  FOpenOutput.Enabled := not FInspecting and (Status = 0) and DirectoryExists(FDestination);
+  if FInspecting and (Status = 0) then
+    FReport.Lines.Add(UIString('Source inspection complete. Build compiles a new bundle for the inputs listed above.'))
+  else if FOpenOutput.Enabled then
     FReport.Lines.Add(UIString('Bundle ready  ' + FDestination))
   else
     FReport.Lines.Add(UIString('Conversion ended with exit code ' + IntToStr(Status) + '. Log  ' + FLogFile));

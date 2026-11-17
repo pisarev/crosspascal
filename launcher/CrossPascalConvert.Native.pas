@@ -21,7 +21,8 @@ type
     cpGemma2CUDA, cpQwenVLCUDA, cpYoloDetectionCUDA, cpYoloClassificationCUDA, cpRtDetrCUDA,
     cpSqueezeNetCUDA, cpResNetCUDA, cpPaddleDetection, cpPaddleRecognition,
     cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA, cpBiRefNet, cpBiRefNetCUDA,
-    cpOmDet, cpOmDetCUDA);
+    cpOmDet, cpOmDetCUDA, cpQwen35GGUFCPU, cpQwen35GGUFCUDA, cpQwen35BF16CUDA,
+    cpHuihuiGemma3nCPU, cpHuihuiGemma3nCUDA);
 
   TConversionCommand = record
     Executable: string;
@@ -37,7 +38,9 @@ const
     'yolo11n', 'yolo11n-cls', 'rtdetr-r18vd', 'squeezenet', 'resnet50', 'gemma2-cuda', 'qwen-vl-cuda',
     'yolo11n-cuda', 'yolo11n-cls-cuda', 'rtdetr-r18vd-cuda', 'squeezenet-cuda', 'resnet50-cuda',
     'ppocrv5-server-det', 'ppocrv5-server-rec', 'ppocrv5-server-det-cuda', 'ppocrv5-server-rec-cuda',
-    'birefnet-hr800', 'birefnet-hr800-cuda', 'omdet-turbo-tiny16', 'omdet-turbo-tiny16-cuda');
+    'birefnet-hr800', 'birefnet-hr800-cuda', 'omdet-turbo-tiny16', 'omdet-turbo-tiny16-cuda',
+    'qwen35-gguf-cpu', 'qwen35-gguf-cuda', 'qwen35-bf16-cuda',
+    'huihui-gemma3n-cpu', 'huihui-gemma3n-cuda');
   ProfileTitles: array[TConverterProfile] of string = (
     'Gemma 3n E4B | CPU',
     'Gemma 3n E4B | CUDA',
@@ -64,13 +67,20 @@ const
     'BiRefNet HR800 background removal | CPU',
     'BiRefNet HR800 background removal | CUDA',
     'OmDet-Turbo text-guided detection | CPU',
-    'OmDet-Turbo text-guided detection | CUDA');
+    'OmDet-Turbo text-guided detection | CUDA',
+    'Qwen 3.5/3.8 dense GGUF | CPU',
+    'Qwen 3.5/3.8 dense GGUF | CUDA',
+    'Qwen 3.5/3.8 original BF16 | CUDA',
+    'Huihui Gemma 3n E4B abliterated | CPU',
+    'Huihui Gemma 3n E4B abliterated | CUDA');
 
 function ExecutableFolder: string;
 function DefaultCUDAArchitecture: string;
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
 function SourceProfile(const Profile: TConverterProfile): TConverterProfile;
 function NeedsProjector(const Profile: TConverterProfile): Boolean;
+function IsQwen35(const Profile: TConverterProfile): Boolean;
+function IsHuihuiGemma(const Profile: TConverterProfile): Boolean;
 function PrepareConversion(const Root, Source, Projector, Destination, Architecture: string;
   const Profile: TConverterProfile; const Context, Chunk: Integer): TConversionCommand;
 function StartConversion(const Command: TConversionCommand; out LogFile: string): THandle;
@@ -92,7 +102,18 @@ end;
 function UsesCUDA(const Profile: TConverterProfile): Boolean;
 begin
   Result := Profile in [cpGemma3nCUDA, cpQwen2, cpGemma2CUDA..cpResNetCUDA,
-    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA, cpBiRefNetCUDA, cpOmDetCUDA];
+    cpPaddleDetectionCUDA, cpPaddleRecognitionCUDA, cpBiRefNetCUDA, cpOmDetCUDA,
+    cpQwen35GGUFCUDA, cpQwen35BF16CUDA, cpHuihuiGemma3nCUDA];
+end;
+
+function IsQwen35(const Profile: TConverterProfile): Boolean;
+begin
+  Result := Profile in [cpQwen35GGUFCPU, cpQwen35GGUFCUDA, cpQwen35BF16CUDA];
+end;
+
+function IsHuihuiGemma(const Profile: TConverterProfile): Boolean;
+begin
+  Result := Profile in [cpHuihuiGemma3nCPU, cpHuihuiGemma3nCUDA];
 end;
 
 function DefaultCUDAArchitecture: string;
@@ -141,6 +162,7 @@ begin
     cpPaddleRecognitionCUDA: Result := cpPaddleRecognition;
     cpBiRefNetCUDA: Result := cpBiRefNet;
     cpOmDetCUDA: Result := cpOmDet;
+    cpQwen35GGUFCUDA: Result := cpQwen35GGUFCPU;
   else
     Result := Profile;
   end;
@@ -148,7 +170,8 @@ end;
 
 function NeedsProjector(const Profile: TConverterProfile): Boolean;
 begin
-  Result := Profile in [cpGemma3nCPU, cpGemma3nCUDA, cpGemma3nVision];
+  Result := Profile in [cpGemma3nCPU, cpGemma3nCUDA, cpGemma3nVision, cpHuihuiGemma3nCPU,
+    cpHuihuiGemma3nCUDA];
 end;
 
 function Unquoted(const Input: string): string;
@@ -297,7 +320,7 @@ const
   VisionIDs: array[cpYoloDetection..cpResNet] of string = ('yolo11n', 'yolo11n-cls', 'rtdetr-r18vd', 'squeezenet', 'resnet50');
   OmDetFiles: array[0..4] of string = ('text.onnx', 'detector.onnx', 'class-projection.f32', 'vocab.json', 'merges.txt');
 var
-  Kit, Tool, InputPath, Output, CUDA, Arch, VisionFile, Recipe, Ggml, SentencePiece: string;
+  Kit, Tool, InputPath, Output, CUDA, Arch, VisionFile, Recipe, Ggml, SentencePiece, Target: string;
   Args, LinkArgs: TArray<string>;
   I: Integer;
   Kind: TConverterProfile;
@@ -329,7 +352,39 @@ begin
   end;
   Kind := SourceProfile(Profile);
   case Kind of
-    cpGemma3nCPU, cpGemma3nCUDA, cpGemma3nVision:
+    cpQwen35GGUFCPU, cpQwen35BF16CUDA:
+      begin
+        Tool := 'ConvertQwen35.exe';
+        if Kind = cpQwen35BF16CUDA then
+          RequireFile(IncludeTrailingPathDelimiter(InputPath) + 'config.json',
+            'The original BF16 configuration')
+        else
+          RequireFile(InputPath, 'The original Qwen GGUF');
+        if (Context < 2) or (Context > 1048576) then
+          raise Exception.Create('Enter a Qwen context from 2 to 1048576 tokens.');
+        Recipe := RequireFile(ExpandFileName(Unquoted(Projector)), 'The Qwen source identity JSON');
+        Ggml := ReadToolPath(Kit, 'GGML', 'ggml-base.dll');
+        if Kind = cpQwen35GGUFCPU then RequireFile(Ggml, 'The GGUF tensor reader');
+        VisionFile := ReadToolPath(Kit, 'QWEN35_KERNELS', 'kernels\qwen35-packed');
+        if UsesCUDA(Profile) then
+          Target := 'cuda'
+        else
+          Target := 'cpu';
+        SetLength(Args, 17);
+        Args[0] := '--launcher';
+        Args[1] := InputPath;
+        Args[2] := Output;
+        Args[3] := Recipe;
+        Args[4] := IntToStr(Context);
+        Args[5] := Target;
+        Args[6] := Arch;
+        Args[7] := Ggml;
+        Args[8] := VisionFile;
+        Args[9] := ReadToolPath(Kit, 'QWEN35_LICENSES', 'licenses\qwen35');
+        for I := 0 to High(LinkArgs) do Args[10 + I] := LinkArgs[I];
+        Args[16] := CUDA;
+      end;
+    cpGemma3nCPU, cpGemma3nCUDA, cpGemma3nVision, cpHuihuiGemma3nCPU, cpHuihuiGemma3nCUDA:
       begin
         Tool := 'ConvertGemma3n.exe';
         VisionFile := Unquoted(Projector);
@@ -337,7 +392,10 @@ begin
           VisionFile := '-'
         else
           VisionFile := RequireFile(ExpandFileName(VisionFile), 'The Gemma 3n projector GGUF');
-        Recipe := ReadToolPath(Kit, 'GEMMA3N_PROFILE', 'profiles\gemma3n');
+        if IsHuihuiGemma(Profile) then
+          Recipe := ReadToolPath(Kit, 'HUIHUI_GEMMA3N_PROFILE', 'profiles\gemma3n-huihui-abliterated')
+        else
+          Recipe := ReadToolPath(Kit, 'GEMMA3N_PROFILE', 'profiles\gemma3n');
         RequireFile(IncludeTrailingPathDelimiter(Recipe) + 'recipe.json', 'The Gemma 3n recipe');
         Ggml := RequireFile(ReadToolPath(Kit, 'GGML', 'ggml-base.dll'), 'The GGML reader');
         SentencePiece := RequireFile(ReadToolPath(Kit, 'SENTENCEPIECE', '..\gemma-native\crosspascal_sentencepiece.dll'),
@@ -356,7 +414,7 @@ begin
           if UsesCUDA(Profile) then Args := Args + ['--cuda', CUDA, Arch];
           if Context <> 0 then
           begin
-            if (Context < 2) or ((Profile = cpGemma3nCPU) and ((Chunk < 2) or
+            if (Context < 2) or ((Profile in [cpGemma3nCPU, cpHuihuiGemma3nCPU]) and ((Chunk < 2) or
               (Chunk > Context))) then
                 raise Exception.Create('Enter a valid context and prefill size.');
             Args := Args + ['--context', IntToStr(Context), IntToStr(Chunk)];

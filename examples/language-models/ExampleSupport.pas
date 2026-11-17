@@ -26,12 +26,13 @@ procedure FinishExample;
 function ExampleImages: TExampleImages;
 function ExamplePrompt(const TextPrompt, ImagePrompt: string): string;
 procedure PrintAnswer(const Report: string);
+procedure PrintGenerationSummary(const Report: string);
 procedure ConsoleWrite(const Text: string);
 procedure ConsoleWriteLine(const Text: string);
 
 implementation
 
-uses CrossPascal.Json, ExampleDefaults;
+uses CrossPascal.Json, ExampleDefaults, LanguageReport;
 
 procedure ConsoleWrite(const Text: string);
 var
@@ -129,6 +130,11 @@ begin
   Result := GetAsyncKeyState(VK_ESCAPE) < 0;
 end;
 
+procedure PrintGenerationSummary(const Report: string);
+begin
+  ConsoleWriteLine(GenerationSummary(Report));
+end;
+
 procedure PrintAnswer(const Report: string);
 var
   Value, Text: TJSONValue;
@@ -143,6 +149,7 @@ begin
       ConsoleWriteLine(Report)
     else
       ConsoleWriteLine(JSONValueText(Text));
+    PrintGenerationSummary(Report);
   finally
     Value.Free;
   end;

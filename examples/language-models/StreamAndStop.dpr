@@ -12,6 +12,7 @@ var
   Output: TConsoleOutput;
   Options: TLanguageOptions;
   Images: TExampleImages;
+  Report: string;
 begin
   RequireArguments(False);
   Images := ExampleImages;
@@ -24,9 +25,10 @@ begin
     Model.ShouldStop := Output.StopRequested;
     ConsoleWriteLine('Hold Escape to stop generation.');
     Options := DefaultLanguageOptions;
-    Model.Generate(ExamplePrompt('Explain how stars form.', 'Explain what you can see in this image.'),
+    Report := Model.Generate(ExamplePrompt('Explain how stars form.', 'Explain what you can see in this image.'),
       Options, Images);
     ConsoleWriteLine('');
+    PrintGenerationSummary(Report);
     Model.Unload;
   finally
     Model.Free;

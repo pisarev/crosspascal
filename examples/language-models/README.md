@@ -39,14 +39,10 @@ not converted bundles. A bundle contains `model.json` and its referenced files.
 5. Run the program. Read the status and answer in its console window. You can
    also start the built program from a terminal with the same arguments.
 
-Extract the main SDK and `crosspascal-language-runtime-windows-x64-ea015.zip`
-together. The companion supplies the four native DLLs for dense Qwen and the
-portable runtime for Gemma and Qwen2.5-VL. The SDK root contains
-`crosspascal-tvm`, `crosspascal-convert` and the supplied `runtime` directory.
-Dense Qwen also accepts its pinned native runtime
-directory directly. A compatible NVIDIA driver is required for CUDA bundles;
-CPU bundles use system memory instead. Qwen2.5-VL and Gemma use the portable
-language runtime, including its local tokenizer and image-decoding libraries.
+The SDK root contains `crosspascal-tvm`, `crosspascal-convert` and the supplied
+`runtime` directory with the native TVM libraries. Dense Qwen also accepts its
+pinned native runtime directory directly. A compatible NVIDIA driver is required
+for CUDA bundles; CPU bundles use system memory instead.
 
 ## The five operations
 
@@ -82,16 +78,18 @@ Temperature, Top P, Top K, seed and repetition penalty affect sampling. Greedy
 decoding preserves the highest-score path. The result records the effective
 settings and stop reason.
 
-Automatic mode ends at the model's end-of-answer token, your Stop request, or
-the bundle's actual context capacity. A context includes the prompt, image
-tokens and generated text. A larger context requires a suitable converted
-bundle and enough memory; `0` cannot make a fixed-size cache infinite.
+Automatic mode (`0`) sets the answer budget within the remaining compiled
+context. A context includes the prompt, image tokens and generated text. The
+report records whether generation ended at the end-of-answer token, the manual
+limit, the answer budget, the context limit or your Stop request, with token
+counts. A larger context requires a suitable converted bundle and enough
+memory; `0` cannot make a fixed-size cache infinite.
 
 ## Models and images
 
 The API dispatches by the converted bundle architecture, not by a list of
 model sizes or GPU names. Qwen2 dense text bundles, experimental Gemma 2 CPU,
-Qwen2.5-VL CPU, and Gemma 3n CPU/CUDA bundles use the same lifecycle.
+Qwen2.5-VL, Gemma 3n and Qwen3.5/3.8 CPU/CUDA bundles use the same lifecycle.
 
 `SupportsImages` describes the actual bundle and runtime. It is not a promise
 based on a family name. The dense Qwen2.5 models are text models; adding an
@@ -99,13 +97,14 @@ image filename cannot make them see. A multimodal family member needs its own
 vision weights and compatible conversion/runtime support. An unsupported image
 request fails clearly before inference and is never silently reduced to text.
 
-Gemma 3n CPU or CUDA bundles with a verified `vision.json` and its referenced encoder
-files also accept image paths. Use the converter's **Add images to a Gemma 3n
-bundle** section to create one from a text bundle and its matching projector
-GGUF. A selected image occupies 256 tokens in the verified 768-pixel profile.
-Qwen2.5-VL CPU bundles include their vision graph. A 224-pixel profile uses 64
-image tokens and aspect-preserving padding. The runtime includes Pillow for
-image decoding; inference still uses TVM. All generation examples validate
+Gemma 3n CPU or CUDA bundles with a verified vision manifest and its referenced
+encoder files also accept image paths. To create one, select the original GGUF and its
+matching `gemma3nv` projector GGUF in the converter's Gemma 3n profile. A
+selected image occupies 256 tokens in the verified 768-pixel profile.
+Qwen2.5-VL CPU and CUDA bundles include their vision graph. A 224-pixel profile
+uses 64 image tokens and aspect-preserving padding. Qwen3.8 image bundles use
+the original BF16 vision tensors and a 512-pixel letterboxed profile. Image
+files are decoded with OpenCV; inference uses TVM. All generation examples validate
 `SupportsImages` before submitting an optional picture. Neither dense Qwen2.5
 nor Gemma 2 gains vision merely by passing an image filename.
 

@@ -109,7 +109,7 @@ implementation
 uses
   TVM.Threads,
   {$IFDEF FPC}FPImage, IntfGraphics{$ELSE}Vcl.FileCtrl, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage{$ENDIF},
-  CrossPascal.Json;
+  CrossPascal.Json, LanguageReport;
 
 type TUIText = {$IFDEF FPC}UTF8String{$ELSE}string{$ENDIF};
 
@@ -321,12 +321,11 @@ var
     Cell: TPanel;
   begin
     Cell := Panel(Parent, Alignment, Width);
-    Cell.BorderWidth := 0;
-    Cell.Width := 128;
+    Cell.BorderWidth := 2;
     Cell.TabStop := False;
     Result := TButton.Create(Self);
     Result.Parent := Cell;
-    Result.SetBounds(4, 2, 120, 32);
+    Result.Align := alClient;
     Result.TabOrder := 0;
     Result.Caption := ToUI(Text);
     Result.OnClick := Handler;
@@ -449,8 +448,8 @@ begin
   FSystem.Align := alClient;
   FSystem.Text := 'You are a helpful assistant.';
   FSystem.ScrollBars := ssVertical;
-  Row := SettingRow('Installed SDK folder', 64);
-  Row := Panel(Row, alBottom, 36);
+  Row := SettingRow('Installed SDK folder', 56);
+  Row := Panel(Row, alBottom, 32);
   FRuntimeBrowse := ButtonOn(Row, '...', 40, alRight, BrowseRuntime);
   Field := Panel(Row, alClient, 0);
   Field.BorderWidth := 2;
@@ -464,7 +463,7 @@ begin
   AnswerPanel := Panel(FContent, alClient, 0);
   AnswerPanel.BorderWidth := 12;
   Composer := Panel(AnswerPanel, alBottom, 206);
-  Composer.BorderWidth := 3;
+  Composer.BorderWidth := 0;
   Heading := LabelOn(Composer, 'Message', alTop);
   Heading.Font.Style := [fsBold];
   Actions := Panel(Composer, alBottom, 40);
@@ -483,11 +482,11 @@ begin
   FRemove.Parent.Left := 128;
   Attachments.EnableAlign;
   PromptPanel := Panel(Composer, alClient, 0);
-  PromptPanel.BorderWidth := 3;
+  PromptPanel.BorderWidth := 0;
   FPreview := TImage.Create(Self);
-  FPreview.Parent := PromptPanel;
+  FPreview.Parent := Attachments;
   FPreview.Align := alRight;
-  FPreview.Width := 112;
+  FPreview.Width := 64;
   FPreview.Proportional := True;
   FPreview.Center := True;
   FPreview.Stretch := True;
@@ -665,6 +664,11 @@ var
 begin
   if FWorker <> nil then Exit;
   try
+    if (Action <> maUnload) and (Trim(FBundle.Text) = '') then
+    begin
+      FStatus.Caption := 'Choose a model bundle, then click Load model or Generate.';
+      Exit;
+    end;
     if (Action = maGenerate) and (FImagePath <> '') then
     begin
       Info := TLanguageModel.Inspect(FolderFromUI(FBundle.Text));
@@ -771,7 +775,10 @@ begin
         FCapability.Caption := FCapability.Caption + ' / text + images'
       else
         FCapability.Caption := FCapability.Caption + ' / text only';
-      FStatus.Caption := 'Model remains loaded for the next request. Use Unload model to release it.';
+      if FWorker.FReport <> '' then
+        FStatus.Caption := ToUI(GenerationSummary(FWorker.FReport, Info.ContextTokens))
+      else
+        FStatus.Caption := 'Model loaded. Enter a message and click Generate.';
     end
     else
       FStatus.Caption := 'Model unloaded. Memory released.';

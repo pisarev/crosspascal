@@ -12,6 +12,7 @@ var
   Output: TConsoleOutput;
   Options: TLanguageOptions;
   Info: TLanguageCapabilities;
+  Report: string;
 begin
   RequireArguments(True);
   Output := TConsoleOutput.Create;
@@ -27,8 +28,10 @@ begin
     ConsoleWriteLine('Hold Escape to stop generation.');
     Options := DefaultLanguageOptions;
     Options.Sampling := qsGreedy;
-    Model.Generate('Describe the main object in this image in one sentence.', Options, [ExampleArgument(3)]);
+    Report := Model.Generate('Describe the main object in this image in one sentence.', Options,
+      [ExampleArgument(3)]);
     ConsoleWriteLine('');
+    PrintGenerationSummary(Report);
     Model.Unload;
   finally
     Model.Free;

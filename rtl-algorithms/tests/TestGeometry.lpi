@@ -27,7 +27,7 @@
       <Filename Value="bin/lazarus-win64/TestGeometry" />
     </Target>
     <SearchPaths>
-      <OtherUnitFiles Value="../src" />
+      <OtherUnitFiles Value="../src;..\..\..\1-bindings\tvm\pascal;..\..\..\1-bindings\opencv\pascal;..\..\..\1-bindings\leptonica\pascal;..\..\..\4-ml\pascal;..\..\..\2-vision\core\pascal;..\..\..\2-vision\pascal;..\..\..\3-algorithms\pascal;..;..\..\..\tools\prepare;..\..\..\examples\language-shared;..\..\..\examples\language-models;..\..\..\examples\vision-models" />
       <UnitOutputDirectory Value="bin/lazarus-win64/units" />
     </SearchPaths>
     <Parsing>
