@@ -513,7 +513,7 @@
     {
       "path": "prepare/vision-downloads.json",
       "bytes": 18400,
-      "sha256": "1d54e180e3ac487da47184fc9559bbf51d0fc03386bb8869e2f3b835fdf40e25"
+      "sha256": "a715809671470510a6ae857e28a2e855accebc64352ed51ab78a5a30806f4b1e"
     },
     {
       "path": "prepare/vision/resnet50/Prepare-CPU.cmd",
@@ -533,7 +533,7 @@
     {
       "path": "prepare/vision/resnet50/prepare-bootstrap.json",
       "bytes": 139,
-      "sha256": "8265021f2d554f542a8bb584a39028c41ef071f0c3778b047c5ec9a2937d3516"
+      "sha256": "b87deffedc00162e87a70a65b2c752dbf90062a5d973b8177fcd97335a747ee4"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare-CPU.cmd",
@@ -553,7 +553,7 @@
     {
       "path": "prepare/vision/rtdetr-r18vd/prepare-bootstrap.json",
       "bytes": 143,
-      "sha256": "1d47d3e67cafb418764dfc29add4df1bcaad450281952bfb74fdbb9cf5476b01"
+      "sha256": "df106c513ea7be454a280e2e21b373be8e97838cc48abe23bab279f97833202d"
     },
     {
       "path": "prepare/vision/squeezenet/Prepare-CPU.cmd",
@@ -573,7 +573,7 @@
     {
       "path": "prepare/vision/squeezenet/prepare-bootstrap.json",
       "bytes": 141,
-      "sha256": "81ddd7e70f7c6d45185437832e4b1217b5f17f5239a6d0501927d9735b13b275"
+      "sha256": "8df106fdfb27662a5055048f90661b983feaa0b8f7d497faeb34151a552917ed"
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare-CPU.cmd",
@@ -593,7 +593,7 @@
     {
       "path": "prepare/vision/yolo11n-cls/prepare-bootstrap.json",
       "bytes": 142,
-      "sha256": "06619b45a50855fd113353c09ad826c8c0e778f9adde30ffb787f9fed1b7800f"
+      "sha256": "4f622109bf51f562713679d381eac7303e0b5f7d8330c4c912765f446ea7b8cd"
     },
     {
       "path": "prepare/vision/yolo11n/Prepare-CPU.cmd",
@@ -613,7 +613,7 @@
     {
       "path": "prepare/vision/yolo11n/prepare-bootstrap.json",
       "bytes": 138,
-      "sha256": "e03dfcd7fe82aa63b0089d5c8ea34439ddc731f096a9764fe258696ad0dbdf92"
+      "sha256": "ffcfc38958eac1448c81d55e422947f0d53b99b7a34025137de029bf15d53e3d"
     },
     {
       "path": "rtl-algorithms/LICENSE",
