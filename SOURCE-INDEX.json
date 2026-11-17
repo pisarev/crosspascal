@@ -277,8 +277,8 @@
     },
     {
       "path": "examples/language-shared/LanguageChat.Form.pas",
-      "bytes": 25651,
-      "sha256": "607e72aaecb8e2818f89b408042898563ece14ab8fe82b51e73505e35cba884d"
+      "bytes": 26433,
+      "sha256": "0aca8a373238c37d8f85aa77022a8b1a62ce97aeba5c0a09b37cec6f372cac9b"
     },
     {
       "path": "examples/marker-lite/MarkerLite.dpr",

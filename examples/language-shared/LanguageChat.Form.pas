@@ -154,20 +154,36 @@ var
   H: THandle;
   Stream: THandleStream;
   Bytes: TBytes;
+  Identifier: TGUID;
+  Destination, Temporary: string;
 begin
-  H := CreateFileW(PWideChar(ExpandFileName(Path)), GENERIC_WRITE, 0, nil,
+  if (Path = '') or (Pos(#0, Path) <> 0) then
+    raise EWriteError.Create('Choose a new output file.');
+  Destination := ExpandFileName(Path);
+  Bytes := TEncoding.UTF8.GetBytes(JSONText + sLineBreak);
+  if CreateGUID(Identifier) <> 0 then
+    raise EWriteError.Create('A temporary report name could not be generated.');
+  Temporary := ExtractFilePath(Destination) + '.crosspascal-report-' +
+    GUIDToString(Identifier) + '.tmp';
+  H := CreateFileW(PWideChar(Temporary), GENERIC_WRITE, 0, nil,
     CREATE_NEW, FILE_ATTRIBUTE_NORMAL, 0);
   if H = INVALID_HANDLE_VALUE then RaiseLastOSError;
   try
     Stream := THandleStream.Create(H);
     try
-      Bytes := TEncoding.UTF8.GetBytes(JSONText + sLineBreak);
       if Length(Bytes) > 0 then Stream.WriteBuffer(Bytes[0], Length(Bytes));
     finally
       Stream.Free;
     end;
+    if not FlushFileBuffers(H) then RaiseLastOSError;
+    if not CloseHandle(H) then RaiseLastOSError;
+    H := INVALID_HANDLE_VALUE;
+    if not MoveFileExW(PWideChar(Temporary), PWideChar(Destination), 0) then
+      RaiseLastOSError;
+    Temporary := '';
   finally
-    CloseHandle(H);
+    if H <> INVALID_HANDLE_VALUE then CloseHandle(H);
+    if Temporary <> '' then DeleteFileW(PWideChar(Temporary));
   end;
 end;
 
