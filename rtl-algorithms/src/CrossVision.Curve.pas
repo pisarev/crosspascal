@@ -674,15 +674,15 @@ begin
         Result[K] := CatmullRomPoint(PointArray[(I - 1 + Count) mod Count], PointArray[I mod Count],
           PointArray[(I + 1) mod Count], PointArray[(I + 2) mod Count], J * Step)
       else if I = 0 then
-          Result[K] := PointArray[0]
-        else if I = Count - 2 then
-            Result[K] := CatmullRomPoint(PointArray[I - 1], PointArray[I], PointArray[I + 1],
-              PointArray[I + 1], J * Step)
-          else if I = Count - 1 then
-              Result[K] := PointArray[Count - 1]
-            else
-              Result[K] := CatmullRomPoint(PointArray[I - 1], PointArray[I], PointArray[I + 1],
-                PointArray[I + 2], J * Step);
+        Result[K] := PointArray[0]
+      else if I = Count - 2 then
+        Result[K] := CatmullRomPoint(PointArray[I - 1], PointArray[I], PointArray[I + 1],
+          PointArray[I + 1], J * Step)
+      else if I = Count - 1 then
+        Result[K] := PointArray[Count - 1]
+      else
+        Result[K] := CatmullRomPoint(PointArray[I - 1], PointArray[I], PointArray[I + 1],
+          PointArray[I + 2], J * Step);
       Inc(K);
     end;
   SetLength(Result, K);
@@ -823,9 +823,9 @@ begin
         Exit(StartIndex - M);
     end
     else if Sums[M] < Distance then
-        L := M + 1
-      else
-        H := M - 1;
+      L := M + 1
+    else
+      H := M - 1;
   end;
   if L < Count then
   begin
@@ -892,11 +892,11 @@ begin
         if Matrix[I - 1, J - 1] < Value then Value := Matrix[I - 1, J - 1];
       end
       else if I > 0 then
-          Value := Matrix[I - 1, J]
-        else if J > 0 then
-            Value := Matrix[I, J - 1]
-          else
-            Value := 0;
+        Value := Matrix[I - 1, J]
+      else if J > 0 then
+        Value := Matrix[I, J - 1]
+      else
+        Value := 0;
       Matrix[I, J] := Matrix[I, J] + Value;
     end;
   Count := 0;
@@ -928,14 +928,14 @@ begin
       Result := Result + Value;
     end
     else if I < High(Matrix) then
-      begin
-        Result := Result + Matrix[I + 1, J];
-        Inc(I);
-      end
-      else begin
-        Result := Result + Matrix[I, J + 1];
-        Inc(J);
-      end;
+    begin
+      Result := Result + Matrix[I + 1, J];
+      Inc(I);
+    end
+    else begin
+      Result := Result + Matrix[I, J + 1];
+      Inc(J);
+    end;
     Inc(Count);
   end;
   if Count > 0 then Result := Result / Count;
@@ -1169,11 +1169,11 @@ begin
     if I = 0 then
       P := A
     else if I = Count - 1 then
-        P := B
-      else begin
-        T := I / (Count - 1);
-        P := Point(Round(A.X + (B.X - A.X) * T), Round(A.Y + (B.Y - A.Y) * T));
-      end;
+      P := B
+    else begin
+      T := I / (Count - 1);
+      P := Point(Round(A.X + (B.X - A.X) * T), Round(A.Y + (B.Y - A.Y) * T));
+    end;
     AppendUnique(C, P);
   end;
 end;
@@ -1476,11 +1476,11 @@ begin
   if MinI < 0 then
     MinI := 0
   else if MinI > High0 then
-      MinI := High0;
+    MinI := High0;
   if MaxI < 0 then
     MaxI := 0
   else if MaxI > High0 then
-      MaxI := High0;
+    MaxI := High0;
   if MinI > MaxI then
     Result := 0
   else
@@ -1634,11 +1634,11 @@ begin
       if (I = 0) and (J = 0) then
         Best := 0
       else if I = 0 then
-          Best := M[I][J - 1]
-        else if J = 0 then
-            Best := M[I - 1][J]
-          else
-            Best := Min(M[I - 1][J], Min(M[I][J - 1], M[I - 1][J - 1]));
+        Best := M[I][J - 1]
+      else if J = 0 then
+        Best := M[I - 1][J]
+      else
+        Best := Min(M[I - 1][J], Min(M[I][J - 1], M[I - 1][J - 1]));
       M[I][J] := Cost + Best;
     end;
   Result := M[High(A)][High(B)] / (Length(A) + Length(B));

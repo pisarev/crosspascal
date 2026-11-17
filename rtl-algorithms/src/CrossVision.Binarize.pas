@@ -336,7 +336,7 @@ begin
       Ties := 1;
     end
     else if Score = Best then
-        Inc(Ties);
+      Inc(Ties);
     K := K - StepK;
   end;
   if (Best <= 0) or (Ties > 1) then

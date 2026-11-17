@@ -584,38 +584,38 @@ begin
       if Outcome.ErrorText <> '' then
         ReportError(Outcome.ErrorText)
       else if Outcome.Stopped then
-          FStatus.Caption := 'Stopped. You can start again.'
-        else if Outcome.Kind = ojUnload then
-            FStatus.Caption := 'Model unloaded.'
-          else begin
-            Bitmap := OmDetOverlay(FImage, Outcome.Value);
-            try
-              FResult.Picture.Assign(Bitmap);
-            finally
-              Bitmap.Free;
-            end;
-            FGrid.RowCount := Max(2, Length(Outcome.Value.Detections) + 1);
-            for I := 0 to High(Outcome.Value.Detections) do
-            begin
-              FGrid.Cells[0, I + 1] := UI(Outcome.Value.Labels[Outcome.Value.Detections[I].ClassIndex]);
-              FGrid.Cells[1, I + 1] := UI(Format('%.3f', [Outcome.Value.Detections[I].Score],
-                JSONInvariantFormat));
-              FGrid.Cells[2, I + 1] := UI(Format('%.1f', [Outcome.Value.Detections[I].Left],
-                JSONInvariantFormat));
-              FGrid.Cells[3, I + 1] := UI(Format('%.1f', [Outcome.Value.Detections[I].Top],
-                JSONInvariantFormat));
-              FGrid.Cells[4, I + 1] := UI(Format('%.1f', [Outcome.Value.Detections[I].Right],
-                JSONInvariantFormat));
-              FGrid.Cells[5, I + 1] := UI(Format('%.1f', [Outcome.Value.Detections[I].Bottom],
-                JSONInvariantFormat));
-            end;
-            FValue := Outcome.Value;
-            FHasResult := True;
-            Status := Format('%d objects  |  %s  |  %.2f s',
-              [Length(FValue.Detections), FValue.Device, FValue.Milliseconds / 1000]);
-            if FValue.Truncated then Status := Status + '  |  Text was truncated to 77 tokens.';
-            FStatus.Caption := UI(Status);
-          end;
+        FStatus.Caption := 'Stopped. You can start again.'
+      else if Outcome.Kind = ojUnload then
+        FStatus.Caption := 'Model unloaded.'
+      else begin
+        Bitmap := OmDetOverlay(FImage, Outcome.Value);
+        try
+          FResult.Picture.Assign(Bitmap);
+        finally
+          Bitmap.Free;
+        end;
+        FGrid.RowCount := Max(2, Length(Outcome.Value.Detections) + 1);
+        for I := 0 to High(Outcome.Value.Detections) do
+        begin
+          FGrid.Cells[0, I + 1] := UI(Outcome.Value.Labels[Outcome.Value.Detections[I].ClassIndex]);
+          FGrid.Cells[1, I + 1] := UI(Format('%.3f', [Outcome.Value.Detections[I].Score],
+            JSONInvariantFormat));
+          FGrid.Cells[2, I + 1] := UI(Format('%.1f', [Outcome.Value.Detections[I].Left],
+            JSONInvariantFormat));
+          FGrid.Cells[3, I + 1] := UI(Format('%.1f', [Outcome.Value.Detections[I].Top],
+            JSONInvariantFormat));
+          FGrid.Cells[4, I + 1] := UI(Format('%.1f', [Outcome.Value.Detections[I].Right],
+            JSONInvariantFormat));
+          FGrid.Cells[5, I + 1] := UI(Format('%.1f', [Outcome.Value.Detections[I].Bottom],
+            JSONInvariantFormat));
+        end;
+        FValue := Outcome.Value;
+        FHasResult := True;
+        Status := Format('%d objects  |  %s  |  %.2f s',
+          [Length(FValue.Detections), FValue.Device, FValue.Milliseconds / 1000]);
+        if FValue.Truncated then Status := Status + '  |  Text was truncated to 77 tokens.';
+        FStatus.Caption := UI(Status);
+      end;
     except
       on E: Exception do
       begin
@@ -628,7 +628,7 @@ begin
     if FClosePending then Close;
   end
   else if FWorker.Busy and not FStopRequested then
-      FStatus.Caption := UI(FWorker.Stage + '...');
+    FStatus.Caption := UI(FWorker.Stage + '...');
 end;
 
 procedure TOmDetForm.Save(Sender: TObject);

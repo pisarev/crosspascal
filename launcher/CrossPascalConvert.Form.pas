@@ -231,17 +231,17 @@ begin
   if Profile = cpGemma3nVision then
     FSourceLabel.Caption := 'Existing Gemma 3n text bundle'
   else if NeedsProjector(Profile) then
-      FSourceLabel.Caption := 'Original GGUF checkpoint'
-    else if Profile in [cpGemma2, cpQwen2, cpQwenVL] then
-        FSourceLabel.Caption := 'Original Safetensors folder'
-      else if Profile in [cpYoloDetection, cpYoloClassification] then
-          FSourceLabel.Caption := 'Original YOLO checkpoint or ONNX file'
-        else if Profile = cpOmDet then
-            FSourceLabel.Caption := 'OmDet ONNX source-pack folder'
-          else if Profile = cpRtDetr then
-              FSourceLabel.Caption := 'Original RT-DETR Safetensors or ONNX file'
-            else
-              FSourceLabel.Caption := 'Original ONNX file or source-pack folder';
+    FSourceLabel.Caption := 'Original GGUF checkpoint'
+  else if Profile in [cpGemma2, cpQwen2, cpQwenVL] then
+    FSourceLabel.Caption := 'Original Safetensors folder'
+  else if Profile in [cpYoloDetection, cpYoloClassification] then
+    FSourceLabel.Caption := 'Original YOLO checkpoint or ONNX file'
+  else if Profile = cpOmDet then
+    FSourceLabel.Caption := 'OmDet ONNX source-pack folder'
+  else if Profile = cpRtDetr then
+    FSourceLabel.Caption := 'Original RT-DETR Safetensors or ONNX file'
+  else
+    FSourceLabel.Caption := 'Original ONNX file or source-pack folder';
   FProjector.Enabled := NeedsProjector(Profile);
   FProjectorBrowse.Enabled := FProjector.Enabled;
   FArchitecture.Enabled := UsesCUDA(Selected);
@@ -250,7 +250,7 @@ begin
   if Profile in [cpGemma3nCPU, cpGemma3nCUDA] then
     FContext.Text := '1024'
   else if FContext.Enabled then
-      FContext.Text := '2048';
+    FContext.Text := '2048';
 end;
 
 procedure TConverterForm.BrowseSource(Sender: TObject);
@@ -265,31 +265,31 @@ begin
     if not SelectFolder('Select the Gemma 3n text bundle', Path) then Exit;
   end
   else if NeedsProjector(Profile) then
-    begin
-      if not SelectFile('Select the original GGUF checkpoint', 'GGUF models (*.gguf)|*.gguf', Path) then
+  begin
+    if not SelectFile('Select the original GGUF checkpoint', 'GGUF models (*.gguf)|*.gguf', Path) then
+      Exit;
+  end
+  else if Profile = cpOmDet then
+  begin
+    if not SelectFolder('Select the OmDet ONNX source pack', Path) then Exit;
+  end
+  else if Profile in [cpGemma2, cpQwen2, cpQwenVL] then
+  begin
+    if not SelectFolder('Select the original Safetensors folder', Path) then Exit;
+  end
+  else if Profile in [cpYoloDetection, cpYoloClassification] then
+  begin
+    if not SelectFile('Select the original YOLO checkpoint',
+      'YOLO models (*.pt;*.onnx)|*.pt;*.onnx', Path) then
         Exit;
-    end
-    else if Profile = cpOmDet then
-      begin
-        if not SelectFolder('Select the OmDet ONNX source pack', Path) then Exit;
-      end
-      else if Profile in [cpGemma2, cpQwen2, cpQwenVL] then
-        begin
-          if not SelectFolder('Select the original Safetensors folder', Path) then Exit;
-        end
-        else if Profile in [cpYoloDetection, cpYoloClassification] then
-          begin
-            if not SelectFile('Select the original YOLO checkpoint',
-              'YOLO models (*.pt;*.onnx)|*.pt;*.onnx', Path) then
-                Exit;
-          end
-          else if Profile = cpRtDetr then
-            begin
-              if not SelectFile('Select the original RT-DETR checkpoint',
-                'RT-DETR models (*.safetensors;*.onnx)|*.safetensors;*.onnx', Path) then Exit;
-            end
-            else if not SelectFile('Select the original ONNX file', 'ONNX models (*.onnx)|*.onnx', Path) then
-                Exit;
+  end
+  else if Profile = cpRtDetr then
+  begin
+    if not SelectFile('Select the original RT-DETR checkpoint',
+      'RT-DETR models (*.safetensors;*.onnx)|*.safetensors;*.onnx', Path) then Exit;
+  end
+  else if not SelectFile('Select the original ONNX file', 'ONNX models (*.onnx)|*.onnx', Path) then
+    Exit;
   FSource.Text := UIString(Path);
 end;
 

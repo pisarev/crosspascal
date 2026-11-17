@@ -54,7 +54,7 @@ begin
   if Value = '' then
     MaxTokens := QwenDefaultMaxNewTokens
   else if not TryStrToInt64(Value, MaxTokens) then
-      raise Exception.Create('Invalid --max-new-tokens value.');
+    raise Exception.Create('Invalid --max-new-tokens value.');
   Bundle := OptionValue('--bundle');
   Runtime := OptionValue('--runtime');
   Prompt := OptionValue('--prompt');

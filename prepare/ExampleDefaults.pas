@@ -52,11 +52,11 @@ begin
       if Line[1] = '[' then
         InExample := SameText(Line, '[example]')
       else if InExample then
-        begin
-          Split := Pos('=', Line);
-          if (Split > 0) and SameText(Trim(Copy(Line, 1, Split - 1)), Key) then
-            Exit(Trim(Copy(Line, Split + 1, MaxInt)));
-        end;
+      begin
+        Split := Pos('=', Line);
+        if (Split > 0) and SameText(Trim(Copy(Line, 1, Split - 1)), Key) then
+          Exit(Trim(Copy(Line, Split + 1, MaxInt)));
+      end;
     end;
   finally
     Settings.Free;

@@ -451,21 +451,21 @@ begin
       if FRequiresRestart then
         FValue := Default(TBiRefResult)
       else if FWorker.ErrorText <> '' then
-          FStatus.Caption := UI(FWorker.ErrorText)
-        else begin
-          Candidate := FWorker.Value;
-          Status := Format('%s  |  %.2f s  |  Save the cutout or mask as PNG.',
-            [Candidate.Device, Candidate.Milliseconds / 1000]);
-          Picture := PrepareResult(Candidate);
-          try
-            PublishPictures(nil, Picture, False);
-            FValue := Candidate;
-            FDisplayedView := FView.ItemIndex;
-            FStatus.Caption := UI(Status);
-          finally
-            Picture.Free;
-          end;
+        FStatus.Caption := UI(FWorker.ErrorText)
+      else begin
+        Candidate := FWorker.Value;
+        Status := Format('%s  |  %.2f s  |  Save the cutout or mask as PNG.',
+          [Candidate.Device, Candidate.Milliseconds / 1000]);
+        Picture := PrepareResult(Candidate);
+        try
+          PublishPictures(nil, Picture, False);
+          FValue := Candidate;
+          FDisplayedView := FView.ItemIndex;
+          FStatus.Caption := UI(Status);
+        finally
+          Picture.Free;
         end;
+      end;
     except
       on E: Exception do
       begin

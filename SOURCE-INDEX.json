@@ -72,8 +72,8 @@
     },
     {
       "path": "examples/birefnet/BiRefNet.Main.pas",
-      "bytes": 21476,
-      "sha256": "4d1000f161d680c86e0c70b0868d9c328b80a7a4a4ddd0c4c8dde05922bc7d95"
+      "bytes": 21446,
+      "sha256": "cb8b00ff4dc964edfb860b85882b59c66a3d2215d91200ed8d7803ccc4cc18c2"
     },
     {
       "path": "examples/birefnet/BiRefNet.Run.pas",
@@ -312,8 +312,8 @@
     },
     {
       "path": "examples/omdet-turbo/OmDetTurbo.Main.pas",
-      "bytes": 20968,
-      "sha256": "7bc3d675ffd6c4c66b623a2c0282a037f72f8220efc44d560bb0a8b46b71df01"
+      "bytes": 20842,
+      "sha256": "44c8e11dba64e94db9889c6ab70f9fa78a41a86c4ee1a3a821a959bb7c66be54"
     },
     {
       "path": "examples/omdet-turbo/OmDetTurbo.Render.pas",
@@ -407,8 +407,8 @@
     },
     {
       "path": "examples/qwen-chat/QwenChat.dpr",
-      "bytes": 3958,
-      "sha256": "69b904856cd3c07f4daf47c68f97dc3714e8c6e376d7e58227d34991c791888e"
+      "bytes": 3956,
+      "sha256": "688cf81af66e8ad4e0799ea90f3ad2e0abb9143c2c885ca56cfac973d40469c9"
     },
     {
       "path": "examples/qwen-chat/QwenChat.dproj",
@@ -462,8 +462,8 @@
     },
     {
       "path": "launcher/CrossPascalConvert.Form.pas",
-      "bytes": 14345,
-      "sha256": "f5292b313c6671a8274aaa8f967af0d85266fb02b00acc5c9b1703e1c70d1154"
+      "bytes": 14113,
+      "sha256": "ec3cb154faabb6ab8e91457080deb52b803f7af5eb2b2b3aa7ed79236306ca41"
     },
     {
       "path": "launcher/CrossPascalConvert.Native.pas",
@@ -492,8 +492,8 @@
     },
     {
       "path": "prepare/ExampleDefaults.pas",
-      "bytes": 2233,
-      "sha256": "42ffdda1f2daee4f247e53ed8627e40cf006524664b7c32fabf53c6509c12d1b"
+      "bytes": 2223,
+      "sha256": "d5637d7f0079e293fef42b3dddbc6e13974f4eb15889f068b984a783dd261218"
     },
     {
       "path": "prepare/bootstrap.ps1",
@@ -632,8 +632,8 @@
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Binarize.pas",
-      "bytes": 10483,
-      "sha256": "ba0fabf8e720a79734be5baa5748eac61fd846c72c394b3a7dc3e49ae0cb2040"
+      "bytes": 10481,
+      "sha256": "ab9a7171a1bfc2f61f6b4082c76a34052a6bad1e5850386756aed66394d5746a"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Contour.pas",
@@ -642,8 +642,8 @@
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Curve.pas",
-      "bytes": 53027,
-      "sha256": "ac324989784d054df0a2747083626d3ee5eb5fc2bc7c9eddc5e7d9dccb1f49e4"
+      "bytes": 52919,
+      "sha256": "d06264a28c9768381261894c90596f3ef75c2b09778bdf12263658f50e27e5bc"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.DisjointSet.pas",
@@ -657,8 +657,8 @@
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Geometry.pas",
-      "bytes": 62804,
-      "sha256": "82ad87bbbb939430a0f7204d5121beffe4e4969c7335818509ed66a819400604"
+      "bytes": 59046,
+      "sha256": "a017deb0735a53007059f49e3a11ed812792f1c3ea7f969938d2eb7870c6daa9"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Image.pas",
@@ -732,5 +732,5 @@
     }
   ],
   "documentation_revision": "maintenance-20261110",
-  "source_revision": "controls-format-20261110"
+  "source_revision": "source-update-20261117"
 }

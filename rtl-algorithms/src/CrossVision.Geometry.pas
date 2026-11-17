@@ -597,9 +597,9 @@ begin
     if OrientationAt(I) = soHorizontal then
       Across := soVertical
     else if OrientationAt(I) = soVertical then
-        Across := soHorizontal
-      else
-        Continue;
+      Across := soHorizontal
+    else
+      Continue;
     for J := Low(Segments) to High(Segments) do
     begin
       if (J = I) or (OrientationAt(J) <> Across) or (Length(Segments[J]) <> 2) then Continue;
@@ -915,12 +915,12 @@ begin
       if (A1 >= B1) and (A2 <= B2) then
         Alive[I] := False
       else if (B1 >= A1) and (B2 <= A2) then
-          Alive[J] := False
-        else if (A2 >= B1) and (B2 >= A1) then
-          begin
-            Kept[I] := JoinPair(Kept[I], Kept[J]);
-            Alive[J] := False;
-          end;
+        Alive[J] := False
+      else if (A2 >= B1) and (B2 >= A1) then
+      begin
+        Kept[I] := JoinPair(Kept[I], Kept[J]);
+        Alive[J] := False;
+      end;
       if not Alive[I] then Break;
     end;
   end;
@@ -1767,101 +1767,98 @@ begin
   if (BA.X > AA.X) and (BB.X < AB.X) and (BA.Y > AA.Y) and (BD.Y < AD.Y) then
     Result := okInside
   else if (BA.X = AA.X) and (BB.X < AB.X) and (BA.Y = AA.Y) and (BD.Y < AD.Y) then
-      Result := okInsideTL
-    else if (BA.X = AA.X) and (BB.X < AB.X) and (BD.Y = AD.Y) and (BA.Y > AA.Y) then
-        Result := okInsideBL
-      else if (BA.X > AA.X) and (BB.X = AB.X) and (BA.Y = AA.Y) and (BD.Y < AD.Y) then
-          Result := okInsideTR
-        else if (BA.X > AA.X) and (BB.X = AB.X) and (BA.Y > AA.Y) and (BD.Y = AD.Y) then
-            Result := okInsideBR
-          else if (BA.X = AA.X) and (BB.X < AB.X) and (BA.Y > AA.Y) and (BD.Y < AD.Y) then
-              Result := okInsideL
-            else if (BA.X > AA.X) and (BB.X < AB.X) and (BA.Y = AA.Y) and (BD.Y < AD.Y) then
-                Result := okInsideT
-              else if (BA.X > AA.X) and (BB.X = AB.X) and (BA.Y > AA.Y) and (BD.Y < AD.Y) then
-                  Result := okInsideR
-                else if (BA.X > AA.X) and (BB.X < AB.X) and (BA.Y > AA.Y) and (BD.Y = AD.Y) then
-                    Result := okInsideB
-                  else if (BA.X > AA.X) and (BB.X < AB.X) and (BA.Y = AA.Y) and (BD.Y = AD.Y) then
-                      Result := okInsideV
-                    else if (BA.X = AA.X) and (BB.X = AB.X) and (BA.Y > AA.Y) and (BD.Y < AD.Y) then
-                        Result := okInsideH
-                      else if (BA.X = AA.X) and (BB.X = AB.X) and (BA.Y = AA.Y) and
-                        (BD.Y < AD.Y) then
-                            Result := okInsideTLR
-                        else if (BA.X = AA.X) and (BB.X < AB.X) and (BA.Y = AA.Y) and
-                          (BD.Y = AD.Y) then
-                              Result := okInsideLTB
-                          else if (BA.X > AA.X) and (BB.X = AB.X) and (BA.Y = AA.Y) and
-                            (BD.Y = AD.Y) then
-                                Result := okInsideRTB
-                            else if (BA.X = AA.X) and (BB.X = AB.X) and (BA.Y > AA.Y) and
-                              (BD.Y = AD.Y) then
-                                  Result := okInsideBLR
-                              else if (BA.X < AA.X) and (BB.X > AB.X) and (BA.Y < AA.Y) and
-                                (BD.Y > AD.Y) then
-                                    Result := okOutside
-                                else if BB.X = AA.X then
-                                    Result := okOutsideL
-                                  else if BD.Y = AA.Y then
-                                      Result := okOutsideL
-                                    else if BA.X = AB.X then
-                                        Result := okOutsideT
-                                      else if BA.Y = AD.Y then
-                                          Result := okOutsideB
-                                        else if (BA.X < AA.X) and (BB.X > AA.X) and (BB.X < AB.X) and
-                                          (BD.Y > AA.Y) and (BD.Y < AD.Y) and (BA.Y < AA.Y) then
-                                              Result := okTL
-                                          else if (BA.X > AA.X) and (BA.X < AB.X) and (BB.X > AB.X) and
-                                            (BD.Y > AA.Y) and (BD.Y < AD.Y) and (BA.Y < AA.Y) then
-                                                Result := okTR
-                                            else if (BA.X > AA.X) and (BA.X < AB.X) and
-                                              (BB.X > AB.X) and (BA.Y > AA.Y) and (BA.Y < AD.Y) and
-                                              (BD.Y > AD.Y) then
-                                                  Result := okBR
-                                              else if (BB.X > AA.X) and (BB.X < AB.X) and (BA.X < AA.X) and
-                                                (BA.Y > AA.Y) and (BA.Y < AD.Y) and (BD.Y > AD.Y) then
-                                                    Result := okBL
-                                                else if (BA.X < AA.X) and (BB.X > AB.X) and
-                                                  (BA.Y >= AA.Y) and (BD.Y <= AD.Y) then
-                                                      Result := okH
-                                                  else if (BA.X >= AA.X) and (BB.X <= AB.X) and
-                                                    (BA.Y < AA.Y) and (BD.Y > AD.Y) then
-                                                        Result := okV
-                                                    else if (BB.X > AA.X) and (BB.X < AB.X) and
-                                                      (BA.Y > AA.Y) and (BD.Y < AD.Y) and
-                                                      (BA.X < AA.X) then
-                                                          Result := okInnerL
-                                                      else if (BA.X > AA.X) and (BB.X < AB.X) and
-                                                        (BD.Y > AA.Y) and (BD.Y < AD.Y) and
-                                                        (BA.Y < AA.Y) then
-                                                            Result := okInnerT
-                                                        else if (BA.X > AA.X) and (BA.X < AB.X) and
-                                                          (BA.Y > AA.Y) and (BD.Y < AD.Y) and
-                                                          (BB.X > AB.X) then
-                                                              Result := okInnerR
-                                                          else if (BA.X > AA.X) and (BB.X < AB.X) and
-                                                            (BA.Y > AA.Y) and (BA.Y < AD.Y) and
-                                                            (BD.Y > AD.Y) then
-                                                                Result := okInnerB
-                                                            else if (BA.Y < AA.Y) and (BD.Y > AD.Y) and
-                                                              (BB.X > AA.X) and (BB.X < AB.X) and
-                                                              (BA.X < AA.X) then
-                                                                  Result := okOuterL
-                                                              else if (BA.X < AA.X) and
-                                                                (BB.X > AB.X) and (BD.Y > AA.Y) and
-                                                                (BD.Y < AD.Y) and (BA.Y < AA.Y) then
-                                                                    Result := okOuterT
-                                                                else if (BA.Y < AA.Y) and (BD.Y > AD.Y) and
-                                                                  (BA.X > AA.X) and (BA.X < AB.X) and
-                                                                  (BB.X > AB.X) then
-                                                                      Result := okOuterR
-                                                                  else if (BA.X < AA.X) and (BB.X > AB.X) and
-                                                                    (BA.Y > AA.Y) and (BA.Y < AD.Y) and
-                                                                    (BD.Y > AD.Y) then
-                                                                        Result := okOuterB
-                                                                    else
-                                                                      Result := okNone;
+    Result := okInsideTL
+  else if (BA.X = AA.X) and (BB.X < AB.X) and (BD.Y = AD.Y) and (BA.Y > AA.Y) then
+    Result := okInsideBL
+  else if (BA.X > AA.X) and (BB.X = AB.X) and (BA.Y = AA.Y) and (BD.Y < AD.Y) then
+    Result := okInsideTR
+  else if (BA.X > AA.X) and (BB.X = AB.X) and (BA.Y > AA.Y) and (BD.Y = AD.Y) then
+    Result := okInsideBR
+  else if (BA.X = AA.X) and (BB.X < AB.X) and (BA.Y > AA.Y) and (BD.Y < AD.Y) then
+    Result := okInsideL
+  else if (BA.X > AA.X) and (BB.X < AB.X) and (BA.Y = AA.Y) and (BD.Y < AD.Y) then
+    Result := okInsideT
+  else if (BA.X > AA.X) and (BB.X = AB.X) and (BA.Y > AA.Y) and (BD.Y < AD.Y) then
+    Result := okInsideR
+  else if (BA.X > AA.X) and (BB.X < AB.X) and (BA.Y > AA.Y) and (BD.Y = AD.Y) then
+    Result := okInsideB
+  else if (BA.X > AA.X) and (BB.X < AB.X) and (BA.Y = AA.Y) and (BD.Y = AD.Y) then
+    Result := okInsideV
+  else if (BA.X = AA.X) and (BB.X = AB.X) and (BA.Y > AA.Y) and (BD.Y < AD.Y) then
+    Result := okInsideH
+  else if (BA.X = AA.X) and (BB.X = AB.X) and (BA.Y = AA.Y) and (BD.Y < AD.Y) then
+    Result := okInsideTLR
+  else if (BA.X = AA.X) and (BB.X < AB.X) and (BA.Y = AA.Y) and (BD.Y = AD.Y) then
+    Result := okInsideLTB
+  else if (BA.X > AA.X) and (BB.X = AB.X) and (BA.Y = AA.Y) and (BD.Y = AD.Y) then
+    Result := okInsideRTB
+  else if (BA.X = AA.X) and (BB.X = AB.X) and (BA.Y > AA.Y) and (BD.Y = AD.Y) then
+    Result := okInsideBLR
+  else if (BA.X < AA.X) and (BB.X > AB.X) and (BA.Y < AA.Y) and (BD.Y > AD.Y) then
+    Result := okOutside
+  else if BB.X = AA.X then
+    Result := okOutsideL
+  else if BD.Y = AA.Y then
+    Result := okOutsideL
+  else if BA.X = AB.X then
+    Result := okOutsideT
+  else if BA.Y = AD.Y then
+    Result := okOutsideB
+  else
+    if (BA.X < AA.X) and (BB.X > AA.X) and (BB.X < AB.X) and
+      (BD.Y > AA.Y) and (BD.Y < AD.Y) and (BA.Y < AA.Y) then
+        Result := okTL
+    else
+      if (BA.X > AA.X) and (BA.X < AB.X) and (BB.X > AB.X) and
+        (BD.Y > AA.Y) and (BD.Y < AD.Y) and (BA.Y < AA.Y) then
+          Result := okTR
+      else
+        if (BA.X > AA.X) and (BA.X < AB.X) and
+          (BB.X > AB.X) and (BA.Y > AA.Y) and (BA.Y < AD.Y) and
+          (BD.Y > AD.Y) then
+            Result := okBR
+        else
+          if (BB.X > AA.X) and (BB.X < AB.X) and (BA.X < AA.X) and (BA.Y > AA.Y) and (BA.Y < AD.Y) and
+            (BD.Y > AD.Y) then
+              Result := okBL
+          else if (BA.X < AA.X) and (BB.X > AB.X) and (BA.Y >= AA.Y) and (BD.Y <= AD.Y) then
+            Result := okH
+          else if (BA.X >= AA.X) and (BB.X <= AB.X) and (BA.Y < AA.Y) and (BD.Y > AD.Y) then
+            Result := okV
+          else
+            if (BB.X > AA.X) and (BB.X < AB.X) and (BA.Y > AA.Y) and (BD.Y < AD.Y) and
+              (BA.X < AA.X) then
+                Result := okInnerL
+            else
+              if (BA.X > AA.X) and (BB.X < AB.X) and (BD.Y > AA.Y) and (BD.Y < AD.Y) and
+                (BA.Y < AA.Y) then
+                  Result := okInnerT
+              else
+                if (BA.X > AA.X) and (BA.X < AB.X) and (BA.Y > AA.Y) and (BD.Y < AD.Y) and
+                  (BB.X > AB.X) then
+                    Result := okInnerR
+                else
+                  if (BA.X > AA.X) and (BB.X < AB.X) and (BA.Y > AA.Y) and (BA.Y < AD.Y) and
+                    (BD.Y > AD.Y) then
+                      Result := okInnerB
+                  else
+                    if (BA.Y < AA.Y) and (BD.Y > AD.Y) and (BB.X > AA.X) and (BB.X < AB.X) and
+                      (BA.X < AA.X) then
+                        Result := okOuterL
+                    else
+                      if (BA.X < AA.X) and (BB.X > AB.X) and (BD.Y > AA.Y) and (BD.Y < AD.Y) and
+                        (BA.Y < AA.Y) then
+                          Result := okOuterT
+                      else
+                        if (BA.Y < AA.Y) and (BD.Y > AD.Y) and (BA.X > AA.X) and (BA.X < AB.X) and
+                          (BB.X > AB.X) then
+                            Result := okOuterR
+                        else
+                          if (BA.X < AA.X) and (BB.X > AB.X) and (BA.Y > AA.Y) and (BA.Y < AD.Y) and
+                            (BD.Y > AD.Y) then
+                              Result := okOuterB
+                          else
+                            Result := okNone;
 end;
 
 function ClassifyRectPosition(const First, Second: TRectI): TRectPositionKind;
@@ -1884,83 +1881,83 @@ begin
     if AD.Y < BA.Y then
       Result := pkB
     else if AA.Y > BD.Y then
-        Result := pkT
-      else
-        Result := pkNone;
+      Result := pkT
+    else
+      Result := pkNone;
   end
   else if (BA.Y >= AA.Y) and (BD.Y <= AD.Y) then
-    begin
-      if AB.X < BA.X then
-        Result := pkR
-      else if AA.X > BB.X then
-          Result := pkL
-        else
-          Result := pkNone;
-    end
-    else if (AA.X >= BA.X) and (AB.X <= BB.X) then
-      begin
-        if AD.Y < BA.Y then
-          Result := pkBLR
-        else if AA.Y > BD.Y then
-            Result := pkTLR
-          else
-            Result := pkNone;
-      end
-      else if (AA.X >= BA.X) and (AA.X <= BB.X) then
-        begin
-          if AD.Y < BA.Y then
-            Result := pkBL
-          else if AA.Y > BD.Y then
-              Result := pkTL
-            else
-              Result := pkNone;
-        end
-        else if (AB.X >= BA.X) and (AB.X <= BB.X) then
-          begin
-            if AD.Y < BA.Y then
-              Result := pkBR
-            else if AA.Y > BD.Y then
-                Result := pkTR
-              else
-                Result := pkNone;
-          end
-          else if (AA.Y >= BA.Y) and (AD.Y <= BD.Y) then
-            begin
-              if AB.X < BA.X then
-                Result := pkRTB
-              else if AA.X > BB.X then
-                  Result := pkLTB
-                else
-                  Result := pkNone;
-            end
-            else if (AA.Y >= BA.Y) and (AA.Y <= BD.Y) then
-              begin
-                if AB.X < BA.X then
-                  Result := pkRT
-                else if AA.X > BB.X then
-                    Result := pkLT
-                  else
-                    Result := pkNone;
-              end
-              else if (AD.Y >= BA.Y) and (AD.Y <= BD.Y) then
-                begin
-                  if AB.X < BA.X then
-                    Result := pkRB
-                  else if AA.X > BB.X then
-                      Result := pkLB
-                    else
-                      Result := pkNone;
-                end
-                else if (AA.X > BB.X) and (AA.Y > BD.Y) then
-                    Result := pkTTLL
-                  else if (AB.X < BA.X) and (AA.Y > BD.Y) then
-                      Result := pkTTRR
-                    else if (AB.X < BA.X) and (AD.Y < BA.Y) then
-                        Result := pkBBRR
-                      else if (AA.X > BB.X) and (AD.Y < BA.Y) then
-                          Result := pkBBLL
-                        else
-                          Result := pkNone;
+  begin
+    if AB.X < BA.X then
+      Result := pkR
+    else if AA.X > BB.X then
+      Result := pkL
+    else
+      Result := pkNone;
+  end
+  else if (AA.X >= BA.X) and (AB.X <= BB.X) then
+  begin
+    if AD.Y < BA.Y then
+      Result := pkBLR
+    else if AA.Y > BD.Y then
+      Result := pkTLR
+    else
+      Result := pkNone;
+  end
+  else if (AA.X >= BA.X) and (AA.X <= BB.X) then
+  begin
+    if AD.Y < BA.Y then
+      Result := pkBL
+    else if AA.Y > BD.Y then
+      Result := pkTL
+    else
+      Result := pkNone;
+  end
+  else if (AB.X >= BA.X) and (AB.X <= BB.X) then
+  begin
+    if AD.Y < BA.Y then
+      Result := pkBR
+    else if AA.Y > BD.Y then
+      Result := pkTR
+    else
+      Result := pkNone;
+  end
+  else if (AA.Y >= BA.Y) and (AD.Y <= BD.Y) then
+  begin
+    if AB.X < BA.X then
+      Result := pkRTB
+    else if AA.X > BB.X then
+      Result := pkLTB
+    else
+      Result := pkNone;
+  end
+  else if (AA.Y >= BA.Y) and (AA.Y <= BD.Y) then
+  begin
+    if AB.X < BA.X then
+      Result := pkRT
+    else if AA.X > BB.X then
+      Result := pkLT
+    else
+      Result := pkNone;
+  end
+  else if (AD.Y >= BA.Y) and (AD.Y <= BD.Y) then
+  begin
+    if AB.X < BA.X then
+      Result := pkRB
+    else if AA.X > BB.X then
+      Result := pkLB
+    else
+      Result := pkNone;
+  end
+  else if (AA.X > BB.X) and (AA.Y > BD.Y) then
+    Result := pkTTLL
+  else if (AB.X < BA.X) and (AA.Y > BD.Y) then
+    Result := pkTTRR
+  else if (AB.X < BA.X) and (AD.Y < BA.Y) then
+    Result := pkBBRR
+  else if (AA.X > BB.X) and (AD.Y < BA.Y) then
+    Result := pkBBLL
+  else
+    Result := pkNone;
 end;
 
 function RectsWithinMargin(const A, B: TRectI; const XMargin, YMargin: Integer): Boolean;
