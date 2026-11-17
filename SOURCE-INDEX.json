@@ -137,8 +137,8 @@
     },
     {
       "path": "examples/gemma-chat/README.md",
-      "bytes": 6829,
-      "sha256": "b7265974da457449ae6554595ef4ab3e55efa2940dfc4bd1f3dba71eceb68161"
+      "bytes": 6977,
+      "sha256": "607c6050989086757f1b77d12ceba56737e96ac8776bacafe48b2b9faca70c0b"
     },
     {
       "path": "examples/language-models/ExampleSupport.pas",
@@ -307,8 +307,8 @@
     },
     {
       "path": "examples/marker-lite/README.md",
-      "bytes": 3905,
-      "sha256": "48fecc683230070a53f872ca44af96badb5688945d649c392e2965a872e48cf6"
+      "bytes": 3913,
+      "sha256": "7fffdfe21e56865b66cc057cf0426d4fe4138a501d6acfe89d366d0e7f99e0ef"
     },
     {
       "path": "examples/omdet-turbo/OmDetTurbo.Main.pas",
@@ -422,8 +422,8 @@
     },
     {
       "path": "examples/qwen-chat/README.md",
-      "bytes": 6824,
-      "sha256": "a551ead524a7d3e725bad246dedbc1e9b65b770e813b30ac506293f129e23ac9"
+      "bytes": 6970,
+      "sha256": "6319051b29b82a59870e2c186a75f4acf48e4cefd50a2efea8513f828448d852"
     },
     {
       "path": "examples/vision-models/Prepare.cmd",
