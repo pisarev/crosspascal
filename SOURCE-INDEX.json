@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal-windows-source-index-v1",
-  "release_id": "early-access-023",
+  "release_id": "early-access-024",
   "repository": "crosspascal",
   "local_metadata": [
     {
@@ -16,44 +16,34 @@
       "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
     },
     {
-      "path": "LICENSE",
-      "bytes": 1070,
-      "sha256": "04b643fe3d2d95be3b9a0ad9d3882d00a9b2d9dfb74694f35fe8edfc77e67815"
-    },
-    {
-      "path": "README.md",
-      "bytes": 4942,
-      "sha256": "44d88d8c330607fba6b7c8135b063f96ece815d31593f56165586840979e9cbe"
-    },
-    {
       "path": "docs/CAPABILITIES.md",
-      "bytes": 5422,
-      "sha256": "30ac4a30210a03e29b7a993115ce273bc309781eef63ca8aa482f59fc724d921"
+      "bytes": 5768,
+      "sha256": "52cc165bc8258af3431489253cc00b8ed313b6a8282cec893a0f37c9a70a3754"
     },
     {
       "path": "docs/LICENSE-SCOPE.md",
-      "bytes": 4154,
-      "sha256": "38b602e607fa66d1eeced324240931e1683bcf4650faf97191c6bf1c572c5fca"
+      "bytes": 4379,
+      "sha256": "ef8c67fbe74ba48f36d6f1bdf5a9da7b9da336dd225e7655eb16fc8a935768c5"
     },
     {
       "path": "docs/MODEL-MODALITIES.md",
-      "bytes": 3634,
-      "sha256": "2e201699788a327195d9b6b0daa9ab74672b950604d0d86adc121d919e58259b"
+      "bytes": 3605,
+      "sha256": "34d435645f7f2f994d33a7b8a70b60de4d85e0ce13dd29b8453894fbd484312e"
     },
     {
       "path": "docs/MODEL-PROFILES.md",
-      "bytes": 2644,
-      "sha256": "4b5a93402e314111b806611b406ed15216cdb7827f7915a5ae9284035704ba8c"
+      "bytes": 2781,
+      "sha256": "0efd67f43732ae0af6d48946e17683535c01dc2691c56f7f7396a11125e42e99"
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 11768,
-      "sha256": "dbf55517c2fe8408f63883adbcdd528230bbd2e35e4af9189a802c2e29c04767"
+      "bytes": 13270,
+      "sha256": "afa301b12d61a9845a5e7b1c25592109bedda4f1b185bd1cd450a5cb381f31d7"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
-      "bytes": 4909,
-      "sha256": "2b14243d43cf7a70fe60113253beb16b00bd58bfea2053b6cc20466b6570201b"
+      "bytes": 5656,
+      "sha256": "ca006b6d8cc4068e76af8e1c18eea4bfe5fe3b1bb8c32b1dab3d3502b3e67bc8"
     },
     {
       "path": "docs/ROADMAP.md",
@@ -62,23 +52,43 @@
     },
     {
       "path": "docs/VISION-DOWNLOADS.md",
-      "bytes": 9690,
-      "sha256": "1635531bc583bcfdf0544c6e4fc8614ef94ea2889c8c571475a8de92a2df4034"
+      "bytes": 9598,
+      "sha256": "2d7fb388cefaaaa8be3d3ebffce1f4a4f446b0438e19750d02858fc0816addf6"
     },
     {
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
-      "bytes": 4430,
-      "sha256": "4e92730f3fb51858db755037341e7443763e54e516775cfe6da07e4459828cfe"
+      "bytes": 4604,
+      "sha256": "1c3cce3ad8bedc2750d6f1978085754ff17d2ffd56ebd9b02190682065a525aa"
     },
     {
-      "path": "examples/birefnet/BiRefNet.Main.pas",
-      "bytes": 21446,
-      "sha256": "cb8b00ff4dc964edfb860b85882b59c66a3d2215d91200ed8d7803ccc4cc18c2"
+      "path": "docs/yolo/MODEL-PROVENANCE.json",
+      "bytes": 10229,
+      "sha256": "6e62237a75c300a31f95779c5f93389b74febe549883189a3c6a55a09e0aef72"
     },
     {
-      "path": "examples/birefnet/BiRefNet.Run.pas",
-      "bytes": 7585,
-      "sha256": "3cbc52d0d4b93e633d0950a76ec37538fc0f9e6c7af47b6427bbcd7a6372d937"
+      "path": "docs/yolo/model-sources/ultralytics-LICENSE",
+      "bytes": 34523,
+      "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+    },
+    {
+      "path": "docs/yolo/model-sources/yolov10-LICENSE",
+      "bytes": 34523,
+      "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+    },
+    {
+      "path": "docs/yolo/model-sources/yolov13-LICENSE",
+      "bytes": 34523,
+      "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+    },
+    {
+      "path": "docs/yolo/model-sources/yolov5-current-LICENSE",
+      "bytes": 34523,
+      "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+    },
+    {
+      "path": "docs/yolo/model-sources/yolov5-v7.0-LICENSE",
+      "bytes": 35127,
+      "sha256": "7fa7e56c0db71105f4b59a6a0ac40225eb059876f85cd380383f7d7a066e68be"
     },
     {
       "path": "examples/birefnet/BiRefNet.dpr",
@@ -96,14 +106,14 @@
       "sha256": "5d2866b54947d3f50c8736f07ab87b8d717301094c462ddcaee11a9de0f8a869"
     },
     {
-      "path": "examples/birefnet/Prepare.cmd",
-      "bytes": 301,
-      "sha256": "4299383bb318c445d40cea6c431b8a34687786256e0f6056c4ee8660151c46df"
+      "path": "examples/birefnet/BiRefNet.Main.pas",
+      "bytes": 21446,
+      "sha256": "cb8b00ff4dc964edfb860b85882b59c66a3d2215d91200ed8d7803ccc4cc18c2"
     },
     {
-      "path": "examples/birefnet/README.md",
-      "bytes": 3632,
-      "sha256": "9525f3f65f044ee0243da8f1d76d7abf6a5c6139b5788baf990ee9c435553791"
+      "path": "examples/birefnet/BiRefNet.Run.pas",
+      "bytes": 7585,
+      "sha256": "3cbc52d0d4b93e633d0950a76ec37538fc0f9e6c7af47b6427bbcd7a6372d937"
     },
     {
       "path": "examples/birefnet/models.json",
@@ -111,9 +121,14 @@
       "sha256": "7daab0a29dd6aa9e009bf52e5f1efbf0481899edb983a930a3001ebb783f8caa"
     },
     {
-      "path": "examples/gemma-chat/GemmaChat.Main.pas",
-      "bytes": 484,
-      "sha256": "8b49afff8b8bc79e3d2c8462122163d360193176f8a68a0ac9ec6563aa98155d"
+      "path": "examples/birefnet/Prepare.cmd",
+      "bytes": 301,
+      "sha256": "4299383bb318c445d40cea6c431b8a34687786256e0f6056c4ee8660151c46df"
+    },
+    {
+      "path": "examples/birefnet/README.md",
+      "bytes": 3632,
+      "sha256": "c6246afd925918749eeedba165000abc595fe385f7032c6905e7701d7b546995"
     },
     {
       "path": "examples/gemma-chat/GemmaChat.dpr",
@@ -131,6 +146,11 @@
       "sha256": "0c5e9e3cc777f6eba010878e5658ed1b6edde8831737b4aff05eabd717090945"
     },
     {
+      "path": "examples/gemma-chat/GemmaChat.Main.pas",
+      "bytes": 484,
+      "sha256": "8b49afff8b8bc79e3d2c8462122163d360193176f8a68a0ac9ec6563aa98155d"
+    },
+    {
       "path": "examples/gemma-chat/Prepare.cmd",
       "bytes": 318,
       "sha256": "42a85ccc2e368be8f47abb3908785f6f180798f6f81bdfce9d2b03ebdfe614b2"
@@ -138,7 +158,7 @@
     {
       "path": "examples/gemma-chat/README.md",
       "bytes": 6977,
-      "sha256": "607c6050989086757f1b77d12ceba56737e96ac8776bacafe48b2b9faca70c0b"
+      "sha256": "b170218864be7c34e3f7aa82edebb87e55f50e520d58c646f70597e888f4dcad"
     },
     {
       "path": "examples/language-models/ExampleSupport.pas",
@@ -308,7 +328,22 @@
     {
       "path": "examples/marker-lite/README.md",
       "bytes": 3913,
-      "sha256": "7fffdfe21e56865b66cc057cf0426d4fe4138a501d6acfe89d366d0e7f99e0ef"
+      "sha256": "2dbb2fa8122caa56e0ddde1f57abad2675fa5d73327f7529e5f5bff8dc0ae08b"
+    },
+    {
+      "path": "examples/omdet-turbo/OmDetTurbo.dpr",
+      "bytes": 7735,
+      "sha256": "7f5c5044329681999ebd0e514917773e33b9146612f5b0ffdb1e76ecf33df2c7"
+    },
+    {
+      "path": "examples/omdet-turbo/OmDetTurbo.dproj",
+      "bytes": 4290,
+      "sha256": "4100f8ebdf7d6b95d14cd3e461754e5101add351db89cc201f8be04b0a6ed873"
+    },
+    {
+      "path": "examples/omdet-turbo/OmDetTurbo.lpi",
+      "bytes": 1942,
+      "sha256": "abe94ff21c31a07cc769d92f225ff2cb3286c81875ec6d13e2b013dfb71f2138"
     },
     {
       "path": "examples/omdet-turbo/OmDetTurbo.Main.pas",
@@ -331,21 +366,6 @@
       "sha256": "bb49eb4100a0b3db7a2de017e464f24c674f6bb8d9cc493462dd9065947442c1"
     },
     {
-      "path": "examples/omdet-turbo/OmDetTurbo.dpr",
-      "bytes": 7735,
-      "sha256": "7f5c5044329681999ebd0e514917773e33b9146612f5b0ffdb1e76ecf33df2c7"
-    },
-    {
-      "path": "examples/omdet-turbo/OmDetTurbo.dproj",
-      "bytes": 4290,
-      "sha256": "4100f8ebdf7d6b95d14cd3e461754e5101add351db89cc201f8be04b0a6ed873"
-    },
-    {
-      "path": "examples/omdet-turbo/OmDetTurbo.lpi",
-      "bytes": 1942,
-      "sha256": "abe94ff21c31a07cc769d92f225ff2cb3286c81875ec6d13e2b013dfb71f2138"
-    },
-    {
       "path": "examples/omdet-turbo/Prepare.cmd",
       "bytes": 303,
       "sha256": "dfba6b562cf79136495e3b143ad8ccef670d525dbc5f2a7bf8d15b84c0e3714e"
@@ -356,14 +376,9 @@
       "sha256": "8457da62e0aba4211f77fb97601435b9675577db390c75914237f7472ee364ef"
     },
     {
-      "path": "examples/paddle-ocr/PaddleOcr.Main.pas",
-      "bytes": 15180,
-      "sha256": "d939077b60219f7d5ccba508024cc9721b0332df9bca69ad2223b152a137a44d"
-    },
-    {
-      "path": "examples/paddle-ocr/PaddleOcr.Run.pas",
-      "bytes": 4822,
-      "sha256": "f0296a99e4fc37a9e48555f0b3f16502dfb0d920aa0347e21ae7eb5af162e4ef"
+      "path": "examples/paddle-ocr/models.json",
+      "bytes": 1816,
+      "sha256": "e4a03f2a11ef9da41b98fab1aa3a6503853c943fdd0ef2aa041a71126cc96292"
     },
     {
       "path": "examples/paddle-ocr/PaddleOcr.dpr",
@@ -381,6 +396,16 @@
       "sha256": "6520d77346308ef66ff5b9f92c9dc230862c2371372021073155d1c202f8c63b"
     },
     {
+      "path": "examples/paddle-ocr/PaddleOcr.Main.pas",
+      "bytes": 15180,
+      "sha256": "d939077b60219f7d5ccba508024cc9721b0332df9bca69ad2223b152a137a44d"
+    },
+    {
+      "path": "examples/paddle-ocr/PaddleOcr.Run.pas",
+      "bytes": 4822,
+      "sha256": "f0296a99e4fc37a9e48555f0b3f16502dfb0d920aa0347e21ae7eb5af162e4ef"
+    },
+    {
       "path": "examples/paddle-ocr/Prepare.cmd",
       "bytes": 308,
       "sha256": "6e73a3c641395eb81b153107fd792655a4a4c95ed46aa9a83ae255be21a457f1"
@@ -388,22 +413,12 @@
     {
       "path": "examples/paddle-ocr/README.md",
       "bytes": 2934,
-      "sha256": "611f24f4ee0fffe6534ea7bd9e7aa9fd794a05eae02b9d80064ba9a026748496"
-    },
-    {
-      "path": "examples/paddle-ocr/models.json",
-      "bytes": 1816,
-      "sha256": "e4a03f2a11ef9da41b98fab1aa3a6503853c943fdd0ef2aa041a71126cc96292"
+      "sha256": "7173dbe66c28ca10192551580388331212e3fe380ae479fa854b73d33a881594"
     },
     {
       "path": "examples/qwen-chat/Prepare.cmd",
       "bytes": 317,
       "sha256": "f0df9c9280093541ea161bfd37375fea863988bbcd221e2adf5881572762b91a"
-    },
-    {
-      "path": "examples/qwen-chat/QwenChat.Main.pas",
-      "bytes": 478,
-      "sha256": "8e12e3762eebdfdac24a017c363bbe9a8e4d8980597efc63f9f57cf1b505e7e5"
     },
     {
       "path": "examples/qwen-chat/QwenChat.dpr",
@@ -421,9 +436,19 @@
       "sha256": "d206b226480b8bd4fa198d65ec60c5ee5f2b9ba75a3e2cd584391930d9b0d72f"
     },
     {
+      "path": "examples/qwen-chat/QwenChat.Main.pas",
+      "bytes": 478,
+      "sha256": "8e12e3762eebdfdac24a017c363bbe9a8e4d8980597efc63f9f57cf1b505e7e5"
+    },
+    {
       "path": "examples/qwen-chat/README.md",
       "bytes": 6970,
-      "sha256": "6319051b29b82a59870e2c186a75f4acf48e4cefd50a2efea8513f828448d852"
+      "sha256": "31e81e0d3810f78bc96d71a6b77e78917cb22e59482f9321eb84e3375f8ff12f"
+    },
+    {
+      "path": "examples/vision-models/models.json",
+      "bytes": 6065,
+      "sha256": "8ef2b74c4a6f81845bb4e77775447af4d43b3c13e821a77a35e241c2bcbaa92f"
     },
     {
       "path": "examples/vision-models/Prepare.cmd",
@@ -433,12 +458,7 @@
     {
       "path": "examples/vision-models/README.md",
       "bytes": 13225,
-      "sha256": "29225db02e6383f6c4244e9e93dbde7ccf418916d21d1f16b0ba6e1dc6446739"
-    },
-    {
-      "path": "examples/vision-models/VisionModels.Main.pas",
-      "bytes": 21695,
-      "sha256": "eea7f9c6def3f1964f43ff6136f0d353c4203b29fafb5b3fdb26ddca6bff0dfc"
+      "sha256": "5c3c7dc5a05f18f6c07eef20c221ee4bd4c482d6f98ad20302e47b6bcf555fe0"
     },
     {
       "path": "examples/vision-models/VisionModels.dpr",
@@ -456,34 +476,104 @@
       "sha256": "4e52a7904ff28cae549ee17fc96bb228b74764cb2b5ba6f5d8d3581a84fe9d3e"
     },
     {
-      "path": "examples/vision-models/models.json",
-      "bytes": 6065,
-      "sha256": "8ef2b74c4a6f81845bb4e77775447af4d43b3c13e821a77a35e241c2bcbaa92f"
+      "path": "examples/vision-models/VisionModels.Main.pas",
+      "bytes": 21695,
+      "sha256": "eea7f9c6def3f1964f43ff6136f0d353c4203b29fafb5b3fdb26ddca6bff0dfc"
     },
     {
-      "path": "launcher/CrossPascalConvert.Form.pas",
-      "bytes": 15677,
-      "sha256": "fe7d310aba6b4e4118bcc4976b3304c4a0d8eb0aa851e50fdcf0792872c0db9e"
+      "path": "examples/yolo-models/README.md",
+      "bytes": 5275,
+      "sha256": "80f7e073f5d25547d7e6fbee2dec61b1f41080bb5e6a0b78a67935f60d219a71"
     },
     {
-      "path": "launcher/CrossPascalConvert.Native.pas",
-      "bytes": 24063,
-      "sha256": "d4ec6173e31e723446f94830d0bdcf65d6435094fff2ab266557a726b7f35dc2"
+      "path": "examples/yolo-models/YoloModels.Config.pas",
+      "bytes": 6990,
+      "sha256": "bcb96d3506e561dadd59baaf52429ee8d2181bc9faa11b2a44f5c35f89eb907f"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.Defaults.pas",
+      "bytes": 252,
+      "sha256": "2e22a44721be5819c0b5d9f6ea98ae27d7b347bf8b9f3e0fcb505c53d011c544"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.dpr",
+      "bytes": 3604,
+      "sha256": "5d719ab84e937dc85a21cd0d5f2e9067effef3f223da0059420329cd00a8c06e"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.dproj",
+      "bytes": 4524,
+      "sha256": "e57c59f60fb52af551bc96714481d67ab65081e78a6eb0f6f0217b333251b17b"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.Export.pas",
+      "bytes": 7306,
+      "sha256": "4304912eebf4f8cf400530a382ae2930404f85f339d0cf0c63e1a1a417e8e84d"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.lpi",
+      "bytes": 1973,
+      "sha256": "15d446ff9b79661b3c930ccdb0c2b03869e43f1a316b97a67de184717cc031cf"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.Main.pas",
+      "bytes": 21732,
+      "sha256": "70ecd4c8834d32ee4e3ad3fb935d40ec13cb03d111e8abcb551678ade7972f3b"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.Render.pas",
+      "bytes": 18949,
+      "sha256": "fe5c80b022f36a5bb24d382118350a432a3b229f51ae5ed28c069dd3b0bf01c4"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.Run.pas",
+      "bytes": 12068,
+      "sha256": "d5dd0d97c75177a4255530668d6335dec9defb86da646f0d9fadb1fdb74d18d9"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.WindowsText.pas",
+      "bytes": 9509,
+      "sha256": "0ce96ffbdc771bc3f0da874b844c293733bdb1ca3da80dfc0d9c5a1fbd4260b3"
+    },
+    {
+      "path": "examples/yolo-models/YoloModels.Worker.pas",
+      "bytes": 11718,
+      "sha256": "8f386646b105d4f463f5369d2d0446ba9b7bf20124503a9f71d913be9106a120"
     },
     {
       "path": "launcher/CrossPascalConvert.dpr",
-      "bytes": 2550,
-      "sha256": "ac670be008f8630ec4f5e163299ab7854e62ec5f9f576e70a654e31973c4aaab"
+      "bytes": 3382,
+      "sha256": "a96be5a54ea19ea22970158afd86f86c8c293725eab2829ad26db8a418cec736"
     },
     {
       "path": "launcher/CrossPascalConvert.dproj",
-      "bytes": 10679,
-      "sha256": "ceee549102401b4b817b8c6666bd08f3cf281b011dfa025b63200a1ad77d5dfe"
+      "bytes": 11247,
+      "sha256": "580c2ee044c21b38162f8b23a229d9941415160615b179526f074f90bcdb8980"
+    },
+    {
+      "path": "launcher/CrossPascalConvert.Form.pas",
+      "bytes": 18084,
+      "sha256": "aee5382f6089647f3c194dafaed7d30515bd9984fb3c81af115bcc74ddb6d525"
     },
     {
       "path": "launcher/CrossPascalConvert.lpi",
-      "bytes": 1403,
-      "sha256": "0d342348d5d68ae8e9f9e7d5814ab81b6eb9cba4095e74b5edf69dd5cd444974"
+      "bytes": 1906,
+      "sha256": "2aaba3fe852c2170351e66bc4df54172481331dc60fed7824c8793b52690aa58"
+    },
+    {
+      "path": "launcher/CrossPascalConvert.Native.pas",
+      "bytes": 24676,
+      "sha256": "04af129bedad3f99f8a3e55bbccea5f78db6a874910df9019f1dcb946a3a9f2a"
+    },
+    {
+      "path": "launcher/CrossPascalConvert.Yolo.pas",
+      "bytes": 7272,
+      "sha256": "0de0a94f57c13ab54251f373b7f5c42ff2b549898b345c2a4001c65be620cc5c"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1070,
+      "sha256": "04b643fe3d2d95be3b9a0ad9d3882d00a9b2d9dfb74694f35fe8edfc77e67815"
     },
     {
       "path": "packages/lazarus/crosspascal_cvcore.lpk",
@@ -491,19 +581,19 @@
       "sha256": "4bc8f3e9fa673d25f451e069722fb86ba64b8d17c0c232e233605e5079cd19c7"
     },
     {
+      "path": "prepare/bootstrap.ps1",
+      "bytes": 45056,
+      "sha256": "15d41f9b1445d00ab66785226245bc8b2e219a2ce2512c977e3d01ab947446e2"
+    },
+    {
       "path": "prepare/ExampleDefaults.pas",
       "bytes": 2223,
       "sha256": "d5637d7f0079e293fef42b3dddbc6e13974f4eb15889f068b984a783dd261218"
     },
     {
-      "path": "prepare/bootstrap.ps1",
-      "bytes": 44771,
-      "sha256": "cbc03200d7c2acebaca17f71920cb9f1876ed66aa6b75bb82c6beb46b77db1de"
-    },
-    {
       "path": "prepare/prepare-bootstrap.json",
       "bytes": 130,
-      "sha256": "6fe30ca9cc80600e3ec5b0d263de8bf82f157d3f828891f8e2a9409a62b98079"
+      "sha256": "589c3f221823d465df5ab07a8d57e2f4f8b95e9f6286430cacd2877733424712"
     },
     {
       "path": "prepare/sdk/README.md",
@@ -513,7 +603,12 @@
     {
       "path": "prepare/vision-downloads.json",
       "bytes": 18400,
-      "sha256": "a715809671470510a6ae857e28a2e855accebc64352ed51ab78a5a30806f4b1e"
+      "sha256": "e40dde530974592eaf358f4cc963977b33534ec8914fa20e630e803dd631aba5"
+    },
+    {
+      "path": "prepare/vision/resnet50/prepare-bootstrap.json",
+      "bytes": 139,
+      "sha256": "8d32dd4fcfc47fd1782430ae5d2e7e484b9ac66616c06e7374f943d6e9a1c53f"
     },
     {
       "path": "prepare/vision/resnet50/Prepare-CPU.cmd",
@@ -531,9 +626,9 @@
       "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
-      "path": "prepare/vision/resnet50/prepare-bootstrap.json",
-      "bytes": 139,
-      "sha256": "b87deffedc00162e87a70a65b2c752dbf90062a5d973b8177fcd97335a747ee4"
+      "path": "prepare/vision/rtdetr-r18vd/prepare-bootstrap.json",
+      "bytes": 143,
+      "sha256": "f655cb2555fed9b30147d7e738176116d40c1225c20614e5ce48ab7460b2e396"
     },
     {
       "path": "prepare/vision/rtdetr-r18vd/Prepare-CPU.cmd",
@@ -551,9 +646,9 @@
       "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
-      "path": "prepare/vision/rtdetr-r18vd/prepare-bootstrap.json",
-      "bytes": 143,
-      "sha256": "df106c513ea7be454a280e2e21b373be8e97838cc48abe23bab279f97833202d"
+      "path": "prepare/vision/squeezenet/prepare-bootstrap.json",
+      "bytes": 141,
+      "sha256": "5dcff345a5a10edf6cb845da80d33dcfc7fda4393697d28b442b58350a05d1ea"
     },
     {
       "path": "prepare/vision/squeezenet/Prepare-CPU.cmd",
@@ -571,9 +666,29 @@
       "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
-      "path": "prepare/vision/squeezenet/prepare-bootstrap.json",
-      "bytes": 141,
-      "sha256": "8df106fdfb27662a5055048f90661b983feaa0b8f7d497faeb34151a552917ed"
+      "path": "prepare/vision/yolo-models/prepare-bootstrap.json",
+      "bytes": 147,
+      "sha256": "101e675de6ea856c7b73b23826db1ae1670c20975205f760725e5acaf638a506"
+    },
+    {
+      "path": "prepare/vision/yolo-models/Prepare-CPU.cmd",
+      "bytes": 370,
+      "sha256": "210fad7713ffdc0402c35952e9cab4db4caf27883d4336fd77769a32685efd25"
+    },
+    {
+      "path": "prepare/vision/yolo-models/Prepare-GPU.cmd",
+      "bytes": 371,
+      "sha256": "bdf61a52f7a6f973a94c1431b63e8e21d608cd164abe8b4fdf8ad8930ff40346"
+    },
+    {
+      "path": "prepare/vision/yolo-models/Prepare.cmd",
+      "bytes": 371,
+      "sha256": "5124b59a62f70b18e3b39aaab32fbd3c520153c64c4e47a9141cc8051a3348f8"
+    },
+    {
+      "path": "prepare/vision/yolo11n-cls/prepare-bootstrap.json",
+      "bytes": 142,
+      "sha256": "1fb16b9e2a84f6829662304719af48128d7f0f396b5099d555030a381c81c769"
     },
     {
       "path": "prepare/vision/yolo11n-cls/Prepare-CPU.cmd",
@@ -591,9 +706,9 @@
       "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
-      "path": "prepare/vision/yolo11n-cls/prepare-bootstrap.json",
-      "bytes": 142,
-      "sha256": "4f622109bf51f562713679d381eac7303e0b5f7d8330c4c912765f446ea7b8cd"
+      "path": "prepare/vision/yolo11n/prepare-bootstrap.json",
+      "bytes": 138,
+      "sha256": "deaf786b9cc90f31d85f4899fa4f885b0139137749645db4a4a25aa5c3fdabe1"
     },
     {
       "path": "prepare/vision/yolo11n/Prepare-CPU.cmd",
@@ -611,19 +726,14 @@
       "sha256": "e10363a7ee2d17ff68a1fcf9438bf34444a22b969d6acb3b34b4011a833a9212"
     },
     {
-      "path": "prepare/vision/yolo11n/prepare-bootstrap.json",
-      "bytes": 138,
-      "sha256": "ffcfc38958eac1448c81d55e422947f0d53b99b7a34025137de029bf15d53e3d"
+      "path": "README.md",
+      "bytes": 5312,
+      "sha256": "c22da9ba3796964c9beac34302f0e3a0a5da867ca5dcfd6578c9773f23e9f854"
     },
     {
       "path": "rtl-algorithms/LICENSE",
       "bytes": 1070,
       "sha256": "04b643fe3d2d95be3b9a0ad9d3882d00a9b2d9dfb74694f35fe8edfc77e67815"
-    },
-    {
-      "path": "rtl-algorithms/README.md",
-      "bytes": 6966,
-      "sha256": "b78788e50a87e1f57dd39d36119ad038a97b7dce808e89167d8654488878571c"
     },
     {
       "path": "rtl-algorithms/licenses/CROSSFPCCOMMON-NOTICE.md",
@@ -634,6 +744,11 @@
       "path": "rtl-algorithms/licenses/MPL-1.1.txt",
       "bytes": 23669,
       "sha256": "6214f8b1300bb9f37b16ebc146f8f61af0187e0025042ff95c8b3030744a8795"
+    },
+    {
+      "path": "rtl-algorithms/README.md",
+      "bytes": 6966,
+      "sha256": "b78788e50a87e1f57dd39d36119ad038a97b7dce808e89167d8654488878571c"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Binarize.pas",
@@ -656,14 +771,14 @@
       "sha256": "0e7fed16f0521c2be8b7f7e6bafa9e95533a184ff9b14df43159719a0c512ee9"
     },
     {
-      "path": "rtl-algorithms/src/CrossVision.Geometry.Types.pas",
-      "bytes": 3116,
-      "sha256": "2f64f00e5ef3f5abc8c88c69e62354adb4c02a6d3af5e370ee518c618c374e6c"
-    },
-    {
       "path": "rtl-algorithms/src/CrossVision.Geometry.pas",
       "bytes": 59046,
       "sha256": "a017deb0735a53007059f49e3a11ed812792f1c3ea7f969938d2eb7870c6daa9"
+    },
+    {
+      "path": "rtl-algorithms/src/CrossVision.Geometry.Types.pas",
+      "bytes": 3116,
+      "sha256": "2f64f00e5ef3f5abc8c88c69e62354adb4c02a6d3af5e370ee518c618c374e6c"
     },
     {
       "path": "rtl-algorithms/src/CrossVision.Image.pas",
@@ -736,6 +851,6 @@
       "sha256": "19ee39908eea00c1f9386955f00de7491746e88d05d500adbb6cdbfc1923a584"
     }
   ],
-  "documentation_revision": "maintenance-20261110",
-  "source_revision": "early-access-023"
+  "documentation_revision": "ea024-20261125",
+  "source_revision": "early-access-024"
 }
