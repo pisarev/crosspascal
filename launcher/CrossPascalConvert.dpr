@@ -35,8 +35,8 @@ begin
     raise Exception.Create('Usage: CrossPascalConvert --build-yolo|--check-yolo profile source.pt new-folder cpu|cuda architecture-or--');
   Yolo := TYoloConverter.Create(ExecutableFolder);
   try
-    Result := Yolo.Prepare(Yolo.Find(NativeParamStr(2), NativeParamStr(5)), Unquoted(NativeParamStr(3)),
-      Unquoted(NativeParamStr(4)), NativeParamStr(6));
+    Result := Yolo.Prepare(Yolo.Find(NativeParamStr(2), NativeParamStr(5)),
+      Unquoted(NativeParamStr(3)), Unquoted(NativeParamStr(4)), NativeParamStr(6));
   finally
     Yolo.Free;
   end;
