@@ -7,6 +7,7 @@ Ready CUDA bundles cover compute capabilities `sm_75`, `sm_86`, `sm_89`, and `sm
 | Example | Model and result | Minimum free GPU memory checked by Prepare |
 | --- | --- | ---: |
 | VisionModels | SqueezeNet and ResNet50 classification; YOLO11n classification and detection; RT-DETR detection | 1 GiB |
+| [YoloModels](../examples/yolo-models/README.md) | 23 profiles across seven typed tasks, with original-size result export | 1,536 MiB |
 | PaddleOCR | PP-OCRv5 Server text detection and recognition | 2 GiB |
 | BiRefNet | Full SwinL HR800 background removal, mask, and transparent cutout | 4 GiB |
 | OmDetTurbo | CLIP text encoding and Swin-Tiny detection from editable class names | 2 GiB |

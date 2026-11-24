@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12" />
+    <General>
+      <Flags>
+        <MainUnitHasCreateFormStatements Value="False" />
+        <MainUnitHasTitleStatement Value="False" />
+        <MainUnitHasScaledStatement Value="False" />
+      </Flags>
+      <Title Value="YoloModels" />
+      <ResourceType Value="res" />
+    </General>
+    <BuildModes>
+      <Item Name="Release" Default="True" />
+    </BuildModes>
+    <RequiredPackages Count="1">
+      <Item1>
+        <PackageName Value="LCL" />
+      </Item1>
+    </RequiredPackages>
+    <Units>
+      <Unit>
+        <Filename Value="YoloModels.dpr" />
+        <IsPartOfProject Value="True" />
+      </Unit>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11" />
+    <Target>
+      <Filename Value="bin/lazarus-win64/YoloModels" />
+    </Target>
+    <SearchPaths>
+      <OtherUnitFiles Value="../../prepare;../../../crosspascal-opencv/pascal;../../rtl-algorithms/src;../../../crosspascal-tvm/pascal;..\..\1-bindings\tvm\pascal;..\..\1-bindings\opencv\pascal;..\..\1-bindings\leptonica\pascal;..\..\4-ml\pascal;..\..\2-vision\core\pascal;..\..\2-vision\pascal;..\..\3-algorithms\pascal;..\..\0-foundation\pascal;..\..\tools\prepare;..\language-shared;..\language-models;..\vision-models" />
+      <UnitOutputDirectory Value="bin/lazarus-win64/units" />
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <SyntaxMode Value="Delphi" />
+      </SyntaxOptions>
+    </Parsing>
+    <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="False" />
+        <DebugInfoType Value="dsDwarf3" />
+      </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True" />
+        </Win32>
+      </Options>
+    </Linking>
+    <Other>
+      <CustomOptions Value="-Mdelphiunicode -dTVM_LAZY_INIT -dNO_LOCAL_TVM -Xs" />
+    </Other>
+  </CompilerOptions>
+</CONFIG>

@@ -13,7 +13,7 @@ unit CrossPascalConvert.Native;
 interface
 
 uses
-  {$IFDEF FPC}Windows, SysUtils{$ELSE}Winapi.Windows, System.SysUtils{$ENDIF};
+  {$IFDEF FPC}Windows, SysUtils{$ELSE}Winapi.Windows, System.SysUtils{$ENDIF}, CrossPascal.NativeIO;
 
 type
   TConverterProfile = (cpGemma3nCPU, cpGemma3nCUDA, cpGemma3nVision, cpGemma2, cpQwen2, cpQwenVL,
@@ -84,6 +84,9 @@ function IsHuihuiGemma(const Profile: TConverterProfile): Boolean;
 function PrepareConversion(const Root, Source, Projector, Destination, Architecture: string;
   const Profile: TConverterProfile; const Context, Chunk: Integer): TConversionCommand;
 function StartConversion(const Command: TConversionCommand; out LogFile: string): THandle;
+function Unquoted(const Input: string): string;
+function NativeYoloToolchain(const Root: string): TArray<string>;
+function NativeYoloNvrtc(const Root: string): string;
 
 implementation
 
@@ -198,7 +201,7 @@ var
   Value, Ini: string;
   Count: DWORD;
 begin
-  Value := GetEnvironmentVariable('CROSSPASCAL_NATIVE_' + UpperCase(Key));
+  Value := NativeEnvironmentVariable('CROSSPASCAL_NATIVE_' + UpperCase(Key));
   if Value = '' then
   begin
     Ini := Kit + 'toolchain.ini';
@@ -240,14 +243,14 @@ const
 var
   ProgramFiles, Edition, Year: string;
 begin
-  Result := IncludeTrailingPathDelimiter(GetEnvironmentVariable('VCToolsInstallDir'));
+  Result := IncludeTrailingPathDelimiter(NativeEnvironmentVariable('VCToolsInstallDir'));
   if FileExists(Result + 'bin\Hostx64\x64\link.exe') then Exit;
   for Year in Years do
   begin
     if Year = '2022' then
-      ProgramFiles := GetEnvironmentVariable('ProgramFiles')
+      ProgramFiles := NativeEnvironmentVariable('ProgramFiles')
     else
-      ProgramFiles := GetEnvironmentVariable('ProgramFiles(x86)');
+      ProgramFiles := NativeEnvironmentVariable('ProgramFiles(x86)');
     for Edition in Editions do
     begin
       Result := NewestVersionDirectory(
@@ -271,7 +274,7 @@ begin
   Linker := RequireFile(ReadToolPath(Kit, 'LINKER', Msvc + 'bin\Hostx64\x64\link.exe'), 'The x64 linker');
   Msvc := ReadToolPath(Kit, 'MSVC_LIB', Msvc + 'lib\x64');
   RequireFile(IncludeTrailingPathDelimiter(Msvc) + 'libcmt.lib', 'The x64 MSVC runtime library');
-  SDK := NewestVersionDirectory(IncludeTrailingPathDelimiter(GetEnvironmentVariable('ProgramFiles(x86)')) + 'Windows Kits\10\Lib',
+  SDK := NewestVersionDirectory(IncludeTrailingPathDelimiter(NativeEnvironmentVariable('ProgramFiles(x86)')) + 'Windows Kits\10\Lib',
     'ucrt\x64\libucrt.lib');
   UCRT := ReadToolPath(Kit, 'UCRT_LIB', SDK + 'ucrt\x64');
   WindowsLib := ReadToolPath(Kit, 'WINDOWS_LIB', SDK + 'um\x64');
@@ -309,8 +312,8 @@ function DefaultNvrtc: string;
 var
   CudaRoot: string;
 begin
-  CudaRoot := GetEnvironmentVariable('CUDA_PATH_V12_8');
-  if CudaRoot = '' then CudaRoot := GetEnvironmentVariable('CUDA_PATH');
+  CudaRoot := NativeEnvironmentVariable('CUDA_PATH_V12_8');
+  if CudaRoot = '' then CudaRoot := NativeEnvironmentVariable('CUDA_PATH');
   Result := IncludeTrailingPathDelimiter(CudaRoot) + 'bin\nvrtc64_120_0.dll';
 end;
 
@@ -502,6 +505,17 @@ begin
   Result.Profile := Profile;
 end;
 
+function NativeYoloToolchain(const Root: string): TArray<string>;
+begin
+  Result := CompilerArguments(IncludeTrailingPathDelimiter(Root) + 'runtime\converter\');
+end;
+
+function NativeYoloNvrtc(const Root: string): string;
+begin
+  Result := RequireFile(ReadToolPath(IncludeTrailingPathDelimiter(Root) +
+    'runtime\converter\', 'NVRTC', DefaultNvrtc), 'The YOLO CUDA compiler');
+end;
+
 function QuoteArgument(const Value: string): string;
 var
   I: Integer;
@@ -521,7 +535,7 @@ var
   ID: TGUID;
 begin
   if CreateGUID(ID) <> 0 then raise Exception.Create('Could not name the conversion log.');
-  Folder := IncludeTrailingPathDelimiter(GetEnvironmentVariable('LOCALAPPDATA')) +
+  Folder := IncludeTrailingPathDelimiter(NativeEnvironmentVariable('LOCALAPPDATA')) +
     'CrossPascal\Convert\logs';
   if not ForceDirectories(Folder) then
     raise Exception.Create('Could not create the conversion log folder.');

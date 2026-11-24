@@ -27,6 +27,7 @@ The Leptonica asset includes its original source archives, codec sources, build 
 | --- | --- |
 | Qwen2.5-VL 3B Instruct, used by CPU QwenChat/ImagePrompt | [Qwen Research License](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct/blob/66285546d2b821cf421d4f5eb2576359d3770cd3/LICENSE): non-commercial research and evaluation; commercial use requires a separate license from Alibaba Cloud. Built with Qwen. |
 | Gemma 2 and Gemma 3n | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) and [Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy). Copies, NOTICE, modification records and use/redistribution conditions accompany each supplied bundle. |
+| YoloModels: 23 profiles | [Per-profile source and recipe provenance](yolo/MODEL-PROVENANCE.json), with the exact upstream GPL/AGPL documents in `yolo/model-sources`. Checkpoint-release and recorded code-checkout revisions are listed separately where they differ. |
 | YOLO11n detection and classification | AGPL-3.0 as declared in the source packs. Review [Ultralytics licensing](https://www.ultralytics.com/license) for proprietary deployments. |
 | SqueezeNet 1.1, ResNet50 and RT-DETR R18vd | Apache-2.0 as declared by the pinned source packs; keep all additional notices. |
 | PP-OCRv5 Server detector and recognizer, used by PaddleOCR | Apache-2.0. The PaddleOCR example also uses Clipper 6.4.2 under the Boost Software License. [Model sources and notices](https://github.com/pisarev/crosspascal/tree/main/examples/paddle-ocr#licenses). |

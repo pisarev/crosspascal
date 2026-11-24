@@ -1,7 +1,7 @@
 # Prepare and run an example
 
-Download **crosspascal-examples-prepare-ea023.zip** from the
-[EA023 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-023)
+Download **crosspascal-examples-prepare-ea024.zip** from the
+[EA024 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-024)
 and extract it to a writable folder. Open your example's folder and run
 **Prepare.cmd**. Shared example folders offer a menu.
 
@@ -24,7 +24,7 @@ For chat applications, **Installed SDK folder** is set to the actual installed S
 Keep the prepared folder together. Distributed Pascal executables are built with
 Lazarus; Delphi builds verify source compatibility.
 
-The default installation for EA023 launchers is %LOCALAPPDATA%/CrossPascal/early-access-023. Set
+The default installation for EA024 launchers is %LOCALAPPDATA%/CrossPascal/early-access-024. Set
 CROSSPASCAL_PREPARE_HOME before running Prepare.cmd to choose another drive.
 Downloads use a sibling downloads folder. Repeating preparation preserves your
 source, project and package settings, and locally rebuilt example executables.
@@ -41,11 +41,11 @@ run its ready Lazarus executable. Model and SDK paths are filled automatically.
 
 | Model | Device | Prepare kit | Model download | Installed model |
 | --- | --- | --- | ---: | ---: |
-| Huihui Gemma 3n E4B abliterated | CPU | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-023/Prepare-HuihuiGemma3nE4B-CPU-ea023.zip) | 14.31 GiB | 26.81 GiB |
-| Huihui Gemma 3n E4B abliterated | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-023/Prepare-HuihuiGemma3nE4B-GPU-ea023.zip) | 10.52 GiB | 17.06 GiB |
-| Qwen3.8-27B UD-Q4_K_M | CPU | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-023/Prepare-Qwen38-27B-Q4-CPU-ea023.zip) | 16.32 GiB | 16.32 GiB |
-| Qwen3.8-27B UD-Q4_K_M | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-023/Prepare-Qwen38-27B-Q4-GPU-ea023.zip) | 16.40 GiB | 16.40 GiB |
-| Qwen3.8-27B original BF16 | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-023/Prepare-Qwen38-27B-BF16-GPU-ea023.zip) | 52.73 GiB | 52.73 GiB |
+| Huihui Gemma 3n E4B abliterated | CPU | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-HuihuiGemma3nE4B-CPU-ea024.zip) | 14.31 GiB | 26.81 GiB |
+| Huihui Gemma 3n E4B abliterated | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-HuihuiGemma3nE4B-GPU-ea024.zip) | 10.52 GiB | 17.06 GiB |
+| Qwen3.8-27B UD-Q4_K_M | CPU | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-Qwen38-27B-Q4-CPU-ea024.zip) | 16.32 GiB | 16.32 GiB |
+| Qwen3.8-27B UD-Q4_K_M | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-Qwen38-27B-Q4-GPU-ea024.zip) | 16.40 GiB | 16.40 GiB |
+| Qwen3.8-27B original BF16 | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-Qwen38-27B-BF16-GPU-ea024.zip) | 52.73 GiB | 52.73 GiB |
 
 The figures cover each model package. Prepare also accounts for the SDK,
 shared dependencies, download cache, and extraction space. The ready context
@@ -58,17 +58,27 @@ menu. See the [Huihui guide](https://github.com/pisarev/crosspascal-convert/blob
 and [Qwen3.8 guide](https://github.com/pisarev/crosspascal-convert/blob/main/docs/QWEN35.md)
 for source identities, conversion, and model terms.
 
+## YOLO models
+
+The [YoloModels example](../examples/yolo-models/README.md) runs 23 profiles across seven tasks: classification, object detection, instance segmentation, pose, oriented detection, semantic segmentation, and depth estimation.
+
+Use `vision/yolo-models/Prepare.cmd` from the combined preparation ZIP, or download [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-YoloModels-CPU-ea024.zip) or [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-YoloModels-GPU-ea024.zip). The generic script selects Auto; `Prepare-CPU.cmd` and `Prepare-GPU.cmd` set the device explicitly.
+
+The CPU archive is about 218 MiB. A CUDA preparation keeps that CPU package and adds the one archive for the installed GPU, about 223 MiB. The SDK and shared runtime are separate dependencies; Prepare prints the actual remaining download size. The other CUDA archives are not downloaded.
+
+The SDK includes all profile manifests and weight-free graph recipes. Original checkpoints can be converted with the desktop converter or `ConvertYolo`; ready model DLLs are downloaded by Prepare. See [model provenance](yolo/MODEL-PROVENANCE.json) and its adjacent source notices for the upstream terms.
+
 ## Download one vision model
 
 SqueezeNet 1.1, ResNet50 v1, YOLO11n classification, YOLO11n detection and RT-DETR R18vd each have separate CPU and GPU preparation ZIPs. [Choose a model and device](VISION-DOWNLOADS.md). These kits download only the selected model plus shared dependencies; the original all-five-model kit remains available.
 
 Each ZIP contains an enclosing folder. Extract it, open that folder and run `Prepare.cmd`. The dedicated CPU/GPU kit already sets its device. The generic kits below retain `-Device` and Auto selection.
 
-The six [console examples](../examples/language-models/README.md) have separate CPU and CUDA launchers in the [EA023 downloads](https://github.com/pisarev/crosspascal/releases/tag/early-access-023). From the combined ZIP, you can also run an example's Prepare.cmd with `-Device CPU` or `-Device CUDA`.
+The six [console examples](../examples/language-models/README.md) have separate CPU and CUDA launchers in the [EA024 downloads](https://github.com/pisarev/crosspascal/releases/tag/early-access-024). From the combined ZIP, you can also run an example's Prepare.cmd with `-Device CPU` or `-Device CUDA`.
 
 For text detection and recognition, the [PaddleOCR example](../examples/paddle-ocr/README.md) prepares both PP-OCRv5 Server models for the same device. The EA020 release also provides each model as a separate download.
 
-For background removal, the [BiRefNet example](../examples/birefnet/README.md) has separate CPU and GPU preparation kits in EA023. It uses the full SwinL model with a fixed 800-pixel input. The GPU kits select a bundle for `sm_75`, `sm_86`, `sm_89`, or `sm_120` and require at least 4 GiB of free GPU memory.
+For background removal, the [BiRefNet example](../examples/birefnet/README.md) has separate CPU and GPU preparation kits in EA024. It uses the full SwinL model with a fixed 800-pixel input. The GPU kits select a bundle for `sm_75`, `sm_86`, `sm_89`, or `sm_120` and require at least 4 GiB of free GPU memory.
 
 For text-guided detection, the [OmDet-Turbo example](../examples/omdet-turbo/README.md) has separate CPU and GPU preparation kits. Enter class names for the objects you want to find. The example runs the text encoder and detector locally, then saves an annotated PNG or JSON.
 
@@ -99,6 +109,7 @@ All CUDA-enabled examples provide bundles for compute capabilities 7.5, 8.6, 8.9
 | Examples | Free GPU memory checked by Prepare |
 | --- | ---: |
 | VisionModels | 1,024 MiB |
+| YoloModels | 1,536 MiB |
 | PaddleOCR | 2,048 MiB |
 | BiRefNet | 4,096 MiB |
 | OmDetTurbo | 2,048 MiB |
@@ -129,6 +140,7 @@ third-party libraries. Review the relevant terms before use or redistribution.
 | HuihuiGemmaChat: abliterated Gemma 3n E4B text and images | [Gemma Terms](https://ai.google.dev/gemma/terms), incorporated use policy, and supplied derivative notices. | 32 GiB |
 | Qwen38Q4Chat and Qwen38BF16Chat: Qwen3.8-27B text and images | Apache-2.0; included model and dependency notices apply. | 32 GiB |
 | Five text console examples: experimental Gemma 2 2B | Same Gemma terms; limited short-context completion profile. | 16 GiB |
+| YoloModels: 23 YOLO profiles | [Pinned model/source provenance](yolo/MODEL-PROVENANCE.json) and the supplied GPL/AGPL notices apply; the original CrossPascal source license does not replace them. | — |
 | VisionModels: YOLO11n detection/classification | AGPL-3.0; proprietary use may require a separate [Ultralytics license](https://www.ultralytics.com/license). | See the model pack |
 | VisionModels: SqueezeNet, ResNet50, RT-DETR | Apache-2.0 as declared in each pinned source pack. | See the model pack |
 | PaddleOCR: PP-OCRv5 Server detector and recognizer | Apache-2.0; Clipper 6.4.2 uses the Boost Software License. [PaddleOCR terms and notices](https://github.com/pisarev/crosspascal/tree/main/examples/paddle-ocr#licenses). | See the PaddleOCR guide |

@@ -1,5 +1,14 @@
 # Release notes
 
+## early-access-024
+
+EA024 adds native YOLO conversion and the YoloModels example: 23 profiles from v5, v8, v10, 11, 12, v13 and 26 across seven typed tasks. Ready CPU bundles and CUDA targets `sm_75`, `sm_86`, `sm_89` and `sm_120` share the SDK's pinned runtime. CUDA preparation retains the CPU package too.
+
+The Windows model loader preserves Unicode filenames across the Pascal/FFI boundary, including adjacent input sidecars. The FFI source patch, build recipe and exact DLL pins accompany the runtime.
+
+Existing EA023 language features and immutable model assets are retained. New [preparation kits](PREPARE-EXAMPLES.md) select the EA024 SDK/runtime; the model downloads keep their original versioned URLs and SHA-256 values. Per-profile YOLO source terms are recorded in [model provenance](yolo/MODEL-PROVENANCE.json).
+
+
 ## EA023 language models and image input
 
 The ready language bundles add Huihui Gemma 3n E4B abliterated on CPU and

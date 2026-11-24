@@ -690,7 +690,14 @@ function Select-ExampleDevice($Row, $Document, $CudaDevice, [switch]$SkipUnavail
     if (-not $plan.packages.Contains($key) -or -not $Document.packages.PSObject.Properties[$variant.Value]) {
         throw 'The CUDA package does not match the preparation manifest.'
     }
-    $plan.packages[$key] = [string]$variant.Value
+    if ($Row.cuda.PSObject.Properties['keep_cpu']) {
+        if ($Row.cuda.keep_cpu -isnot [bool]) { throw 'keep_cpu must be a JSON boolean.' }
+    }
+    if ($Row.cuda.keep_cpu -eq $true) {
+        $plan.packages[[string]$variant.Value] = [string]$variant.Value
+    } else {
+        $plan.packages[$key] = [string]$variant.Value
+    }
     $plan.device = 'CUDA'
     $plan.arch = $CudaDevice.arch
     $plan.message = "Selected the $($plan.arch) CUDA bundle. Free GPU memory: $($CudaDevice.free_mib) MiB."

@@ -1,0 +1,203 @@
+{
+  "schema": "crosspascal.yolo-source-provenance.v1",
+  "profiles": [
+    {
+      "id": "yolov5n",
+      "family": "yolov5",
+      "source_sha256": "4f180cf23ba0717ada0badd6c685026d73d48f184d00fc159c2641284b2ac0a3",
+      "recipe_sha256": "61b322cba608952a4502ea875d4ee1e91ba31cb62660f3c6d7ac5f4426e8329c",
+      "license_file": "model-sources/yolov5-v7.0-LICENSE",
+      "recorded_code_checkout_revision": "1e7cf74cb64d719b34f7315aa13eab9e32cde672",
+      "checkpoint_release_tag": "v7.0",
+      "checkpoint_release_revision": "915bbf294bb74c859f0b41f1c23bc395014ea679",
+      "checkpoint_release_license": "model-sources/yolov5-v7.0-LICENSE",
+      "recorded_code_checkout_license": "model-sources/yolov5-current-LICENSE"
+    },
+    {
+      "id": "yolov5n-cls",
+      "family": "yolov5",
+      "source_sha256": "77b15f65325b37c24e616cbe0e5349d63c35508607458b9f2bcb03875ab75f33",
+      "recipe_sha256": "5d47094dedb87680769be2d0cb1045ca49fff60e2db498da9c49964d8159c278",
+      "license_file": "model-sources/yolov5-v7.0-LICENSE",
+      "recorded_code_checkout_revision": "1e7cf74cb64d719b34f7315aa13eab9e32cde672",
+      "checkpoint_release_tag": "v7.0",
+      "checkpoint_release_revision": "915bbf294bb74c859f0b41f1c23bc395014ea679",
+      "checkpoint_release_license": "model-sources/yolov5-v7.0-LICENSE",
+      "recorded_code_checkout_license": "model-sources/yolov5-current-LICENSE"
+    },
+    {
+      "id": "yolov5n-seg",
+      "family": "yolov5",
+      "source_sha256": "1ee00e5e14e3863898c5446c62734776759e29be08fd1c174774992f7aaa9985",
+      "recipe_sha256": "155c6e7be24d09bbf51c933edaeee9a6c71fbbbf59da13f4a73adffbe59f4b85",
+      "license_file": "model-sources/yolov5-v7.0-LICENSE",
+      "recorded_code_checkout_revision": "1e7cf74cb64d719b34f7315aa13eab9e32cde672",
+      "checkpoint_release_tag": "v7.0",
+      "checkpoint_release_revision": "915bbf294bb74c859f0b41f1c23bc395014ea679",
+      "checkpoint_release_license": "model-sources/yolov5-v7.0-LICENSE",
+      "recorded_code_checkout_license": "model-sources/yolov5-current-LICENSE"
+    },
+    {
+      "id": "yolov8n",
+      "family": "yolov8",
+      "source_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "recipe_sha256": "725f2aa5748b272a1c101130096508debc4304b989c140ed5f199f9bd0afc942",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolov8n-cls",
+      "family": "yolov8",
+      "source_sha256": "11fa19f2aea79bc960d680a13f82f22105982b325eb9e17a4a5e1a9f8245980a",
+      "recipe_sha256": "c783b5e7d4c574497cca10305b65704c654b0536bd86c11bfaf8224a3912083c",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolov8n-seg",
+      "family": "yolov8",
+      "source_sha256": "a7cd8f929e1903d78a12a48efecab430209f18dc46cb96c3599a5980c63c423c",
+      "recipe_sha256": "099d31efd9185bd106622d7608b684d3d7a708ae6ca1666bac5fa0fe680b17cb",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolov8n-pose",
+      "family": "yolov8",
+      "source_sha256": "c6fa93dd1ee4a2c18c900a45c1d864a1c6f7aba75d84f91648a30b7fb641d212",
+      "recipe_sha256": "dbf5dee2ffa5023858c16fd4f59309e188ddc28e5606be9e0aab058cd5164a3e",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolov8n-obb",
+      "family": "yolov8",
+      "source_sha256": "fa6e4cd2691f132875c143135affaa66b5d89394ebb1d07d19770a9b6382c1b8",
+      "recipe_sha256": "c3ff76aea68663a58af58da1e4a2f20513bd2c26fc9472a06cec5fb5600aa0ad",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolov10n",
+      "family": "yolov10",
+      "source_sha256": "61b91ffc99b284792dca49bf40216945833cc2a515e1a742954e6e9327cfc19e",
+      "recipe_sha256": "3ce69b247f40e52ee80caa6ef68a35c10bf65561fbe7422f5404675458dbbdfc",
+      "license_file": "model-sources/yolov10-LICENSE",
+      "recorded_code_checkout_revision": "453c6e38a51e9d1d5a2aa5fb7f1014a711913397"
+    },
+    {
+      "id": "yolo11n",
+      "family": "yolo11",
+      "source_sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+      "recipe_sha256": "f91def1af749e18c87196b2f6e7e8d3326cf6592479578fee67c73f20da9161c",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo11n-cls",
+      "family": "yolo11",
+      "source_sha256": "c62d41bf9625777760018bf914d2e6cd472420ccd01706d97a61cb6c82502bd7",
+      "recipe_sha256": "e6ff9328464bf2da2619caf05f641bef5ee3438ad1949f4b2ebd20171c0e8e52",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo11n-seg",
+      "family": "yolo11",
+      "source_sha256": "55ed65c56c91713d23e8402371c6c49a6fd84f257f7dce452e8d70e41dcbe152",
+      "recipe_sha256": "f28c4ed273e49728c9a94d9a19c542681de2b9d1b5b8a0d16e925a0d35d4c6ed",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo11n-pose",
+      "family": "yolo11",
+      "source_sha256": "869e83fcdffdc7371fa4e34cd8e51c838cc729571d1635e5141e3075e9319dc0",
+      "recipe_sha256": "3ff0acd0806e0349335545c592155d87fdcd40f2637f935771edf78c1eddebe4",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo11n-obb",
+      "family": "yolo11",
+      "source_sha256": "b62898ebf38940ca4df323863e45ee9d84a1a46d5d11ebdde529fb33aa9f3a32",
+      "recipe_sha256": "aaaecd71041fcb6265fe5298c7698bafa892318612154a60100795c5f3efe674",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo26n",
+      "family": "yolo26",
+      "source_sha256": "9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef",
+      "recipe_sha256": "735cee9dd33745881cac6178044c2f0b6ffbcf1046215ea915fea5507185c488",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo26n-cls",
+      "family": "yolo26",
+      "source_sha256": "0dd6f8dbc448870ac98a3cbb7156f923f7ce21fed3755d4019169ffffd279e81",
+      "recipe_sha256": "1ea5105fada345103d13bd27b42998dea1b43985397aeeb4ee9d501b02a2f2c6",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo26n-seg",
+      "family": "yolo26",
+      "source_sha256": "361fbfabab285c3237700b6bb91d7ecfa602cd945fffda8dbe1242829b71e73f",
+      "recipe_sha256": "6692ae7b8a02982666616b0edb8ea6595fa4ad8cb037ee21fa72429463250ea6",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo26n-pose",
+      "family": "yolo26",
+      "source_sha256": "eb3bb8268828aeaf515cec23a4bfafd793944a86fe9af94ba7823609c14522a9",
+      "recipe_sha256": "a9ef5fd670afb33f0a460a79016b5daf4bd437cbcc20b2e6fc61159d07b2634a",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo26n-obb",
+      "family": "yolo26",
+      "source_sha256": "6f51c78197aacda4a33be77294065a9001675fb893f56227a179731b53dbd2b0",
+      "recipe_sha256": "c70b5ee3129c8d8d0d87ce6cb951935c1bd0a87cf7937d3731d1c2d50cbfa289",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo26n-sem",
+      "family": "yolo26",
+      "source_sha256": "f3f293cca764de1f93044030d8d5612de9c5ffbf37c9c8ea1b69418b73038999",
+      "recipe_sha256": "af6490ce6046489e4266e8b89b131183dfad5cdf777b61b71ac828fe32479a6c",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo26n-depth",
+      "family": "yolo26",
+      "source_sha256": "befed1b8561d8b2eaa66274b070cdfc9c44853bda6d6d62a04759f9383af74e9",
+      "recipe_sha256": "10a0456702e167d6b649040f54676e5b4ab71d15922710aa2a3d53e7d9c4f622",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolo12n",
+      "family": "yolo12",
+      "source_sha256": "419ff3dca37d69bacc93a50fa0c186a1c6f9fe62fae0f108b0872829689e9ca6",
+      "recipe_sha256": "722a32ef753f253d10c0c315c08ee9fe56192e1e8889c0ad76841253b4261b89",
+      "license_file": "model-sources/ultralytics-LICENSE",
+      "recorded_code_checkout_revision": "c88a468aff98a0eef9bfbc1fd15ac5f99a444541"
+    },
+    {
+      "id": "yolov13n",
+      "family": "yolov13",
+      "source_sha256": "6653035017b0f111f80ec11ed914874ea85699b104aeac1e46e517d16889d6b7",
+      "recipe_sha256": "99c85c0b178248c1e1e1a18bc22438ee2da1b03df272205cd4caa5731791f238",
+      "license_file": "model-sources/yolov13-LICENSE",
+      "recorded_code_checkout_revision": "73289949533efac82bb5f72ec19b746618656bd2"
+    }
+  ],
+  "revision_fields": "recorded_code_checkout_revision preserves the original conversion provenance; checkpoint_release_revision separately identifies the upstream checkpoint release. They are not interchangeable.",
+  "license_scope": "Model and upstream source terms remain in the supplied license documents. The CrossPascal source license does not replace them."
+}

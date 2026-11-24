@@ -1,4 +1,4 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{9CC82031-7323-44DE-AACF-4817E4BB4CDF}</ProjectGuid>
         <ProjectVersion>20.4</ProjectVersion>
@@ -39,6 +39,8 @@
         <DCC_DcuOutput>..\build\launcher\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_UsePackage>;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_Namespace>System;Winapi;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_UnitSearchPath>..\examples\yolo-models;..\..\crosspascal-tvm\pascal;..\..\crosspascal-convert\native;..\..\crosspascal-opencv\pascal;..\..\crosspascal-leptonica\pascal;..\rtl-algorithms\src;..\vision;..\..\examples\yolo-models;..\..\1-bindings\tvm\pascal;..\..\1-bindings\opencv\pascal;..\..\1-bindings\leptonica\pascal;..\..\4-ml\pascal;..\..\2-vision\core\pascal;..\..\2-vision\pascal;..\..\3-algorithms\pascal;..\..\0-foundation\pascal;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_Define>TVM_LAZY_INIT;NO_LOCAL_TVM;$(DCC_Define)</DCC_Define>
         <SanitizedProjectName>CrossPascalConvert</SanitizedProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">

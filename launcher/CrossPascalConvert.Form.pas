@@ -15,12 +15,13 @@ interface
 uses
   {$IFDEF FPC}Windows, Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls
   {$ELSE}Winapi.Windows, System.Classes, System.SysUtils, Vcl.Forms, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls{$ENDIF},
-  CrossPascalConvert.Native;
+  CrossPascalConvert.Native, CrossPascalConvert.Yolo;
 
 type
   TConverterForm = class(TForm)
   private
     FProfile: TComboBox;
+    FYolo: TYoloConverter;
     FSourceLabel: TLabel;
     FSource: TEdit;
     FProjector: TEdit;
@@ -41,6 +42,9 @@ type
     FDestination: string;
     FInspecting: Boolean;
     function Selected: TConverterProfile;
+    function IsYoloSelected: Boolean;
+    function YoloIndex: Integer;
+    function SelectedTitle: string;
     function AddLabel(const CaptionText: string; const Left, Top: Integer): TLabel;
     function AddEdit(const Left, Top, Width: Integer; const Stretch: Boolean): TEdit;
     function AddButton(const CaptionText: string; const Left, Top: Integer;
@@ -158,6 +162,7 @@ end;
 constructor TConverterForm.Create(AOwner: TComponent);
 var
   Profile: TConverterProfile;
+  I: Integer;
 begin
   inherited CreateNew(AOwner);
   Caption := 'CrossPascal Converter';
@@ -213,17 +218,44 @@ begin
   FTimer.Interval := 300;
   FTimer.Enabled := False;
   FTimer.OnTimer := UpdateProgress;
+  if FileExists(IncludeTrailingPathDelimiter(ExecutableFolder) + 'index.json') then
+    try
+      FYolo := TYoloConverter.Create(ExecutableFolder);
+      for I := 0 to FYolo.Count - 1 do FProfile.Items.Add(UIString(FYolo.Title(I)));
+    except
+      on E: Exception do FReport.Text := UIString('YOLO catalog: ' + E.Message);
+    end;
   ProfileChanged(nil);
 end;
 
 destructor TConverterForm.Destroy;
 begin
   if FProcess <> 0 then CloseHandle(FProcess);
+  FYolo.Free;
   inherited;
+end;
+
+function TConverterForm.IsYoloSelected: Boolean;
+begin
+  Result := (FYolo <> nil) and (FProfile.ItemIndex > Ord(High(TConverterProfile)));
+end;
+
+function TConverterForm.YoloIndex: Integer;
+begin
+  Result := FProfile.ItemIndex - Ord(High(TConverterProfile)) - 1;
+end;
+
+function TConverterForm.SelectedTitle: string;
+begin
+  if IsYoloSelected then
+    Result := FYolo.Title(YoloIndex)
+  else
+    Result := ProfileTitles[Selected];
 end;
 
 function TConverterForm.Selected: TConverterProfile;
 begin
+  if IsYoloSelected then raise Exception.Create('Use the YOLO catalog for this profile.');
   Result := TConverterProfile(FProfile.ItemIndex);
 end;
 
@@ -231,6 +263,17 @@ procedure TConverterForm.ProfileChanged(Sender: TObject);
 var
   Profile: TConverterProfile;
 begin
+  if IsYoloSelected then
+  begin
+    FSourceLabel.Caption := 'Original trained YOLO checkpoint (.pt)';
+    FProjectorLabel.Caption := 'Image projector (optional)';
+    FProjector.Enabled := False;
+    FProjectorBrowse.Enabled := False;
+    FArchitecture.Enabled := FYolo.UsesCUDA(YoloIndex);
+    FContext.Enabled := False;
+    FChunk.Enabled := False;
+    Exit;
+  end;
   Profile := SourceProfile(Selected);
   if Profile = cpGemma3nVision then
     FSourceLabel.Caption := 'Existing Gemma 3n text bundle'
@@ -268,6 +311,12 @@ var
   Profile: TConverterProfile;
 begin
   Path := EditText(FSource);
+  if IsYoloSelected then
+  begin
+    if SelectFile('Select the original trained YOLO checkpoint', 'YOLO checkpoint (*.pt)|*.pt', Path) then
+      FSource.Text := UIString(Path);
+    Exit;
+  end;
   Profile := SourceProfile(Selected);
   if Profile = cpGemma3nVision then
   begin
@@ -328,6 +377,9 @@ end;
 
 function TConverterForm.Request: TConversionCommand;
 begin
+  if IsYoloSelected then
+    Exit(FYolo.Prepare(YoloIndex, Unquoted(EditText(FSource)), Unquoted(EditText(FOutput)),
+      EditText(FArchitecture)));
   Result := PrepareConversion(
     ExecutableFolder,
     EditText(FSource),
@@ -353,6 +405,21 @@ begin
   if FProcess <> 0 then Exit;
   try
     Command := Request;
+    if IsYoloSelected then
+    begin
+      Command.Arguments := Command.Arguments + ['--validate'];
+      FProcess := StartConversion(Command, FLogFile);
+      FInspecting := True;
+      FDestination := '';
+      FLogSize := -1;
+      FBuild.Enabled := False;
+      FPreview.Enabled := False;
+      FProfile.Enabled := False;
+      FOpenOutput.Enabled := False;
+      FReport.Text := UIString('Checking checkpoint, trained weights and graph contract: ' + SelectedTitle);
+      FTimer.Enabled := True;
+      Exit;
+    end;
     if IsQwen35(Command.Profile) then
     begin
       Command.Arguments[0] := '--launcher-inspect';
@@ -388,8 +455,9 @@ begin
     FLogSize := -1;
     FBuild.Enabled := False;
     FPreview.Enabled := False;
+    FProfile.Enabled := not IsYoloSelected;
     FOpenOutput.Enabled := False;
-    FReport.Text := UIString('Building ' + ProfileTitles[Command.Profile] + sLineBreak + 'Log  ' + FLogFile);
+    FReport.Text := UIString('Building ' + SelectedTitle + sLineBreak + 'Log  ' + FLogFile);
     FTimer.Enabled := True;
   except
     on E: Exception do FReport.Text := UIString(E.Message);
@@ -431,6 +499,7 @@ begin
   FTimer.Enabled := False;
   FBuild.Enabled := True;
   FPreview.Enabled := True;
+  FProfile.Enabled := True;
   FOpenOutput.Enabled := not FInspecting and (Status = 0) and DirectoryExists(FDestination);
   if FInspecting and (Status = 0) then
     FReport.Lines.Add(UIString('Source inspection complete. Build compiles a new bundle for the inputs listed above.'))

@@ -1,0 +1,99 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{8D0C5668-1C1B-4E90-A10F-CB88C8424B1A}</ProjectGuid>
+    <ProjectVersion>20.4</ProjectVersion>
+    <MainSource>YoloModels.dpr</MainSource>
+    <Base>True</Base>
+    <Config Condition="'$(Config)'==''">Release</Config>
+    <Platform Condition="'$(Platform)'==''">Win64</Platform>
+    <AppType>Application</AppType>
+    <FrameworkType>VCL</FrameworkType>
+    <TargetedPlatforms>2</TargetedPlatforms>
+    <ProjectName Condition="'$(ProjectName)'==''">YoloModels</ProjectName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+    <Base>true</Base>
+  </PropertyGroup>
+  <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+    <Base_Win64>true</Base_Win64>
+    <CfgParent>Base</CfgParent>
+    <Base>true</Base>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+    <Cfg_1>true</Cfg_1>
+    <CfgParent>Base</CfgParent>
+    <Base>true</Base>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+    <Cfg_2>true</Cfg_2>
+    <CfgParent>Base</CfgParent>
+    <Base>true</Base>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Base)'!=''">
+    <SanitizedProjectName>YoloModels</SanitizedProjectName>
+    <DCC_Namespace>System;Winapi;System.Win;Vcl;Vcl.Imaging;$(DCC_Namespace)</DCC_Namespace>
+    <DCC_UnitSearchPath>../../prepare;..\..\rtl-algorithms\src;..\..\..\crosspascal-tvm\pascal;..\..\..\crosspascal-opencv\pascal;$(DCC_UnitSearchPath);..\..\1-bindings\tvm\pascal;..\..\1-bindings\opencv\pascal;..\..\1-bindings\leptonica\pascal;..\..\4-ml\pascal;..\..\2-vision\core\pascal;..\..\2-vision\pascal;..\..\3-algorithms\pascal;..\..\0-foundation\pascal;..\..\tools\prepare;..\language-shared;..\language-models;..\vision-models</DCC_UnitSearchPath>
+    <DCC_Define>TVM_LAZY_INIT;NO_LOCAL_TVM;$(DCC_Define)</DCC_Define>
+    <DCC_ExeOutput>bin\$(Platform)\$(Config)</DCC_ExeOutput>
+    <DCC_DcuOutput>build\$(Platform)\$(Config)</DCC_DcuOutput>
+    <DCC_ObjOutput>build\$(Platform)\$(Config)</DCC_ObjOutput>
+    <DCC_UsePackage></DCC_UsePackage>
+    <DCC_IntegerOverflowCheck>false</DCC_IntegerOverflowCheck>
+    <DCC_RangeChecking>false</DCC_RangeChecking>
+    <VerInfo_Locale>1033</VerInfo_Locale>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Cfg_1)'!=''">
+    <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+    <DCC_DebugInformation>2</DCC_DebugInformation>
+    <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
+    <DCC_Optimize>false</DCC_Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Cfg_2)'!=''">
+    <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+    <DCC_DebugInformation>0</DCC_DebugInformation>
+    <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+    <DCC_Optimize>true</DCC_Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <DelphiCompile Include="$(MainSource)">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="YoloModels.Main.pas"/>
+    <DCCReference Include="YoloModels.Run.pas"/>
+    <DCCReference Include="YoloModels.Render.pas"/>
+    <DCCReference Include="YoloModels.Worker.pas"/>
+    <DCCReference Include="YoloModels.Config.pas"/>
+    <DCCReference Include="YoloModels.Defaults.pas"/>
+    <DCCReference Include="YoloModels.Export.pas"/>
+    <DCCReference Include="YoloModels.WindowsText.pas"/>
+
+    <BuildConfiguration Include="Base">
+      <Key>Base</Key>
+    </BuildConfiguration>
+    <BuildConfiguration Include="Debug">
+      <Key>Cfg_1</Key>
+      <CfgParent>Base</CfgParent>
+    </BuildConfiguration>
+    <BuildConfiguration Include="Release">
+      <Key>Cfg_2</Key>
+      <CfgParent>Base</CfgParent>
+    </BuildConfiguration>
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+    <Borland.ProjectType/>
+    <BorlandProject>
+      <Delphi.Personality>
+        <Source>
+          <Source Name="MainSource">YoloModels.dpr</Source>
+        </Source>
+      </Delphi.Personality>
+      <Platforms>
+        <Platform value="Win32">False</Platform>
+        <Platform value="Win64">True</Platform>
+      </Platforms>
+    </BorlandProject>
+    <ProjectFileVersion>12</ProjectFileVersion>
+  </ProjectExtensions>
+  <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+</Project>
