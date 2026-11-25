@@ -88,5 +88,5 @@ Apache-2.0 as declared in the accompanying pinned source pack.
 - [GPU CC 8.9](https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cuda-sm_89-ea019.zip) — 157.0 MiB.
 - [GPU CC 12.0](https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cuda-sm_120-ea019.zip) — 157.1 MiB.
 
-Model files, pinned SHA-256 values, and current preparation links: [VISION-DOWNLOADS-ea024.json](https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/VISION-DOWNLOADS-ea024-r1.json). The v2 catalog links to the release inventory for preparation-archive sizes and hashes.
+Model files, pinned SHA-256 values, and current preparation links: [VISION-DOWNLOADS-ea024-r1.json](https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/VISION-DOWNLOADS-ea024-r1.json). The v2 catalog links to the release inventory for preparation-archive sizes and hashes.
 

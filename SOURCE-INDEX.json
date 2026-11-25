@@ -52,8 +52,8 @@
     },
     {
       "path": "docs/VISION-DOWNLOADS.md",
-      "bytes": 9670,
-      "sha256": "6dbebb3a754e47e5e5345fa97e28930bd599bbacdd94882fe02fdebeae1942bb"
+      "bytes": 9673,
+      "sha256": "6e69607018dac788dfac5afde72a9d4342245f29bb5493331d748380c672c1e8"
     },
     {
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
@@ -157,8 +157,8 @@
     },
     {
       "path": "examples/gemma-chat/README.md",
-      "bytes": 6989,
-      "sha256": "86048aec379ac37c6a7096a1fed76e1c54637f4804e144136369c1cc20848fe3"
+      "bytes": 6992,
+      "sha256": "c6a04c2372fb3c6777610d5e484e25adbee5a8d16f9abf714b553ecf9f9016d4"
     },
     {
       "path": "examples/language-models/ExampleSupport.pas",
@@ -327,8 +327,8 @@
     },
     {
       "path": "examples/marker-lite/README.md",
-      "bytes": 3919,
-      "sha256": "6c17645a309426a14585956e7e706abef29478c88508912b06dab7914619c09a"
+      "bytes": 3922,
+      "sha256": "2aa6d0e268aa2dd433a8ef2943838dcad75f41b94f5063dc42fc72ae87f2f089"
     },
     {
       "path": "examples/omdet-turbo/OmDetTurbo.dpr",
@@ -442,8 +442,8 @@
     },
     {
       "path": "examples/qwen-chat/README.md",
-      "bytes": 6982,
-      "sha256": "fe6967ee3215237285b1112b0faeee2c5bf511521b56233df935b1c73a50ae08"
+      "bytes": 6985,
+      "sha256": "e6c7ba4514c637ee53cbf86bbf63926a0beb0dedf72e45ced34c6458d8df05ae"
     },
     {
       "path": "examples/vision-models/models.json",
@@ -457,8 +457,8 @@
     },
     {
       "path": "examples/vision-models/README.md",
-      "bytes": 13231,
-      "sha256": "b1214acbb116624a9be0b00b38176ec48c2e022daeea8913b4e3b6fad982176b"
+      "bytes": 13234,
+      "sha256": "ade08655d1d89abc1823d54a9702629355b2cbe312dce0b9d22b520b627a9efe"
     },
     {
       "path": "examples/vision-models/VisionModels.dpr",
@@ -722,8 +722,8 @@
     },
     {
       "path": "prepare/vision-downloads.json",
-      "bytes": 18493,
-      "sha256": "f14f25235c01c8eee26d925e8a144b891fe70793ac7976ccc38b5734e575b41d"
+      "bytes": 18529,
+      "sha256": "a84a1331907a2544dd2be43b7cb7a6a1253b5f600c654360a016d1a448b78833"
     },
     {
       "path": "README.md",
