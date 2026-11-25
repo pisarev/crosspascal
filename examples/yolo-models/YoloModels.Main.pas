@@ -9,7 +9,8 @@ uses
   {$IFDEF FPC}Classes, SysUtils, Forms, Controls, Graphics, StdCtrls, ExtCtrls,
   Dialogs, ComCtrls{$ELSE}System.Classes, System.SysUtils, Vcl.Forms, Vcl.Controls,
   Vcl.Graphics, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Dialogs, Vcl.ComCtrls{$ENDIF},
-  CrossVision.Mat, YoloModels.Config, YoloModels.Run, YoloModels.Render, YoloModels.Worker;
+  CrossVision.Mat, TVM.Yolo.Profile, YoloModels.Config, YoloModels.Run, YoloModels.Render,
+  YoloModels.Worker;
 
 type
   TYoloModelsForm = class(TForm)
@@ -59,11 +60,13 @@ type
     procedure CheckClose(Sender: TObject; var CanClose: Boolean);
     procedure FitContent(Sender: TObject);
     procedure ClearResult;
+    procedure InvalidateDisplay;
     procedure UpdateControls;
+    procedure PutPreview(const Image: IMat);
     procedure ShowPreview;
     procedure ShowDetails;
     procedure ReportError(const Text: string);
-    function ViewStyle: TYoloViewStyle;
+    function ViewStyle(const Task: TYoloTask): TYoloViewStyle;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -78,7 +81,7 @@ implementation
 uses
   {$IFDEF FPC}Math, FPReadPNG{$ELSE}System.Math, Vcl.Imaging.pngimage{$ENDIF},
   OpenCV, CrossPascal.Json, CrossPascal.SHA256, TVM.CpuGraph, TVM.ImageInput,
-  TVM.NativeDevice, TVM.Yolo.Profile, TVM.Yolo.RunOptions;
+  TVM.NativeDevice, TVM.Yolo.RunOptions;
 
 function UI(const Text: string): {$IFDEF FPC}UTF8String{$ELSE}string{$ENDIF};
 begin
@@ -340,8 +343,35 @@ begin
   FHasResult := False;
   FValue := Default(TYoloExampleResult);
   FFrame := Default(TYoloViewFrame);
-  FDetails.Clear;
-  ShowPreview;
+  try
+    FDetails.Clear;
+    ShowPreview;
+  except
+    InvalidateDisplay;
+    raise;
+  end;
+end;
+
+procedure TYoloModelsForm.InvalidateDisplay;
+begin
+  FHasResult := False;
+  FImage := nil;
+  FImageSHA256 := '';
+  FValue := Default(TYoloExampleResult);
+  FFrame := Default(TYoloViewFrame);
+  { An unsuccessful UI update must leave neither Run nor Save available. }
+  try
+    FPreview.Picture.Assign(nil);
+  except
+    { Keep the original exception; disabled actions also cover a failed clear. }
+  end;
+  try
+    FDetails.Clear;
+  except
+    { The invalidated state remains authoritative if the control cannot clear. }
+  end;
+  FStatus.Caption := 'Display update failed. Open an image to continue.';
+  UpdateControls;
 end;
 
 procedure TYoloModelsForm.ReportError(const Text: string);
@@ -365,7 +395,7 @@ begin
   FUnload.Enabled := Idle and not FFatal;
   FSave.Enabled := Idle and FHasResult;
   FLabels.Enabled := Idle and not FFatal;
-  FView.Enabled := FImage <> nil;
+  FView.Enabled := Idle and (FImage <> nil);
   FConfidence.Enabled := False;
   FNMS.Enabled := False;
   FOpacity.Enabled := False;
@@ -393,11 +423,20 @@ begin
   Image := DecodeColorImage(Bytes, FCVLibrary);
   RequireCpu((Image.Width <= 4096) and (Image.Height <= 4096),
     'Choose an image no larger than 4096 pixels on either side.');
-  FImage := Image;
-  FImageSHA256 := Digest;
-  ClearResult;
-  FStatus.Caption := UI(ExtractFileName(FileName) + ' | ' + IntToStr(Image.Width) +
-    ' x ' + IntToStr(Image.Height));
+  try
+    PutPreview(Image);
+    FImage := Image;
+    FImageSHA256 := Digest;
+    FHasResult := False;
+    FValue := Default(TYoloExampleResult);
+    FFrame := Default(TYoloViewFrame);
+    FDetails.Clear;
+    FStatus.Caption := UI(ExtractFileName(FileName) + ' | ' + IntToStr(Image.Width) +
+      ' x ' + IntToStr(Image.Height));
+  except
+    InvalidateDisplay;
+    raise;
+  end;
   UpdateControls;
 end;
 
@@ -440,11 +479,12 @@ begin
   UpdateControls;
 end;
 
-function TYoloModelsForm.ViewStyle: TYoloViewStyle;
+function TYoloModelsForm.ViewStyle(const Task: TYoloTask): TYoloViewStyle;
 begin
   Result := TYoloViewStyle.Defaults;
-  Result.MaskOpacity := FOpacity.Position / 100;
-  Result.KeypointConfidence := Fraction(FKeypoints);
+  if Task in [ytInstances, ytSemantic] then
+    Result.MaskOpacity := FOpacity.Position / 100;
+  if Task = ytPose then Result.KeypointConfidence := Fraction(FKeypoints);
   Result.Validate;
 end;
 
@@ -473,10 +513,10 @@ begin
     Job.Image := FImage;
     Job.ImageSHA256 := FImageSHA256;
     Job.PreviewRequested := True;
-    Job.ViewStyle := ViewStyle;
+    Job.ViewStyle := ViewStyle(Job.Profile.Task);
     Job.TextMode := TYoloTextMode(FLabels.ItemIndex);
-    FWorker.Submit(Job);
     ClearResult;
+    FWorker.Submit(Job);
     FStatus.Caption := 'Running...';
   except
     on E: Exception do ReportError(E.Message);
@@ -515,7 +555,7 @@ begin
     Job.Kind := yjRender;
     Job.Image := FImage;
     Job.Value := FValue;
-    Job.ViewStyle := ViewStyle;
+    Job.ViewStyle := ViewStyle(Job.Value.Profile.Task);
     Job.TextMode := TYoloTextMode(FLabels.ItemIndex);
     FWorker.Submit(Job);
     FStatus.Caption := 'Updating display...';
@@ -527,38 +567,59 @@ end;
 
 procedure TYoloModelsForm.ViewChanged(Sender: TObject);
 begin
-  ShowPreview;
+  try
+    ShowPreview;
+  except
+    on E: Exception do
+    begin
+      InvalidateDisplay;
+      ReportError(E.Message);
+    end;
+  end;
+  UpdateControls;
 end;
 
 procedure TYoloModelsForm.ShowPreview;
 var
   Image: IMat;
-  Data: Pointer;
-  Size: Integer;
-  Stream: TMemoryStream;
 begin
   Image := FImage;
   if FHasResult and (FView.ItemIndex = 0) then Image := FFrame.Image;
-  if Image = nil then
-  begin
-    FPreview.Picture.Assign(nil);
-    Exit;
-  end;
-  Data := nil;
-  Size := 0;
+  PutPreview(Image);
+end;
+
+procedure TYoloModelsForm.PutPreview(const Image: IMat);
+var
+  Data: Pointer;
+  Size: Integer;
+  Stream: TMemoryStream;
+  Picture: TPicture;
+begin
+  Picture := TPicture.Create;
   try
-    RequireCpu(CV.ImgCodecs.ImEncode('.png', Image.Raw, @Data, @Size, 1) and
-      (Data <> nil) and (Size > 0), 'Preview encoding failed.');
-    Stream := TMemoryStream.Create;
-    try
-      Stream.WriteBuffer(Data^, Size);
-      Stream.Position := 0;
-      FPreview.Picture.LoadFromStream(Stream);
-    finally
-      Stream.Free;
+    if Image <> nil then
+    begin
+      Stream := TMemoryStream.Create;
+      try
+        Data := nil;
+        Size := 0;
+        try
+          RequireCpu(CV.ImgCodecs.ImEncode('.png', Image.Raw, @Data, @Size, 1) and
+            (Data <> nil) and (Size > 0), 'Preview encoding failed.');
+          Stream.WriteBuffer(Data^, Size);
+        finally
+          if Data <> nil then
+            RequireCpu(CV.ImgCodecs.FreeBuf(Data), 'Preview buffer release failed.');
+        end;
+        Stream.Position := 0;
+        Picture.LoadFromStream(Stream);
+      finally
+        Stream.Free;
+      end;
     end;
+    FPreview.Picture.Assign(Picture);
   finally
-    if Data <> nil then RequireCpu(CV.ImgCodecs.FreeBuf(Data), 'Preview buffer release failed.');
+    Picture.Free;
   end;
 end;
 
@@ -675,6 +736,7 @@ end;
 procedure TYoloModelsForm.Tick(Sender: TObject);
 var
   Outcome: TYoloExampleOutcome;
+  Image: IMat;
 begin
   if FWorker = nil then Exit;
   if FWorker.Collect(Outcome) then
@@ -686,22 +748,35 @@ begin
       if not FClosePending then ReportError(Outcome.ErrorText);
     end
     else if Outcome.Stopped then
-      FStatus.Caption := 'Stopped. You can run again.'
+    begin
+      if FImage <> nil then
+        FStatus.Caption := 'Stopped. You can run again.'
+      else
+        FStatus.Caption := 'Open an image to continue.';
+    end
     else
       case Outcome.Kind of
         yjInfer, yjRender:
-          begin
-            FValue := Outcome.Value;
-            FFrame := Outcome.Frame;
-            FHasResult := True;
+          if (FImage = nil) or (Outcome.Value.ImageSHA256 <> FImageSHA256) then
+            FStatus.Caption := 'Display update failed. Open an image to continue.'
+          else begin
             try
-              ShowPreview;
+              Image := FImage;
+              if FView.ItemIndex = 0 then Image := Outcome.Frame.Image;
+              PutPreview(Image);
+              FValue := Outcome.Value;
+              FFrame := Outcome.Frame;
+              FHasResult := True;
               ShowDetails;
+              FStatus.Caption := UI(FValue.Profile.ID + ' | ' + FValue.Device + ' | ' +
+                IntToStr(FValue.Milliseconds) + ' ms. Ready.');
             except
-              on E: Exception do ReportError(E.Message);
+              on E: Exception do
+              begin
+                InvalidateDisplay;
+                if not FClosePending then ReportError(E.Message);
+              end;
             end;
-            FStatus.Caption := UI(FValue.Profile.ID + ' | ' + FValue.Device + ' | ' +
-              IntToStr(FValue.Milliseconds) + ' ms. Ready.');
           end;
         yjUnload: FStatus.Caption := 'Model unloaded. You can run again.';
         yjExport: FStatus.Caption := UI('Saved: ' + FExportDirectory);
@@ -709,7 +784,7 @@ begin
     UpdateControls;
     if FClosePending then Close;
   end
-  else if FWorker.Busy and not FClosePending then
+  else if FWorker.Busy and not FClosePending and (FImage <> nil) then
     FStatus.Caption := UI(FWorker.Stage);
 end;
 

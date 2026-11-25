@@ -18,9 +18,11 @@ The CPU must support AVX2 and FMA, for both CPU and CUDA bundles. CUDA bundles a
 
 ## Prepare
 
-Extract the SDK into a writable directory such as `C:\CrossPascal`. Paths below are relative to that directory.
+Extract the SDK into a writable directory such as `C:\CrossPascal`, then run Prepare from that directory.
 
 Prepare the models before opening the example. Run `crosspascal/prepare/vision/yolo-models/Prepare.cmd` for Auto, `Prepare-CPU.cmd` for CPU, or `Prepare-GPU.cmd` for CUDA. CUDA preparation keeps the CPU package as well. A profile that is not installed reports a missing file.
+
+By default, Prepare installs the SDK and models in `%LOCALAPPDATA%\CrossPascal\early-access-024\crosspascal-windows-x64`. When it finishes, the lines following `READY` give the full Delphi and Lazarus project paths. Use that prepared SDK directory for the paths below, including when you chose a different installation location.
 
 See [Prepare and run](../../docs/PREPARE-EXAMPLES.md) for the general steps and the [Windows setup guide](../../docs/WINDOWS-EARLY-ACCESS.md) for dependencies. The five model archives, one for CPU and one for each CUDA target, are provided separately from the SDK.
 
@@ -35,7 +37,7 @@ See [Prepare and run](../../docs/PREPARE-EXAMPLES.md) for the general steps and 
 
 ## Run
 
-Open `crosspascal/examples/yolo-models/bin/lazarus-win64/YoloModels.exe`.
+In the prepared SDK directory, open `crosspascal/examples/yolo-models/bin/lazarus-win64/YoloModels.exe`.
 
 1. Click **Open image...** and choose a PNG, JPEG, BMP, or WebP image, up to 4096 pixels on either side.
 2. Choose a profile in **Model / task**. Each entry shows the profile and its task.
@@ -68,7 +70,8 @@ Both options are optional:
 | `--image=<file>` | Image to open at startup |
 
 ```powershell
-.\crosspascal\examples\yolo-models\bin\lazarus-win64\YoloModels.exe --prepared=C:\CrossPascal --image=C:\Images\photo.jpg
+Set-Location "$env:LOCALAPPDATA\CrossPascal\early-access-024\crosspascal-windows-x64"
+.\crosspascal\examples\yolo-models\bin\lazarus-win64\YoloModels.exe "--prepared=$PWD" --image=C:\Images\photo.jpg
 ```
 
 Without `--prepared`, the example looks for `index.json` in its own directory and up to six parent directories, then asks you to select the file.

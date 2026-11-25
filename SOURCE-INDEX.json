@@ -482,8 +482,8 @@
     },
     {
       "path": "examples/yolo-models/README.md",
-      "bytes": 5275,
-      "sha256": "80f7e073f5d25547d7e6fbee2dec61b1f41080bb5e6a0b78a67935f60d219a71"
+      "bytes": 5800,
+      "sha256": "a9972496b2efa65fa540bb79e10e91a9d68411f4e5d01fd045ddc4fb961d22ac"
     },
     {
       "path": "examples/yolo-models/YoloModels.Config.pas",
@@ -517,8 +517,8 @@
     },
     {
       "path": "examples/yolo-models/YoloModels.Main.pas",
-      "bytes": 21732,
-      "sha256": "70ecd4c8834d32ee4e3ad3fb935d40ec13cb03d111e8abcb551678ade7972f3b"
+      "bytes": 23811,
+      "sha256": "7a031b87417c81077de9f947d1d3d5ac50a189c50ff52ef68c8c2965af72c342"
     },
     {
       "path": "examples/yolo-models/YoloModels.Render.pas",
