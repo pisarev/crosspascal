@@ -52,8 +52,8 @@
     },
     {
       "path": "docs/VISION-DOWNLOADS.md",
-      "bytes": 9673,
-      "sha256": "6e69607018dac788dfac5afde72a9d4342245f29bb5493331d748380c672c1e8"
+      "bytes": 9676,
+      "sha256": "42dc245e8c6d1dcff62fceca9c6c358259f9dc1302baa26807b94e9e3adff542"
     },
     {
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
@@ -482,8 +482,8 @@
     },
     {
       "path": "examples/yolo-models/README.md",
-      "bytes": 5800,
-      "sha256": "a9972496b2efa65fa540bb79e10e91a9d68411f4e5d01fd045ddc4fb961d22ac"
+      "bytes": 5714,
+      "sha256": "d0f0d66fe85d672ac8e6fb0d432b952a2fdb08e460383545456b60e0a419aa9a"
     },
     {
       "path": "examples/yolo-models/YoloModels.Config.pas",

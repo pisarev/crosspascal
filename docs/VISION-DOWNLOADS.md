@@ -1,6 +1,6 @@
 # Separate CPU and GPU downloads for vision models
 
-The EA024 starters each download one selected model and the current Windows x64 SDK and runtime. Their default installation uses `early-access-024`. GPU means NVIDIA CUDA. The model archives retain their pinned EA019 bytes.
+The EA024 starters each download one selected model and the current Windows x64 SDK and runtime. Their default installation uses `early-access-024-r1`. GPU means NVIDIA CUDA. The model archives retain their pinned EA019 bytes.
 
 | Model | CPU preparation | GPU preparation | CPU model ZIP | GPU model ZIP range |
 | --- | --- | --- | ---: | ---: |
