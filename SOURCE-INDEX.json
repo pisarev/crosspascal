@@ -522,8 +522,8 @@
     },
     {
       "path": "examples/yolo-models/YoloModels.Render.pas",
-      "bytes": 18949,
-      "sha256": "fe5c80b022f36a5bb24d382118350a432a3b229f51ae5ed28c069dd3b0bf01c4"
+      "bytes": 21376,
+      "sha256": "67152b8c842133e923ea5fb7e64707b1763691aed40602296f6af13641132c04"
     },
     {
       "path": "examples/yolo-models/YoloModels.Run.pas",

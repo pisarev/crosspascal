@@ -72,6 +72,13 @@ type
     Height: Integer;
   end;
 
+const
+  { Human COCO-17 joint topology, using zero-based keypoint indices. }
+  HumanPoseLinks: array[0..18, 0..1] of Byte = (
+    (15, 13), (13, 11), (16, 14), (14, 12), (11, 12),
+    (5, 11), (6, 12), (5, 6), (5, 7), (6, 8), (7, 9), (8, 10),
+    (1, 2), (0, 1), (0, 2), (1, 3), (2, 4), (3, 5), (4, 6));
+
 class function TYoloViewStyle.Defaults: TYoloViewStyle;
 begin
   Result.MaskOpacity := 0.45;
@@ -294,8 +301,8 @@ function RenderYoloFrame(const Source: IMat; const Value: TYoloExampleResult;
   const Style: TYoloViewStyle; const ShouldStop: TCpuGraphStop): TYoloViewFrame;
 var
   Surface: TYoloPixelSurface;
-  Color: TYoloRGB;
-  I, J, K, X, Y, Scale, Alpha, Count, BarX, BarY, BarHeight: Integer;
+  Color, LimbColor, JointColor, OutlineColor: TYoloRGB;
+  I, J, K, X, Y, Scale, Alpha, Count, BarX, BarY, BarHeight, FirstJoint, LastJoint: Integer;
   Row: PByte;
   DepthRow: Pointer;
   Seen: TBytes;
@@ -303,6 +310,22 @@ var
   Angle, AxisX, AxisY, CrossX, CrossY, TX, TY, MinimumX, MinimumY, Fraction: Double;
   CornersX, CornersY: array[0..3] of Double;
   Depth: Single;
+
+  function VisibleJoint(const Index: Integer): Boolean;
+  begin
+    Result := not IsNan(Value.Poses[I].Keypoints[Index].X) and
+      not IsInfinite(Value.Poses[I].Keypoints[Index].X) and
+      not IsNan(Value.Poses[I].Keypoints[Index].Y) and
+      not IsInfinite(Value.Poses[I].Keypoints[Index].Y) and
+      not IsNan(Value.Poses[I].Keypoints[Index].Visibility) and
+      not IsInfinite(Value.Poses[I].Keypoints[Index].Visibility) and
+      (Value.Poses[I].Keypoints[Index].X >= 0) and
+      (Value.Poses[I].Keypoints[Index].X < Value.Width) and
+      (Value.Poses[I].Keypoints[Index].Y >= 0) and
+      (Value.Poses[I].Keypoints[Index].Y < Value.Height) and
+      (Value.Poses[I].Keypoints[Index].Visibility >= Style.KeypointConfidence);
+  end;
+
 begin
   Result := Default(TYoloViewFrame);
   Style.Validate;
@@ -409,19 +432,47 @@ begin
           DrawBox(Surface, Value.Poses[I].Box, 2 * Scale, Color);
           AddLabel(Result, Value.Poses[I].Box.Left, Value.Poses[I].Box.Top,
             Caption(Value.Poses[I].ClassName, Value.Poses[I].Score), Color);
+          OutlineColor.Red := 0;
+          OutlineColor.Green := 0;
+          OutlineColor.Blue := 0;
+          LimbColor.Red := 80;
+          LimbColor.Green := 255;
+          LimbColor.Blue := 80;
+          JointColor.Red := 255;
+          JointColor.Green := 220;
+          JointColor.Blue := 40;
+          if Length(Value.Poses[I].Keypoints) = 17 then
+            for K := Low(HumanPoseLinks) to High(HumanPoseLinks) do
+            begin
+              FirstJoint := HumanPoseLinks[K, 0];
+              LastJoint := HumanPoseLinks[K, 1];
+              if VisibleJoint(FirstJoint) and VisibleJoint(LastJoint) then
+              begin
+                DrawLine(Surface, Value.Poses[I].Keypoints[FirstJoint].X,
+                  Value.Poses[I].Keypoints[FirstJoint].Y, Value.Poses[I].Keypoints[LastJoint].X,
+                  Value.Poses[I].Keypoints[LastJoint].Y, 5 * Scale, OutlineColor);
+                DrawLine(Surface, Value.Poses[I].Keypoints[FirstJoint].X,
+                  Value.Poses[I].Keypoints[FirstJoint].Y, Value.Poses[I].Keypoints[LastJoint].X,
+                  Value.Poses[I].Keypoints[LastJoint].Y, 3 * Scale, LimbColor);
+              end;
+            end;
           for K := 0 to High(Value.Poses[I].Keypoints) do
-            if Value.Poses[I].Keypoints[K].Visibility >= Style.KeypointConfidence then
+            if VisibleJoint(K) then
             begin
               TX := Value.Poses[I].Keypoints[K].X;
               TY := Value.Poses[I].Keypoints[K].Y;
               if (TX < 0) or (TX >= Value.Width) or (TY < 0) or (TY >= Value.Height) then Continue;
               X := Round(TX);
               Y := Round(TY);
-              for J := -3 * Scale to 3 * Scale do
-                for Count := -3 * Scale to 3 * Scale do
-                  if J * J + Count * Count <= 9 * Scale * Scale then
+              for J := -6 * Scale to 6 * Scale do
+                for Count := -6 * Scale to 6 * Scale do
+                  if J * J + Count * Count <= 36 * Scale * Scale then
+                  begin
+                    Color := OutlineColor;
+                    if J * J + Count * Count <= 16 * Scale * Scale then Color := JointColor;
                     SetPixel(Surface, X + J, Y + Count, Color);
-              AddLabel(Result, X + 4 * Scale, Y, IntToStr(K), Color);
+                  end;
+              AddLabel(Result, X + 7 * Scale, Y, IntToStr(K), JointColor);
             end;
         end;
       ytOriented:
