@@ -1,6 +1,6 @@
 {
   "schema": "crosspascal.vision-downloads.v2",
-  "release": "early-access-024",
+  "release": "early-access-024-r1",
   "models": [
     {
       "profile": "squeezenet",
@@ -66,14 +66,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-SqueezeNet-CPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-SqueezeNet-CPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-SqueezeNet-CPU-ea024-r1.zip"
         },
         "gpu": {
           "name": "Prepare-SqueezeNet-GPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-SqueezeNet-GPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-SqueezeNet-GPU-ea024-r1.zip"
         }
       },
-      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/PREPARE-MANIFEST-squeezenet-ea024.json"
+      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/PREPARE-MANIFEST-squeezenet-ea024-r1.json"
     },
     {
       "profile": "resnet50",
@@ -139,14 +139,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-ResNet50-CPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-ResNet50-CPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-ResNet50-CPU-ea024-r1.zip"
         },
         "gpu": {
           "name": "Prepare-ResNet50-GPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-ResNet50-GPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-ResNet50-GPU-ea024-r1.zip"
         }
       },
-      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/PREPARE-MANIFEST-resnet50-ea024.json"
+      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/PREPARE-MANIFEST-resnet50-ea024-r1.json"
     },
     {
       "profile": "yolo11n-cls",
@@ -212,14 +212,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-YOLO11n-Classification-CPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-YOLO11n-Classification-CPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-YOLO11n-Classification-CPU-ea024-r1.zip"
         },
         "gpu": {
           "name": "Prepare-YOLO11n-Classification-GPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-YOLO11n-Classification-GPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-YOLO11n-Classification-GPU-ea024-r1.zip"
         }
       },
-      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/PREPARE-MANIFEST-yolo11n-cls-ea024.json"
+      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/PREPARE-MANIFEST-yolo11n-cls-ea024-r1.json"
     },
     {
       "profile": "yolo11n",
@@ -285,14 +285,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-YOLO11n-Detection-CPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-YOLO11n-Detection-CPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-YOLO11n-Detection-CPU-ea024-r1.zip"
         },
         "gpu": {
           "name": "Prepare-YOLO11n-Detection-GPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-YOLO11n-Detection-GPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-YOLO11n-Detection-GPU-ea024-r1.zip"
         }
       },
-      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/PREPARE-MANIFEST-yolo11n-ea024.json"
+      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/PREPARE-MANIFEST-yolo11n-ea024-r1.json"
     },
     {
       "profile": "rtdetr-r18vd",
@@ -358,14 +358,14 @@
       "prepare": {
         "cpu": {
           "name": "Prepare-RT-DETR-R18vd-CPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-RT-DETR-R18vd-CPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-RT-DETR-R18vd-CPU-ea024-r1.zip"
         },
         "gpu": {
           "name": "Prepare-RT-DETR-R18vd-GPU-ea024.zip",
-          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/Prepare-RT-DETR-R18vd-GPU-ea024.zip"
+          "url": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/Prepare-RT-DETR-R18vd-GPU-ea024-r1.zip"
         }
       },
-      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/PREPARE-MANIFEST-rtdetr-r18vd-ea024.json"
+      "prepare_manifest": "https://github.com/pisarev/crosspascal/releases/download/early-access-024-r1/PREPARE-MANIFEST-rtdetr-r18vd-ea024-r1.json"
     }
   ],
   "prepare_asset_inventory": "https://github.com/pisarev/crosspascal/releases/download/early-access-024/PUBLIC-RELEASE-CONTENTS-ea024.json",
