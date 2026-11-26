@@ -36,25 +36,32 @@ const
   YoloPreparedIndexes: array[0..6] of TYoloPreparedIndex = (
     (ID: 'n'; IndexMember: 'index.json';
       SHA256: YoloPreparedIndexSHA256;
-      Bytes: YoloPreparedIndexBytes),
+      Bytes: YoloPreparedIndexBytes
+    ),
     (ID: 's'; IndexMember: 'index-s.json';
       SHA256: 'a5dab130035b4f2580810a85ce9b3d88be6ce40f7194d0399f3bcee7064a9d2f';
-      Bytes: 27728),
+      Bytes: 27728
+    ),
     (ID: 'm'; IndexMember: 'index-m.json';
       SHA256: 'a83c919a647fda773a57857d188054ab022c577c241eee2dc0fc0ab8f19541be';
-      Bytes: 26565),
+      Bytes: 26565
+    ),
     (ID: 'b'; IndexMember: 'index-b.json';
       SHA256: 'b215b52d3da17a0096f3da7ff0e450fe206cb0426ec6f3f99d82a45277a22b68';
-      Bytes: 1640),
+      Bytes: 1640
+    ),
     (ID: 'l'; IndexMember: 'index-l.json';
       SHA256: '2c2ba96274780710e1eeec2bded389e90ce541586802fe28c767011fa9b0cf17';
-      Bytes: 27728),
+      Bytes: 27728
+    ),
     (ID: 'x'; IndexMember: 'index-x.json';
       SHA256: '550b92d440b8675f0922bfd57f6a250eb8f354218ce4750d6f2f959a1b158738';
-      Bytes: 27728),
+      Bytes: 27728
+    ),
     (ID: 'all'; IndexMember: 'index-all.json';
       SHA256: '3b3775612149905f42cec29a062d2187927152678076ba312143dcc6bfe43d74';
-      Bytes: 136726)
+      Bytes: 136726
+    )
   );
 
 function YoloKitExists(const FileName: string): Boolean;
@@ -119,8 +126,7 @@ begin
   ID := 'n';
   if ForConversion then
     ID := 'all'
-  else
-  begin
+  else begin
     FileName := YoloPreparedPath(Directory, 'yolo-kit.txt');
     if YoloKitExists(FileName) then ID := ReadYoloKit(FileName);
   end;

@@ -28,8 +28,8 @@ type
 implementation
 
 uses
-  {$IFDEF FPC}SysUtils, Classes{$ELSE}System.SysUtils, System.Classes{$ENDIF},
-  CrossPascal.Json, TVM.NativeFiles, TVM.Yolo.Profile, YoloModels.Defaults, CrossPascal.NativeIO;
+  {$IFDEF FPC}SysUtils, Classes{$ELSE}System.SysUtils, System.Classes{$ENDIF}, CrossPascal.Json,
+  TVM.NativeFiles, TVM.Yolo.Profile, YoloModels.Defaults, CrossPascal.NativeIO;
 
 function TaskTitle(const Task: TYoloTask): string;
 begin
