@@ -1,0 +1,44 @@
+[
+  {
+    "id": "n",
+    "file": "index.json",
+    "bytes": 27726,
+    "sha256": "e64ec6b047a15f32db2678b8ccb329b87b1333f283691008e2c9e0b8a577687f"
+  },
+  {
+    "id": "s",
+    "file": "index-s.json",
+    "bytes": 27728,
+    "sha256": "a5dab130035b4f2580810a85ce9b3d88be6ce40f7194d0399f3bcee7064a9d2f"
+  },
+  {
+    "id": "m",
+    "file": "index-m.json",
+    "bytes": 26565,
+    "sha256": "a83c919a647fda773a57857d188054ab022c577c241eee2dc0fc0ab8f19541be"
+  },
+  {
+    "id": "b",
+    "file": "index-b.json",
+    "bytes": 1640,
+    "sha256": "b215b52d3da17a0096f3da7ff0e450fe206cb0426ec6f3f99d82a45277a22b68"
+  },
+  {
+    "id": "l",
+    "file": "index-l.json",
+    "bytes": 27728,
+    "sha256": "2c2ba96274780710e1eeec2bded389e90ce541586802fe28c767011fa9b0cf17"
+  },
+  {
+    "id": "x",
+    "file": "index-x.json",
+    "bytes": 27728,
+    "sha256": "550b92d440b8675f0922bfd57f6a250eb8f354218ce4750d6f2f959a1b158738"
+  },
+  {
+    "id": "all",
+    "file": "index-all.json",
+    "bytes": 136726,
+    "sha256": "3b3775612149905f42cec29a062d2187927152678076ba312143dcc6bfe43d74"
+  }
+]

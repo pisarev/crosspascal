@@ -4,7 +4,7 @@ Open a photo and choose **Remove background**. The example displays the original
 
 ## Prepare and run
 
-1. Download the BiRefNet CPU or NVIDIA GPU preparation kit from the [EA024 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-024-r1).
+1. Download the BiRefNet CPU or NVIDIA GPU preparation kit from the [EA025 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-025).
 2. Extract the ZIP and run `Prepare.cmd`. It downloads the SDK, TVM runtime, model, and sample image, then writes their paths into the example settings.
 3. Open `BiRefNet.dproj` in Delphi 13.2 or `BiRefNet.lpi` in Lazarus 4.8. Build for Windows x64 and run. The installed example also includes a Lazarus-built executable in `bin/lazarus-win64`.
 4. Choose **Remove background** to try the prepared image. Choose **Open image** for another PNG, JPEG, BMP, TIFF, or WebP image, up to 4096 pixels per side.

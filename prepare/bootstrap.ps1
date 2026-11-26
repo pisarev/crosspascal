@@ -562,7 +562,9 @@ function Copy-PreparedFile([string]$Source, [string]$Destination) {
         return
     }
     [void][IO.Directory]::CreateDirectory((Split-Path -Parent $Destination))
-    [IO.File]::Copy($Source, $Destination, $false)
+    $partial = "$Destination.crosspascal-copy.partial"
+    [IO.File]::Copy($Source, $partial, $true)
+    [IO.File]::Move($partial, $Destination)
 }
 
 function Get-PrepareCudaDevice {
@@ -719,24 +721,49 @@ function Write-PreparedDefaults([string]$Path, [string[]]$Lines) {
     Move-Item -LiteralPath "$receipt.partial" -Destination $receipt -Force
 }
 
-function Install-Example($Plan, $Document) {
-    $Row = $Plan.row
+function Get-PrepareSpace($Plan, $Document) {
     $needed = 0L
     $extract = 0L
     $split = $false
+    $sdkPackage = $Document.packages.PSObject.Properties[$Plan.packages['sdk']].Value
+    $sdk = Get-PreparePath $InstallRoot $sdkPackage.directory
     foreach ($key in $Plan.packages.Values) {
         $pkg = $Document.packages.PSObject.Properties[$key].Value
-        if (-not (Test-Path -LiteralPath (Get-PreparePath $InstallRoot $pkg.directory))) {
+        $directory = Get-PreparePath $InstallRoot $pkg.directory
+        $installed = Test-Path -LiteralPath $directory -PathType Container
+        if (-not $installed) {
             $extract += [long]$pkg.extracted_bytes
-        }
-        foreach ($name in $pkg.assets) {
-            $asset = $Document.assets.PSObject.Properties[$name].Value
-            if (-not $asset.path -and -not (Test-Path -LiteralPath (Get-PreparePath $Cache $asset.name))) {
-                $needed += [long]$asset.bytes
+            foreach ($name in $pkg.assets) {
+                $asset = $Document.assets.PSObject.Properties[$name].Value
+                if (-not $asset.path -and -not (Test-Path -LiteralPath (Get-PreparePath $Cache $asset.name))) {
+                    $needed += [long]$asset.bytes
+                }
             }
         }
+        $missingOverlay = $false
+        foreach ($relative in $pkg.overlay) {
+            if (Test-Path -LiteralPath (Get-PreparePath $sdk $relative) -PathType Leaf) { continue }
+            if ($installed) {
+                $file = Get-PreparePath $directory $relative
+                if (Test-Path -LiteralPath $file -PathType Leaf) {
+                    $extract += [long](Get-Item -LiteralPath $file).Length
+                }
+            } else {
+                $missingOverlay = $true
+            }
+        }
+        if ($missingOverlay) { $extract += [long]$pkg.extracted_bytes }
         if ($pkg.assets[0].EndsWith('.001')) { $split = $true }
     }
+    [pscustomobject]@{ download_bytes = $needed; additional_bytes = $extract; split = $split }
+}
+
+function Install-Example($Plan, $Document) {
+    $Row = $Plan.row
+    $space = Get-PrepareSpace $Plan $Document
+    $needed = $space.download_bytes
+    $extract = $space.additional_bytes
+    $split = $space.split
     $drive = [IO.DriveInfo]::new([IO.Path]::GetPathRoot($InstallRoot))
     if ($drive.AvailableFreeSpace -lt $needed + $extract + 1GB) {
         throw ('Not enough disk space. Allow about {0:0.0} GiB for this example.' -f (($needed + $extract + 1GB) / 1GB))

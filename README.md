@@ -24,7 +24,7 @@ For background removal, try [BiRefNet](examples/birefnet/README.md). It displays
 
 For detection from your own class names, try [OmDet-Turbo](examples/omdet-turbo/README.md). Enter the objects you want to find, open an image, and save an annotated PNG or JSON report. The CLIP text encoder and Swin-Tiny detector run natively on CPU or CUDA.
 
-For YOLO, try [YoloModels](examples/yolo-models/README.md). It provides 23 profiles for classification, object detection, instance segmentation, pose, oriented detection, semantic segmentation, and depth estimation. Windows x64 CPU and NVIDIA CUDA bundles are available. Model files retain their upstream terms; see [model provenance](docs/yolo/MODEL-PROVENANCE.json).
+For YOLO, try [YoloModels](examples/yolo-models/README.md). It provides 115 profiles for classification, object detection, instance segmentation, pose, oriented detection, semantic segmentation, and depth estimation. Windows x64 CPU and NVIDIA CUDA bundles are available. Model files retain their upstream terms; see [model provenance](docs/yolo/MODEL-PROVENANCE.json).
 
 The ready CUDA bundles cover compute capabilities `sm_75`, `sm_86`, `sm_89`, and `sm_120`, spanning GTX 1650 and RTX 20, 30, 40, and 50 families. Prepare reads the installed device and selects a matching bundle. See [Prepare and run](docs/PREPARE-EXAMPLES.md) for each model's memory requirements.
 

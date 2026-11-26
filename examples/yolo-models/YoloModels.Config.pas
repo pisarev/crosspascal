@@ -34,7 +34,8 @@ type
     FCVSHA256: string;
     FCVBytes: Int64;
   public
-    constructor Create(const Directory, IndexSHA256: string; const IndexBytes: Int64);
+    constructor Create(const Directory, IndexSHA256: string; const IndexBytes: Int64;
+      const IndexMember: string = 'index.json');
     function ProfileCount: Integer;
     function Profile(const Index: Integer): TYoloProfile;
     function FindBundle(const ProfileID, Target: string): TYoloExampleBundle;
@@ -76,7 +77,8 @@ begin
         'Prepared paths use ASCII names and forward slashes.');
 end;
 
-constructor TYoloExampleConfig.Create(const Directory, IndexSHA256: string; const IndexBytes: Int64);
+constructor TYoloExampleConfig.Create(const Directory, IndexSHA256: string; const IndexBytes: Int64;
+  const IndexMember: string);
 var
   Lease: INativeFileLease;
   Index, Catalog, Spec, Row: TJSONObject;
@@ -89,7 +91,7 @@ const
 begin
   inherited Create;
   FRoot := ExpandFileName(Directory);
-  Lease := HoldNativeFile(FRoot, 'index.json', IndexSHA256, IndexBytes);
+  Lease := HoldNativeFile(FRoot, IndexMember, IndexSHA256, IndexBytes);
   Index := ReadNativeObject(Lease);
   try
     NativeUniqueKeys(Index);

@@ -1,5 +1,13 @@
 # Release notes
 
+## early-access-025
+
+EA025 extends YoloModels from 23 to 115 prepared profiles across the existing seven tasks. The size kits are `n`, `s`, `m`, `b`, `l`, `x`, and `all`. The `b` kit contains YOLOv10b; YOLOv13 has `n`, `s`, `l`, and `x` profiles.
+
+The default kit remains `n`. Separate preparation kits install a selected size, and the `all` kit installs every profile. Each kit offers CPU, NVIDIA CUDA, and Auto selection. CUDA packages retain the CPU models and provide `sm_75`, `sm_86`, `sm_89`, and `sm_120` code. The converter uses the complete trusted catalog, regardless of the size selected for the example.
+
+The new SDK includes the pinned catalogs and weight-free graph recipes. Existing `n` model packages and other immutable model downloads retain their original URLs and SHA-256 values. [Prepare](PREPARE-EXAMPLES.md) uses the updated SDK and matching size kits. [Model provenance](yolo/MODEL-PROVENANCE.json) records each profile's upstream terms.
+
 ## early-access-024
 
 EA024 adds native YOLO conversion and the YoloModels example: 23 profiles from v5, v8, v10, 11, 12, v13 and 26 across seven typed tasks. Ready CPU bundles and CUDA targets `sm_75`, `sm_86`, `sm_89` and `sm_120` share the SDK's pinned runtime. CUDA preparation retains the CPU package too.

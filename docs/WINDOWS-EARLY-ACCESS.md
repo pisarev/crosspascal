@@ -33,7 +33,7 @@ Open the `.dproj` in Delphi and select Windows 64-bit. Open the corresponding `.
 | `crosspascal-leptonica/examples/LeptonicaHello` | A 256 × 96 grayscale gradient PNG |
 | `crosspascal/examples/marker-lite/MarkerLite` | Grayscale, Sauvola, or Canny processing with PNG output |
 | `crosspascal/examples/vision-models/VisionModels` | A classifier's top five classes or a detector's boxes, on CPU or CUDA |
-| `crosspascal/examples/yolo-models/YoloModels` | Typed results from 23 profiles: classification, detection, instance masks, pose, oriented boxes, semantic maps, and depth |
+| `crosspascal/examples/yolo-models/YoloModels` | Typed results from 115 profiles: classification, detection, instance masks, pose, oriented boxes, semantic maps, and depth |
 | `crosspascal/examples/qwen-chat/QwenChat` | A streamed answer from a dense Qwen CUDA bundle, a Qwen3.8 CPU or CUDA bundle, or a Qwen2.5-VL CPU or CUDA bundle; Qwen2.5-VL and Qwen3.8 image bundles accept an attached picture |
 | `crosspascal/examples/gemma-chat/GemmaChat` | A streamed answer from a converted Gemma CPU or CUDA bundle; compatible Gemma 3n vision bundles accept an attached picture |
 | `crosspascal/examples/paddle-ocr/PaddleOCR` | Text regions and recognized text, saved as UTF-8 text or JSON |

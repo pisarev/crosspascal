@@ -71,7 +71,7 @@ begin
   Application.Title := 'CrossPascal YOLO';
   Directory := PreparedDirectory;
   if Directory = '' then Exit;
-  Config := TYoloExampleConfig.Create(Directory, YoloPreparedIndexSHA256, YoloPreparedIndexBytes);
+  Config := CreateYoloPreparedConfig(Directory);
   try
     Lease := Config.HoldOpenCV;
     RequireCpu(CVInitialize(Lease.FileName), 'OpenCV initialization failed.');

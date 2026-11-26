@@ -10,7 +10,7 @@ uses
 
 type
   { Optional additive catalog. Legacy language profiles and their ordinal
-    values are unchanged. The same trusted index drives inference/conversion. }
+    values are unchanged. Conversion uses the complete trusted catalog. }
   TYoloConverter = class
   private
     FConfig: TYoloExampleConfig;
@@ -47,7 +47,7 @@ end;
 constructor TYoloConverter.Create(const Root: string);
 begin
   inherited Create;
-  FConfig := TYoloExampleConfig.Create(Root, YoloPreparedIndexSHA256, YoloPreparedIndexBytes);
+  FConfig := CreateYoloPreparedConfig(Root, True);
 end;
 
 destructor TYoloConverter.Destroy;
