@@ -118,7 +118,7 @@
     {
       "path": "examples/birefnet/BiRefNet.Run.pas",
       "bytes": 7585,
-      "sha256": "3cbc52d0d4b93e633d0950a76ec37538fc0f9e6c7af47b6427bbcd7a6372d937"
+      "sha256": "daf39b98581d30dc01189854f849c6891b31d39d1b6d4b14fa21fbb6a2be7c77"
     },
     {
       "path": "examples/birefnet/models.json",
@@ -513,7 +513,7 @@
     {
       "path": "examples/yolo-models/YoloModels.Export.pas",
       "bytes": 7306,
-      "sha256": "4304912eebf4f8cf400530a382ae2930404f85f339d0cf0c63e1a1a417e8e84d"
+      "sha256": "38bc3d70ba191dec07086c0373f92a05e376ab5c6c421f456db42ac9b1f078ec"
     },
     {
       "path": "examples/yolo-models/YoloModels.lpi",
@@ -532,8 +532,8 @@
     },
     {
       "path": "examples/yolo-models/YoloModels.Run.pas",
-      "bytes": 12068,
-      "sha256": "d5dd0d97c75177a4255530668d6335dec9defb86da646f0d9fadb1fdb74d18d9"
+      "bytes": 12066,
+      "sha256": "0faa7ce569ed31e56fe11d2a704e8e1a7b85bc2feac7c4d1be9a0ccce782496e"
     },
     {
       "path": "examples/yolo-models/YoloModels.WindowsText.pas",

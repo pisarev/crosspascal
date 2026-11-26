@@ -67,9 +67,8 @@ function YoloExampleResultJSON(const Value: TYoloExampleResult): string;
 implementation
 
 uses
-  {$IFDEF FPC}SysUtils{$ELSE}System.SysUtils, Winapi.Windows{$ENDIF},
-  CrossVision.Geometry.Types, TVM.Yolo.Native, TVM.Yolo.Identity, TVM.NativeFiles,
-  TVM.CpuGraph;
+  {$IFDEF FPC}SysUtils{$ELSE}System.SysUtils, Winapi.Windows{$ENDIF}, CrossVision.Geometry.Types,
+  TVM.Yolo.Native, TVM.Yolo.Identity, TVM.NativeFiles, TVM.CpuGraph;
 
 constructor TYoloExampleSession.Create(const BundleDirectory, ManifestSHA256: string;
   const ManifestBytes: Int64; const RuntimeDirectory: string; const ExpectedProfile: TYoloProfile;

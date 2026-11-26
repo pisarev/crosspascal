@@ -26,8 +26,8 @@ function FindBiRefPath(const RelativePath: string; const Directory: Boolean): st
 implementation
 
 uses
-  {$IFDEF FPC}Windows, Classes{$ELSE}Winapi.Windows, System.Classes{$ENDIF},
-  CrossPascal.Json, CrossPascal.SHA256, TVM.BiRefNet, TVM.ImageInput, OpenCV, OpenCVConsts;
+  {$IFDEF FPC}Windows, Classes{$ELSE}Winapi.Windows, System.Classes{$ENDIF}, CrossPascal.Json,
+  CrossPascal.SHA256, TVM.BiRefNet, TVM.ImageInput, OpenCV, OpenCVConsts;
 
 function ReadBiRefImage(const FileName, CVLibrary: string; out Digest: string): IMat;
 var
