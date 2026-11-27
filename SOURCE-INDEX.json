@@ -487,8 +487,8 @@
     },
     {
       "path": "examples/yolo-models/README.md",
-      "bytes": 7970,
-      "sha256": "3995f4ffff19b7f782000032b0c68e97043c3302697edc381b12edb7e862a23c"
+      "bytes": 7979,
+      "sha256": "e2002e3745234013a1666f312bd59598d782ae2d3ae4408e29461eb1ba00d35f"
     },
     {
       "path": "examples/yolo-models/YoloModels.Config.pas",

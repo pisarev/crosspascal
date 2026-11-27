@@ -38,7 +38,7 @@ Prepare the models before opening the example. Run `crosspascal/prepare/vision/y
 
 To prepare another size group, choose the size next to the YoloModels CPU, GPU, or Auto kit on the download page, extract that kit, and run its `Prepare.cmd`. The kit selects the size group, so you do not need to edit any files.
 
-By default, the scripts above and the combined preparation ZIP install the SDK and models in `%LOCALAPPDATA%\CrossPascal\early-access-025\crosspascal-windows-x64`. Each size kit, including `n` and `all`, installs in its own folder: `%LOCALAPPDATA%\CrossPascal\early-access-025-yolo-<size>\crosspascal-windows-x64`. With the default locations, all kits share one downloads folder. When Prepare finishes, the lines following `READY` give the full Delphi and Lazarus project paths. Use that prepared SDK directory for the paths below, including when you chose a different installation location.
+By default, the scripts above and the combined preparation ZIP install the SDK and models in `%LOCALAPPDATA%\CrossPascal\early-access-025-r1\crosspascal-windows-x64`. Each size kit, including `n` and `all`, installs in its own folder: `%LOCALAPPDATA%\CrossPascal\early-access-025-r1-yolo-<size>\crosspascal-windows-x64`. With the default locations, all kits share one downloads folder. When Prepare finishes, the lines following `READY` give the full Delphi and Lazarus project paths. Use that prepared SDK directory for the paths below, including when you chose a different installation location.
 
 See [Prepare and run](../../docs/PREPARE-EXAMPLES.md) for the general steps and the [Windows setup guide](../../docs/WINDOWS-EARLY-ACCESS.md) for dependencies. Model archives for CPU and for each CUDA target are provided separately from the SDK. A larger size group can be split into several ZIP parts. The `all` kit uses the archives of the other six groups rather than separate copies of the weights.
 
@@ -89,7 +89,7 @@ Both options are optional:
 | `--image=<file>` | Image to open at startup |
 
 ```powershell
-Set-Location "$env:LOCALAPPDATA\CrossPascal\early-access-025\crosspascal-windows-x64"
+Set-Location "$env:LOCALAPPDATA\CrossPascal\early-access-025-r1\crosspascal-windows-x64"
 .\crosspascal\examples\yolo-models\bin\lazarus-win64\YoloModels.exe "--prepared=$PWD" --image=C:\Images\photo.jpg
 ```
 
