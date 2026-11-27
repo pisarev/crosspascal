@@ -1,12 +1,12 @@
-﻿unit OmDetTurbo.Run;
+unit OmDetTurbo.Run;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 
 interface
 
 uses
-  {$IFDEF FPC}SysUtils{$ELSE}System.SysUtils{$ENDIF}, TVM.CpuGraph, TVM.OmDet, TVM.OmDetModel,
-  CrossVision.Mat;
+  CrossPascal.NativeIO, {$IFDEF FPC}SysUtils{$ELSE}System.SysUtils{$ENDIF}, TVM.CpuGraph,
+  TVM.OmDet, TVM.OmDetModel, CrossVision.Mat;
 
 type
   TOmDetResult = record
@@ -44,7 +44,7 @@ implementation
 
 uses
   {$IFDEF FPC}Windows, Classes{$ELSE}Winapi.Windows, System.Classes{$ENDIF},
-  CrossPascal.Json, CrossPascal.SHA256, TVM.ImageInput;
+  CrossPascal.Json, CrossPascal.SHA256, TVM.ImageInput, ExampleDefaults;
 
 function ReadOmDetImage(const FileName, CVLibrary: string; out Digest: string): IMat;
 var
@@ -253,8 +253,9 @@ var
   Current, Parent, Candidate: string;
   I: Integer;
 begin
-  Result := '';
-  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+  Result := PreparedSdkPath(RelativePath, Directory);
+  if Result <> '' then Exit;
+  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(NativeParamStr(0)));
   for I := 0 to 10 do
   begin
     Candidate := ExpandFileName(IncludeTrailingPathDelimiter(Current) + RelativePath);

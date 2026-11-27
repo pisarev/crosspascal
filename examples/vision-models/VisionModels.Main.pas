@@ -1,4 +1,4 @@
-﻿unit VisionModels.Main;
+unit VisionModels.Main;
 
 {$IFDEF FPC}
 {$MODE DELPHIUNICODE}
@@ -7,7 +7,7 @@
 interface
 
 uses
-  {$IFDEF FPC}Windows, Classes, SysUtils, Controls, Forms, Graphics, StdCtrls, ExtCtrls, {$ELSE}
+  CrossPascal.NativeIO, {$IFDEF FPC}Windows, Classes, SysUtils, Controls, Forms, Graphics, StdCtrls, ExtCtrls, {$ELSE}
   Winapi.Windows, System.Classes, System.SysUtils, System.UITypes, Vcl.Controls,
   Vcl.Forms, Vcl.Graphics, Vcl.StdCtrls, Vcl.ExtCtrls, {$ENDIF} CrossVision.Mat, CrossVision.ML,
   CrossVision.ML.CpuVision;
@@ -112,8 +112,9 @@ var
   Current, Parent, Candidate: string;
   I: Integer;
 begin
-  Result := '';
-  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+  Result := PreparedSdkPath(RelativePath, IsDirectory);
+  if Result <> '' then Exit;
+  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(NativeParamStr(0)));
   for I := 0 to 9 do
   begin
     Candidate := ExpandFileName(IncludeTrailingPathDelimiter(Current) + RelativePath);
@@ -127,6 +128,8 @@ end;
 
 function DefaultCatalogPath: string;
 begin
+  Result := PreparedSdkPath('crosspascal\examples\vision-models\models.json', False);
+  if Result <> '' then Exit;
   Result := FindDeliveredPath('models.json', False);
   if Result = '' then
     Result := FindDeliveredPath('crosspascal\examples\vision-models\models.json', False);
@@ -139,13 +142,13 @@ end;
 
 function DecodeVisionImage(const Path: string; out SHA256: string): IMat;
 var
-  Stream: TFileStream;
+  Stream: TStream;
   Bytes: TBytes;
   Raw: TMat;
 begin
   Result := nil;
   SHA256 := '';
-  Stream := TFileStream.Create(Path, fmOpenRead or fmShareDenyWrite);
+  Stream := TNativeReadStream.Create(Path);
   try
     if (Stream.Size <= 0) or (Stream.Size > Int64(64) * 1024 * 1024) then
       raise Exception.Create('The selected image must be between 1 byte and 64 MiB.');

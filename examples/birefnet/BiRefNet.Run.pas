@@ -1,11 +1,12 @@
-﻿unit BiRefNet.Run;
+unit BiRefNet.Run;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 
 interface
 
 uses
-  {$IFDEF FPC}SysUtils{$ELSE}System.SysUtils{$ENDIF}, TVM.CpuGraph, CrossVision.Mat;
+  CrossPascal.NativeIO, {$IFDEF FPC}SysUtils{$ELSE}System.SysUtils{$ENDIF}, TVM.CpuGraph,
+  CrossVision.Mat;
 
 type
   TBiRefResult = record
@@ -27,7 +28,7 @@ implementation
 
 uses
   {$IFDEF FPC}Windows, Classes{$ELSE}Winapi.Windows, System.Classes{$ENDIF}, CrossPascal.Json,
-  CrossPascal.SHA256, TVM.BiRefNet, TVM.ImageInput, OpenCV, OpenCVConsts;
+  CrossPascal.SHA256, TVM.BiRefNet, TVM.ImageInput, OpenCV, OpenCVConsts, ExampleDefaults;
 
 function ReadBiRefImage(const FileName, CVLibrary: string; out Digest: string): IMat;
 var
@@ -191,8 +192,9 @@ var
   Current, Parent, Candidate: string;
   I: Integer;
 begin
-  Result := '';
-  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+  Result := PreparedSdkPath(RelativePath, Directory);
+  if Result <> '' then Exit;
+  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(NativeParamStr(0)));
   for I := 0 to 10 do
   begin
     Candidate := ExpandFileName(IncludeTrailingPathDelimiter(Current) + RelativePath);

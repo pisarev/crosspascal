@@ -11,7 +11,7 @@
     <CompilerOptions>
       <Version Value="11" />
       <SearchPaths>
-        <OtherUnitFiles Value="../../rtl-algorithms/src;../../vision;../../../crosspascal-opencv/pascal;../../../crosspascal-leptonica/pascal" />
+        <OtherUnitFiles Value="../../rtl-algorithms/src;../../vision" />
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)" />
       </SearchPaths>
       <Parsing>
@@ -66,13 +66,19 @@
         <UnitName Value="CrossVision.MatPix" />
       </Item11>
     </Files>
-    <RequiredPkgs Count="1">
-      <Item1>
-        <PackageName Value="FCL" />
-      </Item1>
-    </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)" />
     </UsageOptions>
+    <RequiredPkgs Count="3">
+      <Item1>
+        <PackageName Value="crosspascal_crosscv" />
+      </Item1>
+      <Item2>
+        <PackageName Value="crosspascal_crosslept" />
+      </Item2>
+      <Item3>
+        <PackageName Value="FCL" />
+      </Item3>
+    </RequiredPkgs>
   </Package>
 </CONFIG>

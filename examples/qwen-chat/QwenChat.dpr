@@ -1,4 +1,4 @@
-﻿program QwenChat;
+program QwenChat;
 
 {$IFDEF FPC}
 {$MODE DELPHIUNICODE}
@@ -10,7 +10,7 @@
 {$ENDIF}
 
 uses
-  {$IFDEF FPC}Interfaces, Windows, SysUtils, Forms, {$ELSE}
+  CrossPascal.NativeIO, {$IFDEF FPC}Interfaces, Windows, SysUtils, Forms, {$ELSE}
   Winapi.Windows, System.SysUtils, Vcl.Forms, {$ENDIF}
   CrossPascal.Json, QwenCuda, LanguageModel, LanguageChat.Form, QwenChat.Main in 'QwenChat.Main.pas';
 
@@ -19,8 +19,8 @@ var
   I: Integer;
 begin
   Result := False;
-  for I := 1 to ParamCount do
-    if ParamStr(I) = '--recorded' then
+  for I := 1 to NativeParamCount do
+    if NativeParamStr(I) = '--recorded' then
       Exit(True);
 end;
 
@@ -31,9 +31,9 @@ var
 begin
   Result := '';
   Prefix := Name + '=';
-  for I := 1 to ParamCount do
-    if Copy(ParamStr(I), 1, Length(Prefix)) = Prefix then
-      Exit(Copy(ParamStr(I), Length(Prefix) + 1, MaxInt));
+  for I := 1 to NativeParamCount do
+    if Copy(NativeParamStr(I), 1, Length(Prefix)) = Prefix then
+      Exit(Copy(NativeParamStr(I), Length(Prefix) + 1, MaxInt));
 end;
 
 procedure RunRecorded;
@@ -63,6 +63,9 @@ begin
   if (Info.Architecture = 'qwen2') and (Info.Schema <> 'crosspascal.qwen2.text.v1') and
     (Image = '') then
     begin
+      if not FileExists(IncludeTrailingPathDelimiter(Runtime) + 'tvm_runtime_cuda.dll') then
+        Runtime := IncludeTrailingPathDelimiter(Runtime) +
+          'crosspascal-tvm\runtime\windows-x64-cuda';
       ResultValue := RunQwenCuda(Bundle, Runtime, Prompt, MaxTokens);
       WriteNewReport(ReportPath, QwenResultJSON(ResultValue));
       Exit;

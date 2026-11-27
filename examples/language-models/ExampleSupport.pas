@@ -1,11 +1,11 @@
-﻿unit ExampleSupport;
+unit ExampleSupport;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 
 interface
 
 uses
-  {$IFDEF FPC}SysUtils, Windows{$ELSE}System.SysUtils, Winapi.Windows{$ENDIF},
+  CrossPascal.NativeIO, {$IFDEF FPC}SysUtils, Windows{$ELSE}System.SysUtils, Winapi.Windows{$ENDIF},
   LanguageModel;
 
 type
@@ -57,7 +57,7 @@ end;
 
 function ExampleArgument(const Index: Integer): string;
 begin
-  if ParamCount > 0 then Exit(ParamStr(Index));
+  if NativeParamCount > 0 then Exit(NativeParamStr(Index));
   case Index of
     1: Result := PreparedPath('model');
     2: Result := PreparedPath('sdk');
@@ -69,7 +69,7 @@ end;
 
 procedure FinishExample;
 begin
-  if (ParamCount = 0) and HasPreparedExample and
+  if (NativeParamCount = 0) and HasPreparedExample and
     ({$IFDEF FPC}SysUtils{$ELSE}System.SysUtils{$ENDIF}.GetEnvironmentVariable('CROSSPASCAL_EXAMPLE_NO_PAUSE') <> '1') then
     begin
       ConsoleWriteLine('Press Enter to close this example.');
@@ -80,9 +80,9 @@ end;
 procedure RequireArguments(const ImageRequired: Boolean);
 begin
   SetConsoleOutputCP(CP_UTF8);
-  if (ParamCount > 3) then
+  if (NativeParamCount > 3) then
     raise Exception.Create('Too many arguments: expected bundle, SDK folder and an optional image.');
-  if ((ParamCount > 0) and (ParamCount < 2)) or (ExampleArgument(1) = '') or
+  if ((NativeParamCount > 0) and (NativeParamCount < 2)) or (ExampleArgument(1) = '') or
     (ExampleArgument(2) = '') or (ImageRequired and (ExampleArgument(3) = '')) then
       raise Exception.Create('Arguments: "converted bundle" "SDK root" ["image.png"]. ' +
         'Use the supplied SDK root, not the original model directory.');

@@ -1,4 +1,4 @@
-﻿program OmDetTurbo;
+program OmDetTurbo;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 {$APPTYPE GUI}
@@ -7,7 +7,7 @@
 {$ENDIF}
 
 uses
-  {$IFDEF FPC}Interfaces, Windows, SysUtils, Classes, Forms, Graphics{$ELSE}
+  CrossPascal.NativeIO, {$IFDEF FPC}Interfaces, Windows, SysUtils, Classes, Forms, Graphics{$ELSE}
   Winapi.Windows, System.SysUtils, System.Classes, Vcl.Forms, Vcl.Graphics{$ENDIF},
   CrossPascal.Json, CrossVision.Mat, OpenCV, ExampleDefaults, TVM.CpuGraph, TVM.OmDetModel,
   OmDetTurbo.Run in 'OmDetTurbo.Run.pas', OmDetTurbo.Render in 'OmDetTurbo.Render.pas',
@@ -20,9 +20,9 @@ var
 begin
   Result := Default;
   Prefix := Name + '=';
-  for I := 1 to ParamCount do
-    if Copy(ParamStr(I), 1, Length(Prefix)) = Prefix then
-      Exit(Copy(ParamStr(I), Length(Prefix) + 1, MaxInt));
+  for I := 1 to NativeParamCount do
+    if Copy(NativeParamStr(I), 1, Length(Prefix)) = Prefix then
+      Exit(Copy(NativeParamStr(I), Length(Prefix) + 1, MaxInt));
 end;
 
 function Flag(const Name: string): Boolean;
@@ -30,7 +30,7 @@ var
   I: Integer;
 begin
   Result := False;
-  for I := 1 to ParamCount do if ParamStr(I) = Name then Exit(True);
+  for I := 1 to NativeParamCount do if NativeParamStr(I) = Name then Exit(True);
 end;
 
 function ClassesOption: TOmDetLabels;

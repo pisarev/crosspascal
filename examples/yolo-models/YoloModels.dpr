@@ -9,7 +9,7 @@ program YoloModels;
 uses
   {$IFDEF FPC}Interfaces, Windows, SysUtils, Forms, Dialogs{$ELSE}
   Winapi.Windows, System.SysUtils, Vcl.Forms, Vcl.Dialogs{$ENDIF},
-  OpenCV, TVM.CpuGraph, TVM.NativeFiles, CrossPascal.NativeIO,
+  OpenCV, TVM.CpuGraph, TVM.NativeFiles, CrossPascal.NativeIO, ExampleDefaults,
   YoloModels.Defaults in 'YoloModels.Defaults.pas',
   YoloModels.Config in 'YoloModels.Config.pas',
   YoloModels.Main in 'YoloModels.Main.pas',
@@ -39,6 +39,9 @@ var
 begin
   Result := Option('--prepared');
   if Result <> '' then Exit;
+  Result := PreparedPath('sdk');
+  if (Result <> '') and FileExists(IncludeTrailingPathDelimiter(Result) + 'index.json') then Exit;
+  Result := '';
   Directory := ExtractFilePath(NativeParamStr(0));
   for I := 0 to 6 do
   begin

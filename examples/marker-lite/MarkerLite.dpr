@@ -6,8 +6,7 @@ uses
   {$ELSE}
   Winapi.Windows, System.SysUtils, Vcl.Forms,
   {$ENDIF}
-  OpenCV,
-  MarkerLiteForm in 'MarkerLiteForm.pas';
+  OpenCV, ExampleDefaults, MarkerLiteForm in 'MarkerLiteForm.pas';
 
 {$IFDEF FPC}
 function SetDllDirectoryW(PathName: PWideChar): BOOL; stdcall; external 'kernel32.dll';
@@ -21,8 +20,12 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.Title := 'CrossPascal MarkerLite';
-  RuntimeDirectory := ExpandFileName(ExtractFilePath(ParamStr(0)) +
-    {$IFDEF FPC}'..\' +{$ENDIF}'..\..\..\..\crosspascal-opencv\bin');
+  RuntimeDirectory := ExtractFileDir(PreparedPath('opencv'));
+  if RuntimeDirectory = '' then
+    RuntimeDirectory := PreparedSdkPath('crosspascal-opencv\bin', True);
+  if RuntimeDirectory = '' then
+    RuntimeDirectory := ExpandFileName(ExtractFilePath(ParamStr(0)) +
+      {$IFDEF FPC}'..\' +{$ENDIF}'..\..\..\..\crosspascal-opencv\bin');
   if not FileExists(IncludeTrailingPathDelimiter(RuntimeDirectory) + 'crosscv.dll') then
     raise Exception.Create('The supplied OpenCV runtime was not found in ' + RuntimeDirectory);
   if not SetDllDirectoryW(PWideChar(UnicodeString(RuntimeDirectory))) then

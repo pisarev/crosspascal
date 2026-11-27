@@ -1,4 +1,4 @@
-﻿program VisionModels;
+program VisionModels;
 
 {$IFDEF FPC}
 {$MODE DELPHIUNICODE}
@@ -10,7 +10,7 @@
 {$ENDIF}
 
 uses
-  {$IFDEF FPC}Interfaces, Windows, SysUtils, Forms, {$ELSE}
+  CrossPascal.NativeIO, {$IFDEF FPC}Interfaces, Windows, SysUtils, Forms, {$ELSE}
   Winapi.Windows, System.SysUtils, Vcl.Forms, {$ENDIF}
   CrossPascal.Json, OpenCV, CrossVision.Mat, CrossVision.ML.CpuVision,
   VisionModels.Main in 'VisionModels.Main.pas';
@@ -24,8 +24,8 @@ var
   I: Integer;
 begin
   Result := False;
-  for I := 1 to ParamCount do
-    if ParamStr(I) = '--recorded' then Exit(True);
+  for I := 1 to NativeParamCount do
+    if NativeParamStr(I) = '--recorded' then Exit(True);
 end;
 
 function OptionValue(const Name: string): string;
@@ -35,9 +35,9 @@ var
 begin
   Result := '';
   Prefix := Name + '=';
-  for I := 1 to ParamCount do
-    if Copy(ParamStr(I), 1, Length(Prefix)) = Prefix then
-      Exit(Copy(ParamStr(I), Length(Prefix) + 1, MaxInt));
+  for I := 1 to NativeParamCount do
+    if Copy(NativeParamStr(I), 1, Length(Prefix)) = Prefix then
+      Exit(Copy(NativeParamStr(I), Length(Prefix) + 1, MaxInt));
 end;
 
 function RunRecorded: string;

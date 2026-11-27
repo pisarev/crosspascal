@@ -1,4 +1,4 @@
-﻿unit PaddleOcr.Run;
+unit PaddleOcr.Run;
 
 {$IFDEF FPC}
   {$MODE DELPHIUNICODE}
@@ -7,11 +7,7 @@
 interface
 
 uses
-  {$IFDEF FPC}
-  SysUtils,
-  {$ELSE}
-  System.SysUtils,
-  {$ENDIF}
+  CrossPascal.NativeIO, {$IFDEF FPC}SysUtils,{$ELSE}System.SysUtils,{$ENDIF}
   TVM.PaddleOcr, TVM.CpuGraph, CrossVision.Mat;
 
 type
@@ -37,7 +33,7 @@ uses
   {$ELSE}
   Winapi.Windows, System.Classes,
   {$ENDIF}
-  CrossPascal.Json, CrossPascal.SHA256, TVM.ImageInput;
+  CrossPascal.Json, CrossPascal.SHA256, TVM.ImageInput, ExampleDefaults;
 
 function ReadPaddleImage(const FileName, CVLibrary: string; out Digest: string): IMat;
 var
@@ -117,12 +113,12 @@ end;
 
 procedure SavePaddleText(const FileName, Text: string);
 var
-  Stream: TFileStream;
+  Stream: TStream;
   Bytes: UTF8String;
 begin
   RequireCpu(not FileExists(FileName), 'Choose a new output file.');
   Bytes := UTF8Encode(Text + #10);
-  Stream := TFileStream.Create(FileName, fmCreate);
+  Stream := TNativeWriteStream.Create(FileName, False);
   try
     Stream.WriteBuffer(Bytes[1], Length(Bytes));
   finally
@@ -135,8 +131,9 @@ var
   Current, Parent, Candidate: string;
   I: Integer;
 begin
-  Result := '';
-  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+  Result := PreparedSdkPath(RelativePath, Directory);
+  if Result <> '' then Exit;
+  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(NativeParamStr(0)));
   for I := 0 to 10 do
   begin
     Candidate := ExpandFileName(IncludeTrailingPathDelimiter(Current) + RelativePath);

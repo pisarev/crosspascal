@@ -1,11 +1,11 @@
-﻿unit LanguageChat.Form;
+unit LanguageChat.Form;
 
 {$IFDEF FPC}{$MODE DELPHIUNICODE}{$ENDIF}
 
 interface
 
 uses
-  {$IFDEF FPC}Classes, SysUtils, Controls, Forms, Graphics, StdCtrls, ExtCtrls,
+  CrossPascal.NativeIO, {$IFDEF FPC}Classes, SysUtils, Controls, Forms, Graphics, StdCtrls, ExtCtrls,
   Dialogs, Windows, {$ELSE}System.Classes, System.SysUtils, Vcl.Controls, Vcl.Forms,
   Vcl.Graphics, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Dialogs, Winapi.Windows, {$ENDIF}
   QwenCuda, LanguageModel, ExampleDefaults;
@@ -193,7 +193,7 @@ var
   I: Integer;
 begin
   Result := '';
-  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+  Current := ExcludeTrailingPathDelimiter(ExtractFilePath(NativeParamStr(0)));
   for I := 0 to 10 do
   begin
     if DirectoryExists(IncludeTrailingPathDelimiter(Current) + 'crosspascal-tvm') then
