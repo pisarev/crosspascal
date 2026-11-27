@@ -1,14 +1,14 @@
 # Separate CPU and GPU downloads for vision models
 
-The EA025 starters each download one selected model and the current Windows x64 SDK and runtime. Their default installation uses `early-access-025`. GPU means NVIDIA CUDA. The model archives retain their pinned EA019 bytes.
+The EA025-r1 starters each download one selected model and the current Windows x64 SDK and runtime. Their default installation uses `early-access-025-r1`. GPU means NVIDIA CUDA. The model archives retain their pinned EA019 bytes.
 
 | Model | CPU preparation | GPU preparation | CPU model ZIP | GPU model ZIP range |
 | --- | --- | --- | ---: | ---: |
-| SqueezeNet 1.1 | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-SqueezeNet-CPU-ea025.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-SqueezeNet-GPU-ea025.zip) | 8.9 MiB | 9.0 MiB to 9.0 MiB |
-| ResNet50 v1 | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-ResNet50-CPU-ea025.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-ResNet50-GPU-ea025.zip) | 181.4 MiB | 181.5 MiB to 181.5 MiB |
-| YOLO11n classification | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-YOLO11n-Classification-CPU-ea025.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-YOLO11n-Classification-GPU-ea025.zip) | 22.9 MiB | 23.2 MiB to 23.2 MiB |
-| YOLO11n detection | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-YOLO11n-Detection-CPU-ea025.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-YOLO11n-Detection-GPU-ea025.zip) | 33.0 MiB | 33.6 MiB to 33.7 MiB |
-| RT-DETR R18vd | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-RT-DETR-R18vd-CPU-ea025.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-RT-DETR-R18vd-GPU-ea025.zip) | 155.8 MiB | 157.0 MiB to 157.1 MiB |
+| SqueezeNet 1.1 | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-SqueezeNet-CPU-ea025-r1.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-SqueezeNet-GPU-ea025-r1.zip) | 8.9 MiB | 9.0 MiB to 9.0 MiB |
+| ResNet50 v1 | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-ResNet50-CPU-ea025-r1.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-ResNet50-GPU-ea025-r1.zip) | 181.4 MiB | 181.5 MiB to 181.5 MiB |
+| YOLO11n classification | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-YOLO11n-Classification-CPU-ea025-r1.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-YOLO11n-Classification-GPU-ea025-r1.zip) | 22.9 MiB | 23.2 MiB to 23.2 MiB |
+| YOLO11n detection | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-YOLO11n-Detection-CPU-ea025-r1.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-YOLO11n-Detection-GPU-ea025-r1.zip) | 33.0 MiB | 33.6 MiB to 33.7 MiB |
+| RT-DETR R18vd | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-RT-DETR-R18vd-CPU-ea025-r1.zip) | [Prepare GPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-RT-DETR-R18vd-GPU-ea025-r1.zip) | 155.8 MiB | 157.0 MiB to 157.1 MiB |
 
 ## Prepare and run
 
@@ -25,7 +25,7 @@ Preparation uses Windows PowerShell and requires neither Python nor a GitHub acc
 
 If you edited the prepared INI manually, Prepare preserves it. Select the matching profile and bundle in the app or use `Prepare.cmd -InstallRoot C:\CrossPascal\new-vision` to prepare fresh defaults.
 
-From this source checkout, `prepare/vision/<profile>/Prepare-CPU.cmd` and `Prepare-GPU.cmd` select a device. `Prepare.cmd` in that same directory uses Auto and may fall back to CPU with an explanation. The [all-five-model starter](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-VisionModels-ea025.zip) remains available.
+From this source checkout, `prepare/vision/<profile>/Prepare-CPU.cmd` and `Prepare-GPU.cmd` select a device. `Prepare.cmd` in that same directory uses Auto and may fall back to CPU with an explanation. The [all-five-model starter](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-VisionModels-ea025-r1.zip) remains available.
 
 ## Manual model files
 
@@ -88,5 +88,5 @@ Apache-2.0 as declared in the accompanying pinned source pack.
 - [GPU CC 8.9](https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cuda-sm_89-ea019.zip) — 157.0 MiB.
 - [GPU CC 12.0](https://github.com/pisarev/crosspascal/releases/download/early-access-019/vision-rtdetr-r18vd-cuda-sm_120-ea019.zip) — 157.1 MiB.
 
-Model files, pinned SHA-256 values, and current preparation links: [VISION-DOWNLOADS-ea025.json](https://github.com/pisarev/crosspascal/releases/download/early-access-025/VISION-DOWNLOADS-ea025.json). The v2 catalog links to the release inventory for preparation-archive sizes and hashes.
+Model files, pinned SHA-256 values, and current preparation links: [VISION-DOWNLOADS-ea025-r1.json](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/VISION-DOWNLOADS-ea025-r1.json). The v2 catalog links to the release inventory for preparation-archive sizes and hashes.
 

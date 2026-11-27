@@ -37,8 +37,8 @@
     },
     {
       "path": "docs/PREPARE-EXAMPLES.md",
-      "bytes": 14206,
-      "sha256": "3fec04a2acf21851eb251f1b370347f8e9b3e2c734b1db02bdd59df1a57a3b5a"
+      "bytes": 14260,
+      "sha256": "4cd3e45ae67ccb8659c30dda716b40cf4d78f087c51fcb2725fd60cbe20cc6eb"
     },
     {
       "path": "docs/RELEASE-NOTES.md",
@@ -52,8 +52,8 @@
     },
     {
       "path": "docs/VISION-DOWNLOADS.md",
-      "bytes": 9598,
-      "sha256": "21bf64ee2dbee9bec276be2a5812b7c202cf5f4bffc0acaee78ed9dfa166f3b6"
+      "bytes": 9679,
+      "sha256": "5b6654bea08e90a557836d5508b67db42fad189ef14a8dfde112a56cc7645ad8"
     },
     {
       "path": "docs/WINDOWS-EARLY-ACCESS.md",
@@ -162,8 +162,8 @@
     },
     {
       "path": "examples/gemma-chat/README.md",
-      "bytes": 6977,
-      "sha256": "861bb4edb2f8997d6f00c5544c88e301e9ba1ff63a98306c6ee8e5f0d162c856"
+      "bytes": 6992,
+      "sha256": "92401890d955cc01d50feeda19011b690ef1130218e9e904e043af5a38758d0c"
     },
     {
       "path": "examples/language-models/ExampleSupport.pas",
@@ -332,8 +332,8 @@
     },
     {
       "path": "examples/marker-lite/README.md",
-      "bytes": 3913,
-      "sha256": "1628101230e8e1e62a2d9174a204d2f94fb3013b47089955aad5563d40f3d1e0"
+      "bytes": 3922,
+      "sha256": "a4473ed8470df3e1300321aa737f02841a8ce02913d1302eb4e288cfffb06384"
     },
     {
       "path": "examples/omdet-turbo/OmDetTurbo.dpr",
@@ -417,8 +417,8 @@
     },
     {
       "path": "examples/paddle-ocr/README.md",
-      "bytes": 2934,
-      "sha256": "cc47eb0cadbc3b4de1cd5b223b1bd03ebbf0a64d1958e6a459eb35fb2a810a72"
+      "bytes": 2946,
+      "sha256": "6ca07e836d42e2ebe3b73fc26f2c425713cdf800780d2ea4cef046511302bfcf"
     },
     {
       "path": "examples/qwen-chat/Prepare.cmd",
@@ -447,8 +447,8 @@
     },
     {
       "path": "examples/qwen-chat/README.md",
-      "bytes": 6970,
-      "sha256": "3b7b09ae348720d4109c28f7f9db7b2de8056f99a7c8fbda2814fda4bb060e29"
+      "bytes": 6985,
+      "sha256": "bb38e820860f12eb0f698396b1267a38c8ab1be3536715fbac66cd9eba6d9140"
     },
     {
       "path": "examples/vision-models/models.json",
@@ -462,8 +462,8 @@
     },
     {
       "path": "examples/vision-models/README.md",
-      "bytes": 13225,
-      "sha256": "7fdc9273f567c03dc9e6bcbfc9d20f993aa133f7484ab3c16c18f9eaf8a27851"
+      "bytes": 13234,
+      "sha256": "01e891f21017b10e28d7f4a7eca212916d89bb294195508785e343852e2d4385"
     },
     {
       "path": "examples/vision-models/VisionModels.dpr",
@@ -607,8 +607,8 @@
     },
     {
       "path": "prepare/vision-downloads.json",
-      "bytes": 18400,
-      "sha256": "a8eef47426033bcf3aee5802a0e90561bb4d3e2535f89793287c75b932fff9a6"
+      "bytes": 18529,
+      "sha256": "3226e48751682038b50e03dcdfd49ad417fb6c8e86888bd0103d5d1b0e70c8d0"
     },
     {
       "path": "prepare/vision/resnet50/prepare-bootstrap.json",

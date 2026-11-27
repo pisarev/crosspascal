@@ -1,7 +1,7 @@
 # Prepare and run an example
 
-Download **crosspascal-examples-prepare-ea025.zip** from the
-[EA025 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-025)
+Download **crosspascal-examples-prepare-ea025-r1.zip** from the
+[EA025-r1 release](https://github.com/pisarev/crosspascal/releases/tag/early-access-025-r1)
 and extract it to a writable folder. Open your example's folder and run
 **Prepare.cmd**. Shared example folders offer a menu.
 
@@ -24,7 +24,7 @@ For chat applications, **Installed SDK folder** is set to the actual installed S
 Keep the prepared folder together. Distributed Pascal executables are built with
 Lazarus; Delphi builds verify source compatibility.
 
-The default installation for EA025 launchers is %LOCALAPPDATA%/CrossPascal/early-access-025. YoloModels size kits use their own folders; see [YOLO models](#yolo-models). Set
+The default installation for EA025-r1 launchers is %LOCALAPPDATA%/CrossPascal/early-access-025-r1. YoloModels size kits use their own folders; see [YOLO models](#yolo-models). Set
 CROSSPASCAL_PREPARE_HOME before running Prepare.cmd to choose another drive.
 Downloads use a sibling downloads folder. Repeating preparation preserves your
 source, project and package settings, and locally rebuilt example executables.
@@ -41,11 +41,11 @@ run its ready Lazarus executable. Model and SDK paths are filled automatically.
 
 | Model | Device | Prepare kit | Model download | Installed model |
 | --- | --- | --- | ---: | ---: |
-| Huihui Gemma 3n E4B abliterated | CPU | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-HuihuiGemma3nE4B-CPU-ea025.zip) | 14.31 GiB | 26.81 GiB |
-| Huihui Gemma 3n E4B abliterated | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-HuihuiGemma3nE4B-GPU-ea025.zip) | 10.52 GiB | 17.06 GiB |
-| Qwen3.8-27B UD-Q4_K_M | CPU | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-Qwen38-27B-Q4-CPU-ea025.zip) | 16.32 GiB | 16.32 GiB |
-| Qwen3.8-27B UD-Q4_K_M | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-Qwen38-27B-Q4-GPU-ea025.zip) | 16.40 GiB | 16.40 GiB |
-| Qwen3.8-27B original BF16 | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-025/Prepare-Qwen38-27B-BF16-GPU-ea025.zip) | 52.73 GiB | 52.73 GiB |
+| Huihui Gemma 3n E4B abliterated | CPU | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-HuihuiGemma3nE4B-CPU-ea025-r1.zip) | 14.31 GiB | 26.81 GiB |
+| Huihui Gemma 3n E4B abliterated | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-HuihuiGemma3nE4B-GPU-ea025-r1.zip) | 10.52 GiB | 17.06 GiB |
+| Qwen3.8-27B UD-Q4_K_M | CPU | [Prepare CPU](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-Qwen38-27B-Q4-CPU-ea025-r1.zip) | 16.32 GiB | 16.32 GiB |
+| Qwen3.8-27B UD-Q4_K_M | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-Qwen38-27B-Q4-GPU-ea025-r1.zip) | 16.40 GiB | 16.40 GiB |
+| Qwen3.8-27B original BF16 | CUDA | [Prepare CUDA](https://github.com/pisarev/crosspascal/releases/download/early-access-025-r1/Prepare-Qwen38-27B-BF16-GPU-ea025-r1.zip) | 52.73 GiB | 52.73 GiB |
 
 The figures cover each model package. Prepare also accounts for the SDK,
 shared dependencies, download cache, and extraction space. The ready context
@@ -64,7 +64,7 @@ The [YoloModels example](../examples/yolo-models/README.md) runs YOLO profiles a
 
 For the default `n` group, use `vision/yolo-models/Prepare.cmd` from the combined preparation ZIP. The generic script selects Auto; `Prepare-CPU.cmd` and `Prepare-GPU.cmd` set the device explicitly. For any size group, including `n` and `all`, choose the size next to the YoloModels CPU, GPU, or Auto kit on the download page, extract that kit, and run its `Prepare.cmd`. You do not need to edit any files.
 
-Each size kit installs in its own folder: %LOCALAPPDATA%/CrossPascal/early-access-025-yolo-<size>/crosspascal-windows-x64. With the default locations, all kits share one downloads folder. The lines following **READY** give the full project paths, including when you chose a different installation folder.
+Each size kit installs in its own folder: %LOCALAPPDATA%/CrossPascal/early-access-025-r1-yolo-<size>/crosspascal-windows-x64. With the default locations, all kits share one downloads folder. The lines following **READY** give the full project paths, including when you chose a different installation folder.
 
 For the `n` group, the CPU archive is about 218 MiB. A CUDA preparation keeps the CPU files and adds the archive for the installed GPU, about 223 MiB. A larger size group can be split into several ZIP parts. The `all` kit uses the archives of the other six groups and does not duplicate the weights. The SDK and shared runtime are separate dependencies; Prepare prints the actual remaining download size. Archives for the other CUDA targets are not downloaded.
 
@@ -76,7 +76,7 @@ SqueezeNet 1.1, ResNet50 v1, YOLO11n classification, YOLO11n detection and RT-DE
 
 Each ZIP contains an enclosing folder. Extract it, open that folder and run `Prepare.cmd`. The dedicated CPU/GPU kit already sets its device. The generic kits below retain `-Device` and Auto selection.
 
-The six [console examples](../examples/language-models/README.md) have separate CPU and CUDA launchers in the [EA025 downloads](https://github.com/pisarev/crosspascal/releases/tag/early-access-025). From the combined ZIP, you can also run an example's Prepare.cmd with `-Device CPU` or `-Device CUDA`.
+The six [console examples](../examples/language-models/README.md) have separate CPU and CUDA launchers in the [EA025-r1 downloads](https://github.com/pisarev/crosspascal/releases/tag/early-access-025-r1). From the combined ZIP, you can also run an example's Prepare.cmd with `-Device CPU` or `-Device CUDA`.
 
 For text detection and recognition, the [PaddleOCR example](../examples/paddle-ocr/README.md) prepares both PP-OCRv5 Server models for the same device. The EA020 release also provides each model as a separate download.
 
